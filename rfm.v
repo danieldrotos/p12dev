@@ -100,24 +100,29 @@ module rfm(clk, reset, wen, cen, link,
     */
 
    wire [WIDTH-1:0] 	   pc_out;
-   reg [WIDTH-1:0] 	   reg_array[0:1<<ADDR_SIZE-1-1];
+   reg [WIDTH-1:0] 	   reg_array[0:(1<<ADDR_SIZE)-1-1];
    cntreg pc_reg
      (
       .clk(clk),
       .reset(reset),
       .cen(cen),
-      .wen(wen & (wa==(1<<ADDR_SIZE-1))),
+      .wen(wen & (wa==((1<<ADDR_SIZE)-1))),
       .din(din),
       .dout(pc_out)
       );
    
-   //integer 		   i;
+   integer 		   i;
+   initial
+     begin
+	for (i= 0; i < (1<<ADDR_SIZE)-1-1; i= i+1)
+	  reg_array[i]= 0;
+     end
    
    always @(posedge clk)
      begin
 	if (link)
 	  begin
-	     reg_array[1<<ADDR_SIZE-1-2]<= pc_out;
+	     reg_array[(1<<ADDR_SIZE)-1-1]<= pc_out;
 	  end
 	else if (wen)
 	  begin

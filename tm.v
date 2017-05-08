@@ -2,8 +2,9 @@ module tm;
    reg clk= 0;
    reg reset= 0;
    
-   computer comp(.clk(clk), .reset(reset));
    defparam comp.WIDTH= 32;
+   defparam comp.PROGRAM="t1.hex";
+   computer comp(.clk(clk), .reset(reset));
 
    always #1 clk= !clk;
    

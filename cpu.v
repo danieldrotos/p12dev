@@ -26,6 +26,11 @@ module cpu(clk, reset,
    wire 		       phe;	// PC increment; execute
    wire 		       phm;	// memory r/w; link
    wire 		       phwb;	// writeback
+   // selected data as parameteres
+   wire [WIDTH-1:0] 	       opa;
+   wire [WIDTH-1:0] 	       opb;
+   // output sources
+   wire [WIDTH-1:0] 	       alu_res;
    // selected data to use in writeback
    wire [WIDTH-1:0] 	       wbd;	// writeback data
    
@@ -41,6 +46,8 @@ module cpu(clk, reset,
       .clk_stat()
       );
 
+   // Instruction Register contains instruction code
+   defparam reg_ic.WIDTH= WIDTH;
    regm reg_ic
      (
       .clk(clk),
@@ -49,34 +56,45 @@ module cpu(clk, reset,
       .din(mbus_din),
       .dout(ic)
       );
-   defparam reg_ic.WIDTH= WIDTH;
 
+   // Register file: R0..R15 (R14=Link,R15=PC)
+   defparam regs.WIDTH= WIDTH;
+   defparam regs.ADDR_SIZE= 4;
    rfm regs
      (
       .clk(clk),
       .reset(reset),
       .cen(phe),
-      .wen(),
-      .din(wbd),
+      .wen(phwb),
+      .link(1'b0),
+      .wa(ic[23:20]),
+      .din(/*wbd*/alu_res),
+      .ra(ic[19:16]),
+      .da(opa),
+      .rb(ic[15:12]),
+      .db(opb),
+      .rd(ic[23:20]),
+      .dd(),
       .last(pc)
       );
-   defparam regs.WIDTH= WIDTH;
-   defparam regs.ADDR_SIZE= 4;
 
-   /*
-   cntreg reg_pc
-     (
-      .clk(clk),
-      .reset(reset),
-      .cen(),
-      .wen(),
-      .din(),
-      .dout(pc)
-      );
-   defparam reg_pc.WIDTH= WIDTH;
-    */
-   
-   alu alu();
+   // ALU
    defparam alu.WIDTH= WIDTH;
+   alu alu
+     (
+      .op(ic[11:7]),
+      .ci(),
+      .ai(opa),
+      .bi(opb),
+      .res(alu_res),
+      .co(),
+      .vo(),
+      .zo(),
+      .so()
+      );
+
+   // select data for writeback
+   assign wdb= alu_res;
+   assign mbus_aout= pc;
    
 endmodule // cpu

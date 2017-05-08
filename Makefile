@@ -22,7 +22,7 @@ show: sim
 
 sim: $(VCD)
 
-$(VCD): $(VVP)
+$(VCD): $(VVP) t1.hex
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER)
