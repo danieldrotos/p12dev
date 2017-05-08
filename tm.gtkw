@@ -1,0 +1,26 @@
+[*]
+[*] GTKWave Analyzer v3.3.79 (w)1999-2017 BSI
+[*] Mon May  8 11:44:34 2017
+[*]
+[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Mon May  8 11:44:05 2017"
+[dumpfile_size] 25519
+[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 0
+[size] 1425 610
+[pos] -1 -1
+*-5.530242 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tm.
+[treeopen] tm.comp.
+[treeopen] tm.comp.cpu.
+[sst_width] 201
+[signals_width] 94
+[sst_expanded] 1
+[sst_vpaned_height] 160
+@28
+tm.clk
+tm.reset
+@22
+tm.comp.cpu.pc[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

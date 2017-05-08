@@ -1,10 +1,18 @@
-module rfm(clk, reset, wen, wa, din, ra, rb, rd, rt, da, db, dd, dt);
+module rfm(clk, reset, wen, cen, link,
+	   wa, din,
+	   ra, da,
+	   rb, db,
+	   rd, dd,
+	   rt, dt,
+	   last);
    parameter WIDTH= 32;
    parameter ADDR_SIZE= 4;
    
    input wire clk;
    input wire reset;
    input wire wen;
+   input wire cen;
+   input wire link;
    
    input wire [ADDR_SIZE-1:0] wa;
    input wire [WIDTH-1:0]     din;
@@ -17,6 +25,7 @@ module rfm(clk, reset, wen, wa, din, ra, rb, rd, rt, da, db, dd, dt);
    output wire [WIDTH-1:0] db;
    output wire [WIDTH-1:0] dd;
    output wire [WIDTH-1:0] dt;
+   output [WIDTH-1:0] 	   last;
    /*
    wire [31:0] 		   ro0;
    wire [31:0] 		   ro1;
@@ -89,17 +98,31 @@ module rfm(clk, reset, wen, wa, din, ra, rb, rd, rt, da, db, dd, dt);
    regm r14(clk, reset, wen14, din, ro14);
    regm r15(clk, reset, wen15, din, ro15);
     */
+
+   wire [WIDTH-1:0] 	   pc_out;
+   reg [WIDTH-1:0] 	   reg_array[0:1<<ADDR_SIZE-1-1];
+   cntreg pc_reg
+     (
+      .clk(clk),
+      .reset(reset),
+      .cen(cen),
+      .wen(wen & (wa==(1<<ADDR_SIZE-1))),
+      .din(din),
+      .dout(pc_out)
+      );
    
-   reg [WIDTH-1:0] 	   reg_array[0:1<<ADDR_SIZE-1];
-   integer 		   i;
+   //integer 		   i;
    
-   always @(posedge clk, posedge reset)
+   always @(posedge clk)
      begin
-	if (reset)
-	  for (i= 0; i < 1<<ADDR_SIZE; i= i+1)
-	    reg_array[i]<= 0;
+	if (link)
+	  begin
+	     reg_array[1<<ADDR_SIZE-1-2]<= pc_out;
+	  end
 	else if (wen)
-	  reg_array[wa]<= din;
+	  begin
+	     reg_array[wa]<= din;
+	  end
      end
    /*   
    mx16wp mx(ra,
@@ -126,5 +149,6 @@ module rfm(clk, reset, wen, wa, din, ra, rb, rd, rt, da, db, dd, dt);
    assign db= reg_array[rb];
    assign dd= reg_array[rd];
    assign dt= reg_array[rt];
+   assign last= pc_out;
    
 endmodule // rfm

@@ -4,7 +4,7 @@ module schedm
    input wire 	     reset,
 
    output wire 	     phf,
-   output wire 	     phpc,
+   output wire 	     phe,
    output wire 	     phm,
    output wire 	     phwb,
 
@@ -31,12 +31,12 @@ module schedm
 	  end
      end
 
-   assign phpc= ff0;
+   assign phe = ff0;
    assign phm = ff1;
    assign phwb= ff2;
 
-   assign clk_stat[0]= phpc | phwb;
-   assign clk_stat[1]= phm  | phwb;
+   assign clk_stat[0]= phe | phwb;
+   assign clk_stat[1]= phm | phwb;
    assign clk_stat[2]= 1'b0;
    
 endmodule // schedm
