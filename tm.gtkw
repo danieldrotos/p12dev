@@ -1,26 +1,56 @@
 [*]
 [*] GTKWave Analyzer v3.3.79 (w)1999-2017 BSI
-[*] Mon May  8 11:44:34 2017
+[*] Tue May  9 16:43:31 2017
 [*]
-[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Mon May  8 11:44:05 2017"
-[dumpfile_size] 25519
-[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 0
-[size] 1425 610
+[dumpfile] "/mhome/staff/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Tue May  9 16:05:48 2017"
+[dumpfile_size] 149712
+[savefile] "/mhome/staff/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 2
+[size] 1425 765
 [pos] -1 -1
-*-5.530242 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-3.530242 27 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.cpu.
-[sst_width] 201
-[signals_width] 94
+[treeopen] tm.comp.cpu.regs.
+[sst_width] 215
+[signals_width] 213
 [sst_expanded] 1
-[sst_vpaned_height] 160
+[sst_vpaned_height] 212
 @28
 tm.clk
 tm.reset
+tm.comp.cpu.phf
+tm.comp.cpu.phe
+tm.comp.cpu.phm
+tm.comp.cpu.phw
 @22
 tm.comp.cpu.pc[31:0]
+tm.comp.cpu.ic[31:0]
+tm.comp.cpu.mbus_aout[31:0]
+tm.comp.cpu.mbus_din[31:0]
+@28
+tm.comp.cpu.mbus_wen
+@22
+tm.comp.cpu.mbus_dout[31:0]
+@28
+tm.comp.cpu.ena
+tm.comp.cpu.inst_wb
+@22
+tm.comp.cpu.wb_address[3:0]
+tm.comp.cpu.wb_data[31:0]
+@28
+tm.comp.cpu.link_en
+tm.comp.cpu.regs.link
+@22
+tm.comp.cpu.regs.din[31:0]
+tm.comp.cpu.regs.wa[3:0]
+tm.comp.cpu.regs.pc_reg.din[31:0]
+@28
+tm.comp.cpu.regs.pc_reg.cen
+tm.comp.cpu.regs.pc_reg.wen
+@23
+tm.comp.cpu.regs.pc_reg.dout[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

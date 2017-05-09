@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2016 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="14" Path="/extra/drdani/prj/proc1516v/viv_proc1516.xpr">
+<Project Version="7" Minor="14" Path="/mhome/staff/drdani/prj/proc1516v/viv_proc1516.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="bfca3f4c124b46aba3ded7252636b26a"/>

@@ -150,10 +150,10 @@ module rfm(clk, reset, wen, cen, link,
 	     dout);
    defparam mx.WIDTH=32;
    */
-   assign da= reg_array[ra];
-   assign db= reg_array[rb];
-   assign dd= reg_array[rd];
-   assign dt= reg_array[rt];
+   assign da= (ra==((1<<ADDR_SIZE)-1))?pc_out:reg_array[ra];
+   assign db= (rb==((1<<ADDR_SIZE)-1))?pc_out:reg_array[rb];
+   assign dd= (rd==((1<<ADDR_SIZE)-1))?pc_out:reg_array[rd];
+   assign dt= (rt==((1<<ADDR_SIZE)-1))?pc_out:reg_array[rt];
    assign last= pc_out;
    
 endmodule // rfm

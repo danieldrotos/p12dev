@@ -49,11 +49,17 @@ module cpu(clk, reset,
    wire 		       inst_ldl;
    wire 		       inst_ldh;
    wire 		       inst_op;
+   wire 		       inst_wb;
    // some parts of IC
    wire [3:0] 		       ra;
    wire [3:0] 		       rb;
    wire [3:0] 		       rd;
    wire [4:0] 		       op_code;
+   wire [2:0] 		       cond_flag;
+   wire 		       cond_value;
+   wire 		       cond_always;
+   // result of condition check
+   wire 		       ena;
    
    // scheduler generates phase signals
    schedm scheduler
@@ -72,12 +78,15 @@ module cpu(clk, reset,
    wire 		       flag_s;
    wire 		       flag_z;
    wire 		       flag_v;
+   wire 		       flagwb_en;
+   assign flagwb_en= ena & inst_op & phw;
+   
    defparam reg_flag.WIDTH=4;
    regm reg_flag
      (
       .clk(clk),
       .reset(1'b0),
-      .cen(inst_op & phw),
+      .cen(flagwb_en),
       .din ({v_res ,z_res ,s_res ,c_res }),
       .dout({flag_v,flag_z,flag_s,flag_c})
       );
@@ -98,6 +107,9 @@ module cpu(clk, reset,
    assign rb= ic[15:12];
    assign rd= ic[23:20];
    assign op_code= ic[11:7];
+   assign cond_flag= ic[31:30];
+   assign cond_value= ic[29];
+   assign cond_always= ic[28];
    
    // decode instructions
    assign inst_call= ic[27];
@@ -109,6 +121,17 @@ module cpu(clk, reset,
    assign inst_ldl = ~inst_call & (ic[26:24]==3'd5);
    assign inst_ldh = ~inst_call & (ic[26:24]==3'd6);
    assign inst_op  = ~inst_call & (ic[26:24]==3'd7);
+   assign inst_wb  = ~inst_nop & ~inst_st;
+   
+   // decode condition
+   assign ena= !cond_always |
+	       (
+		(cond_flag==2'b00)?(cond_value==flag_s):
+		(cond_flag==2'b01)?(cond_value==flag_c):
+		(cond_flag==2'b10)?(cond_value==flag_z):
+		(cond_flag==2'b11)?(cond_value==flag_v):
+		1'b1
+		);
    
    // ALU
    defparam alu.WIDTH= WIDTH;
@@ -141,6 +164,11 @@ module cpu(clk, reset,
 		   32'd0;
    assign wb_address= inst_call?4'd15:
 		      rd;
+
+   wire 		       wb_en;
+   wire 		       link_en;
+   assign wb_en= ena & inst_wb & phw;
+   assign link_en= ena & inst_call & phe;
    
    // Register file: R0..R15 (R14=Link,R15=PC)
    defparam regs.WIDTH= WIDTH;
@@ -149,17 +177,17 @@ module cpu(clk, reset,
      (
       .clk(clk),
       .reset(reset),
-      .cen(phe),	// phf? Increment of R15 (PC)
-      .wen(phw),	// Writeback: puts din to R[wr]
-      .link(1'b0),	// link: writes R15 into R14
-      .wa(wb_address),	// Rd part of code
+      .cen(phe),			// phf? Increment of R15 (PC)
+      .wen(wb_en),			// Writeback: puts din to R[wr]
+      .link(link_en),			// link: writes R15 into R14
+      .wa(wb_address),			// Rd part of code
       .din(wb_data),
-      .ra(ra),		// Ra part of code
-      .da(opa),		// value of Ra
-      .rb(rb),		// Rb part of code
-      .db(opb),		// value of Rb
-      .rd(rd),		// Rd part of code
-      .dd(opd),		// value of Rd
+      .ra(ra),				// Ra part of code
+      .da(opa),				// value of Ra
+      .rb(rb),				// Rb part of code
+      .db(opb),				// value of Rb
+      .rd(rd),				// Rd part of code
+      .dd(opd),				// value of Rd
       .rt(),
       .dt(),
       .last(pc)
@@ -168,5 +196,6 @@ module cpu(clk, reset,
    // memory interface
    assign mbus_dout= opd;
    assign mbus_aout= ((phm & inst_st) | ( inst_ld & (phm | phw)))?opa:pc;
+   assign mbus_wen = ena & phm & inst_st;
    
 endmodule // cpu
