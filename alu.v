@@ -1,9 +1,13 @@
-module alu(op,ci,ai,bi,res,co,vo,zo,so);
+module alu(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
    parameter WIDTH=8;
 
    input wire [4:0] op;
    
    input wire 	    ci;
+   input wire 	    vi;
+   input wire 	    zi;
+   input wire 	    si;
+   
    input wire [WIDTH-1:0] ai;
    input wire [WIDTH-1:0] bi;
    
@@ -56,15 +60,52 @@ module alu(op,ci,ai,bi,res,co,vo,zo,so);
 	       (op==op_dec)?~0:
 	       bi;
 
+   // classes of operations
+   wire 		   op_arithmetic;
+   wire 		   op_logical;
+   wire 		   op_shift_rotate;
+   wire 		   op_carry;
+
+   assign op_arithmetic
+     = (op==op_add) |
+       (op==op_adc) |
+       (op==op_sub) |
+       (op==op_sbb) |
+       (op==op_inc) |
+       (op==op_dec) |
+       (op==op_cmp) |
+       (op==op_mul) |
+       (op==op_muh) |
+       (op==op_div);
+   assign op_logical
+     = (op==op_and) |
+       (op==op_or)  |
+       (op==op_xor);
+   assign op_shift_rotate
+     = (op==op_shl) |
+       (op==op_shr) |
+       (op==op_sha) |
+       (op==op_rol) |
+       (op==op_ror);
+   assign op_carry
+     = (op==op_stc) |
+       (op==op_clc);
+      
+   // output of ADDRER
    wire [WIDTH-1:0] 	   ares;
    wire 		   aco;
+   wire 		   avo;
    
    adder #(WIDTH) adder(.ci(cin), .ai(op1), .bi(op2),
-			.res(ares), .co(aco), .vo(vo));
+			.res(ares), .co(aco), .vo(avo));
 
-   assign so= res[WIDTH-1];
-   assign zo= ~|(res);
-
+   assign so= op_arithmetic?res[WIDTH-1]:
+	      si;
+   assign zo= op_carry?zi:
+	      ~|(res);
+   assign vo= op_arithmetic?avo:
+	      vi;
+   
    wire [WIDTH*2-1:0] 	   mres;
    assign mres= ai*bi;
    
@@ -107,5 +148,5 @@ module alu(op,ci,ai,bi,res,co,vo,zo,so);
 	      (op==op_clc)?1'b0:
 	      //(op==op_tst)?ai&bi:
 	      ci;
-   
+
 endmodule // alu

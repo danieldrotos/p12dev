@@ -11,7 +11,7 @@ module memory_1in_1out(clk, din, wen, wa, ra, dout);
    
    output wire [WIDTH-1:0]    dout;
 
-   reg [WIDTH-1:0] 	      mem_array[0:1<<ADDR_SIZE-1];
+   reg [WIDTH-1:0] 	      mem_array[0:(1<<ADDR_SIZE)-1];
 
    initial
      begin
