@@ -122,7 +122,7 @@ module rfm(clk, reset, wen, cen, link,
      begin
 	if (link)
 	  begin
-	     reg_array[(1<<ADDR_SIZE)-1-1]<= pc_out;
+	     reg_array[(1<<ADDR_SIZE)-1-1]<= pc_out+1;
 	  end
 	else if (wen)
 	  begin

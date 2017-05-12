@@ -188,8 +188,8 @@ module cpu(clk, reset,
       .db(opb),				// value of Rb
       .rd(rd),				// Rd part of code
       .dd(opd),				// value of Rd
-      .rt(),
-      .dt(),
+      .rt(test_sel),
+      .dt(test_out),
       .last(pc)
       );
 
