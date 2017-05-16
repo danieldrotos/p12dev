@@ -6,7 +6,7 @@ module tm;
    wire [31:0] tout;
    
    defparam comp.WIDTH= 32;
-   defparam comp.PROGRAM="t1.hex";
+   defparam comp.PROGRAM="counter.hex";
    computer comp
      (
       .clk(clk),

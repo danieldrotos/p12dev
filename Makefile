@@ -25,7 +25,7 @@ show: sim
 
 sim: $(VCD)
 
-$(VCD): $(VVP) t1.hex
+$(VCD): $(VVP) t1.hex counter.hex
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER)
