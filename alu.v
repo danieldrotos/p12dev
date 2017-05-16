@@ -1,26 +1,29 @@
-module alu(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
-   parameter WIDTH=8;
-
-   input wire [4:0] op;
+module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
+  #(
+    parameter WIDTH=8
+    )
+   (
+    input wire [4:0] 	    op,
    
-   input wire 	    ci;
-   input wire 	    vi;
-   input wire 	    zi;
-   input wire 	    si;
+    input wire 		    ci,
+    input wire 		    vi,
+    input wire 		    zi,
+    input wire 		    si,
    
-   input wire [WIDTH-1:0] ai;
-   input wire [WIDTH-1:0] bi;
+    input wire [WIDTH-1:0]  ai,
+    input wire [WIDTH-1:0]  bi,
    
-   output wire [WIDTH-1:0] res;
-   output wire 		   co;
-   output wire 		   vo;
-   output wire 		   zo;
-   output wire 		   so;
-
-   wire 		   cin;
-   wire [WIDTH-1:0] 	   op1;
-   wire [WIDTH-1:0] 	   op2;
-
+    output wire [WIDTH-1:0] res,
+    output wire 	    co,
+    output wire 	    vo,
+    output wire 	    zo,
+    output wire 	    so
+    );
+   
+   wire 		    cin;
+   wire [WIDTH-1:0] 	    op1;
+   wire [WIDTH-1:0] 	    op2;
+   
    parameter op_add= 5'd0;
    parameter op_adc= 5'd1;
    parameter op_sub= 5'd2;
@@ -96,8 +99,15 @@ module alu(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
    wire 		   aco;
    wire 		   avo;
    
-   adder #(WIDTH) adder(.ci(cin), .ai(op1), .bi(op2),
-			.res(ares), .co(aco), .vo(avo));
+   adder #(WIDTH) adder
+     (
+      .ci  (cin),
+      .ai  (op1),
+      .bi  (op2),
+      .res (ares),
+      .co  (aco),
+      .vo  (avo)
+      );
 
    assign so= op_arithmetic?res[WIDTH-1]:
 	      si;

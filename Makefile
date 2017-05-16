@@ -2,8 +2,11 @@ TB		= tm
 
 MODS		= decoder regm adder \
 		  computer \
-		    memory cpu \
-		      alu cntreg rfm schedm
+		    memory \
+		    cpu \
+		      alu cntreg rfm schedm \
+		    gpio_out4 \
+		    gpio_in
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 

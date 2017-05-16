@@ -1,14 +1,17 @@
-module cntreg(clk, reset, cen, wen, din, dout);
-   parameter WIDTH= 32;
+module cntreg //(clk, reset, cen, wen, din, dout);
+  #(
+    parameter WIDTH= 32
+   )
+   (
+    input wire 		    clk,
+    input wire 		    reset,
+    input wire 		    cen,
+    input wire 		    wen,
+    input wire [WIDTH-1:0]  din,
+    output wire [WIDTH-1:0] dout
+    );
    
-   input wire clk;
-   input wire reset;
-   input wire cen;
-   input wire wen;
-   input wire [WIDTH-1:0] din;
-   output wire [WIDTH-1:0] dout;
-   
-   reg [WIDTH-1:0] 	   r;
+   reg [WIDTH-1:0] 	    r;
    
    always @(posedge clk, posedge reset)
      begin
