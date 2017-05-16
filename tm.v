@@ -6,7 +6,7 @@ module tm;
    wire [31:0] tout;
    
    defparam comp.WIDTH= 32;
-   defparam comp.PROGRAM="light.hex";
+   defparam comp.PROGRAM="light2.hex";
    computer comp
      (
       .clk(clk),

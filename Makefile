@@ -21,7 +21,8 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-HEX_FILES	= array_sum.hex counter.hex light.hex
+HEX_FILES	= array_sum.hex counter.hex \
+		  light1.hex light2.hex
 
 all: sim
 
