@@ -144,6 +144,7 @@ module cpu(clk, reset,
       .vi(flag_v),
       .ai(opa),
       .bi(opb),
+      .di(opd),
       .res(alu_res),
       .co(c_res),
       .vo(v_res),
@@ -159,7 +160,7 @@ module cpu(clk, reset,
 		   inst_mov?opa:
 		   inst_ldl0?{16'b0,ic[15:0]}:
 		   inst_ldl?{opd[31:16],ic[15:0]}:
-		   inst_ldh?{ic[31:16],opd[15:0]}:
+		   inst_ldh?{ic[15:0],opd[15:0]}:
 		   inst_op?alu_res:
 		   32'd0;
    assign wb_address= inst_call?4'd15:

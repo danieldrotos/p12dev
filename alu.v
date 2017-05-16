@@ -12,7 +12,8 @@ module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
    
     input wire [WIDTH-1:0]  ai,
     input wire [WIDTH-1:0]  bi,
-   
+    input wire [WIDTH-1:0]  di,
+    
     output wire [WIDTH-1:0] res,
     output wire 	    co,
     output wire 	    vo,
@@ -112,6 +113,7 @@ module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
    assign so= op_arithmetic?res[WIDTH-1]:
 	      si;
    assign zo= op_carry?zi:
+	      (op==op_cmp)?~|(ares):
 	      ~|(res);
    assign vo= op_arithmetic?avo:
 	      vi;
@@ -123,7 +125,7 @@ module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
 	       (op==op_adc)?ares:
 	       (op==op_sub)?ares:
 	       (op==op_sbb)?ares:
-	       (op==op_cmp)?ares:
+	       //(op==op_cmp)?ares:
 	       (op==op_inc)?ares:
 	       (op==op_dec)?ares:
 	       (op==op_and)?ai&bi:
@@ -137,7 +139,7 @@ module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
 	       (op==op_mul)?mres[WIDTH-1:0]:
 	       (op==op_muh)?mres[2*WIDTH-1:WIDTH]:
 	       //(op==op_tst)?ai&bi:
-	       ai;
+	       di;
 
    assign co= (op==op_add)?aco:
 	      (op==op_adc)?aco:
