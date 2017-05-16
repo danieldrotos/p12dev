@@ -20,12 +20,12 @@ module memory_1in_1out(clk, din, wen, wa, ra, dout, rb, db);
    integer 		      i;
    initial
      begin
-	for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
-	  mem_array[i]= 0;
+	//for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
+	  //mem_array[i]= 0;
 	if (CONTENT != "")
 	  $readmemh(CONTENT, mem_array);
      end
-   
+  
    always @(posedge clk)
      begin
 	if (wen)
