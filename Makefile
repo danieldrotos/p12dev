@@ -4,7 +4,10 @@ MODS		= decoder regm adder \
 		  computer \
 		    memory \
 		    cpu \
-		      alu cntreg rfm schedm \
+		      alu \
+		      cntreg \
+		      rfm \
+		      schedm \
 		    gpio_out4 \
 		    gpio_in
 
@@ -18,6 +21,8 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
+HEX_FILES	= array_sum.hex counter.hex
+
 all: sim
 
 show: sim
@@ -25,7 +30,7 @@ show: sim
 
 sim: $(VCD)
 
-$(VCD): $(VVP) t1.hex counter.hex
+$(VCD): $(VVP) $(HEX_FILES)
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER)
