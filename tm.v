@@ -1,4 +1,4 @@
-module tm;
+module tm(input wire i, output wire o);
    reg clk= 0;
    reg reset= 0;
    reg [3:0] test_sel= 4'd0;
