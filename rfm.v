@@ -110,14 +110,14 @@ module rfm(clk, reset, wen, cen, link,
       .din(din),
       .dout(pc_out)
       );
-   
+/*   
    integer 		   i;
    initial
      begin
 	for (i= 0; i < (1<<ADDR_SIZE)-1-1; i= i+1)
 	  reg_array[i]= 0;
      end
-   
+*/   
    always @(posedge clk)
      begin
 	if (link)

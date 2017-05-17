@@ -1,13 +1,13 @@
 [*]
 [*] GTKWave Analyzer v3.3.79 (w)1999-2017 BSI
-[*] Tue May  9 16:43:31 2017
+[*] Wed May 17 07:07:39 2017
 [*]
-[dumpfile] "/mhome/staff/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Tue May  9 16:05:48 2017"
-[dumpfile_size] 149712
-[savefile] "/mhome/staff/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 2
-[size] 1425 765
+[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Wed May 17 07:07:09 2017"
+[dumpfile_size] 150088
+[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 0
+[size] 1744 694
 [pos] -1 -1
 *-3.530242 27 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
@@ -17,7 +17,7 @@
 [sst_width] 215
 [signals_width] 213
 [sst_expanded] 1
-[sst_vpaned_height] 212
+[sst_vpaned_height] 260
 @28
 tm.clk
 tm.reset
@@ -50,7 +50,9 @@ tm.comp.cpu.regs.pc_reg.din[31:0]
 @28
 tm.comp.cpu.regs.pc_reg.cen
 tm.comp.cpu.regs.pc_reg.wen
-@23
+@22
 tm.comp.cpu.regs.pc_reg.dout[31:0]
+@23
+tm.comp.porta[31:0]
 [pattern_trace] 1
 [pattern_trace] 0

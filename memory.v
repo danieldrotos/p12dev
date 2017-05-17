@@ -1,4 +1,4 @@
-module memory_1in_1out(clk, din, wen, wa, ra, dout, rb, db);
+module memory_1in_1out(clk, din, wen, wa, ra, dout/*, rb, db*/);
    parameter WIDTH	= 8;	// cell size in bits
    parameter ADDR_SIZE	= 10;	// in bits
    parameter CONTENT	= "";	// name of hex file
@@ -12,12 +12,12 @@ module memory_1in_1out(clk, din, wen, wa, ra, dout, rb, db);
    output wire [WIDTH-1:0]    dout;
 
    // test
-   input wire [ADDR_SIZE-1:0] rb;
-   output wire [WIDTH-1:0]    db;
+   //input wire [ADDR_SIZE-1:0] rb;
+   //output wire [WIDTH-1:0]    db;
    
-   reg [WIDTH-1:0] 	      mem_array[0:(1<<ADDR_SIZE)-1];
+   reg [WIDTH-1:0] 	      mem_array[(1<<ADDR_SIZE)-1:0];
 
-   integer 		      i;
+   //integer 		      i;
    initial
      begin
 	//for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
@@ -29,10 +29,10 @@ module memory_1in_1out(clk, din, wen, wa, ra, dout, rb, db);
    always @(posedge clk)
      begin
 	if (wen)
-	  mem_array[wa]= din;
+	  mem_array[wa]<= din;
      end
 
    assign dout= mem_array[ra];
-   assign db= mem_array[rb];
+   //assign db= mem_array[rb];
    
 endmodule // memory_1in_1out

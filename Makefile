@@ -1,7 +1,7 @@
 TB		= tm
 
 MODS		= decoder regm adder \
-		  computer \
+		  comp \
 		    memory \
 		    cpu \
 		      alu \
@@ -39,4 +39,5 @@ $(VVP): $(TB_VER) $(MODS_VER)
 
 clean:
 	rm -f *~ $(VCD) $(VVP)
-
+	rm -f *.cmd_log *.html *.lso *.ngc *.ngr *.prj
+	rm -f *.stx

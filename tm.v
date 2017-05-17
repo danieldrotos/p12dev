@@ -7,12 +7,12 @@ module tm(input wire i, output wire o);
    
    defparam comp.WIDTH= 32;
    defparam comp.PROGRAM="light2.hex";
-   computer comp
+   comp comp
      (
-      .clk(clk),
-      .reset(reset),
-      .test_sel(test_sel),
-      .test_out(tout)
+      .CLK(clk),
+      .RESET(reset),
+      .TRS/*test_sel*/(test_sel),
+      .TR/*test_out*/(tout)
       );
 
    always #1 clk= !clk;
