@@ -64,7 +64,10 @@ module cpu(clk, reset,
    wire 		       cond_always;
    // result of condition check
    wire 		       ena;
-   
+
+   // latched data read from memory
+   reg [WIDTH-1:0] 	       mr_data;
+
    // scheduler generates phase signals
    schedm scheduler
      (
@@ -159,7 +162,7 @@ module cpu(clk, reset,
    // select data for writeback
    wire [WIDTH-1:0] 	       inst_res;
    assign inst_res= inst_nop?32'd0:
-		    inst_ld?mbus_din:
+		    inst_ld?/*mbus_din*/mr_data:
 		    inst_st?32'd0:
 		    inst_mov?opa:
 		    inst_ldl0?{16'b0,ic[15:0]}:
@@ -203,8 +206,16 @@ module cpu(clk, reset,
       );
 
    // memory interface
+   wire 		       en_mr_data;
+   assign en_mr_data= phm & inst_ld;
+   always @(posedge clk)
+     begin
+	if (en_mr_data)
+	  mr_data<= mbus_din;
+     end
+   
    assign mbus_dout= opd;
-   assign mbus_aout= (((phm/*|phe*/) & inst_st) | ( inst_ld & ((phm/*|phe*/) | phw)))?opa:pc;
+   assign mbus_aout= (((phm/*|phe*/) & inst_st) | ( inst_ld & ((phm|phe)/* | phw*/)))?opa:pc;
    assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
 
    assign test_out

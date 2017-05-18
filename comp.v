@@ -92,7 +92,7 @@ module comp //(clk, reset, test_sel, test_out);
    assign mem_address= (~mem_test)?bus_address:
 		       mem_test_address;
    
-`ifdef no_ISE_SYNTH
+`ifdef ISE_SYNTH
    mem mem
      (
       .A(mem_address/*bus_address*/),
