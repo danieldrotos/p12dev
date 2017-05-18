@@ -1,0 +1,1 @@
+`define ISE_SYNTH
