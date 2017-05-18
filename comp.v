@@ -1,3 +1,5 @@
+`include "defs.v"
+
 module comp //(clk, reset, test_sel, test_out);
   #(
     parameter WIDTH= 32,
@@ -18,13 +20,14 @@ module comp //(clk, reset, test_sel, test_out);
     // test the CPU
     input wire [3:0] 	    TRS/*test_sel*/,
     output wire [WIDTH-1:0] TR/*test_out*/,
-	 //output wire [WIDTH-1:0] dummy
+    output wire [2:0] 	    CLKstat,
+    //output wire [WIDTH-1:0] dummy
     output wire [WIDTH-1:0] ADDR,
     output wire [WIDTH-1:0] MDO,
     output wire [WIDTH-1:0] MDI,
-    output wire MWE,
-    output wire TREG,
-    output wire [2:0] CLKstat
+    output wire 	    MWE,
+    output wire [WIDTH-1:0] TREG,
+    input wire mem_test
     );
 
    wire 	      clk;
@@ -51,8 +54,10 @@ module comp //(clk, reset, test_sel, test_out);
       .mbus_din(bus_data_in),
       .mbus_dout(bus_data_out),
       .mbus_wen(bus_wen),
+      .test_reg(TREG),
       .test_sel(TRS/*test_sel*/),
-      .test_out(TR/*test_out*/)
+      .test_out(TR/*test_out*/),
+      .clk_stat(CLKstat)
       );
 
    wire [15:0] 		    chip_selects;
@@ -70,14 +75,35 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_portabcd;
 
    assign cs_mem= chip_selects[0];
-   assign cs_porti= chip_selects[13];
-   assign cs_portj= chip_selects[14];
+   assign cs_portj= chip_selects[13];
+   assign cs_porti= chip_selects[14];
    assign cs_portabcd= chip_selects[15];
+
+   reg [WIDTH-1:0] 	    mem_test_address;
+   always @(posedge clk, posedge reset)
+     begin
+	if (reset)
+	  mem_test_address<= 0;
+	else if (mem_test)
+	  mem_test_address<= mem_test_address+1;
+     end
    
-   //wire [WIDTH-1:0] 	    mtest;
-   //defparam mem.WIDTH= 32;
-   //defparam mem.ADDR_SIZE= 14;
-   //defparam mem.CONTENT= PROGRAM;
+   wire [WIDTH-1:0] 	    mem_address;
+   assign mem_address= (~mem_test)?bus_address:
+		       mem_test_address;
+   
+`ifdef no_ISE_SYNTH
+   mem mem
+     (
+      .A(mem_address/*bus_address*/),
+      .CLK(clk),
+      .CS((~mem_test)?cs_mem:1'b1/*cs_mem*/),
+      .I(bus_data_out),
+      .WR((~mem_test)?bus_wen:1'b0/*bus_wen*/),
+      .CSO(),
+      .O(bus_memory_out)
+      );
+`else
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
@@ -89,13 +115,12 @@ module comp //(clk, reset, test_sel, test_out);
       .clk(clk),
       .din(bus_data_out),
       .wen(bus_wen),
-      .wa(bus_address[8:0]),
-      .ra(bus_address[8:0]),
+      .wa(/*bus_address*/mem_address[8:0]),
+      .ra(/*bus_address*/mem_address[8:0]),
       .dout(bus_memory_out)//,
-      //.rb(14'd100),
-      //.db(mtest)
       );
-
+`endif
+   
    gpio_in #(.WIDTH(WIDTH)) gpio_ini
      (
       .clk(clk),
@@ -146,9 +171,9 @@ module comp //(clk, reset, test_sel, test_out);
   bus_memory_out
   ;
   
-   assign ADDR= bus_address;
+   assign ADDR= mem_address;
    assign MDO= bus_data_out;
-   assign MDI= bus_data_in;
+   assign MDI= (~mem_test)?bus_data_in:bus_memory_out;
    assign MWE= bus_wen;
    
 endmodule // computer

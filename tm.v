@@ -12,7 +12,8 @@ module tm(input wire i, output wire o);
       .CLK(clk),
       .RESET(reset),
       .TRS/*test_sel*/(test_sel),
-      .TR/*test_out*/(tout)
+      .TR/*test_out*/(tout),
+      .mem_test(1'b0)
       );
 
    always #1 clk= !clk;

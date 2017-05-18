@@ -101,6 +101,10 @@
         <signal name="PORTB(7)" />
         <signal name="PORTB(3)" />
         <signal name="S(7:0)" />
+        <signal name="mem_test" />
+        <signal name="CTRL(5)" />
+        <signal name="CTRL(6)" />
+        <signal name="CTRL(7)" />
         <port polarity="Input" name="SW3" />
         <port polarity="Input" name="BTN0" />
         <port polarity="Input" name="BTN1" />
@@ -323,9 +327,30 @@
             <rect width="64" x="320" y="-172" height="24" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
         </blockdef>
+        <blockdef name="m2_1">
+            <timestamp>2000-1-1T10:10:10</timestamp>
+            <line x2="96" y1="-64" y2="-192" x1="96" />
+            <line x2="96" y1="-96" y2="-64" x1="256" />
+            <line x2="256" y1="-160" y2="-96" x1="256" />
+            <line x2="256" y1="-192" y2="-160" x1="96" />
+            <line x2="96" y1="-32" y2="-32" x1="176" />
+            <line x2="176" y1="-80" y2="-32" x1="176" />
+            <line x2="96" y1="-32" y2="-32" x1="0" />
+            <line x2="256" y1="-128" y2="-128" x1="320" />
+            <line x2="96" y1="-96" y2="-96" x1="0" />
+            <line x2="96" y1="-160" y2="-160" x1="0" />
+        </blockdef>
+        <blockdef name="bufg">
+            <timestamp>2000-1-1T10:10:10</timestamp>
+            <line x2="64" y1="-64" y2="0" x1="64" />
+            <line x2="64" y1="-32" y2="-64" x1="128" />
+            <line x2="128" y1="0" y2="-32" x1="64" />
+            <line x2="128" y1="-32" y2="-32" x1="224" />
+            <line x2="64" y1="-32" y2="-32" x1="0" />
+        </blockdef>
         <blockdef name="comp">
-            <timestamp>2016-4-26T8:0:24</timestamp>
-            <rect width="256" x="64" y="-704" height="704" />
+            <timestamp>2017-5-18T12:26:39</timestamp>
+            <line x2="0" y1="32" y2="32" x1="64" />
             <line x2="384" y1="-672" y2="-672" x1="320" />
             <rect width="64" x="320" y="-684" height="24" />
             <line x2="0" y1="-672" y2="-672" x1="64" />
@@ -355,27 +380,18 @@
             <rect width="64" x="320" y="-364" height="24" />
             <line x2="0" y1="-544" y2="-544" x1="64" />
             <rect width="64" x="0" y="-556" height="24" />
+            <rect width="256" x="64" y="-704" height="768" />
         </blockdef>
-        <blockdef name="m2_1">
+        <blockdef name="and3">
             <timestamp>2000-1-1T10:10:10</timestamp>
-            <line x2="96" y1="-64" y2="-192" x1="96" />
-            <line x2="96" y1="-96" y2="-64" x1="256" />
-            <line x2="256" y1="-160" y2="-96" x1="256" />
-            <line x2="256" y1="-192" y2="-160" x1="96" />
-            <line x2="96" y1="-32" y2="-32" x1="176" />
-            <line x2="176" y1="-80" y2="-32" x1="176" />
-            <line x2="96" y1="-32" y2="-32" x1="0" />
-            <line x2="256" y1="-128" y2="-128" x1="320" />
-            <line x2="96" y1="-96" y2="-96" x1="0" />
-            <line x2="96" y1="-160" y2="-160" x1="0" />
-        </blockdef>
-        <blockdef name="bufg">
-            <timestamp>2000-1-1T10:10:10</timestamp>
-            <line x2="64" y1="-64" y2="0" x1="64" />
-            <line x2="64" y1="-32" y2="-64" x1="128" />
-            <line x2="128" y1="0" y2="-32" x1="64" />
-            <line x2="128" y1="-32" y2="-32" x1="224" />
-            <line x2="64" y1="-32" y2="-32" x1="0" />
+            <line x2="64" y1="-64" y2="-64" x1="0" />
+            <line x2="64" y1="-128" y2="-128" x1="0" />
+            <line x2="64" y1="-192" y2="-192" x1="0" />
+            <line x2="192" y1="-128" y2="-128" x1="256" />
+            <line x2="144" y1="-176" y2="-176" x1="64" />
+            <line x2="64" y1="-80" y2="-80" x1="144" />
+            <arc ex="144" ey="-176" sx="144" sy="-80" r="48" cx="144" cy="-128" />
+            <line x2="64" y1="-64" y2="-192" x1="64" />
         </blockdef>
         <block symbolname="vcc" name="XLXI_5">
             <blockpin signalname="H" name="P" />
@@ -490,24 +506,6 @@
             <blockpin signalname="SW7,SW6,SW5,SW4,SW3,SW2,SW1,SW0" name="D(7:0)" />
             <blockpin signalname="CTRL(7:0)" name="Q(7:0)" />
         </block>
-        <block symbolname="comp" name="comp_a">
-            <blockpin signalname="ADDR(31:0)" name="ADDR(31:0)" />
-            <blockpin signalname="SYS_CLK" name="CLK" />
-            <blockpin signalname="CLKstat(2:0)" name="CLKstat(2:0)" />
-            <blockpin signalname="MDI(31:0)" name="MDI(31:0)" />
-            <blockpin signalname="MDO(31:0)" name="MDO(31:0)" />
-            <blockpin signalname="MWE" name="MWE" />
-            <blockpin signalname="PORTA(31:0)" name="PORTA(31:0)" />
-            <blockpin signalname="PORTB(31:0)" name="PORTB(31:0)" />
-            <blockpin signalname="PORTC(31:0)" name="PORTC(31:0)" />
-            <blockpin signalname="PORTD(31:0)" name="PORTD(31:0)" />
-            <blockpin signalname="D0(31:4),B3,B2,B1,B0" name="PORTI(31:0)" />
-            <blockpin signalname="D0(31:8),S(7:0)" name="PORTJ(31:0)" />
-            <blockpin signalname="BTN1" name="RESET" />
-            <blockpin signalname="TR(31:0)" name="TR(31:0)" />
-            <blockpin signalname="TREG(31:0)" name="TREG(31:0)" />
-            <blockpin signalname="SW3,SW2,SW1,SW0" name="TRS(3:0)" />
-        </block>
         <block symbolname="m2_1" name="XLXI_66">
             <blockpin signalname="CLKstat(0)" name="D0" />
             <blockpin signalname="PORTB(0)" name="D1" />
@@ -566,6 +564,31 @@
         <block symbolname="bufg" name="XLXI_75">
             <blockpin signalname="RCLK" name="I" />
             <blockpin signalname="SYS_CLK" name="O" />
+        </block>
+        <block symbolname="comp" name="XLXI_76">
+            <blockpin signalname="SYS_CLK" name="CLK" />
+            <blockpin signalname="BTN1" name="RESET" />
+            <blockpin signalname="D0(31:4),B3,B2,B1,B0" name="PORTI(31:0)" />
+            <blockpin signalname="D0(31:8),S(7:0)" name="PORTJ(31:0)" />
+            <blockpin signalname="SW3,SW2,SW1,SW0" name="TRS(3:0)" />
+            <blockpin signalname="MWE" name="MWE" />
+            <blockpin signalname="PORTA(31:0)" name="PORTA(31:0)" />
+            <blockpin signalname="PORTB(31:0)" name="PORTB(31:0)" />
+            <blockpin signalname="PORTC(31:0)" name="PORTC(31:0)" />
+            <blockpin signalname="PORTD(31:0)" name="PORTD(31:0)" />
+            <blockpin signalname="TR(31:0)" name="TR(31:0)" />
+            <blockpin signalname="CLKstat(2:0)" name="CLKstat(2:0)" />
+            <blockpin signalname="ADDR(31:0)" name="ADDR(31:0)" />
+            <blockpin signalname="MDO(31:0)" name="MDO(31:0)" />
+            <blockpin signalname="MDI(31:0)" name="MDI(31:0)" />
+            <blockpin signalname="TREG(31:0)" name="TREG(31:0)" />
+            <blockpin signalname="mem_test" name="mem_test" />
+        </block>
+        <block symbolname="and3" name="XLXI_77">
+            <blockpin signalname="CTRL(7)" name="I0" />
+            <blockpin signalname="CTRL(6)" name="I1" />
+            <blockpin signalname="CTRL(5)" name="I2" />
+            <blockpin signalname="mem_test" name="O" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="5440" height="3520">
@@ -1124,9 +1147,6 @@
             <wire x2="1024" y1="2112" y2="2112" x1="944" />
             <wire x2="1072" y1="2112" y2="2112" x1="1024" />
         </branch>
-        <instance x="2320" y="1376" name="comp_a" orien="R0">
-            <attrtext style="fontsize:28;fontname:Arial" attrname="InstName" x="112" y="16" type="instance" />
-        </instance>
         <instance x="4240" y="1360" name="XLXI_66" orien="R0" />
         <instance x="4240" y="1536" name="XLXI_67" orien="R0" />
         <instance x="4240" y="1712" name="XLXI_68" orien="R0" />
@@ -1297,5 +1317,28 @@
             <wire x2="640" y1="704" y2="704" x1="576" />
         </branch>
         <instance x="1392" y="736" name="XLXI_75" orien="R0" />
+        <instance x="2320" y="1376" name="XLXI_76" orien="R0">
+        </instance>
+        <branch name="mem_test">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="2224" y="1408" type="branch" />
+            <wire x2="2224" y1="1408" y2="1408" x1="2112" />
+            <wire x2="2320" y1="1408" y2="1408" x1="2224" />
+        </branch>
+        <instance x="1856" y="1536" name="XLXI_77" orien="R0" />
+        <branch name="CTRL(5)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1776" y="1344" type="branch" />
+            <wire x2="1776" y1="1344" y2="1344" x1="1728" />
+            <wire x2="1856" y1="1344" y2="1344" x1="1776" />
+        </branch>
+        <branch name="CTRL(6)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1776" y="1408" type="branch" />
+            <wire x2="1776" y1="1408" y2="1408" x1="1728" />
+            <wire x2="1856" y1="1408" y2="1408" x1="1776" />
+        </branch>
+        <branch name="CTRL(7)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1776" y="1472" type="branch" />
+            <wire x2="1776" y1="1472" y2="1472" x1="1728" />
+            <wire x2="1856" y1="1472" y2="1472" x1="1776" />
+        </branch>
     </sheet>
 </drawing>

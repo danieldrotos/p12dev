@@ -1,6 +1,6 @@
 module cpu(clk, reset,
 	   mbus_aout, mbus_din, mbus_dout, mbus_wen,
-	   test_sel, test_out);
+	   test_sel, test_reg, test_out, clk_stat);
    parameter WIDTH= 32;
    parameter ADDR_SIZE= 32;
 
@@ -17,10 +17,14 @@ module cpu(clk, reset,
    // test
    input wire [3:0] 	       test_sel;
    output wire [WIDTH-1:0]     test_out;
-
+   output wire [WIDTH-1:0]     test_reg;
+   output wire [2:0] 	       clk_stat;
+   
    // internal signals
    wire [WIDTH-1:0] 	       ic;	// output of IC register
    wire [WIDTH-1:0] 	       pc;	// output of PC register 
+   wire [WIDTH-1:0] 	       r14;	// output of Link register 
+   wire [WIDTH-1:0] 	       r13;	// output of SP register 
    // phase signals
    wire 		       phf;	// fetch
    wire 		       phe;	// PC increment; execute
@@ -55,7 +59,7 @@ module cpu(clk, reset,
    wire [3:0] 		       rb;
    wire [3:0] 		       rd;
    wire [4:0] 		       op_code;
-   wire [2:0] 		       cond_flag;
+   wire [1:0] 		       cond_flag;
    wire 		       cond_value;
    wire 		       cond_always;
    // result of condition check
@@ -70,7 +74,7 @@ module cpu(clk, reset,
       .phe(phe),	// phase 2: EXEC (signals go through ALU)
       .phm(phm),	// phase 3: MEM (LD/ST read/write)
       .phw(phw),	// phase 4: WRITEBACK (store back result to register)
-      .clk_stat()
+      .clk_stat(clk_stat)
       );
    
    // FLAG register
@@ -153,16 +157,18 @@ module cpu(clk, reset,
       );
 
    // select data for writeback
+   wire [WIDTH-1:0] 	       inst_res;
+   assign inst_res= inst_nop?32'd0:
+		    inst_ld?mbus_din:
+		    inst_st?32'd0:
+		    inst_mov?opa:
+		    inst_ldl0?{16'b0,ic[15:0]}:
+		    inst_ldl?{opd[31:16],ic[15:0]}:
+		    inst_ldh?{ic[15:0],opd[15:0]}:
+		    inst_op?alu_res:
+		    32'd0; 
    assign wb_data= inst_call?{5'd0,ic[26:0]}:
-		   inst_nop?32'd0:
-		   inst_ld?mbus_din:
-		   inst_st?32'd0:
-		   inst_mov?opa:
-		   inst_ldl0?{16'b0,ic[15:0]}:
-		   inst_ldl?{opd[31:16],ic[15:0]}:
-		   inst_ldh?{ic[15:0],opd[15:0]}:
-		   inst_op?alu_res:
-		   32'd0;
+		   inst_res;
    assign wb_address= inst_call?4'd15:
 		      rd;
 
@@ -190,13 +196,50 @@ module cpu(clk, reset,
       .rd(rd),				// Rd part of code
       .dd(opd),				// value of Rd
       .rt(test_sel),
-      .dt(test_out),
-      .last(pc)
+      .dt(test_reg),
+      .last(pc),
+      .r14(r14),
+      .r13(r13)
       );
 
    // memory interface
    assign mbus_dout= opd;
-   assign mbus_aout= ((phm & inst_st) | ( inst_ld & (phm | phw)))?opa:pc;
-   assign mbus_wen = ena & phm & inst_st;
+   assign mbus_aout= (((phm/*|phe*/) & inst_st) | ( inst_ld & ((phm/*|phe*/) | phw)))?opa:pc;
+   assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
+
+   assign test_out
+     = (test_sel==4'h0)?pc:
+       (test_sel==4'h1)?r14:
+       (test_sel==4'h2)?r13:
+       (test_sel==4'h3)?ic:
+       (test_sel==4'h4)?alu_res:
+       (test_sel==4'h5)?inst_res:
+       (test_sel==4'h6)?wb_data:
+       (test_sel==4'h7)?{19'b0,ena,rd,ra,rb}:
+       (test_sel==4'h8)?opd:
+       (test_sel==4'h9)?opa:
+       (test_sel==4'ha)?opb:
+       (test_sel==4'hb)?{3'b0,flag_v,
+			 3'b0,flag_z,
+			 3'b0,flag_s,
+			 3'b0,flag_c,
+			 2'b0,cond_flag,
+			 3'b0,cond_value,
+			 3'b0,cond_always,
+			 3'b0,ena
+			 }:
+       (test_sel==4'hc)?{3'b0,phw,
+			 3'b0,phm,
+			 3'b0,phe,
+			 3'b0,phf,
+			 phf,phw,phm,phe,
+			 wb_en,ena,inst_wb,phw,
+			 mbus_wen,ena,phm,inst_st,
+			 1'b0,clk_stat
+			 }:
+       (test_sel==4'hd)?mbus_aout:
+       (test_sel==4'he)?mbus_dout:
+       (test_sel==4'hf)?test_reg:
+       0;
    
 endmodule // cpu
