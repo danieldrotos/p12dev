@@ -54,6 +54,7 @@ module cpu(clk, reset,
    wire 		       inst_ldh;
    wire 		       inst_op;
    wire 		       inst_wb;
+   wire 		       inst_br;
    // some parts of IC
    wire [3:0] 		       ra;
    wire [3:0] 		       rb;
@@ -92,7 +93,7 @@ module cpu(clk, reset,
    regm reg_flag
      (
       .clk(clk),
-      .reset(1'b0),
+      .reset(reset/*1'b0*/),
       .cen(flagwb_en),
       .din ({v_res ,z_res ,s_res ,c_res }),
       .dout({flag_v,flag_z,flag_s,flag_c})
@@ -129,6 +130,7 @@ module cpu(clk, reset,
    assign inst_ldh = ~inst_call & (ic[26:24]==3'd6);
    assign inst_op  = ~inst_call & (ic[26:24]==3'd7);
    assign inst_wb  = ~inst_nop & ~inst_st;
+   assign inst_br  = inst_call | (inst_wb & (rd==4'd15));
    
    // decode condition
    assign ena= !cond_always |
@@ -213,9 +215,23 @@ module cpu(clk, reset,
 	if (en_mr_data)
 	  mr_data<= mbus_din;
      end
+
+   wire [WIDTH-1:0] addr_phf;
+   wire [WIDTH-1:0] addr_phe;
+   wire [WIDTH-1:0] addr_phm;
+   wire [WIDTH-1:0] addr_phw;
+
+   assign addr_phf= pc;
+   assign addr_phe= inst_ld?opd:pc;
+   assign addr_phm= inst_ld?opd:pc;
+   assign addr_phw= (inst_br&ena)?wb_data:pc;
    
    assign mbus_dout= opd;
-   assign mbus_aout= (((phm/*|phe*/) & inst_st) | ( inst_ld & ((phm|phe)/* | phw*/)))?opa:pc;
+   assign mbus_aout= phf?addr_phf:
+		     phe?addr_phe:
+		     phm?addr_phm:
+		     phw?addr_phw:
+		     pc;
    assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
 
    assign test_out

@@ -30,7 +30,7 @@ module rfm(clk, reset, wen, cen, link,
    output [WIDTH-1:0] 	   r13;
 
    wire [WIDTH-1:0] 	   pc_out;
-   reg [WIDTH-1:0] 	   reg_array[0:(1<<ADDR_SIZE)-1-1];
+   reg [WIDTH-1:0] 	   reg_array[(1<<ADDR_SIZE)-1-1:0];
    cntreg pc_reg
      (
       .clk(clk),
@@ -40,14 +40,14 @@ module rfm(clk, reset, wen, cen, link,
       .din(din),
       .dout(pc_out)
       );
-/*   
+   
    integer 		   i;
    initial
      begin
-	for (i= 0; i < (1<<ADDR_SIZE)-1-1; i= i+1)
+	for (i= 0; i < (1<<ADDR_SIZE)-1; i= i+1)
 	  reg_array[i]= 0;
      end
-*/   
+   
    always @(posedge clk)
      begin
 	if (link)
