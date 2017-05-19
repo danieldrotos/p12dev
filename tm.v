@@ -1,3 +1,5 @@
+`unconnected_drive pull0
+
 module tm(input wire i, output wire o);
    reg clk= 0;
    reg reset= 0;
@@ -6,7 +8,7 @@ module tm(input wire i, output wire o);
    wire [31:0] tout;
    
    defparam comp.WIDTH= 32;
-   defparam comp.PROGRAM="light2.hex";
+   defparam comp.PROGRAM="poll.hex";
    comp comp
      (
       .CLK(clk),
