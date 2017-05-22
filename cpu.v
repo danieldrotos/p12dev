@@ -222,8 +222,8 @@ module cpu(clk, reset,
    wire [WIDTH-1:0] addr_phw;
 
    assign addr_phf= pc;
-   assign addr_phe= inst_ld?opd:pc;
-   assign addr_phm= inst_ld?opd:pc;
+   assign addr_phe= inst_ld?opa:pc;
+   assign addr_phm= (inst_ld|inst_st)?opa:pc;
    assign addr_phw= (inst_br&ena)?wb_data:pc;
    
    assign mbus_dout= opd;
