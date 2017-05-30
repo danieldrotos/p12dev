@@ -2,14 +2,18 @@
 
 module tm(input wire i, output wire o);
    reg clk= 0;
+   reg ioclk= 0;
    reg reset= 0;
    reg [3:0] test_sel= 4'd0;
    reg [31:0] btn= 0;
    
    wire [31:0] tout;
+
+   always #1 clk= !clk;
+   always #1 ioclk= ~ioclk;
    
    defparam comp.WIDTH= 32;
-   defparam comp.PROGRAM="poll.hex";
+   defparam comp.PROGRAM="blink_tmr.hex";
    comp comp
      (
       .CLK(clk),
@@ -17,10 +21,10 @@ module tm(input wire i, output wire o);
       .PORTI(btn),
       .TRS/*test_sel*/(test_sel),
       .TR/*test_out*/(tout),
-      .mem_test(1'b0)
+      .mem_test(1'b0),
+      .clk10m(ioclk)
       );
 
-   always #1 clk= !clk;
    
    initial
      begin
@@ -33,7 +37,7 @@ module tm(input wire i, output wire o);
 	#100 btn= 32'd0;
 	#100 btn= 32'd4;
 	#100 btn= 32'd0;
-	#100 $finish;
+	#10000 $finish;
      end
    
 endmodule // tm
