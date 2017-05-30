@@ -9,7 +9,8 @@ MODS		= decoder regm adder \
 		      rfm \
 		      schedm \
 		    gpio_out4 \
-		    gpio_in
+		    gpio_in \
+		    timer
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 
@@ -22,7 +23,8 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
 HEX_FILES	= array_sum.hex counter.hex \
-		  light1.hex light2.hex
+		  light1.hex light2.hex \
+		  blink_tmr.hex
 
 all: sim
 

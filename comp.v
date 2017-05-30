@@ -27,7 +27,9 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] MDI,
     output wire 	    MWE,
     output wire [WIDTH-1:0] TREG,
-    input wire mem_test
+    input wire mem_test,
+
+    input wire clk10m
     );
 
    wire 	      clk;
@@ -39,6 +41,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_data_in;
    wire [WIDTH-1:0] 	    bus_data_out;
    wire [WIDTH-1:0] 	    bus_memory_out;
+   wire [WIDTH-1:0] 	    bus_timer_out;
    wire [WIDTH-1:0] 	    bus_porti_out;
    wire [WIDTH-1:0] 	    bus_portj_out;
    wire [WIDTH-1:0] 	    bus_portabcd_out;
@@ -70,11 +73,13 @@ module comp //(clk, reset, test_sel, test_out);
 		
    // select signals for bus slaves
    wire 		    cs_mem;
+   wire 		    cs_timer;
    wire 		    cs_porti;
    wire 		    cs_portj;
    wire 		    cs_portabcd;
 
    assign cs_mem= chip_selects[0];
+   assign cs_timer= chip_selects[12];
    assign cs_portj= chip_selects[13];
    assign cs_porti= chip_selects[14];
    assign cs_portabcd= chip_selects[15];
@@ -120,6 +125,20 @@ module comp //(clk, reset, test_sel, test_out);
       .dout(bus_memory_out)//,
       );
 `endif
+
+   timer #(.WIDTH(32)) tmr
+     (
+      .clk(clk),
+      .reset(reset),
+      .din(bus_data_out),
+      .wen(bus_wen),
+      .cs(cs_timer),
+      .addr(bus_address[2:0]),
+
+      .io_clk(clk10m),
+      .dout(bus_timer_out),
+      .irq()
+      );
    
    gpio_in #(.WIDTH(WIDTH)) gpio_ini
      (
@@ -164,13 +183,14 @@ module comp //(clk, reset, test_sel, test_out);
        ( {WIDTH{cs_portabcd}} & bus_portabcd_out )
        ;
 */
-  = cs_mem?bus_memory_out:
-  cs_porti?bus_porti_out:
-  cs_portj?bus_portj_out:
-  cs_portabcd?bus_portabcd_out:
-  bus_memory_out
-  ;
-  
+     = cs_mem?bus_memory_out:
+       cs_timer?bus_timer_out:
+       cs_porti?bus_porti_out:
+       cs_portj?bus_portj_out:
+       cs_portabcd?bus_portabcd_out:
+       bus_memory_out
+       ;
+   
    assign ADDR= mem_address;
    assign MDO= bus_data_out;
    assign MDI= (~mem_test)?bus_data_in:bus_memory_out;
