@@ -10,12 +10,12 @@
     <Option Name="Part" Val="xc7a100tcsg324-2L"/>
     <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
     <Option Name="CompiledLibDirXSim" Val=""/>
-    <Option Name="CompiledLibDirModelSim" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/modelsim"/>
-    <Option Name="CompiledLibDirQuesta" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/questa"/>
-    <Option Name="CompiledLibDirIES" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/ies"/>
-    <Option Name="CompiledLibDirVCS" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/vcs"/>
-    <Option Name="CompiledLibDirRiviera" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/riviera"/>
-    <Option Name="CompiledLibDirActivehdl" Val="$PPRDIR/../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/activehdl"/>
+    <Option Name="CompiledLibDirModelSim" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/modelsim"/>
+    <Option Name="CompiledLibDirQuesta" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/questa"/>
+    <Option Name="CompiledLibDirIES" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/ies"/>
+    <Option Name="CompiledLibDirVCS" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/vcs"/>
+    <Option Name="CompiledLibDirRiviera" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/riviera"/>
+    <Option Name="CompiledLibDirActivehdl" Val="$PPRDIR/../../../../../../../../extra/drdani/prj/proc1516v/viv_n4/viv_n4.cache/compile_simlib/activehdl"/>
     <Option Name="BoardPart" Val=""/>
     <Option Name="ActiveSimSet" Val="sim_1"/>
     <Option Name="DefaultLib" Val="xil_defaultlib"/>

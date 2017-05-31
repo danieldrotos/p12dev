@@ -39,8 +39,11 @@ module comptest_n4
    assign res= ~RESET;
    
    wire f100MHz;
-   wire 	      f10MHz;
-   wire 	      f1MHz;
+   wire f50MHz;
+   wire f25MHz;
+   wire f20MHz;
+   wire f10MHz;
+   wire f1MHz;
    wire f100kHz;
    wire f10kHz;
    wire f1kHz;
@@ -48,7 +51,7 @@ module comptest_n4
    wire f10Hz;
    wire f1Hz;
    
-       reg btnc;
+   reg btnc;
    reg btnu;
    reg btnd;
    reg btnl;
@@ -59,6 +62,9 @@ module comptest_n4
     clk_gen clock_generator
     (
             .f100MHz(f100MHz),
+            .f50MHz(f50MHz),
+            .f25MHz(f25MHz),
+            .f20MHz(f20MHz),
             .f10MHz(f10MHz),
             .f1MHz(f1MHz),
             .f100kHz(f100kHz),
@@ -79,7 +85,10 @@ module comptest_n4
                         (SW[15:12]==4'h5)?f100kHz:
                         (SW[15:12]==4'h6)?f1MHz:
                         (SW[15:12]==4'h7)?f10MHz:
-                        (SW[15:12]==4'h8)?f100MHz:
+                        (SW[15:12]==4'h8)?f20MHz:
+                        (SW[15:12]==4'h9)?f25MHz:
+                        (SW[15:12]==4'ha)?f50MHz:
+                        (SW[15:12]==4'hb)?f100MHz:
                         btnc;
                         
         always @(posedge selected_clk, posedge res)
@@ -121,7 +130,7 @@ module comptest_n4
        )
    computer
      (
-      .CLK            (selected_clk),
+      .CLK            (f10MHz/*selected_clk*/),
       .RESET          (res),
       .clk10m         (f1MHz),
       
@@ -154,6 +163,7 @@ module comptest_n4
                            (display_sel==4'h2)?portc:
                            (display_sel==4'h3)?portd:
                            (display_sel==4'h4)?clk_test:
+                           (display_sel==4'h5)?32'd0:
                            (display_sel==4'h6)?tmr:
                            (display_sel==4'h7)?ctr:
                            (display_sel==4'h8)?tr:
@@ -173,5 +183,7 @@ module comptest_n4
       .seg            (seg),
       .an             (an)
       );
+   
+   assign LEDS= portb[15:0];
    
 endmodule // comptest_n4
