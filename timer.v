@@ -2,10 +2,10 @@ module timer
   #(
     parameter WIDTH= 32,
     parameter REG_CTRL= 3'd0,
-    parameter REG_PSCR= 3'd1,
-    parameter REG_AR  = 3'd2,
-    parameter REG_CNTR= 3'd3,
-    parameter REG_STAT= 3'd4
+    //parameter REG_PSCR= 3'd1,
+    parameter REG_AR  = 3'd1,
+    parameter REG_CNTR= 3'd2,
+    parameter REG_STAT= 3'd3
     )
    (
     input wire 		    reset,
@@ -16,20 +16,22 @@ module timer
     input wire 		    wen,
     input wire 		    io_clk,
     output wire [WIDTH-1:0] dout,
-    output wire 	    irq
+    output wire 	    irq,
+    output wire [WIDTH-1:0] tmr,
+    output wire [WIDTH-1:0] ctr
     );
 
    reg [WIDTH-1:0] 	    control;
-   reg [WIDTH-1:0] 	    prescaler;
+   //reg [WIDTH-1:0] 	    prescaler;
    reg [WIDTH-1:0] 	    ar;
    reg [WIDTH-1:0] 	    counter;
    reg 			    ovf;
    
    reg [WIDTH-1:0] 	    obuf;
 
-   reg 			    dclk;
-   reg [7:0] 		    pre_cnt;
-
+   //reg 			    dclk;
+   //reg [7:0] 		    pre_cnt;
+/*
    always @(posedge io_clk)
      begin
 	if (control[0])
@@ -46,12 +48,12 @@ module timer
 	else
 	  pre_cnt<= 0;
      end
-
+*/
    always @(posedge clk, posedge reset)
      begin
 	if (reset)
 	  begin
-	     prescaler<= 0;
+	     //prescaler<= 0;
 	     control<= 0;
 	     ar<= 0;
 	  end
@@ -61,14 +63,14 @@ module timer
 	       begin
 		  case (addr)
 		    REG_CTRL: control<= din;
-		    REG_PSCR: prescaler<= din;
+		    //REG_PSCR: prescaler<= din;
 		    REG_AR  : ar<= din;
 		  endcase
 	       end
 	     else //if (cs & ~wen)
 	       begin
 		  obuf<= (addr==REG_CTRL)?control:
-			 (addr==REG_PSCR)?prescaler:
+			 //(addr==REG_PSCR)?prescaler:
 			 (addr==REG_AR  )?ar:
 			 (addr==REG_CNTR)?counter:
 			 (addr==REG_STAT)?{{(WIDTH-2){1'b0}},ovf,control[0]}:
@@ -82,7 +84,7 @@ module timer
    assign ar_reached= (counter == ar);
    assign ovf_clr= reset | (cs & wen & (addr==REG_STAT) & din[1]);
       
-   always @(posedge dclk, posedge ovf_clr)
+   always @(posedge /*dclk*/io_clk, posedge ovf_clr)
      begin
 	if (ovf_clr)
 	  ovf<= 0;
@@ -92,8 +94,11 @@ module timer
 
    wire cntr_load;
    assign cntr_load= wen & cs & (addr==REG_CNTR);
+   wire [WIDTH-1:0] cnext;
+   assign cnext= (control[0])?counter+1:
+                 counter;
    
-   always @(posedge cntr_load, posedge dclk, posedge reset)
+   always @(posedge cntr_load, posedge /*dclk*/io_clk, posedge reset)
      begin
 	if (reset)
 	  counter<= 0;
@@ -102,21 +107,21 @@ module timer
 	     //if (wen & cs & (addr==REG_CNTR))
 	       counter<= din;
 	  end
-	else if (dclk) 
+	else if (/*dclk*/io_clk) 
 	  begin
-	     if (control[0])
-	       begin
+	     //if (control[0])
+	       //begin
 		  if (counter == ar)
-		    begin
-		       counter<= 0;
-		    end
+		    counter<= 0;
 		  else
-		    counter<= counter+1;
-	       end
+		    counter<= cnext;//counter+1;
+	       //end
 	  end
      end
    
    assign dout= obuf;
    assign irq= ovf & control[1];
-   
+   assign tmr= counter;
+   assign ctr= control;
+	
 endmodule // timer

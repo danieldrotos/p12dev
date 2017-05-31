@@ -94,7 +94,7 @@
         <signal name="PORTB(2)" />
         <signal name="CLKstat(1)" />
         <signal name="CLKstat(2)" />
-        <signal name="CTRL(4)" />
+        <signal name="N4" />
         <signal name="PORTB(4)" />
         <signal name="PORTB(5)" />
         <signal name="PORTB(6)" />
@@ -105,6 +105,10 @@
         <signal name="CTRL(5)" />
         <signal name="CTRL(6)" />
         <signal name="CTRL(7)" />
+        <signal name="CTRL(4)" />
+        <signal name="XLXN_67" />
+        <signal name="tmr(31:0)" />
+        <signal name="ctr(31:0)" />
         <port polarity="Input" name="SW3" />
         <port polarity="Input" name="BTN0" />
         <port polarity="Input" name="BTN1" />
@@ -348,8 +352,33 @@
             <line x2="128" y1="-32" y2="-32" x1="224" />
             <line x2="64" y1="-32" y2="-32" x1="0" />
         </blockdef>
+        <blockdef name="and3">
+            <timestamp>2000-1-1T10:10:10</timestamp>
+            <line x2="64" y1="-64" y2="-64" x1="0" />
+            <line x2="64" y1="-128" y2="-128" x1="0" />
+            <line x2="64" y1="-192" y2="-192" x1="0" />
+            <line x2="192" y1="-128" y2="-128" x1="256" />
+            <line x2="144" y1="-176" y2="-176" x1="64" />
+            <line x2="64" y1="-80" y2="-80" x1="144" />
+            <arc ex="144" ey="-176" sx="144" sy="-80" r="48" cx="144" cy="-128" />
+            <line x2="64" y1="-64" y2="-192" x1="64" />
+        </blockdef>
+        <blockdef name="inv">
+            <timestamp>2000-1-1T10:10:10</timestamp>
+            <line x2="64" y1="-32" y2="-32" x1="0" />
+            <line x2="160" y1="-32" y2="-32" x1="224" />
+            <line x2="128" y1="-64" y2="-32" x1="64" />
+            <line x2="64" y1="-32" y2="0" x1="128" />
+            <line x2="64" y1="0" y2="-64" x1="64" />
+            <circle r="16" cx="144" cy="-32" />
+        </blockdef>
         <blockdef name="comp">
-            <timestamp>2017-5-18T12:26:39</timestamp>
+            <timestamp>2017-5-31T11:50:36</timestamp>
+            <rect width="64" x="320" y="148" height="24" />
+            <line x2="384" y1="160" y2="160" x1="320" />
+            <rect width="64" x="320" y="212" height="24" />
+            <line x2="384" y1="224" y2="224" x1="320" />
+            <line x2="0" y1="96" y2="96" x1="64" />
             <line x2="0" y1="32" y2="32" x1="64" />
             <line x2="384" y1="-672" y2="-672" x1="320" />
             <rect width="64" x="320" y="-684" height="24" />
@@ -380,18 +409,7 @@
             <rect width="64" x="320" y="-364" height="24" />
             <line x2="0" y1="-544" y2="-544" x1="64" />
             <rect width="64" x="0" y="-556" height="24" />
-            <rect width="256" x="64" y="-704" height="768" />
-        </blockdef>
-        <blockdef name="and3">
-            <timestamp>2000-1-1T10:10:10</timestamp>
-            <line x2="64" y1="-64" y2="-64" x1="0" />
-            <line x2="64" y1="-128" y2="-128" x1="0" />
-            <line x2="64" y1="-192" y2="-192" x1="0" />
-            <line x2="192" y1="-128" y2="-128" x1="256" />
-            <line x2="144" y1="-176" y2="-176" x1="64" />
-            <line x2="64" y1="-80" y2="-80" x1="144" />
-            <arc ex="144" ey="-176" sx="144" sy="-80" r="48" cx="144" cy="-128" />
-            <line x2="64" y1="-64" y2="-192" x1="64" />
+            <rect width="256" x="64" y="-704" height="960" />
         </blockdef>
         <block symbolname="vcc" name="XLXI_5">
             <blockpin signalname="H" name="P" />
@@ -428,20 +446,20 @@
         </block>
         <block symbolname="mux32" name="disp_mx">
             <blockpin signalname="XLXN_65" name="E" />
-            <blockpin signalname="ADDR(31:0)" name="I0(31:0)" />
-            <blockpin signalname="MDI(31:0)" name="I1(31:0)" />
+            <blockpin signalname="PORTA(31:0)" name="I0(31:0)" />
+            <blockpin signalname="PORTB(31:0)" name="I1(31:0)" />
             <blockpin signalname="D0(31:0)" name="I10(31:0)" />
             <blockpin signalname="D0(31:0)" name="I11(31:0)" />
-            <blockpin signalname="PORTA(31:0)" name="I12(31:0)" />
-            <blockpin signalname="PORTB(31:0)" name="I13(31:0)" />
-            <blockpin signalname="PORTC(31:0)" name="I14(31:0)" />
-            <blockpin signalname="PORTD(31:0)" name="I15(31:0)" />
-            <blockpin signalname="MDO(31:0)" name="I2(31:0)" />
-            <blockpin signalname="D0(31:0)" name="I3(31:0)" />
+            <blockpin signalname="D0(31:0)" name="I12(31:0)" />
+            <blockpin signalname="MDI(31:0)" name="I13(31:0)" />
+            <blockpin signalname="MDO(31:0)" name="I14(31:0)" />
+            <blockpin signalname="ADDR(31:0)" name="I15(31:0)" />
+            <blockpin signalname="PORTC(31:0)" name="I2(31:0)" />
+            <blockpin signalname="PORTD(31:0)" name="I3(31:0)" />
             <blockpin signalname="D0(31:0)" name="I4(31:0)" />
             <blockpin signalname="D0(31:0)" name="I5(31:0)" />
-            <blockpin signalname="D0(31:0)" name="I6(31:0)" />
-            <blockpin signalname="D0(31:0)" name="I7(31:0)" />
+            <blockpin signalname="tmr(31:0)" name="I6(31:0)" />
+            <blockpin signalname="ctr(31:0)" name="I7(31:0)" />
             <blockpin signalname="TR(31:0)" name="I8(31:0)" />
             <blockpin signalname="TREG(31:0)" name="I9(31:0)" />
             <blockpin signalname="DD(31:0)" name="O(31:0)" />
@@ -467,14 +485,14 @@
             <blockpin signalname="B3" name="Q3" />
         </block>
         <block symbolname="m8_1e" name="clk_sel">
-            <blockpin signalname="B0" name="D0" />
-            <blockpin signalname="f10Hz" name="D1" />
-            <blockpin signalname="f100Hz" name="D2" />
+            <blockpin signalname="f10MHz" name="D0" />
+            <blockpin signalname="f1MHz" name="D1" />
+            <blockpin signalname="f10kHz" name="D2" />
             <blockpin signalname="f1KHz" name="D3" />
-            <blockpin signalname="f10kHz" name="D4" />
-            <blockpin signalname="f1MHz" name="D5" />
-            <blockpin signalname="f10MHz" name="D6" />
-            <blockpin signalname="f25MHz" name="D7" />
+            <blockpin signalname="f100Hz" name="D4" />
+            <blockpin signalname="f10Hz" name="D5" />
+            <blockpin signalname="f25MHz" name="D6" />
+            <blockpin signalname="B0" name="D7" />
             <blockpin signalname="H" name="E" />
             <blockpin signalname="CTRL(0)" name="S0" />
             <blockpin signalname="CTRL(1)" name="S1" />
@@ -509,49 +527,49 @@
         <block symbolname="m2_1" name="XLXI_66">
             <blockpin signalname="CLKstat(0)" name="D0" />
             <blockpin signalname="PORTB(0)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led0" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_67">
             <blockpin signalname="CLKstat(1)" name="D0" />
             <blockpin signalname="PORTB(1)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led1" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_68">
             <blockpin signalname="CLKstat(2)" name="D0" />
             <blockpin signalname="PORTB(2)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led2" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_69">
             <blockpin signalname="BTN1" name="D0" />
             <blockpin signalname="PORTB(3)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led3" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_71">
             <blockpin name="D0" />
             <blockpin signalname="PORTB(5)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led5" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_72">
             <blockpin signalname="MWE" name="D0" />
             <blockpin signalname="PORTB(6)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led6" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_70">
             <blockpin signalname="SYS_CLK" name="D0" />
             <blockpin signalname="PORTB(4)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led4" name="O" />
         </block>
         <block symbolname="m2_1" name="XLXI_73">
             <blockpin name="D0" />
             <blockpin signalname="PORTB(7)" name="D1" />
-            <blockpin signalname="CTRL(4)" name="S0" />
+            <blockpin signalname="N4" name="S0" />
             <blockpin signalname="led7" name="O" />
         </block>
         <block symbolname="fd8ce" name="prell_sw">
@@ -565,9 +583,21 @@
             <blockpin signalname="RCLK" name="I" />
             <blockpin signalname="SYS_CLK" name="O" />
         </block>
-        <block symbolname="comp" name="XLXI_76">
+        <block symbolname="and3" name="XLXI_77">
+            <blockpin signalname="CTRL(7)" name="I0" />
+            <blockpin signalname="CTRL(6)" name="I1" />
+            <blockpin signalname="CTRL(5)" name="I2" />
+            <blockpin signalname="mem_test" name="O" />
+        </block>
+        <block symbolname="inv" name="XLXI_78">
+            <blockpin signalname="CTRL(4)" name="I" />
+            <blockpin signalname="N4" name="O" />
+        </block>
+        <block symbolname="comp" name="computer">
             <blockpin signalname="SYS_CLK" name="CLK" />
             <blockpin signalname="BTN1" name="RESET" />
+            <blockpin signalname="mem_test" name="mem_test" />
+            <blockpin signalname="XLXN_67" name="clk10m" />
             <blockpin signalname="D0(31:4),B3,B2,B1,B0" name="PORTI(31:0)" />
             <blockpin signalname="D0(31:8),S(7:0)" name="PORTJ(31:0)" />
             <blockpin signalname="SW3,SW2,SW1,SW0" name="TRS(3:0)" />
@@ -582,13 +612,12 @@
             <blockpin signalname="MDO(31:0)" name="MDO(31:0)" />
             <blockpin signalname="MDI(31:0)" name="MDI(31:0)" />
             <blockpin signalname="TREG(31:0)" name="TREG(31:0)" />
-            <blockpin signalname="mem_test" name="mem_test" />
+            <blockpin signalname="tmr(31:0)" name="tmr(31:0)" />
+            <blockpin signalname="ctr(31:0)" name="ctr(31:0)" />
         </block>
-        <block symbolname="and3" name="XLXI_77">
-            <blockpin signalname="CTRL(7)" name="I0" />
-            <blockpin signalname="CTRL(6)" name="I1" />
-            <blockpin signalname="CTRL(5)" name="I2" />
-            <blockpin signalname="mem_test" name="O" />
+        <block symbolname="bufg" name="XLXI_80">
+            <blockpin signalname="f1MHz" name="I" />
+            <blockpin signalname="XLXN_67" name="O" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="5440" height="3520">
@@ -683,22 +712,22 @@
             <wire x2="3792" y1="2320" y2="2320" x1="3760" />
             <wire x2="3824" y1="2320" y2="2320" x1="3792" />
         </branch>
-        <branch name="ADDR(31:0)">
+        <branch name="PORTA(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2320" type="branch" />
             <wire x2="3264" y1="2320" y2="2320" x1="3200" />
             <wire x2="3376" y1="2320" y2="2320" x1="3264" />
         </branch>
-        <branch name="MDI(31:0)">
+        <branch name="PORTB(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2384" type="branch" />
             <wire x2="3264" y1="2384" y2="2384" x1="3200" />
             <wire x2="3376" y1="2384" y2="2384" x1="3264" />
         </branch>
-        <branch name="MDO(31:0)">
+        <branch name="PORTC(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2448" type="branch" />
             <wire x2="3264" y1="2448" y2="2448" x1="3200" />
             <wire x2="3376" y1="2448" y2="2448" x1="3264" />
         </branch>
-        <branch name="D0(31:0)">
+        <branch name="PORTD(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2512" type="branch" />
             <wire x2="3264" y1="2512" y2="2512" x1="3200" />
             <wire x2="3376" y1="2512" y2="2512" x1="3264" />
@@ -713,12 +742,12 @@
             <wire x2="3264" y1="2640" y2="2640" x1="3200" />
             <wire x2="3376" y1="2640" y2="2640" x1="3264" />
         </branch>
-        <branch name="D0(31:0)">
+        <branch name="tmr(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2704" type="branch" />
             <wire x2="3264" y1="2704" y2="2704" x1="3200" />
             <wire x2="3376" y1="2704" y2="2704" x1="3264" />
         </branch>
-        <branch name="D0(31:0)">
+        <branch name="ctr(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3264" y="2768" type="branch" />
             <wire x2="3264" y1="2768" y2="2768" x1="3200" />
             <wire x2="3376" y1="2768" y2="2768" x1="3264" />
@@ -772,7 +801,7 @@
         <branch name="SW3">
             <wire x2="288" y1="800" y2="800" x1="176" />
         </branch>
-        <branch name="PORTD(31:0)">
+        <branch name="ADDR(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3280" y="3280" type="branch" />
             <wire x2="3280" y1="3280" y2="3280" x1="3200" />
             <wire x2="3376" y1="3280" y2="3280" x1="3280" />
@@ -789,17 +818,17 @@
             <wire x2="3264" y1="3024" y2="3024" x1="3200" />
             <wire x2="3376" y1="3024" y2="3024" x1="3264" />
         </branch>
-        <branch name="PORTA(31:0)">
+        <branch name="D0(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3280" y="3088" type="branch" />
             <wire x2="3280" y1="3088" y2="3088" x1="3200" />
             <wire x2="3376" y1="3088" y2="3088" x1="3280" />
         </branch>
-        <branch name="PORTB(31:0)">
+        <branch name="MDI(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3280" y="3152" type="branch" />
             <wire x2="3280" y1="3152" y2="3152" x1="3200" />
             <wire x2="3376" y1="3152" y2="3152" x1="3280" />
         </branch>
-        <branch name="PORTC(31:0)">
+        <branch name="MDO(31:0)">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3280" y="3216" type="branch" />
             <wire x2="3280" y1="3216" y2="3216" x1="3200" />
             <wire x2="3376" y1="3216" y2="3216" x1="3280" />
@@ -857,17 +886,17 @@
             <wire x2="704" y1="1568" y2="1568" x1="656" />
             <wire x2="720" y1="1568" y2="1568" x1="704" />
         </branch>
-        <branch name="B0">
+        <branch name="f10MHz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="2560" type="branch" />
             <wire x2="1040" y1="2560" y2="2560" x1="1008" />
             <wire x2="1088" y1="2560" y2="2560" x1="1040" />
         </branch>
-        <branch name="f10Hz">
+        <branch name="f1MHz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="2624" type="branch" />
             <wire x2="1040" y1="2624" y2="2624" x1="1008" />
             <wire x2="1088" y1="2624" y2="2624" x1="1040" />
         </branch>
-        <branch name="f100Hz">
+        <branch name="f10kHz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="2688" type="branch" />
             <wire x2="1040" y1="2688" y2="2688" x1="1008" />
             <wire x2="1088" y1="2688" y2="2688" x1="1040" />
@@ -981,22 +1010,22 @@
             <wire x2="1040" y1="2752" y2="2752" x1="1008" />
             <wire x2="1088" y1="2752" y2="2752" x1="1040" />
         </branch>
-        <branch name="f25MHz">
+        <branch name="B0">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="3008" type="branch" />
             <wire x2="1040" y1="3008" y2="3008" x1="1008" />
             <wire x2="1088" y1="3008" y2="3008" x1="1040" />
         </branch>
-        <branch name="f10MHz">
+        <branch name="f25MHz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="2944" type="branch" />
             <wire x2="1040" y1="2944" y2="2944" x1="1008" />
             <wire x2="1088" y1="2944" y2="2944" x1="1040" />
         </branch>
-        <branch name="f10kHz">
+        <branch name="f100Hz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1056" y="2816" type="branch" />
             <wire x2="1056" y1="2816" y2="2816" x1="1008" />
             <wire x2="1088" y1="2816" y2="2816" x1="1056" />
         </branch>
-        <branch name="f1MHz">
+        <branch name="f10Hz">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1040" y="2880" type="branch" />
             <wire x2="1040" y1="2880" y2="2880" x1="1008" />
             <wire x2="1088" y1="2880" y2="2880" x1="1040" />
@@ -1231,7 +1260,7 @@
             <wire x2="4128" y1="1552" y2="1552" x1="4112" />
             <wire x2="4240" y1="1552" y2="1552" x1="4128" />
         </branch>
-        <branch name="CTRL(4)">
+        <branch name="N4">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="4112" y="1920" type="branch" />
             <wire x2="4112" y1="1920" y2="1920" x1="4064" />
             <wire x2="4208" y1="1920" y2="1920" x1="4112" />
@@ -1317,8 +1346,6 @@
             <wire x2="640" y1="704" y2="704" x1="576" />
         </branch>
         <instance x="1392" y="736" name="XLXI_75" orien="R0" />
-        <instance x="2320" y="1376" name="XLXI_76" orien="R0">
-        </instance>
         <branch name="mem_test">
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="2224" y="1408" type="branch" />
             <wire x2="2224" y1="1408" y2="1408" x1="2112" />
@@ -1339,6 +1366,36 @@
             <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1776" y="1472" type="branch" />
             <wire x2="1776" y1="1472" y2="1472" x1="1728" />
             <wire x2="1856" y1="1472" y2="1472" x1="1776" />
+        </branch>
+        <instance x="3840" y="1952" name="XLXI_78" orien="R0" />
+        <branch name="CTRL(4)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="3744" y="1920" type="branch" />
+            <wire x2="3744" y1="1920" y2="1920" x1="3680" />
+            <wire x2="3840" y1="1920" y2="1920" x1="3744" />
+        </branch>
+        <instance x="2320" y="1376" name="computer" orien="R0">
+            <attrtext style="fontsize:28;fontname:Arial" attrname="InstName" x="128" y="272" type="instance" />
+        </instance>
+        <instance x="1856" y="1616" name="XLXI_80" orien="R0" />
+        <branch name="f1MHz">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="1792" y="1584" type="branch" />
+            <wire x2="1792" y1="1584" y2="1584" x1="1728" />
+            <wire x2="1856" y1="1584" y2="1584" x1="1792" />
+        </branch>
+        <branch name="XLXN_67">
+            <wire x2="2192" y1="1584" y2="1584" x1="2080" />
+            <wire x2="2192" y1="1472" y2="1584" x1="2192" />
+            <wire x2="2320" y1="1472" y2="1472" x1="2192" />
+        </branch>
+        <branch name="tmr(31:0)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="2800" y="1536" type="branch" />
+            <wire x2="2800" y1="1536" y2="1536" x1="2704" />
+            <wire x2="2880" y1="1536" y2="1536" x1="2800" />
+        </branch>
+        <branch name="ctr(31:0)">
+            <attrtext style="alignment:SOFT-BCENTER;fontsize:28;fontname:Arial" attrname="Name" x="2800" y="1600" type="branch" />
+            <wire x2="2800" y1="1600" y2="1600" x1="2704" />
+            <wire x2="2880" y1="1600" y2="1600" x1="2800" />
         </branch>
     </sheet>
 </drawing>

@@ -10,7 +10,7 @@ module tm(input wire i, output wire o);
    wire [31:0] tout;
 
    always #1 clk= !clk;
-   always #1 ioclk= ~ioclk;
+   always #20 ioclk= ~ioclk;
    
    defparam comp.WIDTH= 32;
    defparam comp.PROGRAM="blink_tmr.hex";

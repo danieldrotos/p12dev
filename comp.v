@@ -28,7 +28,9 @@ module comp //(clk, reset, test_sel, test_out);
     output wire 	    MWE,
     output wire [WIDTH-1:0] TREG,
     input wire mem_test,
-
+    output wire [WIDTH-1:0] tmr,
+    output wire [WIDTH-1:0] ctr,
+    
     input wire clk10m
     );
 
@@ -126,7 +128,7 @@ module comp //(clk, reset, test_sel, test_out);
       );
 `endif
 
-   timer #(.WIDTH(32)) tmr
+   timer #(.WIDTH(32)) tmr1
      (
       .clk(clk),
       .reset(reset),
@@ -137,7 +139,9 @@ module comp //(clk, reset, test_sel, test_out);
 
       .io_clk(clk10m),
       .dout(bus_timer_out),
-      .irq()
+      .irq(),
+      .tmr(tmr),
+      .ctr(ctr)
       );
    
    gpio_in #(.WIDTH(WIDTH)) gpio_ini
