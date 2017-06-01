@@ -24,9 +24,13 @@ GTKW		= $(patsubst %,%.gtkw,$(TB))
 
 HEX_FILES	= array_sum.hex counter.hex \
 		  light1.hex light2.hex \
-		  blink_tmr.hex
+		  blink_tmr.hex poll.hex
 
-all: sim
+ASM_SOURCES	= $(patsubst %.hex,%.asm,$(HEX_FILES))
+
+.SUFFIXES: .hex .asm
+
+all: compile sim
 
 show: sim
 	gtkwave $(VCD) $(GTKW)
@@ -38,6 +42,11 @@ $(VCD): $(VVP) $(HEX_FILES)
 
 $(VVP): $(TB_VER) $(MODS_VER)
 	iverilog -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+
+compile: $(HEX_FILES)
+
+.asm.hex:
+	as1516 -h $< >$@
 
 clean:
 	rm -f *~ $(VCD) $(VVP)
