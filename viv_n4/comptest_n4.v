@@ -120,6 +120,7 @@ module comptest_n4
    wire [31:0] mdo;
    wire [31:0] addr;
    
+   wire [31:0] irqs;
    wire [31:0] porti;
    wire [31:0] portj;
    assign porti= {27'd0, btnl, btnr, btnu, btnd, btnc};
@@ -152,7 +153,8 @@ module comptest_n4
       .TREG           (treg),
       .mem_test       (1'b0),
       .tmr            (tmr),
-      .ctr            (ctr)
+      .ctr            (ctr),
+      .irqs           (irqs)
       );
    
    wire [31:0] display_data;
@@ -184,6 +186,7 @@ module comptest_n4
       .an             (an)
       );
    
-   assign LEDS= portb[15:0];
+   assign LEDS= //portb[15:0];
+   { 2'd0, irqs[0], f100MHz, f50MHz, f25MHz, f20MHz, f10MHz, f1MHz, f100kHz, f10kHz, f1kHz, f100Hz, f10Hz, f1Hz, btnc };
    
 endmodule // comptest_n4

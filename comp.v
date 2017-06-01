@@ -31,7 +31,8 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
     
-    input wire clk10m
+    input wire clk10m,
+    output wire [31:0] irqs 
     );
 
    wire 	      clk;
@@ -50,6 +51,8 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_address;
    wire 		    bus_wen;
       
+   wire irq_timer;
+   
    //defparam cpu.WIDTH= WIDTH;
    cpu #(.WIDTH(WIDTH)) cpu
      (
@@ -139,7 +142,7 @@ module comp //(clk, reset, test_sel, test_out);
 
       .io_clk(clk10m),
       .dout(bus_timer_out),
-      .irq(),
+      .irq(irq_timer),
       .tmr(tmr),
       .ctr(ctr)
       );
@@ -199,6 +202,7 @@ module comp //(clk, reset, test_sel, test_out);
    assign MDO= bus_data_out;
    assign MDI= (~mem_test)?bus_data_in:bus_memory_out;
    assign MWE= bus_wen;
+   assign irqs= { 30'd0, irq_timer };
    
 endmodule // computer
 
