@@ -19,7 +19,8 @@ module timer
     output wire 	    irq,
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
-    output wire ar_reached
+    output wire [WIDTH-1:0] arr,
+    output wire 	    ar_reached
     );
 
    reg [WIDTH-1:0] 	    control;
@@ -124,5 +125,6 @@ module timer
    assign irq= ovf & control[1];
    assign tmr= counter;
    assign ctr= control;
-	
+   assign arr= ar;
+   
 endmodule // timer

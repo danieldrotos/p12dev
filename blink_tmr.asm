@@ -16,8 +16,8 @@
 	ldl0	r8,0		; switch OFF leds
 	st	r8,r1
 
-	ldl	r8,500000	; AR= 0.5 sec= 500,000 usec
-	ldh	r8,500000
+	ldl	r8,2000000	; AR= 0.5 sec= 500,000 usec
+	ldh	r8,2000000
 	ldl0	r9,timer_ar
 	st	r8,r9
 
@@ -25,15 +25,17 @@
 	ldl0	r11,0
 	
 cyc:	
-	inc	r11
-	mov	r12,r11
-	or	r12,r12,r10
-	st	r12,r5
+	;inc	r11		; get counter
+	;mov	r12,r11
+	;or	r12,r12,r10
+	;st	r12,r5
 	
 	ld	r8,r3		; read counter value
 	st	r8,r4		; display it on port A
 	
 	ld	r8,r0		; read status
+	ldl0	r9,0xf002	; display it on PORTC
+	st	r8,r9
 	and	r8,r8,r2	; check pending bit
 	jz	cyc
 

@@ -27,17 +27,18 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] MDI,
     output wire 	    MWE,
     output wire [WIDTH-1:0] TREG,
-    input wire mem_test,
+    input wire 		    mem_test,
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
-    output wire ar_reached,
+    output wire [WIDTH-1:0] arr,
+    output wire 	    ar_reached,
     
-    input wire clk10m,
-    output wire [31:0] irqs 
+    input wire 		    clk10m,
+    output wire [31:0] 	    irqs 
     );
 
-   wire 	      clk;
-   wire 	      reset;
+   wire 		    clk;
+   wire 		    reset;
    assign clk= CLK;
    assign reset= RESET;
    
@@ -83,7 +84,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_porti;
    wire 		    cs_portj;
    wire 		    cs_portabcd;
-
+   
    assign cs_mem= chip_selects[0];
    assign cs_timer= chip_selects[12];
    assign cs_portj= chip_selects[13];
@@ -146,6 +147,7 @@ module comp //(clk, reset, test_sel, test_out);
       .irq(irq_timer),
       .tmr(tmr),
       .ctr(ctr),
+      .arr(arr),
       .ar_reached(ar_reached)
       );
    

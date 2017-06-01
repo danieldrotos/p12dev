@@ -114,7 +114,8 @@ module comptest_n4
    wire [31:0] portd;
    wire [31:0] tmr;
    wire [31:0] ctr;
-   wire ar_reached;
+   wire [31:0] arr;
+   wire        ar_reached;
    wire [31:0] tr;
    wire [31:0] treg;
    wire [31:0] mdi;
@@ -155,6 +156,7 @@ module comptest_n4
       .mem_test       (1'b0),
       .tmr            (tmr),
       .ctr            (ctr),
+      .arr	      (arr),
       .ar_reached     (ar_reached),
       .irqs           (irqs)
       );
@@ -167,7 +169,7 @@ module comptest_n4
                            (display_sel==4'h2)?portc:
                            (display_sel==4'h3)?portd:
                            (display_sel==4'h4)?clk_test:
-                           (display_sel==4'h5)?32'd0:
+                           (display_sel==4'h5)?arr:
                            (display_sel==4'h6)?tmr:
                            (display_sel==4'h7)?ctr:
                            (display_sel==4'h8)?tr:
@@ -189,6 +191,6 @@ module comptest_n4
       );
    
    assign LEDS= //portb[15:0];
-   { ar_reached, portb[0], irqs[0], f100MHz, f50MHz, f25MHz, f20MHz, f10MHz, f1MHz, f100kHz, f10kHz, f1kHz, f100Hz, f10Hz, f1Hz, btnc };
+   { 12'd0, ar_reached, portb[0], portc[1], portc[0] };
    
 endmodule // comptest_n4
