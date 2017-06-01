@@ -18,7 +18,8 @@ module timer
     output wire [WIDTH-1:0] dout,
     output wire 	    irq,
     output wire [WIDTH-1:0] tmr,
-    output wire [WIDTH-1:0] ctr
+    output wire [WIDTH-1:0] ctr,
+    output wire ar_reached
     );
 
    reg [WIDTH-1:0] 	    control;
@@ -79,7 +80,7 @@ module timer
 	  end
      end
    
-   wire ar_reached;
+   //wire ar_reached;
    wire ovf_clr;
    assign ar_reached= (counter == ar);
    assign ovf_clr= reset | (cs & wen & (addr==REG_STAT) & din[1]);

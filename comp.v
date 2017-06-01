@@ -30,6 +30,7 @@ module comp //(clk, reset, test_sel, test_out);
     input wire mem_test,
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
+    output wire ar_reached,
     
     input wire clk10m,
     output wire [31:0] irqs 
@@ -144,7 +145,8 @@ module comp //(clk, reset, test_sel, test_out);
       .dout(bus_timer_out),
       .irq(irq_timer),
       .tmr(tmr),
-      .ctr(ctr)
+      .ctr(ctr),
+      .ar_reached(ar_reached)
       );
    
    gpio_in #(.WIDTH(WIDTH)) gpio_ini
