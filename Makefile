@@ -28,7 +28,9 @@ HEX_FILES	= array_sum.hex counter.hex \
 
 ASM_SOURCES	= $(patsubst %.hex,%.asm,$(HEX_FILES))
 
-.SUFFIXES: .hex .asm
+MEM_SOURCES	= $(patsubst %.hex,%.v,$(HEX_FILES))
+
+.SUFFIXES: .hex .asm .v
 
 all: compile sim
 
@@ -43,10 +45,13 @@ $(VCD): $(VVP) $(HEX_FILES)
 $(VVP): $(TB_VER) $(MODS_VER)
 	iverilog -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
-compile: $(HEX_FILES)
+compile: $(HEX_FILES) $(MEM_SOURCES)
 
 .asm.hex:
 	as1516 -h $< >$@
+
+.asm.v:
+	as1516 $< >$@
 
 clean:
 	rm -f *~ $(VCD) $(VVP)

@@ -133,7 +133,7 @@ module comptest_n4
        )
    computer
      (
-      .CLK            (f10MHz/*selected_clk*/),
+      .CLK            (selected_clk),
       .RESET          (res),
       .clk10m         (f1MHz),
       

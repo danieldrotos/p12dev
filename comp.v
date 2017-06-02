@@ -85,11 +85,14 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_portj;
    wire 		    cs_portabcd;
    
-   assign cs_mem= chip_selects[0];
-   assign cs_timer= chip_selects[12];
-   assign cs_portj= chip_selects[13];
-   assign cs_porti= chip_selects[14];
-   assign cs_portabcd= chip_selects[15];
+   wire addr_64k;
+   assign addr_64k= (bus_address[31:16] == 16'd0);
+   
+   assign cs_mem= addr_64k & chip_selects[0];
+   assign cs_timer= addr_64k & chip_selects[12];
+   assign cs_portj= addr_64k & chip_selects[13];
+   assign cs_porti= addr_64k & chip_selects[14];
+   assign cs_portabcd= addr_64k & chip_selects[15];
 
    reg [WIDTH-1:0] 	    mem_test_address;
    always @(posedge clk, posedge reset)
