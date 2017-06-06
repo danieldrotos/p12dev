@@ -18,11 +18,14 @@ module div10
      else
        c<= c+1;
 
-   assign o=    (~c[3] & ~c[2] & ~c[1] & ~c[0]) |
-                (~c[3] & ~c[2] & ~c[1] &  c[0]) |
-                (~c[3] & ~c[2] &  c[1] & ~c[0]) |
-                (~c[3] & ~c[2] &  c[1] &  c[0]) |
-                (~c[3] &  c[2] & ~c[1] & ~c[0])
+   assign o= (c==0) || (c==1) || (c==2) || (c==3) || (c==4)
+   
+	    //(~c[3] & ~c[2] & ~c[1] & ~c[0]) |
+            //(~c[3] & ~c[2] & ~c[1] &  c[0]) |
+            //(~c[3] & ~c[2] &  c[1] & ~c[0]) |
+            //(~c[3] & ~c[2] &  c[1] &  c[0]) |
+            //(~c[3] &  c[2] & ~c[1] & ~c[0])
+
          ;
    
 endmodule // div10
@@ -31,11 +34,14 @@ module div2
   (
    input wire i,
    output reg o
-  );
-  
-  always @(posedge i)
-    o<= ~o;
-    
+   );
+   
+   initial
+     o= 0;
+   
+   always @(posedge i)
+     o<= ~o;
+   
 endmodule
 
 module div5
@@ -55,10 +61,11 @@ module div5
     else
       c<= c+1;
       
-  assign o= (~c[2] & ~c[1] & ~c[0]) |
-            (~c[2] & ~c[1] &  c[0]) |
-            (~c[2] &  c[1] & ~c[0])
-            ;
+  assign o= (c==0) || (c==1) || (c==2)
+	   //(~c[2] & ~c[1] & ~c[0]) |
+           //(~c[2] & ~c[1] &  c[0]) |
+           //(~c[2] &  c[1] & ~c[0])
+             ;
             
 endmodule
 
@@ -89,5 +96,5 @@ module clk_gen
    div10 d6(.i(f1kHz),   .o(f100Hz));
    div10 d7(.i(f100Hz),  .o(f10Hz));
    div10 d8(.i(f10Hz),   .o(f1Hz));
-      
+   
 endmodule // clk_gen
