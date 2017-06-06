@@ -25,56 +25,58 @@ module comptest_n4
    input wire 	      CLK,
    input wire 	      RESET,
    input wire [15:0]  SW,
-   input wire BTNC,
-   input wire BTNU,
-   input wire BTND,
-   input wire BTNL,
-   input wire BTNR,
+   input wire 	      BTNC,
+   input wire 	      BTNU,
+   input wire 	      BTND,
+   input wire 	      BTNL,
+   input wire 	      BTNR,
    output wire [15:0] LEDS,
    output wire [7:0]  seg,
    output wire [7:0]  an
    );
    
-   wire f100MHz;
-   wire f50MHz;
-   wire f25MHz;
-   wire f20MHz;
-   wire f10MHz;
-   wire f1MHz;
-   wire f100kHz;
-   wire f10kHz;
-   wire f1kHz;
-   wire f100Hz;
-   wire f10Hz;
-   wire f1Hz;
-   
-   reg btnc;
-   reg btnu;
-   reg btnd;
-   reg btnl;
-   reg btnr;
-   reg [15:0] switches;
+   wire 	      res;
 
+   wire 	      f100MHz;
+   wire 	      f50MHz;
+   wire 	      f25MHz;
+   wire 	      f20MHz;
+   wire 	      f10MHz;
+   wire 	      f1MHz;
+   wire 	      f100kHz;
+   wire 	      f10kHz;
+   wire 	      f1kHz;
+   wire 	      f100Hz;
+   wire 	      f10Hz;
+   wire 	      f1Hz;
+   
+   reg 		      btnc;
+   reg 		      btnu;
+   reg 		      btnd;
+   reg 		      btnl;
+   reg 		      btnr;
+   reg [15:0] 	      switches;
+   
    assign f100MHz= CLK;
-    clk_gen clock_generator
-    (
-            .f100MHz(f100MHz),
-            .f50MHz(f50MHz),
-            .f25MHz(f25MHz),
-            .f20MHz(f20MHz),
-            .f10MHz(f10MHz),
-            .f1MHz(f1MHz),
-            .f100kHz(f100kHz),
-            .f10kHz(f10kHz),
-            .f1kHz(f1kHz),
-            .f100Hz(f100Hz),
-            .f10Hz(f10Hz),
-            .f1Hz(f1Hz)
-    );
-       
-       wire selected_clk;
-       reg [31:0] clk_test;
-       assign selected_clk= (SW[15:12]==4'h0)?f1Hz:
+   clk_gen clock_generator
+     (
+      .f100MHz(f100MHz),
+      .f50MHz(f50MHz),
+      .f25MHz(f25MHz),
+      .f20MHz(f20MHz),
+      .f10MHz(f10MHz),
+      .f1MHz(f1MHz),
+      .f100kHz(f100kHz),
+      .f10kHz(f10kHz),
+      .f1kHz(f1kHz),
+      .f100Hz(f100Hz),
+      .f10Hz(f10Hz),
+      .f1Hz(f1Hz)
+      );
+   
+   wire 	      selected_clk;
+   reg [31:0] 	      clk_test;
+   assign selected_clk= (SW[15:12]==4'h0)?f1Hz:
                         (SW[15:12]==4'h1)?f10Hz:
                         (SW[15:12]==4'h2)?f100Hz:
                         (SW[15:12]==4'h3)?f1kHz:
@@ -87,34 +89,33 @@ module comptest_n4
                         (SW[15:12]==4'ha)?f50MHz:
                         (SW[15:12]==4'hb)?f100MHz:
                         btnc;
-                        
-        always @(posedge selected_clk, posedge res)
-          if (res)
-            clk_test<= 0;
-          else
-            clk_test<= clk_test+1;
-            
-            
-       always @(posedge f100Hz)
-         begin
-           btnc= BTNC;
-           btnu= BTNU;
-           btnd= BTND;
-           btnl= BTNL;
-           btnr= BTNR;
-           switches= SW;
-         end
-
-   wire res;
+   
+   always @(posedge selected_clk, posedge res)
+     if (res)
+       clk_test<= 0;
+     else
+       clk_test<= clk_test+1;
+   
+   
+   always @(posedge f100Hz)
+     begin
+        btnc= BTNC;
+        btnu= BTNU;
+        btnd= BTND;
+        btnl= BTNL;
+        btnr= BTNR;
+        switches= SW;
+     end
+   
    reg res_syncer;
    initial
      res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-       res_syncer<= ~RESET;
+	res_syncer<= ~RESET;
      end
    assign res= res_syncer;
-         
+   
    wire [31:0] porta;
    wire [31:0] portb;
    wire [31:0] portc;
@@ -133,7 +134,7 @@ module comptest_n4
    wire [31:0] porti;
    wire [31:0] portj;
    
-   wire [2:0] clk_stat;
+   wire [2:0]  clk_stat;
    
    assign porti= {27'd0, btnl, btnr, btnu, btnd, btnc};
    assign portj= {16'd0, switches};
@@ -201,6 +202,14 @@ module comptest_n4
       );
    
    assign LEDS= //portb[15:0];
-   { clk_stat, irqs[0], ar_reached, portb[0],  selected_clk, f1MHz, portc[7:0] };
+		{
+		 clk_stat,
+		 irqs[0],
+		 ar_reached,
+		 portb[0],
+		 selected_clk,
+		 f1MHz,
+		 portc[7:0]
+		 };
    
 endmodule // comptest_n4

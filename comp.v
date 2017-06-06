@@ -45,7 +45,8 @@ module comp //(clk, reset, test_sel, test_out);
    // Memory bus
    wire [WIDTH-1:0] 	    bus_data_in;
    wire [WIDTH-1:0] 	    bus_data_out;
-   wire [WIDTH-1:0] 	    bus_memory_out;
+   wire [WIDTH-1:0] 	    bus_mem_code_out;
+   wire [WIDTH-1:0] 	    bus_mem_data_out;
    wire [WIDTH-1:0] 	    bus_timer_out;
    wire [WIDTH-1:0] 	    bus_porti_out;
    wire [WIDTH-1:0] 	    bus_portj_out;
@@ -88,7 +89,8 @@ module comp //(clk, reset, test_sel, test_out);
    wire addr_64k;
    assign addr_64k= (bus_address[31:16] == 16'd0);
    
-   assign cs_mem= addr_64k & chip_selects[0];
+   assign cs_mem_code= addr_64k & chip_selects[0];
+   assign cs_mem_data= addr_64k & chip_selects[1];
    assign cs_timer= addr_64k & chip_selects[12];
    assign cs_portj= addr_64k & chip_selects[13];
    assign cs_porti= addr_64k & chip_selects[14];
@@ -112,27 +114,54 @@ module comp //(clk, reset, test_sel, test_out);
      (
       .A(mem_address/*bus_address*/),
       .CLK(clk),
-      .CS((~mem_test)?cs_mem:1'b1/*cs_mem*/),
+      .CS((~mem_test)?cs_mem_code:1'b1/*cs_mem*/),
+      .I(bus_data_out),
+      .WR(1'b0/*(~mem_test)?bus_wen:1'b0*//*bus_wen*/),
+      .CSO(),
+      .O(bus_mem_code_out)
+      );
+   mem mem_data
+     (
+      .A(mem_address/*bus_address*/),
+      .CLK(clk),
+      .CS(cs_mem_data/*(~mem_test)?cs_mem_data:1'b1*//*cs_mem*/),
       .I(bus_data_out),
       .WR((~mem_test)?bus_wen:1'b0/*bus_wen*/),
       .CSO(),
-      .O(bus_memory_out)
+      .O(bus_mem_data_out)
       );
 `else
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
-       .ADDR_SIZE(9),
+       .ADDR_SIZE(10),
        .CONTENT(PROGRAM)
        )
    mem
      (
       .clk(clk),
+      .cs(cs_mem_code),
+      .din(bus_data_out),
+      .wen(1'b0/*bus_wen*/),
+      //.wa(/*bus_address*/mem_address[9:0]),
+      .ra(/*bus_address*/mem_address[9:0]),
+      .dout(bus_mem_code_out)//,
+      );
+   memory_1in_1out
+     #(
+       .WIDTH(WIDTH),
+       .ADDR_SIZE(10),
+       .CONTENT("")
+       )
+   mem_data
+     (
+      .clk(clk),
+      .cs(cs_mem_data),
       .din(bus_data_out),
       .wen(bus_wen),
-      .wa(/*bus_address*/mem_address[8:0]),
-      .ra(/*bus_address*/mem_address[8:0]),
-      .dout(bus_memory_out)//,
+      //.wa(/*bus_address*/mem_address[9:0]),
+      .ra(/*bus_address*/mem_address[9:0]),
+      .dout(bus_mem_data_out)//,
       );
 `endif
 
@@ -197,17 +226,18 @@ module comp //(clk, reset, test_sel, test_out);
        ( {WIDTH{cs_portabcd}} & bus_portabcd_out )
        ;
 */
-     = cs_mem?bus_memory_out:
+     = cs_mem_code?bus_mem_code_out:
+       cs_mem_data?bus_mem_data_out:
        cs_timer?bus_timer_out:
        cs_porti?bus_porti_out:
        cs_portj?bus_portj_out:
        cs_portabcd?bus_portabcd_out:
-       bus_memory_out
+       bus_mem_code_out
        ;
    
    assign ADDR= mem_address;
    assign MDO= bus_data_out;
-   assign MDI= (~mem_test)?bus_data_in:bus_memory_out;
+   assign MDI= (~mem_test)?bus_data_in:bus_mem_code_out;
    assign MWE= bus_wen;
    assign irqs= { 30'd0, irq_timer };
    

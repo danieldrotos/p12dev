@@ -9,9 +9,10 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
     input wire [WIDTH-1:0]     din,
     input wire 		       wen,
     input wire [ADDR_SIZE-1:0] ra,
-    input wire [ADDR_SIZE-1:0] wa,
-      
-    output reg [WIDTH-1:0]    dout
+    //input wire [ADDR_SIZE-1:0] wa,
+    input wire 		       cs,
+    
+    output reg [WIDTH-1:0]     dout
     );
    
    reg [WIDTH-1:0] 	      mem_array[(1<<ADDR_SIZE)-1:0];
@@ -27,12 +28,13 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
   
    always @(posedge clk)
      begin
-	if (wen)
-	  mem_array[wa]<= din;
+	if (cs & wen)
+	  mem_array[/*wa*/ra]<= din;
      end
 
    //assign dout= mem_array[ra];
    always @(posedge clk)
-     dout<= mem_array[ra];
+     if (cs)
+       dout<= mem_array[ra];
    
 endmodule // memory_1in_1out
