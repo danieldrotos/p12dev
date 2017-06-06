@@ -106,16 +106,14 @@ module comptest_n4
          end
 
    wire res;
-   reg [2:0] res_syncer;
+   reg res_syncer;
    initial
-     res_syncer= 3'd0;
+     res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-       res_syncer[0]<= ~RESET;
-       res_syncer[1]<= res_syncer[0];
-       res_syncer[2]<= res_syncer[1];
+       res_syncer<= ~RESET;
      end
-   assign res= res_syncer[2];
+   assign res= res_syncer;
          
    wire [31:0] porta;
    wire [31:0] portb;
@@ -203,6 +201,6 @@ module comptest_n4
       );
    
    assign LEDS= //portb[15:0];
-   { clk_stat, irqs[0], ar_reached, portb[0],  portc[9:0] };
+   { clk_stat, irqs[0], ar_reached, portb[0],  selected_clk, f1MHz, portc[7:0] };
    
 endmodule // comptest_n4

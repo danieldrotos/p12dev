@@ -7,7 +7,7 @@
 	led		equ	0xf001 ; port B
 	portc		equ	0xf002 ; port C
 
-	nop
+	;nop
 	ldl0	r0,timer_ctrl
 	ldl0	r1,timer_ar
 	ldl0	r2,timer_stat
