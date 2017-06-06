@@ -35,9 +35,6 @@ module comptest_n4
    output wire [7:0]  an
    );
    
-   wire res;
-   assign res= ~RESET;
-   
    wire f100MHz;
    wire f50MHz;
    wire f25MHz;
@@ -107,6 +104,18 @@ module comptest_n4
            btnr= BTNR;
            switches= SW;
          end
+
+   wire res;
+   reg [2:0] res_syncer;
+   initial
+     res_syncer= 3'd0;
+   always @(posedge selected_clk)
+     begin
+       res_syncer[0]<= ~RESET;
+       res_syncer[1]<= res_syncer[0];
+       res_syncer[2]<= res_syncer[1];
+     end
+   assign res= res_syncer[2];
          
    wire [31:0] porta;
    wire [31:0] portb;
@@ -125,6 +134,9 @@ module comptest_n4
    wire [31:0] irqs;
    wire [31:0] porti;
    wire [31:0] portj;
+   
+   wire [2:0] clk_stat;
+   
    assign porti= {27'd0, btnl, btnr, btnu, btnd, btnc};
    assign portj= {16'd0, switches};
    comp
@@ -146,7 +158,7 @@ module comptest_n4
       
       .TRS            (switches[3:0]),
       .TR             (tr),
-      .CLKstat        (),
+      .CLKstat        (clk_stat),
       
       .ADDR           (addr),
       .MDO            (mdo),
@@ -176,7 +188,7 @@ module comptest_n4
                            (display_sel==4'h9)?treg:
                            (display_sel==4'ha)?porti:
                            (display_sel==4'hb)?portj:
-                           (display_sel==4'hc)?32'd0:
+                           (display_sel==4'hc)?irqs:
                            (display_sel==4'hd)?mdi:
                            (display_sel==4'he)?mdo:
                            (display_sel==4'hf)?addr:
@@ -191,6 +203,6 @@ module comptest_n4
       );
    
    assign LEDS= //portb[15:0];
-   { 12'd0, ar_reached, portb[0], portc[1], portc[0] };
+   { clk_stat, irqs[0], ar_reached, portb[0],  portc[9:0] };
    
 endmodule // comptest_n4
