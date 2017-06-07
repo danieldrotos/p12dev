@@ -1,4 +1,4 @@
-module div10
+module d10
   (
    input wire i,
    output wire o
@@ -13,24 +13,26 @@ module div10
    assign last= c==4'd9;
    
    always @(posedge i)
-     if (last)
-       c<= 0;
-     else
-       c<= c+1;
-
-   assign o= (c==0) || (c==1) || (c==2) || (c==3) || (c==4)
+     begin
+	if (last)
+	  c<= 0;
+	else
+	  c<= c+1;
+     end
    
-	    //(~c[3] & ~c[2] & ~c[1] & ~c[0]) |
-            //(~c[3] & ~c[2] & ~c[1] &  c[0]) |
-            //(~c[3] & ~c[2] &  c[1] & ~c[0]) |
-            //(~c[3] & ~c[2] &  c[1] &  c[0]) |
-            //(~c[3] &  c[2] & ~c[1] & ~c[0])
-
-         ;
+   assign o= (c==0) || (c==1) || (c==2) || (c==3) || (c==4)
+/*
+	     ((~c[3] & ~c[2]) & (~c[1] & ~c[0])) |
+	     ((~c[3] & ~c[2]) & (~c[1] &  c[0])) |
+             ((~c[3] & ~c[2]) & ( c[1] & ~c[0])) |
+             ((~c[3] & ~c[2]) & ( c[1] &  c[0])) |
+             ((~c[3] &  c[2]) & (~c[1] & ~c[0]))
+             */
+        ;
    
 endmodule // div10
 
-module div2
+module d2
   (
    input wire i,
    output reg o
@@ -44,7 +46,7 @@ module div2
    
 endmodule
 
-module div5
+module d5
   (
    input wire i,
    output wire o
@@ -85,16 +87,21 @@ module clk_gen
    output wire f1Hz
    );
 
-   div2  d0(.i(f100MHz), .o(f50MHz));
-   div2  db(.i(f50MHz),  .o(f25MHz));
-   div5  da(.i(f100MHz), .o(f20MHz));
-   div10 d1(.i(f100MHz), .o(f10MHz));
-   div10 d2(.i(f10MHz),  .o(f1MHz));
-   div10 d3(.i(f1MHz),   .o(f100kHz));
-   div10 d4(.i(f100kHz), .o(f10kHz));
-   div10 d5(.i(f10kHz),  .o(f1kHz));
-   div10 d6(.i(f1kHz),   .o(f100Hz));
-   div10 d7(.i(f100Hz),  .o(f10Hz));
-   div10 d8(.i(f10Hz),   .o(f1Hz));
+    wire w2MHz;
+    
+   d2  i0_50 (.i(f100MHz), .o(f50MHz));
+   d2  i1    (.i(f50MHz),  .o(f25MHz));
+   d5  i0_20 (.i(f100MHz), .o(f20MHz));
+   d10 i0_10 (.i(f100MHz), .o(f10MHz));
+   
+   d5  i2    (.i(f10MHz),  .o(w2MHz));
+   d2  i3    (.i(w2MHz),   .o(f1MHz));
+   
+   d10 i4    (.i(f1MHz),   .o(f100kHz));
+   d10 i5    (.i(f100kHz), .o(f10kHz));
+   d10 i6    (.i(f10kHz),  .o(f1kHz));
+   d10 i7    (.i(f1kHz),   .o(f100Hz));
+   d10 i8    (.i(f100Hz),  .o(f10Hz));
+   d10 i9    (.i(f10Hz),   .o(f1Hz));
    
 endmodule // clk_gen

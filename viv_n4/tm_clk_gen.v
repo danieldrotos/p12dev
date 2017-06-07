@@ -13,7 +13,7 @@ module tm_clk_gen;
       .f1MHz(c1MHz)
       );
 
-   div10 d(.i(c10MHz), .o(t1MHz));
+   d10 d(.i(clk), .o(t1MHz));
    
    initial
      begin
