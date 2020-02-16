@@ -13,7 +13,8 @@ module tm(input wire i, output wire o);
    always #20 ioclk= ~ioclk;
    
    defparam comp.WIDTH= 32;
-   defparam comp.PROGRAM="blink_tmr.hex";
+   //defparam comp.PROGRAM="blink_tmr.hex";
+   defparam comp.PROGRAM="array_sum.hex";
    comp comp
      (
       .CLK(clk),
@@ -30,7 +31,7 @@ module tm(input wire i, output wire o);
      begin
 	$dumpfile("tm.vcd");
 	$dumpvars;
-	test_sel= 4'd2;
+	test_sel= 4'd14;
 	#2 reset= 1;
 	#10 reset= 0;
 	#100 btn= 32'd4;

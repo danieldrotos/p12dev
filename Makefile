@@ -1,5 +1,7 @@
 TB		= tm
 
+PRG		= blink_tmr
+
 MODS		= decoder regm adder \
 		  comp \
 		    memory \
@@ -24,7 +26,8 @@ GTKW		= $(patsubst %,%.gtkw,$(TB))
 
 HEX_FILES	= array_sum.hex counter.hex \
 		  light1.hex light2.hex \
-		  blink_tmr.hex poll.hex
+		  blink_tmr.hex poll.hex \
+		  $(PRG).hex
 
 ASM_SOURCES	= $(patsubst %.hex,%.asm,$(HEX_FILES))
 

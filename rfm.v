@@ -30,7 +30,7 @@ module rfm(clk, reset, wen, cen, link,
    output [WIDTH-1:0] 	   r13;
 
    wire [WIDTH-1:0] 	   pc_out;
-   reg [WIDTH-1:0] 	   reg_array[(1<<ADDR_SIZE)-1-1:0];
+   reg [WIDTH-1:0] 	   reg_array[0:(1<<ADDR_SIZE)-1-1];
    cntreg pc_reg
      (
       .clk(clk),

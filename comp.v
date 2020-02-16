@@ -140,9 +140,10 @@ module comp //(clk, reset, test_sel, test_out);
    mem
      (
       .clk(clk),
+      //.reset(reset),
       .cs(cs_mem_code),
       .din(bus_data_out),
-      .wen(1'b0/*bus_wen*/),
+      .wen(bus_wen),
       //.wa(/*bus_address*/mem_address[9:0]),
       .ra(/*bus_address*/mem_address[9:0]),
       .dout(bus_mem_code_out)//,
@@ -156,6 +157,7 @@ module comp //(clk, reset, test_sel, test_out);
    mem_data
      (
       .clk(clk),
+      //.reset(reset),
       .cs(cs_mem_data),
       .din(bus_data_out),
       .wen(bus_wen),

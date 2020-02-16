@@ -3,7 +3,9 @@
 adat_db	=	10		; az adatok szama
 porta	=	0xf000		; kijelzo port cime
 
-	ldl0	sp,100		; stack pointer kezdoertek
+	nop
+	
+	ldl0	sp,50		; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez
 	ldl0	r1,eredmeny	; az eredmeny vizsgalata
 	ld	r0,r1		; betoltes

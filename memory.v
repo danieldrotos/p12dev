@@ -6,6 +6,7 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
     )
    (
     input wire 		       clk,
+    //input wire 		       reset, 
     input wire [WIDTH-1:0]     din,
     input wire 		       wen,
     input wire [ADDR_SIZE-1:0] ra,
@@ -15,15 +16,16 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
     output reg [WIDTH-1:0]     dout
     );
    
-   reg [WIDTH-1:0] 	      mem_array[(1<<ADDR_SIZE)-1:0];
+   reg [WIDTH-1:0] 	      mem_array[0:(1<<ADDR_SIZE)-1];
 
-   //integer 		      i;
+   integer 		      i;
    initial
      begin
-	//for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
-	  //mem_array[i]= 0;
+	for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
+	  mem_array[i]= 0;
 	if (CONTENT != "")
 	  $readmemh(CONTENT, mem_array);
+	dout= 0;	
      end
   
    always @(posedge clk)
@@ -34,7 +36,7 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
 
    //assign dout= mem_array[ra];
    always @(posedge clk)
-     if (cs)
+     // (cs)
        dout<= mem_array[ra];
    
 endmodule // memory_1in_1out
