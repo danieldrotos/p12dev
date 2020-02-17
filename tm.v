@@ -14,7 +14,8 @@ module tm(input wire i, output wire o);
    
    defparam comp.WIDTH= 32;
    //defparam comp.PROGRAM="blink_tmr.hex";
-   defparam comp.PROGRAM="array_sum.hex";
+   //defparam comp.PROGRAM="array_sum.hex";
+   defparam comp.PROGRAM="counter.hex";
    comp comp
      (
       .CLK(clk),

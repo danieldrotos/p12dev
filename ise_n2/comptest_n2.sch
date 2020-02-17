@@ -594,6 +594,10 @@
             <blockpin signalname="N4" name="O" />
         </block>
         <block symbolname="comp" name="computer">
+            <attr value="../counter.asc" name="PROGRAM">
+                <trait verilog="all:0 wsynth:1" />
+                <trait vhdl="all:0 wa:1 wd:1" />
+            </attr>
             <blockpin signalname="SYS_CLK" name="CLK" />
             <blockpin signalname="BTN1" name="RESET" />
             <blockpin signalname="mem_test" name="mem_test" />
@@ -1375,6 +1379,7 @@
         </branch>
         <instance x="2320" y="1376" name="computer" orien="R0">
             <attrtext style="fontsize:28;fontname:Arial" attrname="InstName" x="128" y="272" type="instance" />
+            <attrtext style="fontsize:28;fontname:Arial;displayformat:NAMEEQUALSVALUE" attrname="PROGRAM" x="32" y="298" type="instance" />
         </instance>
         <instance x="1856" y="1616" name="XLXI_80" orien="R0" />
         <branch name="f1MHz">
@@ -1383,7 +1388,8 @@
             <wire x2="1856" y1="1584" y2="1584" x1="1792" />
         </branch>
         <branch name="XLXN_67">
-            <wire x2="2192" y1="1584" y2="1584" x1="2080" />
+            <wire x2="2096" y1="1584" y2="1584" x1="2080" />
+            <wire x2="2192" y1="1584" y2="1584" x1="2096" />
             <wire x2="2192" y1="1472" y2="1584" x1="2192" />
             <wire x2="2320" y1="1472" y2="1472" x1="2192" />
         </branch>

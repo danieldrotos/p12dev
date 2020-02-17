@@ -109,28 +109,28 @@ module comp //(clk, reset, test_sel, test_out);
    assign mem_address= (~mem_test)?bus_address:
 		       mem_test_address;
    
-`ifdef ISE_SYNTH
-   mem mem
-     (
-      .A(mem_address/*bus_address*/),
-      .CLK(clk),
-      .CS((~mem_test)?cs_mem_code:1'b1/*cs_mem*/),
-      .I(bus_data_out),
-      .WR(1'b0/*(~mem_test)?bus_wen:1'b0*//*bus_wen*/),
-      .CSO(),
-      .O(bus_mem_code_out)
-      );
-   mem mem_data
-     (
-      .A(mem_address/*bus_address*/),
-      .CLK(clk),
-      .CS(cs_mem_data/*(~mem_test)?cs_mem_data:1'b1*//*cs_mem*/),
-      .I(bus_data_out),
-      .WR((~mem_test)?bus_wen:1'b0/*bus_wen*/),
-      .CSO(),
-      .O(bus_mem_data_out)
-      );
-`else
+//`ifdef ISE_SYNTH
+//   mem mem
+//     (
+//      .A(mem_address/*bus_address*/),
+//      .CLK(clk),
+//      .CS((~mem_test)?cs_mem_code:1'b1/*cs_mem*/),
+//      .I(bus_data_out),
+//      .WR(1'b0/*(~mem_test)?bus_wen:1'b0*//*bus_wen*/),
+//      .CSO(),
+//      .O(bus_mem_code_out)
+//      );
+//   mem mem_data
+//     (
+//      .A(mem_address/*bus_address*/),
+//      .CLK(clk),
+//      .CS(cs_mem_data/*(~mem_test)?cs_mem_data:1'b1*//*cs_mem*/),
+//      .I(bus_data_out),
+//      .WR((~mem_test)?bus_wen:1'b0/*bus_wen*/),
+//      .CSO(),
+//      .O(bus_mem_data_out)
+//      );
+//`else
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
@@ -165,7 +165,7 @@ module comp //(clk, reset, test_sel, test_out);
       .ra(/*bus_address*/mem_address[9:0]),
       .dout(bus_mem_data_out)//,
       );
-`endif
+//`endif
 
    timer #(.WIDTH(32)) tmr1
      (

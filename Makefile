@@ -33,9 +33,13 @@ ASM_SOURCES	= $(patsubst %.hex,%.asm,$(HEX_FILES))
 
 MEM_SOURCES	= $(patsubst %.hex,%.v,$(HEX_FILES))
 
-.SUFFIXES: .hex .asm .v
+ASC_SOURCES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
-all: compile sim
+.SUFFIXES: .hex .asm .v .asc
+
+all: utils compile sim
+
+utils: hex2asc
 
 show: sim
 	gtkwave $(VCD) $(GTKW)
@@ -48,7 +52,7 @@ $(VCD): $(VVP) $(HEX_FILES)
 $(VVP): $(TB_VER) $(MODS_VER)
 	iverilog -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
-compile: $(HEX_FILES) $(MEM_SOURCES)
+compile: $(HEX_FILES) $(MEM_SOURCES) $(ASC_SOURCES)
 
 .asm.hex:
 	as1516 -h $< >$@
@@ -56,7 +60,11 @@ compile: $(HEX_FILES) $(MEM_SOURCES)
 .asm.v:
 	as1516 $< >$@
 
+.hex.asc:
+	./hex2asc <$< >$@
+
 clean:
 	rm -f *~ $(VCD) $(VVP)
 	rm -f *.cmd_log *.html *.lso *.ngc *.ngr *.prj
 	rm -f *.stx
+	rm -f hex2asc
