@@ -36,7 +36,8 @@ module comptest_n2(
 	output wire seg6,
 	output wire dp,
 	
-	output wire [7:0] JA
+	output wire [7:0] JA,
+	output wire [7:0] JB
     );
 
 // CLOCKS
@@ -107,8 +108,8 @@ assign selected_clk=
 	(ctrl[2:0]==3'd6)?f25MHz:
 	(ctrl[2:0]==3'd7)?B0:
 	0;
-BUFG clk_bufg(.I(/*selected_clk*/f10MHz), .O(SYS_CLK));
-BUFG m1_bufg (.I(f1MHz)       , .O(bufed_1MHz));
+BUFG clk_bufg(.I(f10MHz), .O(SYS_CLK));
+BUFG m1_bufg (.I(f1MHz) , .O(bufed_1MHz));
 
 
 // Computer
@@ -119,13 +120,16 @@ wire [2:0] CLKstat;
 wire [31:0] PORTA, PORTB, PORTC, PORTD;
 wire [31:0] tmr, ctr;
 
-comp computer(
-	.CLK(SYS_CLK),
-	.RESET(btn1),
+comp	#(
+	.PROGRAM("../counter.asc")
+	)
+	computer
+	(
+	.clk(SYS_CLK),
+	.reset(btn1),
 	.TRS({sw3,sw2,sw1,sw0}),
 	.PORTI({28'd0, B3,B2,B1,B0}),
 	.PORTJ({24'd0, S}),
-	.mem_test(1'b0),
 	.clk10m(bufed_f1MHz),
 	
 	.PORTA(PORTA),
@@ -182,6 +186,6 @@ display disp_drv (.clk(f1MHz),
 assign {led7,led6,led5,led4,led3,led2,led1,led0}= 8'd0;
 
 assign JA= {f25MHz,f10MHz,f1MHz,f100Hz,B3,B2,B1,B0};
-
+assign JB= {SYS_CLK, ctrl[7:0]};
 
 endmodule

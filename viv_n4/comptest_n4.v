@@ -144,8 +144,8 @@ module comptest_n4
        )
    computer
      (
-      .CLK            (selected_clk),
-      .RESET          (res),
+      .clk            (selected_clk),
+      .reset          (res),
       .clk10m         (f1MHz),
       
       .PORTI          (porti),
@@ -164,7 +164,6 @@ module comptest_n4
       .MDI            (mdi),
       .MWE            (),
       .TREG           (treg),
-      .mem_test       (1'b0),
       .tmr            (tmr),
       .ctr            (ctr),
       .arr	      (arr),
