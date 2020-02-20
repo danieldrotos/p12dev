@@ -47,7 +47,7 @@ wire f10MHz;
 wire f1MHz;
 wire f100kHz;
 wire f1kHz;
-wire f100Hz;
+wire f100Hz, c100Hz;
 wire f10Hz;
 wire f1Hz;
 
@@ -65,20 +65,24 @@ clk_gen clock_generator
 	.f10Hz(f10Hz),
 	.f1Hz(f1Hz)
 	);
-      
+BUFG buf100Hz (.I(f100Hz), .O(c100Hz));
+
+
 // de-bounce input, drive CTRL register
 ///////////////////////////////////////
 reg B3, B2, B1, B0;
 reg [7:0] S;
 
-always @(posedge f100Hz)
+always @(posedge c100Hz)
 	{B3,B2,B1,B0}<= {btn3,btn2,btn1,btn0};
-always @(posedge f100Hz)
+always @(posedge c100Hz)
 	S<= {sw7,sw6,sw5,sw4,sw3,sw2,sw1,sw0};
 	
 reg [7:0] ctrl;
 
-always @(posedge B1)
+BUFG bufb1 (.I(B1), .O(cB1));
+
+always @(posedge cB1)
 	if (B2)
 		ctrl<= {sw7,sw6,sw5,sw4,sw3,sw2,sw1,sw0};
 
