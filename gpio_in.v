@@ -15,6 +15,8 @@ module gpio_in
 
    reg [WIDTH-1:0] 	    sample;
 
+   initial sample= 0;
+   
    always @(posedge clk)
      begin
 	if (cs)

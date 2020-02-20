@@ -19,7 +19,7 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
     );
    
    reg [WIDTH-1:0]     regs [3:0];
-/*
+
    initial
      begin
 	regs[0]= 0;
@@ -27,7 +27,7 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
 	regs[2]= 0;
 	regs[3]= 0;
      end
-*/
+
    always @(posedge clk, posedge reset)
      begin
 	if (reset)
