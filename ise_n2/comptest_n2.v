@@ -121,6 +121,7 @@ wire [31:0] PORTA, PORTB, PORTC, PORTD;
 wire [31:0] tmr, ctr;
 
 comp	#(
+	.MEM_ADDR_SIZE(12),
 	.PROGRAM("../counter.asc")
 	)
 	computer

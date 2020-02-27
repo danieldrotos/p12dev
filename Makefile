@@ -1,6 +1,6 @@
 TB		= tm
 
-PRG		= blink_tmr
+PRG		= counter
 
 MODS		= decoder regm adder \
 		  comp \
@@ -37,7 +37,7 @@ ASC_SOURCES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
 .SUFFIXES: .hex .asm .v .asc
 
-all: utils compile sim
+all: $(PRG).asc utils compile sim
 
 utils: hex2asc
 
@@ -50,7 +50,7 @@ $(VCD): $(VVP) $(HEX_FILES)
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER)
-	iverilog -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+	iverilog -DPRG="$(PRG).asc" -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
 compile: $(HEX_FILES) $(MEM_SOURCES) $(ASC_SOURCES)
 
