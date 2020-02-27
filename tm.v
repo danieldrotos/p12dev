@@ -15,16 +15,19 @@ module tm(input wire i, output wire o);
    defparam comp.WIDTH= 32;
    //defparam comp.PROGRAM="blink_tmr.hex";
    //defparam comp.PROGRAM="array_sum.hex";
-   defparam comp.PROGRAM="counter.hex";
-   comp comp
+   defparam comp.PROGRAM="counter.asc";
+   comp
+     #(
+       .MEM_ADDR_SIZE(12)
+       )
+   comp
      (
-      .CLK(clk),
-      .RESET(reset),
+      .clk(clk),
+      .reset(reset),
       .PORTI(btn),
       .TRS/*test_sel*/(test_sel),
       .TR/*test_out*/(tout),
-      .mem_test(1'b0),
-      .clk10m(ioclk)
+    .clk10m(ioclk)
       );
 
    

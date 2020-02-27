@@ -3,8 +3,9 @@
 
 int main(int argc, char *argv[])
 {
+  int mema_size= 12;
   char buf[1024];
-  int msize= 1024;
+  int msize= 1<<mema_size;
   int a= 0;
   
   while (fgets(buf, 1023, stdin))
