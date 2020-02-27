@@ -24,7 +24,10 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
 	for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
 	  mem_array[i]= 0;
 	if (CONTENT != "")
-	  $readmemh(CONTENT, mem_array);
+	  begin
+	     $display("Init memory with %s", CONTENT);
+	     $readmemh(CONTENT, mem_array);
+	  end
 	//dout= 0;	
      end
   

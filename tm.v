@@ -1,6 +1,8 @@
 `unconnected_drive pull0
-`define PRG "counter.asc"
-  
+`ifndef PRG
+ `define PRG "counter.asc"
+`endif
+
 module tm
   (
     input wire i, output wire o);
@@ -15,14 +17,11 @@ module tm
    always #1 clk= !clk;
    always #20 ioclk= ~ioclk;
    
-   //defparam comp.PROGRAM="blink_tmr.hex";
-   //defparam comp.PROGRAM="array_sum.hex";
-   defparam comp.PROGRAM = PRG ;
    comp
      #(
        .WIDTH(32),
-       .MEM_ADDR_SIZE(12)//,
-       //.PROGRAM( PRG )
+       .MEM_ADDR_SIZE(12),
+       .PROGRAM( `PRG )
        )
    comp
      (
