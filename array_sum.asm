@@ -5,7 +5,7 @@ porta	=	0xf000		; kijelzo port cime
 
 	nop
 	
-	ldl0	sp,50		; stack pointer kezdoertek
+	ldl0	sp,verem	; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez
 	ldl0	r1,eredmeny	; az eredmeny vizsgalata
 	ld	r0,r1		; betoltes
@@ -48,4 +48,6 @@ adatok:	dd	123		; adatok
 	dd	0x86
 	dd	3456
 	dd	-23
+	
+verem:	nop
 	

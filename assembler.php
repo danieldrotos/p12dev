@@ -1,7 +1,7 @@
 <?php
 
 $debugging= true;
-$debugging= false;
+//$debugging= false;
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 
@@ -236,6 +236,27 @@ function is_inst($W)
     return $inst;
 }
 
+function w2r($w)
+{
+	$W= strtoupper($w);
+	if ($W == "PC")
+        	$r= 15;
+        else if ($W == "LR")
+             	$r= 14;
+        else if ($W == "SP")
+             	$r= 13;
+        else
+        {
+		if ($W[0] == 'R')
+                {
+			$w= substr($w, 1);
+                        $W= substr($W, 1);
+                }
+                $r= intval($w,0);
+        }
+	return $r;
+}
+
 function procl($l)
 {
     global $mem, $syms, $lnr, $addr;
@@ -320,7 +341,7 @@ function procl($l)
                                             $w= $pars[$pi];
                                             $W= strtoupper($w);
                                             debug(";procl; param=$w as $P");
-                                            if ($P == "R")
+                                            if ($P == "R" || $P == "E")
                                                 {
                                                     $r= 0;
                                                     if ($W == "PC")
@@ -360,6 +381,46 @@ function procl($l)
                                         }
                                     $ok= true;
                                 }
+			    else if ($W == "LDI")
+			    	{
+					$o= sprintf(";procl; MACRO DLI in line $lnr, icode=%08h,cond=%08h",$icode,$cond);
+					debug($o);
+					$w_Rd= strtok($par_sep);
+					$r= w2r($w_Rd);
+					$sym= strtok($par_sep);
+					$cond= $icode;
+					// LDH
+					$icode= 0x06000000 | ($r<<20);
+					if ($cond!==false) $icode= $icode | $cond;
+					$st= 'H';
+					$mem[$addr]= array(
+						"code"=>$icode,
+						"sym"=>$sym,
+						"style"=>$st,
+						"src"=>$org,
+						"error"=>''
+					);
+                    			$o= sprintf("%04x %08x %s:%s", $addr, $icode, $sym, $st);
+		                        debug($o, "blue");
+                    			$addr++;
+					// LDL
+					$icode= 0x05000000 | ($r<<20);
+					if ($cond!==false) $icode= $icode | $cond;
+					$st= 'L';
+					$mem[$addr]= array(
+						"code"=>$icode,
+						"sym"=>$sym,
+						"style"=>$st,
+						"src"=>$org,
+						"error"=>''
+					);
+                    			$o= sprintf("%04x %08x %s:%s", $addr, $icode, $sym, $st);
+		                        debug($o, "blue");
+                    			$addr++;
+					// ready
+					$inst= false;
+					$ok= true;
+				}
                             else if ($W == "ORG")
                                 {
                                     $w= strtok(" \t");
