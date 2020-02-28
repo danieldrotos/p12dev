@@ -1,7 +1,7 @@
 <?php
 
 $debugging= true;
-//$debugging= false;
+$debugging= false;
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 
