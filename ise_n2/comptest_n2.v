@@ -183,7 +183,10 @@ display disp_drv (.clk(f1MHz),
 	.an({an3,an2,an1,an0})
 );
 
-assign {led7,led6,led5,led4,led3,led2,led1,led0}= 8'd0;
+assign	{led7,led6,led5,   led4,led3,      led2,      led1,      led0}=
+	(ctrl[4])?
+	{1'b0, MWE,1'b0,SYS_CLK,btn1,CLKstat[2],CLKstat[1],CLKstat[0]}:
+	PORTB[7:0];
 
 assign JA= {f25MHz,f10MHz,f1MHz,f100Hz,B3,B2,B1,B0};
 assign JB= {SYS_CLK, ctrl[7:0]};
