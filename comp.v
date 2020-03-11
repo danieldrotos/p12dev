@@ -3,7 +3,8 @@
 module comp //(clk, reset, test_sel, test_out);
   #(
     parameter WIDTH= 32,
-    parameter PROGRAM= ""
+    parameter PROGRAM= "",
+    parameter MEM_ADDR_SIZE= 12
     )
    (
     // base signals
@@ -82,8 +83,13 @@ module comp //(clk, reset, test_sel, test_out);
    
    wire addr_64k;
    assign addr_64k= (bus_address[31:16] == 16'd0);
-   
-   assign cs_mem_code= addr_64k & chip_selects[0];
+
+   // 4*4= 16k (max)
+   assign cs_mem_code= addr_64k &
+		       (chip_selects[0]|
+			chip_selects[1]|
+			chip_selects[2]|
+			chip_selects[3]);
    assign cs_timer= addr_64k & chip_selects[12];
    assign cs_portj= addr_64k & chip_selects[13];
    assign cs_porti= addr_64k & chip_selects[14];
@@ -92,7 +98,7 @@ module comp //(clk, reset, test_sel, test_out);
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
-       .ADDR_SIZE(10),
+       .ADDR_SIZE(MEM_ADDR_SIZE),
        .CONTENT(PROGRAM)
        )
    mem
@@ -101,7 +107,7 @@ module comp //(clk, reset, test_sel, test_out);
       .cs(cs_mem_code),
       .din(bus_data_out),
       .wen(bus_wen),
-      .ra(bus_address[9:0]),
+      .ra(bus_address[MEM_ADDR_SIZE-1:0]),
       .dout(bus_mem_code_out)//,
       );
 

@@ -1,30 +1,36 @@
 `unconnected_drive pull0
+`ifndef PRG
+ `define PRG "counter.asc"
+`endif
 
-module tm(input wire i, output wire o);
-   reg clk= 0;
-   reg ioclk= 0;
-   reg reset= 0;
-   reg [3:0] test_sel= 4'd0;
-   reg [31:0] btn= 0;
+module tm
+  (
+    input wire i, output wire o);
+   reg 	       clk= 0;
+   reg 	       ioclk= 0;
+   reg 	       reset= 0;
+   reg [3:0]   test_sel= 4'd0;
+   reg [31:0]  btn= 0;
    
    wire [31:0] tout;
-
+   
    always #1 clk= !clk;
    always #20 ioclk= ~ioclk;
    
-   defparam comp.WIDTH= 32;
-   //defparam comp.PROGRAM="blink_tmr.hex";
-   //defparam comp.PROGRAM="array_sum.hex";
-   defparam comp.PROGRAM="counter.hex";
-   comp comp
+   comp
+     #(
+       .WIDTH(32),
+       .MEM_ADDR_SIZE(12),
+       .PROGRAM( `PRG )
+       )
+   comp
      (
-      .CLK(clk),
-      .RESET(reset),
+      .clk(clk),
+      .reset(reset),
       .PORTI(btn),
       .TRS/*test_sel*/(test_sel),
       .TR/*test_out*/(tout),
-      .mem_test(1'b0),
-      .clk10m(ioclk)
+    .clk10m(ioclk)
       );
 
    

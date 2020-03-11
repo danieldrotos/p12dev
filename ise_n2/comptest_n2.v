@@ -1,5 +1,12 @@
 `timescale 1ns / 1ps
 
+`ifndef PRG
+	`define PRG "../counter.asc"
+`endif
+
+`ifndef MEM_ADDR_SIZE
+	`define MEM_ADDR_SIZE 12
+`endif
 
 module comptest_n2(
 	input wire clk,
@@ -121,7 +128,8 @@ wire [31:0] PORTA, PORTB, PORTC, PORTD;
 wire [31:0] tmr, ctr;
 
 comp	#(
-	.PROGRAM("../counter.asc")
+	.MEM_ADDR_SIZE( `MEM_ADDR_SIZE ),
+	.PROGRAM( `PRG )
 	)
 	computer
 	(
