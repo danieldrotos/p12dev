@@ -1,27 +1,41 @@
 <?php
 
-$debugging= true;
-$debugging= false;
-error_reporting(E_ALL);
-ini_set("display_errors", "On");
-
-if (isset($argv[0]))
+  $debugging= true;
+  $debugging= false;
+  error_reporting(E_ALL);
+  ini_set("display_errors", "On");
+  $aw= 12;
+  $view_hex= false;
+  
+  if (isset($argv[0]))
   {
-    if (!isset($argv[1]))
+    $fin= '';
+    for ($i=1; $i<$argc; $i++)
+    {
+      if ($argv[$i] == "-h")
+      {
+	$_REQUEST['submit']= "View hex";
+	//echo "HEX!\n";
+	$view_hex= true;
+      }
+      else if ($argv[$i] == "-m")
+      {
+	$i++;
+	$aw= $argv[$i];
+      }
+      else
+      {
+	$_REQUEST['submit']= "";
+	$fin= $argv[$i];
+      }
+    }
+    if ($fin=='')
     {
       echo "asm file missing\n";
       exit(1);
     }
-    if ($argv[1] == "-h")
-    {
-      $_REQUEST['submit']= "View hex";
-      $src= file_get_contents($argv[2]);
-    }
-    else
-    {
-      $_REQUEST['submit']= "";
-      $src= file_get_contents($argv[1]);
-    }
+    //echo "FIN=$fin\n";
+    $src= file_get_contents($fin);
   }
   else
   {
@@ -631,11 +645,21 @@ foreach ($mem as $a => $m)
         else
             debug(";ph3; what?");
     }
+  $a++;
+  $mem_size= 1<<$aw;
+  for ( ; $a < $mem_size; $a++)
+    $hex.= sprintf("%08x //;%04x\n", 0, $a);
 
   $_REQUEST['hex']= $hex;
+  //echo "REQ={$_REQUEST['submit']} vh=$view_hex aw=$aw\n";
   if (/*isset($argv[0]) ||*/
-    ($_REQUEST['submit']!='View hex'))
+    //($_REQUEST['submit']!='View hex')
+    !$view_hex
+  )
   include('gen.php');
   else
+  {
+    //echo "HEHEX {$_REQUEST['submit']}\n";
     echo $hex;
+  }
 ?>

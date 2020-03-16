@@ -2,12 +2,4 @@
 
 AS=./assembler.php
 
-php $AS "$@"
-exit
-
-
-if [ "$2"x = x ]; then
-    php $AS $1
-else
-    php $AS $1 >$2
-fi
+php $AS -- "$@"
