@@ -35,7 +35,7 @@
     //echo "$lnr procing line $l...\n";
     if (preg_match('/^[0-9afA-F]/', $l))
     {
-      echo substr($l, 0, 7)."\n";
+      echo substr($l, 0, 8)."\n";
       $lnr++;
     }
     $l= strtok($lsep);
