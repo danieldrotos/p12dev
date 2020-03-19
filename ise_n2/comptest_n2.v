@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 `ifndef PRG
-	`define PRG "../counter.asc"
+	`define PRG "../counter.hex"
 `endif
 
 `ifndef MEM_ADDR_SIZE

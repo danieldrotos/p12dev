@@ -37,7 +37,7 @@ ASC_SOURCES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
 all: utils $(PRG).asc compile sim
 
-utils: hex2asc
+utils: #hex2asc
 
 show: sim
 	gtkwave $(VCD) $(GTKW)
@@ -61,7 +61,7 @@ compile: $(HEX_FILES) $(MEM_SOURCES) $(ASC_SOURCES)
 	./as1516 $< >$@
 
 .hex.asc:
-	./hex2asc <$< >$@
+	php ./hex2asc.php $< >$@
 
 clean:
 	rm -f *~ $(VCD) $(VVP)

@@ -5,6 +5,7 @@
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
   $aw= 12;
+  $expand= false;
   $view_hex= false;
   
   if (isset($argv[0]))
@@ -22,6 +23,7 @@
       {
 	$i++;
 	$aw= $argv[$i];
+	$expand= true;
       }
       else
       {
@@ -647,8 +649,9 @@ foreach ($mem as $a => $m)
     }
   $a++;
   $mem_size= 1<<$aw;
-  for ( ; $a < $mem_size; $a++)
-    $hex.= sprintf("%08x //;%04x\n", 0, $a);
+  if ($expand)
+    for ( ; $a < $mem_size; $a++)
+      $hex.= sprintf("%08x //;%04x\n", 0, $a);
 
   $_REQUEST['hex']= $hex;
   //echo "REQ={$_REQUEST['submit']} vh=$view_hex aw=$aw\n";
