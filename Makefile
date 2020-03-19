@@ -2,17 +2,19 @@ TB		= tm
 
 PRG		= counter
 
-MODS		= decoder regm adder \
-		  comp \
-		    memory \
-		    cpu \
-		      alu \
-		      cntreg \
-		      rfm \
-		      schedm \
-		    gpio_out4 \
-		    gpio_in \
-		    timer
+MODS		= computer/decoder \
+		  computer/comp \
+		    computer/memory \
+		    cpu/cpu \
+		      cpu/regm \
+		      cpu/adder \
+		      cpu/alu \
+		      cpu/cntreg \
+		      cpu/rfm \
+		      cpu/schedm \
+		    computer/gpio_out4 \
+		    computer/gpio_in \
+		    computer/timer
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 
@@ -50,7 +52,7 @@ $(VCD): $(VVP) $(HEX_FILES)
 $(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc
 	iverilog -DPRG='"$(PRG).asc"' -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
-compile: $(HEX_FILES) $(MEM_SOURCES) $(ASC_SOURCES)
+compile: $(HEX_FILES) $(ASC_SOURCES)
 
 .SUFFIXES: .hex .asm .v .asc
 
