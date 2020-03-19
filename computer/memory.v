@@ -26,6 +26,7 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
 	if (CONTENT != "")
 	  begin
 	     $display("Init memory with %s", CONTENT);
+	     $display("Mem addr width %d", ADDR_SIZE);
 	     $readmemh(CONTENT, mem_array);
 	  end
 	//dout= 0;	

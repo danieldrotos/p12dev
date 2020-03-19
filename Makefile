@@ -1,6 +1,7 @@
 TB		= tm
 
 PRG		= counter
+AW		= 12
 
 MODS		= computer/decoder \
 		  computer/comp \
@@ -50,7 +51,7 @@ $(VCD): $(VVP) $(HEX_FILES)
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc
-	iverilog -DPRG='"$(PRG).asc"' -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+	iverilog -DPRG='"$(PRG).asc"' -DAW=$(AW) -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
 compile: $(HEX_FILES) $(ASC_SOURCES)
 
@@ -63,7 +64,7 @@ compile: $(HEX_FILES) $(ASC_SOURCES)
 	./as1516 $< >$@
 
 .hex.asc:
-	php ./hex2asc.php $< >$@
+	php ./hex2asc.php -- -m $(AW) $< >$@
 
 clean:
 	rm -f *~ $(VCD) $(VVP)

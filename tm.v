@@ -3,6 +3,10 @@
  `define PRG "counter.asc"
 `endif
 
+`ifndef AW
+ `define AW 12
+`endif
+
 module tm
   (
     input wire i, output wire o);
@@ -20,7 +24,7 @@ module tm
    comp
      #(
        .WIDTH(32),
-       .MEM_ADDR_SIZE(12),
+       .MEM_ADDR_SIZE(`AW),
        .PROGRAM( `PRG )
        )
    comp
