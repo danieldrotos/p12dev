@@ -55,11 +55,15 @@ show: sim
 
 sim: $(VCD)
 
-$(VCD): $(VVP) $(HEX_FILES)
+$(VCD): $(VVP)
 	vvp $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc prj.mk
-	iverilog -DPRG='"$(PRG).asc"' -DAW=$(AW) -DINSTS=$(INSTS) -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+	iverilog \
+		-DPRG='"$(PRG).asc"' \
+		-DAW=$(AW) \
+		-DINSTS=$(INSTS) \
+		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
 compile: $(HEX_FILES) $(ASC_FILES)
 
@@ -75,13 +79,13 @@ compile: $(HEX_FILES) $(ASC_FILES)
 	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \
-			*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
-			*.stx \
-			hex2asc source.txt
+		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
+		*.stx \
+		hex2asc source.txt
 
 clean:
 	rm -f $(clean_files)
-	
+
 wclean:
 	del /f $(clean_files)
 
