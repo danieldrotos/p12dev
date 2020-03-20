@@ -7,6 +7,10 @@
  `define AW 12
 `endif
 
+`ifndef INSTS
+ `define INSTS 1000
+`endif
+
 module tm
   (
     input wire i, output wire o);
@@ -37,19 +41,26 @@ module tm
     .clk10m(ioclk)
       );
 
-   
+   initial
+	begin
+	test_sel= 4'd14;
+	#2 reset= 1;
+	#10 reset= 0;
+	end
+
+   initial
+    begin
+	#100 btn= 32'd4;
+	#100 btn= 32'd0;
+	#100 btn= 32'd4;
+	#100 btn= 32'd0;
+    end
+    
    initial
      begin
 	$dumpfile("tm.vcd");
 	$dumpvars;
-	test_sel= 4'd14;
-	#2 reset= 1;
-	#10 reset= 0;
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
-	#10000 $finish;
+	#(`INSTS*8 + 14) $finish;
      end
    
 endmodule // tm

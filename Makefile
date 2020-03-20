@@ -1,7 +1,6 @@
 TB		= tm
 
-PRG		= examples/counter
-AW		= 12
+include prj.mk
 
 TOOLS		= ./tools
 
@@ -44,7 +43,7 @@ MEM_FILES	= $(patsubst %.hex,%.v,$(HEX_FILES))
 ASC_FILES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
 
-all: utils $(PRG).asc compile sim
+all: utils $(PRG).asc compile show
 
 utils: #hex2asc
 
@@ -54,13 +53,13 @@ source:
 show: sim
 	gtkwave $(VCD) $(GTKW)
 
-sim: source $(VCD)
+sim: $(VCD)
 
 $(VCD): $(VVP) $(HEX_FILES)
 	vvp $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc source.txt
-	iverilog -DPRG='"$(PRG).asc"' -DAW=$(AW) -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+$(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc prj.mk
+	iverilog -DPRG='"$(PRG).asc"' -DAW=$(AW) -DINSTS=$(INSTS) -o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
 compile: $(HEX_FILES) $(ASC_FILES)
 
@@ -75,8 +74,14 @@ compile: $(HEX_FILES) $(ASC_FILES)
 .hex.asc:
 	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
 
+clean_files	= *~ $(VCD) $(VVP) \
+			*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
+			*.stx \
+			hex2asc source.txt
+
 clean:
-	rm -f *~ $(VCD) $(VVP)
-	rm -f *.cmd_log *.html *.lso *.ngc *.ngr *.prj
-	rm -f *.stx
-	rm -f hex2asc source.txt
+	rm -f $(clean_files)
+	
+wclean:
+	del /f $(clean_files)
+
