@@ -13,15 +13,20 @@
 
 module tm
   (
-    input wire i, output wire o);
+   input wire  i,
+   output wire o
+   );
    reg 	       clk= 0;
    reg 	       ioclk= 0;
    reg 	       reset= 0;
    reg [3:0]   test_sel= 4'd0;
    reg [31:0]  btn= 0;
+   reg [31:0]  sw= 0;
    
    wire [31:0] tout;
-   
+   wire [31:0] porta, portb, portc, portd;
+
+   // 1 utasitas 8 ciklus ideig tart (4 orajel)
    always #1 clk= !clk;
    always #20 ioclk= ~ioclk;
    
@@ -36,26 +41,36 @@ module tm
       .clk(clk),
       .reset(reset),
       .PORTI(btn),
+      .PORTJ(sw),
+      .PORTA(porta),
+      .PORTB(portb),
+      .PORTC(portc),
+      .PORTD(portd),
       .TRS/*test_sel*/(test_sel),
       .TR/*test_out*/(tout),
-    .clk10m(ioclk)
+      .clk10m(ioclk)
       );
 
+   // Test kimenet kivalasztasa
+   // RESET jel eloallitasa
    initial
-	begin
+     begin
 	test_sel= 4'd14;
 	#2 reset= 1;
 	#10 reset= 0;
-	end
+     end
 
+   // Gombnyomas szimulalasa
    initial
     begin
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
+       #800 btn= 32'd4; // Megnyomva RESET utan 100 utasitassal
+       #800 btn= 32'd0; // 100 utasitas szunet
+       #800 btn= 32'd4; // 100 utasitas mulva egy ujabb gombnyomas...
+       #800 btn= 32'd0;
     end
-    
+
+   // Kimeneti file eloallitasa
+   // Leallitas INSTS szamu utasitas utan
    initial
      begin
 	$dumpfile("tm.vcd");
