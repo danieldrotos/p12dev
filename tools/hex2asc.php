@@ -33,7 +33,7 @@
   while ($l !== false)
   {
     //echo "$lnr procing line $l...\n";
-    if (preg_match('/^[0-9afA-F]/', $l))
+    if (preg_match('/^[0-9a-fA-F]/', $l))
     {
       echo substr($l, 0, 8)."\n";
       $lnr++;
