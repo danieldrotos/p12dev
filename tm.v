@@ -67,6 +67,8 @@ module tm
        #800 btn= 32'd0; // 100 utasitas szunet
        #800 btn= 32'd4; // 100 utasitas mulva egy ujabb gombnyomas...
        #800 btn= 32'd0;
+       //btn= 1009;
+       //sw= 1010;
     end
 
    // Kimeneti file eloallitasa
