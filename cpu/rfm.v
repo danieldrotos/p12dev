@@ -87,5 +87,23 @@ module rfm(clk, reset, wen, cen, link,
    assign last= pc_out;
    assign r14= reg_array[4'd14];
    assign r13= reg_array[4'd13];
+
+   wire [31:0] r0, r1,  r2,  r3;
+   wire [31:0] r4, r5,  r6,  r7;
+   wire [31:0] r8, r9, r10, r11;
+   wire [31:0] r12;
+   assign  r0= reg_array[4'd0];
+   assign  r1= reg_array[4'd1];
+   assign  r2= reg_array[4'd2];
+   assign  r3= reg_array[4'd3];
+   assign  r4= reg_array[4'd4];
+   assign  r5= reg_array[4'd5];
+   assign  r6= reg_array[4'd6];
+   assign  r7= reg_array[4'd7];
+   assign  r8= reg_array[4'd8];
+   assign  r9= reg_array[4'd9];
+   assign r10= reg_array[4'd10];
+   assign r11= reg_array[4'd11];
+   assign r12= reg_array[4'd12];
    
 endmodule // rfm

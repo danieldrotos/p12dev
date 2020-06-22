@@ -538,7 +538,10 @@ while ($l !== false)
     }
 $nuof_lines= $lnr;
 debug("; $nuof_lines lines buffered");
-for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
+  $addr= 0;
+  $mem[$addr]= 0;
+  $addr= 1;
+  for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
     {
         $l= trim($lines[$lnr]);
         $l= preg_replace("/;.*$/", "", $l);
