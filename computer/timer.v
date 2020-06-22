@@ -28,9 +28,12 @@ module timer
    reg [WIDTH-1:0] 	    ar;
    reg [WIDTH-1:0] 	    counter;
    reg 			    ovf;
-   
+   reg [WIDTH-1:0] 	    wcnt_buf;
+ 	    
    reg [WIDTH-1:0] 	    obuf;
-
+   
+   reg 			    wcnt;
+   
    //reg 			    dclk;
    //reg [7:0] 		    pre_cnt;
 /*
@@ -51,6 +54,20 @@ module timer
 	  pre_cnt<= 0;
      end
 */
+   wire 		    wcnt_res;
+   wire 		    wcnt_set;
+   
+   assign wcnt_res= wcnt & io_clk;
+   assign wcnt_set= cs & wen & (addr==REG_CNTR);
+   
+   always @(posedge clk, posedge wcnt_res)
+     begin
+	if (wcnt_res)
+	  wcnt<= 0;
+	else
+	  wcnt<= wcnt_set;
+     end
+   
    always @(posedge clk, posedge reset)
      begin
 	if (reset)
@@ -67,6 +84,7 @@ module timer
 		    REG_CTRL: control<= din;
 		    //REG_PSCR: prescaler<= din;
 		    REG_AR  : ar<= din;
+		    REG_CNTR: wcnt_buf<= din;
 		  endcase
 	       end
 	     else //if (cs & ~wen)

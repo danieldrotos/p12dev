@@ -50,10 +50,11 @@ module tm
 
    initial
     begin
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
-	#100 btn= 32'd4;
-	#100 btn= 32'd0;
+	#500 btn= 32'b00100;
+	#500 btn= 32'b10100;
+	#500 btn= 32'b01111;
+	#500 btn= 32'b11111;
+	#500 btn= 32'b10000;
     end
     
    initial
