@@ -1,3 +1,60 @@
+module drs
+  (
+   input wire c,
+   input wire d,
+   input wire s,
+   input wire r,
+   output reg q
+   );
+
+   always @(posedge c, posedge s, posedge r)
+     begin
+	if (s)
+	  q<= 1;
+	else if (r)
+	  q<= 0;
+	else
+	  q<= d;
+     end
+   
+endmodule // drs
+
+module dli
+  (
+   input wire c,
+   input wire d,
+   input wire l,
+   input wire di,
+   output wire q
+   );
+
+   drs ff
+     (
+      .c(c),
+      .d(d),
+      .s(l & di),
+      .r(l & !di),
+      .q(q)
+      );
+   
+endmodule // dli
+
+module rl
+  #(
+    parameter WIDTH=32
+    )
+  (
+   input wire 		   c,
+   input wire [WIDTH-1:0]  d,
+   input wire 		   l,
+   input wire [WIDTH-1:0]  di,
+   output wire [WIDTH-1:0] q
+   );
+
+   dli ff[WIDTH-1:0](.c(c), .d(d), .l(l), .di(di), .q(q));
+
+endmodule // rl
+
 module timer
   #(
     parameter WIDTH= 32,
@@ -26,47 +83,44 @@ module timer
    reg [WIDTH-1:0] 	    control;
    //reg [WIDTH-1:0] 	    prescaler;
    reg [WIDTH-1:0] 	    ar;
-   reg [WIDTH-1:0] 	    counter;
-   reg 			    ovf;
-   reg [WIDTH-1:0] 	    wcnt_buf;
- 	    
+   //reg [WIDTH-1:0] 	    counter;
+   //reg 		    ovf;
+   
    reg [WIDTH-1:0] 	    obuf;
+
+   wire [WIDTH-1:0] 	    qcnt;
+   wire [WIDTH-1:0] 	    qnxt;
+   wire [WIDTH-1:0] 	    dcnt;
+   wire 		    cntl;
+   wire 		    eq_ar;
    
-   reg 			    wcnt;
+   assign eq_ar= qcnt==ar;
    
-   //reg 			    dclk;
-   //reg [7:0] 		    pre_cnt;
-/*
-   always @(posedge io_clk)
-     begin
-	if (control[0])
-	  begin
-	     pre_cnt<= pre_cnt+1;
-	     if (pre_cnt == prescaler)
-	       begin
-		  pre_cnt<= 0;
-		  dclk<= 1;
-	       end
-	     else
-	       dclk<= 0;
-	  end // if (control[0])
-	else
-	  pre_cnt<= 0;
-     end
-*/
-   wire 		    wcnt_res;
-   wire 		    wcnt_set;
+   assign qnxt
+     =
+      (control[0])?
+      (eq_ar?0:qcnt+1):
+      (qcnt);
    
-   assign wcnt_res= wcnt & io_clk;
-   assign wcnt_set= cs & wen & (addr==REG_CNTR);
+   assign dcnt= reset?0:din;
    
-   always @(posedge clk, posedge wcnt_res)
-     begin
-	if (wcnt_res)
-	  wcnt<= 0;
-	else
-	  wcnt<= wcnt_set;
-     end
+   assign cntl= reset | (wen & cs & (addr==REG_CNTR));
+   
+   rl
+     #(
+       .WIDTH(WIDTH)
+       )
+   cnt
+     (
+      .c(io_clk),
+      .d(qnxt),
+      .l(cntl),
+      .di(dcnt),
+      .q(qcnt)
+      );
+
+   wire [WIDTH-1:0] 	    counter;
+   assign counter= qcnt;
    
    always @(posedge clk, posedge reset)
      begin
@@ -84,7 +138,6 @@ module timer
 		    REG_CTRL: control<= din;
 		    //REG_PSCR: prescaler<= din;
 		    REG_AR  : ar<= din;
-		    REG_CNTR: wcnt_buf<= din;
 		  endcase
 	       end
 	     else //if (cs & ~wen)
@@ -103,22 +156,32 @@ module timer
    wire ovf_clr;
    assign ar_reached= (counter == ar);
    assign ovf_clr= reset | (cs & wen & (addr==REG_STAT) & din[1]);
-      
-   always @(posedge /*dclk*/io_clk, posedge ovf_clr)
-     begin
-	if (ovf_clr)
-	  ovf<= 0;
-	else
-	  ovf<= ovf | (ar_reached & control[0]);
-     end
+   
+   drs ovff
+     (
+      .c(1'b0),
+      .d(1'b0),
+      .q(ovf),
+      .s(ar_reached),
+      .r(ovf_clr)
+      );
+   
+   //always @(posedge /*dclk*/io_clk, posedge ovf_clr)
+     //begin
+//	if (ovf_clr)
+//	  ovf<= 0;
+//	else
+//	  ovf<= ovf | (ar_reached & control[0]);
+  //   end
 
    wire cntr_load;
    assign cntr_load= wen & cs & (addr==REG_CNTR);
    wire [WIDTH-1:0] cnext;
    assign cnext= (control[0])?counter+1:
                  counter;
-   
-   always @(posedge cntr_load, posedge /*dclk*/io_clk, posedge reset)
+
+   /*
+   always @(posedge cntr_load, posedge io_clk, posedge reset)
      begin
 	if (reset)
 	  counter<= 0;
@@ -127,7 +190,7 @@ module timer
 	     //if (wen & cs & (addr==REG_CNTR))
 	       counter<= din;
 	  end
-	else if (/*dclk*/io_clk) 
+	else if (io_clk) 
 	  begin
 	     //if (control[0])
 	       //begin
@@ -138,6 +201,7 @@ module timer
 	       //end
 	  end
      end
+   */
    
    assign dout= obuf;
    assign irq= ovf & control[1];

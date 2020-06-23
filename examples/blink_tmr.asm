@@ -24,8 +24,8 @@
 	st	r9,r6
 	st	r9,r7
 	
-	ldl	r9,500000	; AR= 0.5 sec= 500,000 usec
-	ldh	r9,500000
+	ldl	r9,50	; AR= 0.5 sec= 500,000 usec
+	ldh	r9,50
 	st	r9,r1
 
 	ldl0	r10,3		; start timer
