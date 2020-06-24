@@ -62,11 +62,13 @@ module tm
 
    // Gombnyomas szimulalasa
    initial
-    begin
-       #800 btn= 32'd4; // Megnyomva RESET utan 100 utasitassal
-       #800 btn= 32'd0; // 100 utasitas szunet
-       #800 btn= 32'd4; // 100 utasitas mulva egy ujabb gombnyomas...
-       #800 btn= 32'd0;
+     begin
+	btn=8765210;
+	sw=3245345;	
+       //#2500 btn= 32'd1; // Megnyomva RESET utan 100 utasitassal
+       //#2400 btn= 32'd0; // 100 utasitas szunet
+       //#800 btn= 32'd1; // 100 utasitas mulva egy ujabb gombnyomas...
+       //#800 btn= 32'd0;
        //btn= 1009;
        //sw= 1010;
     end

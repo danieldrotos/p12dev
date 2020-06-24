@@ -1,4 +1,3 @@
-PRG		= examples/counter
+PRG		= 216
 AW		= 12
-INSTS		= 1000
-
+INSTS		= 5000
