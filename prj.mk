@@ -1,3 +1,3 @@
-PRG		= 216
+PRG		= examples/blink_tmr
 AW		= 12
-INSTS		= 5000
+INSTS		= 1000

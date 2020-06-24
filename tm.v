@@ -62,6 +62,7 @@ module tm
 
    // Gombnyomas szimulalasa
    initial
+<<<<<<< HEAD
      begin
 	btn=8765210;
 	sw=3245345;	
@@ -71,6 +72,14 @@ module tm
        //#800 btn= 32'd0;
        //btn= 1009;
        //sw= 1010;
+=======
+    begin
+	#500 btn= 32'b00100;
+	#500 btn= 32'b10100;
+	#500 btn= 32'b01111;
+	#500 btn= 32'b11111;
+	#500 btn= 32'b10000;
+>>>>>>> 2c5fed5e45d4161e922d9c30f08691bca192c480
     end
 
    // Kimeneti file eloallitasa
