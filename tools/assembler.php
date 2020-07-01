@@ -570,8 +570,11 @@ if (!empty($syms))
 debug(";  PHASE 2\n");
 
 foreach ($mem as $a => $m)
-    {
-        debug(";ph2; addr=$a code=".sprintf("%08x",$m['code'])." sym=${m['sym']} style=${m['style']}");
+  {
+    //echo "a=$a, m=".print_r($m,true)."\n";
+    if (!is_array($m))
+      continue;
+    debug(";ph2; addr=$a code=".sprintf("%08x",$m['code'])." sym=${m['sym']} style=${m['style']}");
         if ($m["sym"] !== false)
             {
                 $sval= 0;
@@ -615,11 +618,13 @@ debug("; PHASE 2 done");
 $hex.= "//; CODE\n";
 $p= -1;
 foreach ($mem as $a => $m)
+  {
+    if (!is_array($m))
+      continue;
+    debug(";ph3; addr=$a code=".sprintf("%08x",$m['code'])." sym=${m['sym']} style=${m['style']}");
+    if ($a != $p+1)
     {
-        debug(";ph3; addr=$a code=".sprintf("%08x",$m['code'])." sym=${m['sym']} style=${m['style']}");
-        if ($a != $p+1)
-            {
-                $p++;
+      $p++;
                 while ($p < $a)
                     {
                         $o= sprintf("%08x ;%04x", 0, $p);

@@ -70,7 +70,7 @@ compile: $(HEX_FILES) $(ASC_FILES)
 .SUFFIXES: .hex .asm .v .asc
 
 .asm.hex:
-	php $(TOOLS)/assembler.php -h $< >$@
+	php $(TOOLS)/assembler.php -h $< >$@ 2>`tty`
 
 .asm.v:
 	php $(TOOLS)/assembler.php $< >$@
