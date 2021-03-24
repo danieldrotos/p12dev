@@ -25,7 +25,7 @@ Töltsük ki/módosítsuk a prj.mk fájlt. Paraméterek:
 ------------------------
 
 A PRG paraméterben megadott néven (és helyre) mentsük el a fájlt .asm
-kiterjesztéssel. A irodalomjegyzékbõl használjuk a pcpu anyagot,
+kiterjesztéssel. Az irodalomjegyzékbõl használjuk a pcpu anyagot,
 amiben megtaláljuk a CPU utasításait, és a pasm-ot, amiben az
 assembler pszeudó utasításai vannak leírva. A fordításhoz azonban
 _ne_ a pasm-ban leírt módot, hanem az itt szereplõ eljárást használjuk!
