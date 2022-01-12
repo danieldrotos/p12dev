@@ -1,0 +1,8 @@
+F:G$porta$0$0(),C,0,0,0,0,0
+L:G$porta$0$0:f000
+F:G$start$0$0(),C,0,0,0,0,0
+L:G$start$0$0:2
+F:G$cycl$0$0(),C,0,0,0,0,0
+L:G$cycl$0$0:3
+F:G$patterns$0$0(),C,0,0,0,0,0
+L:G$patterns$0$0:9

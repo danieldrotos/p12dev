@@ -1,0 +1,14 @@
+F:G$porta$0$0(),C,0,0,0,0,0
+L:G$porta$0$0:f000
+F:G$vege$0$0(),C,0,0,0,0,0
+L:G$vege$0$0:9
+F:G$szum$0$0(),C,0,0,0,0,0
+L:G$szum$0$0:a
+F:G$cikl$0$0(),C,0,0,0,0,0
+L:G$cikl$0$0:f
+F:G$eredmeny$0$0(),C,0,0,0,0,0
+L:G$eredmeny$0$0:19
+F:G$adatok$0$0(),C,0,0,0,0,0
+L:G$adatok$0$0:1a
+F:G$verem$0$0(),C,0,0,0,0,0
+L:G$verem$0$0:24

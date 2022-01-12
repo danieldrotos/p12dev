@@ -1,4 +1,4 @@
-porta	=	0xf000		; address of GPIO output
+porta	equ	0xf000		; address of GPIO output
 
 	ldl0	r1,porta	; pointer to output
 	

@@ -1,4 +1,4 @@
-out	=	0xf000		; address of GPIO output
+out	equ	0xf000		; address of GPIO output
 	
 	ldl0	r0,out		; use R0 as pointer to GPIO
 	ldl0	r1,0		; start of counter value
