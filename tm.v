@@ -63,11 +63,7 @@ module tm
    // Gombnyomas szimulalasa
    initial
     begin
-	#500 btn= 32'b00100;
-	#500 btn= 32'b10100;
-	#500 btn= 32'b01111;
-	#500 btn= 32'b11111;
-	#500 btn= 32'b10000;
+       #5000 btn= 1;
     end
 
    // Kimeneti file eloallitasa
