@@ -32,6 +32,8 @@
   {
     //echo "$lnr procing line $l...\n";
     $f1= strtok($l, "// ");
+    if ($f1 == "=")
+      continue;
     if ($f1 == ";")
       $f1= strtok(" ");
     if ($in)

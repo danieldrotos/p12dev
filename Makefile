@@ -42,6 +42,7 @@ MEM_FILES	= $(patsubst %.hex,%.v,$(HEX_FILES))
 
 ASC_FILES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
+CDB_FILES	= $(patsubst %.hex,%.cdb,$(HEX_FILES))
 
 all: utils $(PRG).asc compile show
 
@@ -65,9 +66,9 @@ $(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc prj.mk
 		-DINSTS=$(INSTS) \
 		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
 
-compile: $(HEX_FILES) $(ASC_FILES)
+compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
-.SUFFIXES: .hex .asm .v .asc
+.SUFFIXES: .hex .asm .v .asc .cdb
 
 .asm.hex:
 	php $(TOOLS)/assembler.php -h $< >$@ 2>`tty`
@@ -77,6 +78,9 @@ compile: $(HEX_FILES) $(ASC_FILES)
 
 .hex.asc:
 	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
+
+.hex.cdb:
+	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \

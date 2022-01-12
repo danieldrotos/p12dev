@@ -64,13 +64,16 @@ $lnr= 1;
 $addr= 0;
 $mem= array();
 
-function mk_symbol($name, $value)
+function mk_symbol($name, $value, $constant= false)
 {
-    global $syms, $lnr;
-    $sym= array("name" => $name,
-    "value" => $value,
-    "line" => $lnr);
-    $syms[$name]= $sym;
+  global $syms, $lnr;
+  $sym= array(
+    "name" => $name,
+      "value" => $value,
+      "line" => $lnr,
+      "const" => $constant
+  );
+  $syms[$name]= $sym;
 }
 
 $conds= array(
@@ -489,7 +492,7 @@ function procl($l)
                                     $w= strtok(" \t");
                                     $val= intval($w,0);
                                     debug("EQU w=$w val=$val");
-                                    mk_symbol($prew, $val);
+                                    mk_symbol($prew, $val, $W=="=");
                                     debug(";procl; SYMBOL $prew=$val");
                                     $ok= true;
                                 }
@@ -557,15 +560,19 @@ $hex= '';
   debug("SYMBOLS", "black");
   //debug ("syms[0]= ${syms[0]}");
 $hex.= "//; SYMBOLS\n";
-if (!empty($syms))
+  if (!empty($syms))
+  {
+    foreach ($syms as $k => $s)
     {
-        foreach ($syms as $k => $s)
-            {
-                $o= sprintf("//; %08x", $s["value"])." $k";
-                $hex.= $o."\n";
-                debug($o, 'black');
-            }
+      if ($s['const'] == true)
+	$c= '=';
+      else
+	$c= ';';
+      $o= sprintf("//%s %08x", $c, $s["value"])." $k";
+      $hex.= $o."\n";
+      debug($o, 'black');
     }
+  }
 
 debug(";  PHASE 2\n");
 
