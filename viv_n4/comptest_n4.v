@@ -140,7 +140,7 @@ module comptest_n4
    assign portj= {16'd0, switches};
    comp
      #(
-       .PROGRAM        ("blink_tmr.hex")
+       .PROGRAM        ("examples/blink_tmr.hex")
        )
    computer
      (

@@ -1,3 +1,3 @@
-PRG		= gorcsos
+PRG		= examples/blink_tmr
 AW		= 12
-INSTS		= 1000
+INSTS		= 10000
