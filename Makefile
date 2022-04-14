@@ -4,7 +4,8 @@ include prj.mk
 
 TOOLS		= ./tools
 
-MODS		= computer/decoder \
+MODS		= defs \
+		  computer/decoder \
 		  computer/comp \
 		    computer/memory \
 		    cpu/cpu \
@@ -34,6 +35,7 @@ ASM_SOURCES	= examples/array_sum.asm \
 		examples/light2.asm \
 		examples/blink_tmr.asm \
 		examples/poll.asm \
+		examples/ff2ir.asm \
 		$(PRG).asm
 
 HEX_FILES	= $(patsubst %.asm,%.hex,$(ASM_SOURCES))
@@ -64,7 +66,10 @@ $(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc prj.mk
 		-DPRG='"$(PRG).asc"' \
 		-DAW=$(AW) \
 		-DINSTS=$(INSTS) \
+		-DIVERILOG=1 \
 		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+
+hw: $(VVP)
 
 compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 

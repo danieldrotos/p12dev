@@ -1,24 +1,6 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 05/31/2017 02:40:11 PM
-// Design Name: 
-// Module Name: comptest_n4
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
+`define PRG "examples/ff2ir.asc"
 
 module comptest_n4
   (
@@ -57,6 +39,16 @@ module comptest_n4
    reg 		      btnr;
    reg [15:0] 	      switches;
    
+   wire [3:0] clk_select;
+   wire [3:0] display_select;
+   wire [3:0] test_reg_select;
+   wire [3:0] test_out_select;
+   
+   assign clk_select     = switches[15:12];
+   assign display_select = switches[11:8];
+   assign test_out_select= switches[7:4];
+   assign test_reg_select= switches[3:0];
+   
    assign f100MHz= CLK;
    clk_gen clock_generator
      (
@@ -76,19 +68,25 @@ module comptest_n4
    
    wire 	      selected_clk;
    reg [31:0] 	      clk_test;
-   assign selected_clk= (SW[15:12]==4'h0)?f1Hz:
-                        (SW[15:12]==4'h1)?f10Hz:
-                        (SW[15:12]==4'h2)?f100Hz:
-                        (SW[15:12]==4'h3)?f1kHz:
-                        (SW[15:12]==4'h4)?f10kHz:
-                        (SW[15:12]==4'h5)?f100kHz:
-                        (SW[15:12]==4'h6)?f1MHz:
-                        (SW[15:12]==4'h7)?f10MHz:
-                        (SW[15:12]==4'h8)?f20MHz:
-                        (SW[15:12]==4'h9)?f25MHz:
-                        (SW[15:12]==4'ha)?f50MHz:
-                        (SW[15:12]==4'hb)?f100MHz:
-                        btnc;
+   mux16 #(.WIDTH(1)) clkmx(
+        .sel(clk_select),
+        .out(selected_clk),
+        .in0(f1Hz),
+        .in1(f10Hz),
+        .in2(f100Hz),
+        .in3(f1kHz),
+        .in4(f10kHz),
+        .in5(f100kHz),
+        .in6(f1MHz),
+        .in7(f10MHz),
+        .in8(f20MHz),
+        .in9(f25MHz),
+        .in10(f50MHz),
+        .in11(f100MHz),
+        .in12(btnc),
+        .in13(btnc),
+        .in14(btnc),
+        .in15(btnc));
    
    always @(posedge selected_clk, posedge res)
      if (res)
@@ -124,8 +122,8 @@ module comptest_n4
    wire [31:0] ctr;
    wire [31:0] arr;
    wire        ar_reached;
-   wire [31:0] tr;
-   wire [31:0] treg;
+   wire [31:0] test_out;
+   wire [31:0] test_reg;
    wire [31:0] mdi;
    wire [31:0] mdo;
    wire [31:0] addr;
@@ -140,7 +138,7 @@ module comptest_n4
    assign portj= {16'd0, switches};
    comp
      #(
-       .PROGRAM        ("examples/blink_tmr.hex")
+       .PROGRAM        ( `PRG )
        )
    computer
      (
@@ -155,15 +153,16 @@ module comptest_n4
       .PORTC          (portc),
       .PORTD          (portd),
       
-      .TRS            (switches[3:0]),
-      .TR             (tr),
+      .test_sel       (test_out_select),
+      .test_out       (test_out),
+      .test_rsel      (test_reg_select),
+      .test_reg       (test_reg),
       .CLKstat        (clk_stat),
       
       .ADDR           (addr),
       .MDO            (mdo),
       .MDI            (mdi),
       .MWE            (),
-      .TREG           (treg),
       .tmr            (tmr),
       .ctr            (ctr),
       .arr	      (arr),
@@ -173,24 +172,25 @@ module comptest_n4
    
    wire [31:0] display_data;
    wire [3:0]  display_sel;
-   assign display_sel= switches[7:4];
-   assign display_data=    (display_sel==4'h0)?porta:
-                           (display_sel==4'h1)?portb:
-                           (display_sel==4'h2)?portc:
-                           (display_sel==4'h3)?portd:
-                           (display_sel==4'h4)?clk_test:
-                           (display_sel==4'h5)?arr:
-                           (display_sel==4'h6)?tmr:
-                           (display_sel==4'h7)?ctr:
-                           (display_sel==4'h8)?tr:
-                           (display_sel==4'h9)?treg:
-                           (display_sel==4'ha)?porti:
-                           (display_sel==4'hb)?portj:
-                           (display_sel==4'hc)?irqs:
-                           (display_sel==4'hd)?mdi:
-                           (display_sel==4'he)?mdo:
-                           (display_sel==4'hf)?addr:
-                           32'd0;
+   mux16 dspmx(
+        .sel(display_select),
+        .in0(porta),
+        .in1(portb),
+        .in2(portc),
+        .in3(portd),
+        .in4(clk_test),
+        .in5(arr),
+        .in6(tmr),
+        .in7(ctr),
+        .in8(test_out),
+        .in9(test_reg),
+        .in10(porti),
+        .in11(portj),
+        .in12(irqs),
+        .in13(mdi),
+        .in14(mdo),
+        .in15(addr),
+        .out(display_data));
    
    seg7 #(4) seg7drv
      (
@@ -200,7 +200,8 @@ module comptest_n4
       .an             (an)
       );
    
-   assign LEDS= //portb[15:0];
+   assign LEDS= portb[15:0];
+   /*
 		{
 		 clk_stat,
 		 irqs[0],
@@ -210,5 +211,6 @@ module comptest_n4
 		 f1MHz,
 		 portc[7:0]
 		 };
+   */
    
 endmodule // comptest_n4

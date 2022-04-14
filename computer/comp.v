@@ -19,15 +19,16 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] PORTD,
     
     // test the CPU
-    input wire [3:0] 	    TRS/*test_sel*/,
-    output wire [WIDTH-1:0] TR/*test_out*/,
+    input wire [3:0] 	    test_sel,
+    output wire [WIDTH-1:0] test_out,
+    input wire [3:0] 	    test_rsel,
+    output wire [WIDTH-1:0] test_reg,
     output wire [2:0] 	    CLKstat,
     //output wire [WIDTH-1:0] dummy
     output wire [WIDTH-1:0] ADDR,
     output wire [WIDTH-1:0] MDO,
     output wire [WIDTH-1:0] MDI,
     output wire 	    MWE,
-    output wire [WIDTH-1:0] TREG,
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
     output wire [WIDTH-1:0] arr,
@@ -60,9 +61,10 @@ module comp //(clk, reset, test_sel, test_out);
       .mbus_din(bus_data_in),
       .mbus_dout(bus_data_out),
       .mbus_wen(bus_wen),
-      .test_reg(TREG),
-      .test_sel(TRS/*test_sel*/),
-      .test_out(TR/*test_out*/),
+      .test_sel(test_sel),
+      .test_out(test_out),
+      .test_rsel(test_rsel),
+      .test_reg(test_reg),
       .clk_stat(CLKstat)
       );
 

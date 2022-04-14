@@ -1,25 +1,25 @@
-module cpu(clk, reset,
-	   mbus_aout, mbus_din, mbus_dout, mbus_wen,
-	   test_sel, test_reg, test_out, clk_stat);
-   parameter WIDTH= 32;
-   parameter ADDR_SIZE= 32;
-
+module cpu
+  #(
+    parameter WIDTH= 32,
+    parameter ADDR_SIZE= 32
+    )
+  (
    // basic inputs
-   input wire clk;
-   input wire reset;
-
+   input wire 		       clk,
+   input wire 		       reset,
    // bus
-   input wire [WIDTH-1:0] mbus_din;
-   output wire [ADDR_SIZE-1:0] mbus_aout;
-   output wire [WIDTH-1:0]     mbus_dout;
-   output wire 		       mbus_wen;
-
+   output wire [ADDR_SIZE-1:0] mbus_aout,
+   input wire [WIDTH-1:0]      mbus_din,
+   output wire [WIDTH-1:0]     mbus_dout,
+   output wire 		       mbus_wen,
    // test
-   input wire [3:0] 	       test_sel;
-   output wire [WIDTH-1:0]     test_out;
-   output wire [WIDTH-1:0]     test_reg;
-   output wire [2:0] 	       clk_stat;
-   
+   input wire [3:0] 	       test_sel,
+   output wire [WIDTH-1:0]     test_out,
+   input wire [3:0] 	       test_rsel,
+   output wire [WIDTH-1:0]     test_reg,
+   output wire [2:0] 	       clk_stat
+   );
+
    // internal signals
    wire [WIDTH-1:0] 	       ic;	// output of IC register
    wire [WIDTH-1:0] 	       pc;	// output of PC register 
@@ -200,7 +200,7 @@ module cpu(clk, reset,
       .db(opb),				// value of Rb
       .rd(rd),				// Rd part of code
       .dd(opd),				// value of Rd
-      .rt(test_sel),
+      .rt(test_rsel),
       .dt(test_reg),
       .last(pc),
       .r14(r14),
@@ -266,7 +266,7 @@ module cpu(clk, reset,
 			 }:
        (test_sel==4'hd)?mbus_aout:
        (test_sel==4'he)?mbus_dout:
-       (test_sel==4'hf)?test_reg:
+       (test_sel==4'hf)?mbus_din:
        0;
-   
+
 endmodule // cpu

@@ -1,3 +1,5 @@
+`include "defs.v"
+
 module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
   #(
     parameter WIDTH	= 8,	// cell size in bits
@@ -19,15 +21,21 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
    reg [WIDTH-1:0] 	      mem_array[0:(1<<ADDR_SIZE)-1];
 
    integer 		      i;
+   reg [128*8:1] 	      string;
    initial
      begin
+	// Initialize memory content to zero
 	for (i= 0; i < (1<<ADDR_SIZE); i= i+1)
 	  mem_array[i]= 0;
 	if (CONTENT != "")
 	  begin
-	     $display("Init memory with %s", CONTENT);
+	     $display("Memory CONTENT=%s", CONTENT);		      
+	     string= { `SW_PATH, "/", CONTENT };
+	     $display("Init memory with %s", string);
 	     $display("Mem addr width %d", ADDR_SIZE);
-	     $readmemh(CONTENT, mem_array);
+	     $readmemh(string, mem_array);
+	     for (i=0;i<10;i=i+1)
+	       $display("Mem[%x]=%x",i,mem_array[i]);
 	  end
 	//dout= 0;	
      end

@@ -1,15 +1,15 @@
 [*]
-[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Sun Feb 16 21:27:40 2020
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Thu Apr 14 11:34:31 2022
 [*]
-[dumpfile] "/mhome/staff/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Sun Feb 16 21:24:09 2020"
-[dumpfile_size] 454179
-[savefile] "/mhome/staff/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 145
-[size] 1744 767
+[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Thu Apr 14 11:34:09 2022"
+[dumpfile_size] 14909480
+[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 0
+[size] 1744 892
 [pos] 42 25
-*-3.340610 37 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-13.629200 37 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.cpu.
@@ -17,7 +17,7 @@
 [sst_width] 215
 [signals_width] 213
 [sst_expanded] 1
-[sst_vpaned_height] 295
+[sst_vpaned_height] 350
 @28
 tm.clk
 tm.reset
@@ -53,10 +53,16 @@ tm.comp.cpu.regs.pc_reg.wen
 @22
 tm.comp.cpu.regs.pc_reg.dout[31:0]
 tm.comp.PORTI[31:0]
+@23
+tm.comp.PORTJ[31:0]
+@22
 tm.comp.PORTA[31:0]
 tm.comp.PORTB[31:0]
 tm.comp.PORTC[31:0]
-@23
 tm.comp.cpu.regs.rt[3:0]
+tm.test_sel[3:0]
+tm.test_out[31:0]
+tm.test_rsel[3:0]
+tm.test_reg[31:0]
 [pattern_trace] 1
 [pattern_trace] 0
