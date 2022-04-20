@@ -582,26 +582,39 @@ foreach ($mem as $a => $m)
     if (!is_array($m))
       continue;
     debug(";ph2; addr=$a code=".sprintf("%08x",$m['code'])." sym=${m['sym']} style=${m['style']}");
-        if ($m["sym"] !== false)
-            {
-                $sval= 0;
-                if (strspn($m['sym'], '0123456789+-') > 0)
-                    {
-                        $sval= intval($m['sym'],0);
-                        debug(";ph2; sym(${m['sym']}) is number= $sval");
-                    }
-                else
-                    {
-                        if (!isset($syms[$m["sym"]]))
-                            {
-                                debug(";ERROR ${m['sym']} undefined");
-                            }
-                        else
-                            {
-                                $sval= $syms[$m['sym']]['value'];
-                                debug(";ph2; symbol= $sval");
-                            }
-                    }
+    if ($m["sym"] !== false)
+    {
+      $sval= 0;
+      $sname= $m['sym'];
+      if (strspn($m['sym'], '0123456789+-') > 0)
+      {
+        $sval= intval($m['sym'],0);
+        debug(";ph2; sym(${m['sym']}) is number= $sval");
+      }
+      else if ($sname[0] == "'")
+      {
+	$c= substr($sname,1,1);
+	$sval= ord($c);
+	debug(";ph2; sym({$m['sym']}) is char= $sval");
+      }
+      else if (substr($sname,0,2)=="' ")
+      {
+	$sval= 32;
+	debug(";ph2; sym({$m['sym']}) is char= $sval");
+      }
+      else
+      {
+        if (!isset($syms[$m["sym"]]))
+        {
+          debug(";ERROR ${m['sym']} undefined");
+        }
+        else
+        {
+          $sval= $syms[$m['sym']]['value'];
+          debug(";ph2; symbol= $sval");
+        }
+      }
+      
                 if ($m['style'] == 'L')
                     $m["code"]= ($m['code'] & 0xffff0000) | ($sval & 0x0000ffff);
                 else if ($m['style'] == 'H')

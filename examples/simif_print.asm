@@ -6,11 +6,12 @@
 vege:	jmp	vege
 	
 start:	
-	ldl0	r0,65		; 'A'
+	ldl0	r0,'A' ;65		; 'A'
 cikl:	
 	call	putchar
 	inc	r0
-	ldl0	r10,91		; 'Z'+1
+	ldl0	r10,'Z' ;91		; 'Z'
+	inc	r10
 	cmp	r10,r0,r10
 	jnz	cikl
 	jmp	start
@@ -19,7 +20,7 @@ cikl:
 putchar:
 	push	r14
 	inc	sp
-	ldl0	r12,112		; 'p'
+	ldl0	r12,'p' ;112		; 'p'
 	ldl0	r10,simif
 	st	r12,r10
 	st	r0,r10
@@ -44,18 +45,18 @@ print_exit:
 	ret
 
 Hello:
-	db	72
-	db	101
-	db	108
-	db	108
-	db	111
+	db	'H'	;72
+	db	'e'
+	db	'l'
+	db	'l'
+	db	'o'
 	db	32
-	db	87
-	db	111
-	db	114
-	db	108
-	db	100
-	db	33
+	db	'W'
+	db	'o'
+	db	'r'
+	db	'l'
+	db	'd'
+	db	'!'
 	db	10
 	db	0
 	
