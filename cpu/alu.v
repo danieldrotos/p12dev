@@ -3,7 +3,7 @@ module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
     parameter WIDTH=8
     )
    (
-    input wire [4:0] 	    op,
+    input wire [5:0] 	    op,
    
     input wire 		    ci,
     input wire 		    vi,

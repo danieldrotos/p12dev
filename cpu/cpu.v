@@ -146,7 +146,7 @@ module cpu
    defparam alu.WIDTH= WIDTH;
    alu alu
      (
-      .op(op_code),
+      .op({1'b0,op_code}),
       .ci(flag_c),
       .zi(flag_z),
       .si(flag_s),

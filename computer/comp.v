@@ -82,6 +82,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_porti;
    wire 		    cs_portj;
    wire 		    cs_portabcd;
+   wire 		    cs_simif;
    
    wire addr_64k;
    assign addr_64k= (bus_address[31:16] == 16'd0);
@@ -96,7 +97,8 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_portj= addr_64k & chip_selects[13];
    assign cs_porti= addr_64k & chip_selects[14];
    assign cs_portabcd= addr_64k & chip_selects[15];
-
+   assign cs_simif= addr_64k & (bus_address[15:0]==16'hffff);
+   
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
@@ -164,6 +166,17 @@ module comp //(clk, reset, test_sel, test_out);
       .portb(PORTB),
       .portc(PORTC),
       .portd(PORTD)
+      );
+
+   // write only, no data out
+   simif #(.WIDTH(WIDTH)) sim_interface
+     (
+      .clk(clk),
+      .reset(reset),
+      .cs(cs_simif),
+      .wen(bus_wen),
+      .addr(bus_address[0:0]),
+      .din(bus_data_out)
       );
 
    assign bus_data_in

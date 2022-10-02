@@ -17,7 +17,8 @@ MODS		= defs \
 		      cpu/schedm \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
-		    computer/timer
+		    computer/timer \
+		    computer/simif
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 
