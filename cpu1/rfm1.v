@@ -106,4 +106,4 @@ module rfm1(clk, reset, wen, cen, link,
    assign r11= reg_array[4'd11];
    assign r12= reg_array[4'd12];
    
-endmodule // rfm
+endmodule // rfm1

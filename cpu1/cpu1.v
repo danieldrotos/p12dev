@@ -269,4 +269,4 @@ module cpu1
        (test_sel==4'hf)?mbus_din:
        0;
 
-endmodule // cpu
+endmodule // cpu1

@@ -28,4 +28,4 @@ module pc1 //(clk, reset, cen, wen, din, dout);
 
    assign dout= r;
    
-endmodule // cntreg
+endmodule // pc1

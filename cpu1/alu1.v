@@ -161,4 +161,4 @@ module alu1 //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
 	      //(op==op_tst)?ai&bi:
 	      ci;
 
-endmodule // alu
+endmodule // alu1
