@@ -1,4 +1,4 @@
-module alu //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
+module alu1 //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
   #(
     parameter WIDTH=8
     )

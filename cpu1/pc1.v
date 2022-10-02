@@ -1,4 +1,4 @@
-module cntreg //(clk, reset, cen, wen, din, dout);
+module pc1 //(clk, reset, cen, wen, din, dout);
   #(
     parameter WIDTH= 32
    )

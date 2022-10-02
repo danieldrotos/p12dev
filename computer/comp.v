@@ -53,7 +53,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire irq_timer;
    
    //defparam cpu.WIDTH= WIDTH;
-   cpu #(.WIDTH(WIDTH)) cpu
+   cpu1 #(.WIDTH(WIDTH)) cpu
      (
       .clk(clk),
       .reset(reset),

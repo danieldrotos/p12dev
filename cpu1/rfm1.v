@@ -1,4 +1,4 @@
-module rfm(clk, reset, wen, cen, link,
+module rfm1(clk, reset, wen, cen, link,
 	   wa, din,
 	   ra, da,
 	   rb, db,
@@ -31,7 +31,7 @@ module rfm(clk, reset, wen, cen, link,
 
    wire [WIDTH-1:0] 	   pc_out;
    reg [WIDTH-1:0] 	   reg_array[0:(1<<ADDR_SIZE)-1-1];
-   cntreg pc_reg
+   pc1 pc_reg
      (
       .clk(clk),
       .reset(reset),

@@ -1,4 +1,4 @@
-module cpu
+module cpu1
   #(
     parameter WIDTH= 32,
     parameter ADDR_SIZE= 32
@@ -144,7 +144,7 @@ module cpu
    
    // ALU
    defparam alu.WIDTH= WIDTH;
-   alu alu
+   alu1 alu
      (
       .op({1'b0,op_code}),
       .ci(flag_c),
@@ -185,7 +185,7 @@ module cpu
    // Register file: R0..R15 (R14=Link,R15=PC)
    defparam regs.WIDTH= WIDTH;
    defparam regs.ADDR_SIZE= 4;
-   rfm regs
+   rfm1 regs
      (
       .clk(clk),
       .reset(reset),

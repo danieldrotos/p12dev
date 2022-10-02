@@ -8,13 +8,13 @@ MODS		= defs \
 		  computer/decoder \
 		  computer/comp \
 		    computer/memory \
-		    cpu/cpu \
-		      cpu/regm \
-		      cpu/adder \
-		      cpu/alu \
-		      cpu/cntreg \
-		      cpu/rfm \
-		      cpu/schedm \
+		    cpu1/cpu1 \
+		      cpu1/regm \
+		      cpu1/adder \
+		      cpu1/alu1 \
+		      cpu1/pc1 \
+		      cpu1/rfm1 \
+		      cpu1/schedm \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
 		    computer/timer \
