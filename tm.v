@@ -70,6 +70,13 @@ module tm
        #5000 sw= 1;
     end
 
+   initial
+     begin
+	#100 btn= 5'b01110;
+	#100 btn= 5'b11011;
+	#100 btn= 5'b10101;
+     end
+   
    // Kimeneti file eloallitasa
    // Leallitas INSTS szamu utasitas utan
    initial
