@@ -12,5 +12,6 @@
 `define CIDX 1
 `define ZIDX 2
 `define OIDX 3
+`define VIDX 3
 `define PIDX 4
 `define UIDX 5
