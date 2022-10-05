@@ -110,7 +110,11 @@ module cpu2
    wire 		       inst_ld_r= inst==5;
    wire 		       inst_st_i= inst==6;
    wire 		       inst_ld_i= inst==7;
-
+   wire 		       inst_ld;
+   wire 		       inst_st;
+   assign inst_ld= inst_ld_r | inst_ld_i;
+   assign inst_st= inst_st_r | inst_st_i;
+   
    // decode condition
    wire 		       ena;
 
@@ -127,4 +131,32 @@ module cpu2
       .flag_we()
       );
    	    
+
+   // memory interface
+   wire 		       en_mr_data;
+   assign en_mr_data= phm & inst_ld;
+   always @(posedge clk)
+     begin
+	if (en_mr_data)
+	  mr_data<= mbus_din;
+     end
+
+   wire [WIDTH-1:0] addr_phf;
+   wire [WIDTH-1:0] addr_phe;
+   wire [WIDTH-1:0] addr_phm;
+   wire [WIDTH-1:0] addr_phw;
+
+   assign addr_phf= pc;
+   assign addr_phe= inst_ld?opa:pc;
+   assign addr_phm= (inst_ld|inst_st)?opa:pc;
+   assign addr_phw= (inst_br&ena)?wb_data:pc;
+   
+   assign mbus_dout= opd;
+   assign mbus_aout= phf?addr_phf:
+		     phe?addr_phe:
+		     phm?addr_phm:
+		     phw?addr_phw:
+		     pc;
+   assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
+
 endmodule // cpu2
