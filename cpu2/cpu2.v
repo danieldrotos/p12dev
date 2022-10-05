@@ -99,7 +99,8 @@ module cpu2
    wire [19:0] 		       im20= ic[19:0];
    wire 		       u= ic[15];
    wire 		       p= ic[14];
-
+   wire 		       w= ic[24];
+   
    // decode instructions
    wire 		       inst_alu2= inst==0;
    wire 		       inst_alu1= inst==1;
@@ -109,16 +110,25 @@ module cpu2
    wire 		       inst_ld_r= inst==5;
    wire 		       inst_st_i= inst==6;
    wire 		       inst_ld_i= inst==7;
+   wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
+   wire 		       inst_br;
+   wire 		       inst_wb;
    assign inst_ld= inst_ld_r | inst_ld_i;
    assign inst_st= inst_st_r | inst_st_i;
-
-
+   assign inst_alu= inst_alu1 | inst_alu2;
+   assign inst_br= inst_call | (inst_wb & (rd==4'd15));
+   assign inst_wb= (inst_alu & alu_wb_en) |
+		   inst_ld;
+   
    // decode condition
    wire 		       ena;
 
-   // ALU
+   // ALU inst
+   wire 		       alu_wb_en;
+   wire 		       alu_flag_en;
+   
    alu2 alu
      (
       // inputs
@@ -130,9 +140,19 @@ module cpu2
       // outputs
       .res(res_alu),
       .fo(res_flags),
-      .flag_we()
+      .wb_en(alu_wb_en),
+      .flag_en(alu_flag_en)
       );
 
+   // CALL inst
+   wire [WIDTH-1:0] 	       aof_call_abs;
+   wire [WIDTH-1:0] 	       aof_call_idx;
+   wire [WIDTH-1:0] 	       sex_im20;
+   wire 		       sof_im20= im20[19];
+   assign sex_im20= {sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,im20};
+   assign aof_call_abs= {8'b0, im24};
+   assign aof_call_idx= opd+sex_im20;
+   assign res_call= ic[24]?aof_call_idx:aof_call_abs;
    
    // memory interface
    // calculate address of ld/st instructions

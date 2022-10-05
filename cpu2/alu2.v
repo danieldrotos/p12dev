@@ -16,7 +16,8 @@ module alu2
     output wire [WIDTH-1:0] res,
     output wire [7:0] 	    fo,
 
-    output wire 	    flag_we    
+    output wire 	    wb_en, 
+    output wire 	    flag_en
     );
 
    wire [WIDTH-1:0] 	    op2;
