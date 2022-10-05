@@ -40,6 +40,7 @@ module cpu2
    // selected data to use in writeback
    wire [3:0] 		       wb_address;
    wire [WIDTH-1:0] 	       wb_data;	// writeback data
+   wire 		       wb_en;
 
    // scheduler generates phase signals
    schedm scheduler
@@ -113,22 +114,23 @@ module cpu2
    wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
+   wire 		       inst_mem;
    wire 		       inst_br;
    wire 		       inst_wb;
    assign inst_ld= inst_ld_r | inst_ld_i;
    assign inst_st= inst_st_r | inst_st_i;
+   assign inst_mem= inst_st | inst_ld;
    assign inst_alu= inst_alu1 | inst_alu2;
    assign inst_br= inst_call | (inst_wb & (rd==4'd15));
    assign inst_wb= (inst_alu & alu_wb_en) |
 		   inst_ld;
-   
+
    // decode condition
    wire 		       ena;
 
    // ALU inst
    wire 		       alu_wb_en;
    wire 		       alu_flag_en;
-   
    alu2 alu
      (
       // inputs
@@ -153,6 +155,17 @@ module cpu2
    assign aof_call_abs= {8'b0, im24};
    assign aof_call_idx= opd+sex_im20;
    assign res_call= ic[24]?aof_call_idx:aof_call_abs;
+
+   // Select data for write back
+   assign wb_data= inst_alu?res_alu:
+		   inst_call?res_call:
+		   inst_ext?0:
+		   inst_ld?mr_data:
+		   inst_st?0:
+		   0;
+   assign wb_address= inst_call?4'd15:
+		      rd;
+   assign wb_en= ena & inst_wb & phw;
    
    // memory interface
    // calculate address of ld/st instructions
