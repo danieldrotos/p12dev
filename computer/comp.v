@@ -53,7 +53,12 @@ module comp //(clk, reset, test_sel, test_out);
    wire irq_timer;
    
    //defparam cpu.WIDTH= WIDTH;
-   cpu1 #(.WIDTH(WIDTH)) cpu
+`ifdef CPU2
+   cpu2
+`else
+   cpu1
+`endif
+     #(.WIDTH(WIDTH)) cpu
      (
       .clk(clk),
       .reset(reset),

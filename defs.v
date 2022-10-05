@@ -1,3 +1,5 @@
+`define CPU2
+
 `ifdef IVERILOG
 
  `define SW_PATH "."

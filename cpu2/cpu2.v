@@ -38,7 +38,7 @@ module cpu2
    wire 		       u_res;
    // results
    wire [WIDTH-1:0] 	       res_alu;
-   wire [5:0] 		       res_flags;
+   wire [7:0] 		       res_flags;
    wire [WIDTH-1:0] 	       res_call;
    wire [WIDTH-1:0] 	       res_ld;
    
@@ -55,7 +55,7 @@ module cpu2
       );
 
    // FLAG register
-   wire [5:0] 		       flags;
+   wire [7:0] 		       flags;
    wire 		       flag_c;
    wire 		       flag_s;
    wire 		       flag_z;
@@ -63,20 +63,20 @@ module cpu2
    wire 		       flag_p;
    wire 		       flag_u;
    
-   regm #(.WIDTH(6)) reg_flag
+   regm #(.WIDTH(8)) reg_flag
      (
       .clk(clk),
       .reset(reset/*1'b0*/),
       .cen(flagwb_en),
-      .din (ers_flags),
+      .din (res_flags),
       .dout(flags)
       );
-   assign flag_c= flags[CIDX];
-   assign flag_s= flags[SIDX];
-   assign flag_z= flags[ZIDX];
-   assign flag_v= flags[VIDX];
-   assign flag_p= flags[PIDX];
-   assign flag_u= flags[UIDX];
+   assign flag_c= flags[`CIDX];
+   assign flag_s= flags[`SIDX];
+   assign flag_z= flags[`ZIDX];
+   assign flag_v= flags[`VIDX];
+   assign flag_p= flags[`PIDX];
+   assign flag_u= flags[`UIDX];
       
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
@@ -93,7 +93,7 @@ module cpu2
    wire [2:0] 		       inst= ic[27:25];
    wire 		       inst_param= ic[24];
    wire [3:0] 		       rd= ic[23:20];
-   wire [4:0] 		       alu_op= {ic[24],ic[19:16]};
+   wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
    wire [3:0] 		       rb= ic[11:8];
    wire [15:0] 		       im16= ic[15:0];
    wire [23:0] 		       im24= ic[23:0];
@@ -122,12 +122,12 @@ module cpu2
    alu2 alu
      (
       .op(alu_op),
-      .fi({1'b0,1'b0,flags}),
+      .fi(flags),
       .bi(),
       .di(),
       .im(im16),
       .res(),
-      .fo({1'b0,1'b0,res_flags}),
+      .fo(res_flags),
       .flag_we()
       );
    	    
