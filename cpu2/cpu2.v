@@ -28,20 +28,19 @@ module cpu2
    wire 		       phe;	// PC increment; execute
    wire 		       phm;	// memory r/w; link
    wire 		       phw;	// writeback
-   // output sources
-   wire [WIDTH-1:0] 	       alu_res;
-   wire 		       c_res;
-   wire 		       z_res;
-   wire 		       s_res;
-   wire 		       v_res;
-   wire 		       p_res;
-   wire 		       u_res;
+   // selected data as parameteres
+   wire [WIDTH-1:0] 	       opa;
+   wire [WIDTH-1:0] 	       opb;
+   wire [WIDTH-1:0] 	       opd;
    // results
    wire [WIDTH-1:0] 	       res_alu;
    wire [7:0] 		       res_flags;
    wire [WIDTH-1:0] 	       res_call;
    wire [WIDTH-1:0] 	       res_ld;
-   
+   // selected data to use in writeback
+   wire [3:0] 		       wb_address;
+   wire [WIDTH-1:0] 	       wb_data;	// writeback data
+
    // scheduler generates phase signals
    schedm scheduler
      (
@@ -114,49 +113,60 @@ module cpu2
    wire 		       inst_st;
    assign inst_ld= inst_ld_r | inst_ld_i;
    assign inst_st= inst_st_r | inst_st_i;
-   
+
+
    // decode condition
    wire 		       ena;
 
    // ALU
    alu2 alu
      (
+      // inputs
       .op(alu_op),
       .fi(flags),
       .bi(),
       .di(),
       .im(im16),
-      .res(),
+      // outputs
+      .res(res_alu),
       .fo(res_flags),
       .flag_we()
       );
-   	    
 
+   
    // memory interface
+   // calculate address of ld/st instructions
+   wire [WIDTH-1:0] 	       aof_ldst;
+   
+   // handle input data lines
    wire 		       en_mr_data;
    assign en_mr_data= phm & inst_ld;
+   // latched data read from memory
+   reg [WIDTH-1:0] 	       mr_data;
    always @(posedge clk)
      begin
 	if (en_mr_data)
 	  mr_data<= mbus_din;
      end
 
+   // produce address outputs
    wire [WIDTH-1:0] addr_phf;
    wire [WIDTH-1:0] addr_phe;
    wire [WIDTH-1:0] addr_phm;
    wire [WIDTH-1:0] addr_phw;
 
    assign addr_phf= pc;
-   assign addr_phe= inst_ld?opa:pc;
-   assign addr_phm= (inst_ld|inst_st)?opa:pc;
+   assign addr_phe= inst_ld?aof_ldst:pc;
+   assign addr_phm= (inst_ld|inst_st)?aof_ldst:pc;
    assign addr_phw= (inst_br&ena)?wb_data:pc;
-   
-   assign mbus_dout= opd;
    assign mbus_aout= phf?addr_phf:
 		     phe?addr_phe:
 		     phm?addr_phm:
 		     phw?addr_phw:
 		     pc;
+
+   // produce data outpouts   
+   assign mbus_dout= opd;
    assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
 
 endmodule // cpu2
