@@ -1,19 +1,20 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Apr 14 11:34:31 2022
+[*] Thu Oct  6 12:32:45 2022
 [*]
 [dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Thu Apr 14 11:34:09 2022"
-[dumpfile_size] 14909480
+[dumpfile_mtime] "Thu Oct  6 12:31:50 2022"
+[dumpfile_size] 5274603
 [savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
 [timestart] 0
 [size] 1744 892
 [pos] 42 25
-*-13.629200 37 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-3.629200 15 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
-[treeopen] tm.comp.cpu.
-[treeopen] tm.comp.cpu.regs.
+[treeopen] tm.comp.genblk1.
+[treeopen] tm.comp.genblk1.cpu.
+[treeopen] tm.comp.genblk1.cpu.regs.
 [sst_width] 215
 [signals_width] 213
 [sst_expanded] 1
@@ -21,45 +22,24 @@
 @28
 tm.clk
 tm.reset
-tm.comp.cpu.phf
-tm.comp.cpu.phe
-tm.comp.cpu.phm
-tm.comp.cpu.phw
+tm.comp.genblk1.cpu.phf
+tm.comp.genblk1.cpu.phe
+tm.comp.genblk1.cpu.phm
+tm.comp.genblk1.cpu.phw
 @22
-tm.comp.cpu.pc[31:0]
-tm.comp.cpu.ic[31:0]
-tm.comp.cpu.mbus_aout[31:0]
-tm.comp.cpu.mbus_din[31:0]
+tm.comp.genblk1.cpu.pc[31:0]
 @28
-tm.comp.cpu.mbus_wen
+tm.comp.genblk1.cpu.regs.fn_inc_pc
+tm.comp.genblk1.cpu.regs.r15.wen1
+tm.comp.genblk1.cpu.regs.r15.wen2
 @22
-tm.comp.cpu.mbus_dout[31:0]
-@28
-tm.comp.cpu.ena
-tm.comp.cpu.inst_wb
-@22
-tm.comp.cpu.wb_address[3:0]
-tm.comp.cpu.wb_data[31:0]
-@28
-tm.comp.cpu.link_en
-tm.comp.cpu.regs.link
-@22
-tm.comp.cpu.regs.din[31:0]
-tm.comp.cpu.regs.wa[3:0]
-tm.comp.cpu.regs.pc_reg.din[31:0]
-@28
-tm.comp.cpu.regs.pc_reg.cen
-tm.comp.cpu.regs.pc_reg.wen
-@22
-tm.comp.cpu.regs.pc_reg.dout[31:0]
+tm.comp.genblk1.cpu.regs.r15.r[31:0]
+tm.comp.genblk1.cpu.ic[31:0]
 tm.comp.PORTI[31:0]
-@23
 tm.comp.PORTJ[31:0]
-@22
 tm.comp.PORTA[31:0]
 tm.comp.PORTB[31:0]
 tm.comp.PORTC[31:0]
-tm.comp.cpu.regs.rt[3:0]
 tm.test_sel[3:0]
 tm.test_out[31:0]
 tm.test_rsel[3:0]

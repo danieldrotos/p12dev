@@ -125,6 +125,7 @@ module cpu2
    assign inst_alu= inst_alu1 | inst_alu2;
    assign inst_br= inst_call | (inst_wb & (rd==4'd15));
    assign inst_wb= (inst_alu & alu_wb_en) |
+		   inst_br |
 		   inst_ld;
 
    // decode condition
@@ -213,16 +214,17 @@ module cpu2
       .rb(rb),
       .rd(rd),
       .rt(rt),
-      .fn_inc_pc(),
+      .fn_inc_pc(phe),
       .fn_link(),
-      .fn_ra_change(),
-      .fn_wb(),
-      .wb_data(),
-      .ra_changed(),
+      .fn_ra_change(ena & inst_mem & w & phm),
+      .fn_wb(ena & inst_wb & phw),
+      .wb_data(wb_data),
+      .ra_changed(opa_changed),
       .da(opa),
       .db(opb),
       .dd(opd),
-      .dt(test_reg)      
+      .dt(test_reg),
+      .pc(pc)
       );
    
    // memory interface
