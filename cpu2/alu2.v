@@ -61,9 +61,9 @@ module alu2
 		   };
    assign oex_im= {16'hffff, im};
    assign op2= op_2reg?bi:
-	       (op[3:2]=={2'b00})?zex_im:
-	       (op[3:0]=={4'b1111})?oex_im:
-	       (op[3:2]=={2'b11})?zex_im:
+	       (op[3:2]=={2'b00})? zex_im :
+	       (op[3:0]=={4'b1111})? oex_im :
+	       (op[3:2]=={2'b11})? zex_im :
 	       sex_im;
 
    // central adder
