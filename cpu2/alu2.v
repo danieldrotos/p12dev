@@ -159,8 +159,109 @@ module alu2
 		 (op[3:0]==4'hf)? di & op2 :
 		 di;
 
+   wire [WIDTH-1:0] 	    res_zeb;
+   wire [WIDTH-1:0] 	    res_seb;
+   wire [WIDTH-1:0] 	    res_zew;
+   wire [WIDTH-1:0] 	    res_sew;
+   assign res_zeb= { 24'd0, di[7:0] };
+   assign res_zew= { 16'd0, di[15:0] };
+   assign res_seb= {
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7],
+		    di[7:0]
+		    };
+   assign res_sew= {
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15],
+		    di[15:0]
+		    };
+   wire [WIDTH-1:0] 	    res_ror;
+   wire [WIDTH-1:0] 	    res_rol;
+   wire [WIDTH-1:0] 	    res_shl;
+   wire [WIDTH-1:0] 	    res_shr;
+   wire [WIDTH-1:0] 	    res_sha;
+   assign res_ror= { ci, di[WIDTH-1:1] };
+   assign res_rol= { di[WIDTH-2:0], ci };
+   assign res_shl= { di[WIDTH-2:0], 1'b0 };
+   assign res_shr= { 1'b0, di[WIDTH-1:1] };
+   assign res_sha= { di[WIDTH-1], di[WIDTH-1:1] };
+   assign res_1= (op[3:0]==4'h0)? res_zeb :
+		 (op[3:0]==4'h1)? res_zew :
+		 (op[3:0]==4'h2)? res_seb :
+		 (op[3:0]==4'h3)? res_sew :
+		 (op[3:0]==4'h4)? ~di :
+		 (op[3:0]==4'h5)? 0-di :
+		 (op[3:0]==4'h6)? res_ror :
+		 (op[3:0]==4'h7)? res_rol :
+		 (op[3:0]==4'h8)? res_shl :
+		 (op[3:0]==4'h9)? res_shr :
+		 (op[3:0]==4'ha)? res_sha :
+		 (op[3:0]==4'hb)? di :
+		 (op[3:0]==4'hc)? di :
+		 (op[3:0]==4'hd)? di :
+		 (op[3:0]==4'he)? { 24'd0, fi } :
+		 (op[3:0]==4'hf)? di :
+		 di;
+   
    // Produce outputs
    assign res= (op_1)? res_1 :
 	       res_2;
+   wire 		    wb_en_reg, wb_en_im, wb_en_1;
+   assign wb_en_reg= op_2reg &
+		     (op[2]&!op[3] |
+		      op[2]&op[1] |
+		      !op[0]&!op[3]&!op[1] |
+		      op[0]&op[3]&!op[1] |
+		      op[0]&!op[3]&!op[1] |
+		      !op[0]&op[3]&op[1]
+		      );
+   assign wb_en_im= op_2im &
+		    (!op[3] |
+		     op[2]&op[1] |
+		     op[0]&op[2] |
+		     (op[0]^op[1])
+		     );
+   assign wb_en_1= op_1 &
+		   (!op[3] |
+		    !op[1]&!op[2] |
+		    !op[0]&!op[2]
+		    );
+   assign wb_en= wb_en_reg | wb_en_im | wb_en_1;
    
 endmodule // alu2

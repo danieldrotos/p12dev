@@ -66,7 +66,7 @@ sim: $(VCD)
 $(VCD): $(VVP)
 	vvp $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) $(PRG).asc prj.mk
+$(VVP): $(TB_VER) $(MODS_VER) prj.mk #$(PRG).asc
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DAW=$(AW) \
