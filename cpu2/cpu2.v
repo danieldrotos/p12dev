@@ -62,12 +62,13 @@ module cpu2
    wire 		       flag_v;
    wire 		       flag_p;
    wire 		       flag_u;
+   wire 		       flag_wb_en;
    
    regm #(.WIDTH(8)) reg_flag
      (
       .clk(clk),
       .reset(reset/*1'b0*/),
-      .cen(flagwb_en),
+      .cen(flag_wb_en),
       .din (res_flags),
       .dout(flags)
       );
@@ -77,7 +78,8 @@ module cpu2
    assign flag_v= flags[`VIDX];
    assign flag_p= flags[`PIDX];
    assign flag_u= flags[`UIDX];
-      
+   assign flag_wb_en= ena & alu_wb_en & phw;
+   
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
      (

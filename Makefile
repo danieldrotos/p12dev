@@ -17,6 +17,7 @@ MODS		= defs \
 		      cpu1/schedm \
 		    cpu2/cpu2 \
 		      cpu2/alu2 \
+		      cpu2/reg2in \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
 		    computer/timer \
