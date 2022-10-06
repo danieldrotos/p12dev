@@ -166,10 +166,44 @@ module cpu2
    assign wb_address= inst_call?4'd15:
 		      rd;
    assign wb_en= ena & inst_wb & phw;
+
+   // MEM inst (ld/st)
+   wire [WIDTH-1:0] 	       mem_im_offset;
+   assign mem_im_offset= {
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16[15],
+			  im16
+			  };
+   wire [WIDTH-1:0] 	       aof_ldst;
+   wire [WIDTH-1:0] 	       ldst_base;
+   wire [WIDTH-1:0] 	       ldst_mod;
+   wire [WIDTH-1:0] 	       opa_changed;
+   wire [WIDTH-1:0] 	       ldst_offset;
+   wire 		       up_down, pre_post;
+   assign up_down= ic[26]?flag_u:u;
+   assign pre_post= ic[26]?flag_p:p;
+   assign ldst_mod= u?32'd1:32'hffffffff;
+   assign opa_changed= opa+ldst_mod;
+   assign ldst_base= pre_post?opa_changed:opa;
+   assign ldst_offset= ic[26]?mem_im_offset:opb;
+   assign aof_ldst= ldst_base+ldst_offset;
+
    
    // memory interface
-   // calculate address of ld/st instructions
-   wire [WIDTH-1:0] 	       aof_ldst;
    
    // handle input data lines
    wire 		       en_mr_data;
