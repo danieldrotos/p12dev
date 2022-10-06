@@ -1,4 +1,4 @@
-`define CPU2
+`define CPU_TYPE 2
 
 `ifdef IVERILOG
 

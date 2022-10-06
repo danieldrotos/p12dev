@@ -1,33 +1,28 @@
-module rfm1(clk, reset, wen, cen, link,
-	   wa, din,
-	   ra, da,
-	   rb, db,
-	   rd, dd,
-	   rt, dt,
-	   last, r14, r13);
-   parameter WIDTH= 32;
-   parameter ADDR_SIZE= 4;
-   
-   input wire clk;
-   input wire reset;
-   input wire wen;
-   input wire cen;
-   input wire link;
-   
-   input wire [ADDR_SIZE-1:0] wa;
-   input wire [WIDTH-1:0]     din;
-   input wire [ADDR_SIZE-1:0] ra;
-   input wire [ADDR_SIZE-1:0] rb;
-   input wire [ADDR_SIZE-1:0] rd;
-   input wire [ADDR_SIZE-1:0] rt;
-   
-   output wire [WIDTH-1:0] da;
-   output wire [WIDTH-1:0] db;
-   output wire [WIDTH-1:0] dd;
-   output wire [WIDTH-1:0] dt;
-   output [WIDTH-1:0] 	   last;
-   output [WIDTH-1:0] 	   r14;
-   output [WIDTH-1:0] 	   r13;
+module rfm1
+#(
+   parameter WIDTH= 32,
+   parameter ADDR_SIZE= 4
+  )
+(
+   input wire 		      clk,
+   input wire 		      reset,
+   input wire 		      wen,
+   input wire 		      cen,
+   input wire 		      link,
+   input wire [ADDR_SIZE-1:0] wa,
+   input wire [WIDTH-1:0]     din,
+   input wire [ADDR_SIZE-1:0] ra,
+   output wire [WIDTH-1:0]    da,
+   input wire [ADDR_SIZE-1:0] rb,
+   output wire [WIDTH-1:0]    db,
+   input wire [ADDR_SIZE-1:0] rd,
+   output wire [WIDTH-1:0]    dd,
+   input wire [ADDR_SIZE-1:0] rt,
+   output wire [WIDTH-1:0]    dt,
+   output [WIDTH-1:0] 	      last,
+   output [WIDTH-1:0] 	      r14,
+   output [WIDTH-1:0] 	      r13
+);
 
    wire [WIDTH-1:0] 	   pc_out;
    reg [WIDTH-1:0] 	   reg_array[0:(1<<ADDR_SIZE)-1-1];

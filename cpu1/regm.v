@@ -1,13 +1,16 @@
-module regm(clk, reset, cen, din, dout);
-   parameter WIDTH= 32;
-   
-   input clk;
-   input reset;
-   input cen;
-   input [WIDTH-1:0] din;
-   output [WIDTH-1:0] dout;
+module regm
+  #(
+    parameter WIDTH= 32
+    )
+   (
+    input wire 	       clk,
+    input wire 	       reset, 
+    input wire 	       cen,
+    input [WIDTH-1:0]  din,
+    output [WIDTH-1:0] dout
+    );
 
-   reg [WIDTH-1:0]    r;
+   reg [WIDTH-1:0]     r;
 
    always @(posedge clk, posedge reset)
      begin

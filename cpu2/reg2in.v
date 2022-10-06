@@ -3,13 +3,13 @@ module reg2in
     parameter WIDTH=32
     )
    (
-    input wire 	       clk;
-    input wire 	       reset;
-    input wire 	       wen1;
-    input wire 	       wen2;
-    input [WIDTH-1:0]  din1;
-    input [WIDTH-1:0]  din2;
-    output [WIDTH-1:0] dout;
+    input wire 	       clk,
+    input wire 	       reset,
+    input wire 	       wen1,
+    input wire 	       wen2,
+    input [WIDTH-1:0]  din1,
+    input [WIDTH-1:0]  din2,
+    output [WIDTH-1:0] dout
     );
 
    reg [WIDTH-1:0]     r;

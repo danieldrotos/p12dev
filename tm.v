@@ -1,3 +1,5 @@
+`include "defs.v"
+
 `unconnected_drive pull0
 `ifndef PRG
  `define PRG "counter.asc"
@@ -9,6 +11,10 @@
 
 `ifndef INSTS
  `define INSTS 1000
+`endif
+
+`ifndef CPU_TYPE
+ `define CPU_TYPE 1
 `endif
 
 module tm
@@ -35,7 +41,8 @@ module tm
      #(
        .WIDTH(32),
        .MEM_ADDR_SIZE(`AW),
-       .PROGRAM( `PRG )
+       .PROGRAM( `PRG ),
+       .CPU_TYPE(`CPU_TYPE)
        )
    comp
      (
