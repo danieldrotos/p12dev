@@ -57,9 +57,9 @@ module cpu2
    // FLAG register
    wire [7:0] 		       flags;
    wire 		       flag_c;
-   wire 		       flag_s;
+   wire 		       flag_s, flag_n;
    wire 		       flag_z;
-   wire 		       flag_v;
+   wire 		       flag_v, flag_o;
    wire 		       flag_p;
    wire 		       flag_u;
    wire 		       flag_wb_en;
@@ -78,6 +78,8 @@ module cpu2
    assign flag_v= flags[`VIDX];
    assign flag_p= flags[`PIDX];
    assign flag_u= flags[`UIDX];
+   assign flag_o= flag_v;
+   assign flag_n= flag_s;
    assign flag_wb_en= ena & alu_wb_en & phw;
 
    // Instruction Register contains instruction code
@@ -130,7 +132,24 @@ module cpu2
 
    // decode condition
    wire 		       ena;
-
+   assign ena= (cond==4'h0)? 1 : // always
+	       (cond==4'h1)? flag_z : // EQ
+		     (cond==4'h2)? !flag_z : // NE
+		     (cond==4'h3)? flag_c : // CS HS
+		     (cond==4'h4)? !flag_c : // CC LO
+		     (cond==4'h5)? flag_s : // MI
+		     (cond==4'h6)? !flag_s : // PL
+		     (cond==4'h7)? flag_o : // VS
+		     (cond==4'h8)? !flag_o : // VC
+		     (cond==4'h9)? flag_c & !flag_z : // HI
+		     (cond==4'ha)? !flag_c | flag_z : // LS
+		     (cond==4'hb)? !(flag_s ^ flag_o): // GE
+		     (cond==4'hc)? flag_s ^ flag_o : // LT
+		     (cond==4'hd)? !flag_z & !(flag_s ^ flag_o) : // GT
+		     (cond==4'he)? flag_z | (flag_s ^ flag_o): // LE
+		     (cond==4'hf)? 1 : // uncond
+		     0;
+   
    // ALU inst
    wire 		       alu_wb_en;
    wire 		       alu_flag_en;

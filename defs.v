@@ -11,6 +11,7 @@
 `endif
 
 `define SIDX 0
+`define NIDX 0
 `define CIDX 1
 `define ZIDX 2
 `define OIDX 3
