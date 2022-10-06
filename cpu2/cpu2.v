@@ -79,7 +79,7 @@ module cpu2
    assign flag_p= flags[`PIDX];
    assign flag_u= flags[`UIDX];
    assign flag_wb_en= ena & alu_wb_en & phw;
-   
+
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
      (
@@ -204,6 +204,26 @@ module cpu2
    assign ldst_offset= ic[26]?mem_im_offset:opb;
    assign aof_ldst= ldst_base+ldst_offset;
 
+   // Register file
+   rfm2 #(.WIDTH(WIDTH)) regs
+     (
+      .clk(clk),
+      .reset(reset),
+      .ra(ra),
+      .rb(rb),
+      .rd(rd),
+      .rt(rt),
+      .fn_inc_pc(),
+      .fn_link(),
+      .fn_ra_change(),
+      .fn_wb(),
+      .wb_data(),
+      .ra_changed(),
+      .da(opa),
+      .db(opb),
+      .dd(opd),
+      .dt(test_reg)      
+      );
    
    // memory interface
    
