@@ -263,5 +263,6 @@ module alu2
 		    !op[0]&!op[2]
 		    );
    assign wb_en= wb_en_reg | wb_en_im | wb_en_1;
+   assign fo= fi; // TODO
    
 endmodule // alu2

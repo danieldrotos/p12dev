@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Oct  6 12:32:45 2022
+[*] Fri Oct  7 08:09:23 2022
 [*]
 [dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Thu Oct  6 12:31:50 2022"
-[dumpfile_size] 5274603
+[dumpfile_mtime] "Fri Oct  7 08:08:17 2022"
+[dumpfile_size] 5540001
 [savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 0
+[timestart] 32
 [size] 1744 892
-[pos] 42 25
-*-3.629200 15 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 132 67
+*-2.629200 46 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -21,28 +21,75 @@
 [sst_vpaned_height] 350
 @28
 tm.clk
-tm.reset
 tm.comp.genblk1.cpu.phf
 tm.comp.genblk1.cpu.phe
 tm.comp.genblk1.cpu.phm
 tm.comp.genblk1.cpu.phw
 @22
 tm.comp.genblk1.cpu.pc[31:0]
-@28
-tm.comp.genblk1.cpu.regs.fn_inc_pc
-tm.comp.genblk1.cpu.regs.r15.wen1
-tm.comp.genblk1.cpu.regs.r15.wen2
-@22
 tm.comp.genblk1.cpu.regs.r15.r[31:0]
+@c00022
 tm.comp.genblk1.cpu.ic[31:0]
+@28
+(0)tm.comp.genblk1.cpu.ic[31:0]
+(1)tm.comp.genblk1.cpu.ic[31:0]
+(2)tm.comp.genblk1.cpu.ic[31:0]
+(3)tm.comp.genblk1.cpu.ic[31:0]
+(4)tm.comp.genblk1.cpu.ic[31:0]
+(5)tm.comp.genblk1.cpu.ic[31:0]
+(6)tm.comp.genblk1.cpu.ic[31:0]
+(7)tm.comp.genblk1.cpu.ic[31:0]
+(8)tm.comp.genblk1.cpu.ic[31:0]
+(9)tm.comp.genblk1.cpu.ic[31:0]
+(10)tm.comp.genblk1.cpu.ic[31:0]
+(11)tm.comp.genblk1.cpu.ic[31:0]
+(12)tm.comp.genblk1.cpu.ic[31:0]
+(13)tm.comp.genblk1.cpu.ic[31:0]
+(14)tm.comp.genblk1.cpu.ic[31:0]
+(15)tm.comp.genblk1.cpu.ic[31:0]
+(16)tm.comp.genblk1.cpu.ic[31:0]
+(17)tm.comp.genblk1.cpu.ic[31:0]
+(18)tm.comp.genblk1.cpu.ic[31:0]
+(19)tm.comp.genblk1.cpu.ic[31:0]
+(20)tm.comp.genblk1.cpu.ic[31:0]
+(21)tm.comp.genblk1.cpu.ic[31:0]
+(22)tm.comp.genblk1.cpu.ic[31:0]
+(23)tm.comp.genblk1.cpu.ic[31:0]
+(24)tm.comp.genblk1.cpu.ic[31:0]
+(25)tm.comp.genblk1.cpu.ic[31:0]
+(26)tm.comp.genblk1.cpu.ic[31:0]
+(27)tm.comp.genblk1.cpu.ic[31:0]
+(28)tm.comp.genblk1.cpu.ic[31:0]
+(29)tm.comp.genblk1.cpu.ic[31:0]
+(30)tm.comp.genblk1.cpu.ic[31:0]
+(31)tm.comp.genblk1.cpu.ic[31:0]
+@1401200
+-group_end
+@22
 tm.comp.PORTI[31:0]
 tm.comp.PORTJ[31:0]
 tm.comp.PORTA[31:0]
 tm.comp.PORTB[31:0]
 tm.comp.PORTC[31:0]
-tm.test_sel[3:0]
-tm.test_out[31:0]
-tm.test_rsel[3:0]
-tm.test_reg[31:0]
+tm.comp.PORTD[31:0]
+tm.comp.genblk1.cpu.regs.r8out[31:0]
+tm.comp.genblk1.cpu.regs.r10out[31:0]
+tm.comp.genblk1.cpu.regs.r11out[31:0]
+tm.comp.genblk1.cpu.opa[31:0]
+tm.comp.genblk1.cpu.ldst_base[31:0]
+tm.comp.genblk1.cpu.ldst_offset[31:0]
+tm.comp.genblk1.cpu.aof_ldst[31:0]
+@23
+tm.comp.genblk1.cpu.mbus_aout[31:0]
+@22
+tm.comp.genblk1.cpu.mbus_dout[31:0]
+tm.comp.genblk1.cpu.mbus_din[31:0]
+@28
+tm.comp.genblk1.cpu.mbus_wen
+@22
+tm.comp.genblk1.cpu.regs.ra[3:0]
+tm.comp.genblk1.cpu.regs.da[31:0]
+tm.comp.genblk1.cpu.regs.rb[3:0]
+tm.comp.genblk1.cpu.regs.rd[3:0]
 [pattern_trace] 1
 [pattern_trace] 0

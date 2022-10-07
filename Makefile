@@ -51,7 +51,8 @@ ASC_FILES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
 
 CDB_FILES	= $(patsubst %.hex,%.cdb,$(HEX_FILES))
 
-all: utils $(PRG).asc compile show
+#all: utils $(PRG).asc compile show
+all: utils $(PRG).asc show
 
 utils: #hex2asc
 
@@ -66,7 +67,7 @@ sim: $(VCD)
 $(VCD): $(VVP)
 	vvp $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) prj.mk #$(PRG).asc
+$(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DAW=$(AW) \
@@ -76,21 +77,21 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk #$(PRG).asc
 
 hw: $(VVP)
 
-compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
+#compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
 .SUFFIXES: .hex .asm .v .asc .cdb
 
-.asm.hex:
-	php $(TOOLS)/assembler.php -h $< >$@ 2>`tty`
+#.asm.hex:
+#	php $(TOOLS)/assembler.php -h $< >$@ 2>`tty`
 
-.asm.v:
-	php $(TOOLS)/assembler.php $< >$@
+#.asm.v:
+#	php $(TOOLS)/assembler.php $< >$@
 
-.hex.asc:
-	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
+#.hex.asc:
+#	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
 
-.hex.cdb:
-	php $(TOOLS)/hex2cdb.php $< >$@
+#.hex.cdb:
+#	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \

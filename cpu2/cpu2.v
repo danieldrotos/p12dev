@@ -93,12 +93,13 @@ module cpu2
       );
 
    // pick parts of the IC
-   wire 		       cond= ic[23:20];
+   wire 		       cond= ic[31:28];
    wire [2:0] 		       inst= ic[27:25];
    wire 		       inst_param= ic[24];
-   wire [3:0] 		       rd= ic[23:20];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
+   wire [3:0] 		       ra= ic[19:16];
    wire [3:0] 		       rb= ic[11:8];
+   wire [3:0] 		       rd= ic[23:20];
    wire [15:0] 		       im16= ic[15:0];
    wire [23:0] 		       im24= ic[23:0];
    wire [19:0] 		       im20= ic[19:0];
@@ -158,8 +159,8 @@ module cpu2
       // inputs
       .op(alu_op),
       .fi(flags),
-      .bi(),
-      .di(),
+      .bi(opb),
+      .di(opd),
       .im(im16),
       // outputs
       .res(res_alu),
