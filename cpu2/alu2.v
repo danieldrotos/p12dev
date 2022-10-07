@@ -89,9 +89,9 @@ module alu2
    wire 		    v_adder;
    adder #(.WIDTH(WIDTH)) adder
      (
-      .ci(cin),
-      .ai(di),
-      .bi(adder_op2),
+      .ci((op[5:0]==6'b100101)?1:cin),
+      .ai((op[5:0]==6'b100101)?32'h0:di),
+      .bi((op[5:0]==6'b100101)?~di:adder_op2),
       .res(res_adder),
       .co(c_adder),
       .vo(v_adder)
@@ -226,7 +226,7 @@ module alu2
 		 (op[3:0]==4'h2)? res_seb :
 		 (op[3:0]==4'h3)? res_sew :
 		 (op[3:0]==4'h4)? ~di :
-		 (op[3:0]==4'h5)? 0-di :
+		 (op[3:0]==4'h5)? res_adder :
 		 (op[3:0]==4'h6)? res_ror :
 		 (op[3:0]==4'h7)? res_rol :
 		 (op[3:0]==4'h8)? res_shl :
@@ -238,6 +238,86 @@ module alu2
 		 (op[3:0]==4'he)? { 24'd0, fi } :
 		 (op[3:0]==4'hf)? di :
 		 di;
+
+   // Calculate flags
+   wire 		    co, zo, so, vo;
+   assign zo= (op[5:0]==6'b101111)?di[`ZIDX]:~|res;
+   assign so= (op[5:0]==6'b101111)?di[`SIDX]:res[WIDTH-1];
+   wire 		    co_reg, co_im, co_1;
+   assign co_reg= (op[3:0]==4'h0)? ci :
+		  (op[3:0]==4'h1)? ci :
+		  (op[3:0]==4'h2)? ci :
+		  (op[3:0]==4'h3)? ci :
+		  (op[3:0]==4'h4)? c_adder :
+		  (op[3:0]==4'h5)? c_adder :
+		  (op[3:0]==4'h6)? c_adder :
+		  (op[3:0]==4'h7)? c_adder :
+		  (op[3:0]==4'h8)? c_adder :
+		  (op[3:0]==4'h9)? ci :
+		  (op[3:0]==4'ha)? ci :
+		  (op[3:0]==4'hb)? ci :
+		  (op[3:0]==4'hc)? ci :
+		  (op[3:0]==4'hd)? ci :
+		  (op[3:0]==4'he)? ci :
+		  (op[3:0]==4'hf)? ci :
+		  ci;
+   assign co_im = co_reg;
+   assign co_1  = (op[3:0]==4'h0)? ci :
+		  (op[3:0]==4'h1)? ci :
+		  (op[3:0]==4'h2)? ci :
+		  (op[3:0]==4'h3)? ci :
+		  (op[3:0]==4'h4)? ci :
+		  (op[3:0]==4'h5)? c_adder :
+		  (op[3:0]==4'h6)? di[0] :
+		  (op[3:0]==4'h7)? di[WIDTH-1] :
+		  (op[3:0]==4'h8)? di[WIDTH-1] :
+		  (op[3:0]==4'h9)? di[0] :
+		  (op[3:0]==4'ha)? di[0] :
+		  (op[3:0]==4'hb)? ci :
+		  (op[3:0]==4'hc)? 1'b1 :
+		  (op[3:0]==4'hd)? 1'b0 :
+		  (op[3:0]==4'he)? ci :
+		  (op[3:0]==4'hf)? di[`CIDX] :
+		  ci;
+   assign co= (op[5:4]==2'b00)? co_reg :
+	      (op[5:4]==2'b01)? co_im :
+	      (op[5:4]==2'b10)? co_1 :
+	      ci;
+
+   wire 		    vo_reg, vo_im, vo_1;
+   assign vo_reg= (op[3:0]==4'h0)? vi :
+		  (op[3:0]==4'h1)? vi :
+		  (op[3:0]==4'h2)? vi :
+		  (op[3:0]==4'h3)? vi :
+		  (op[3:0]==4'h4)? v_adder :
+		  (op[3:0]==4'h5)? v_adder :
+		  (op[3:0]==4'h6)? v_adder :
+		  (op[3:0]==4'h7)? v_adder :
+		  (op[3:0]==4'h8)? v_adder :
+		  (op[3:0]==4'h9)? vi :
+		  (op[3:0]==4'ha)? vi :
+		  (op[3:0]==4'hb)? vi :
+		  (op[3:0]==4'hc)? vi :
+		  (op[3:0]==4'hd)? vi :
+		  (op[3:0]==4'he)? vi :
+		  (op[3:0]==4'hf)? vi :
+		  vi;
+   assign vo_im= vo_reg;
+   assign vo_1= (op[5:0]==6'b101111)?di[`VIDX]:vi;
+   assign vo= (op[5:4]==2'b00)? vo_reg :
+	      (op[5:4]==2'b01)? vo_im :
+	      (op[5:4]==2'b10)? vo_1 :
+	      vi;
+   // combined flags
+   wire [7:0] 		    res_flags;
+   assign res_flags[`CIDX]= co;
+   assign res_flags[`SIDX]= so;
+   assign res_flags[`ZIDX]= zo;
+   assign res_flags[`VIDX]= vo;
+   assign res_flags[`PIDX]= (op[5:0]==6'b101111)?di[`PIDX]:fi[`PIDX];
+   assign res_flags[`UIDX]= (op[5:0]==6'b101111)?di[`UIDX]:fi[`UIDX];
+   assign res_flags[`N1IDX]= (op[5:0]==6'b101111)?di[`N1IDX]:fi[`N1IDX];
+   assign res_flags[`N2IDX]= (op[5:0]==6'b101111)?di[`N2IDX]:fi[`N2IDX];
    
    // Produce outputs
    assign res= (op_1)? res_1 :
@@ -248,7 +328,7 @@ module alu2
 		      op[2]&op[1] |
 		      !op[0]&!op[3]&!op[1] |
 		      op[0]&op[3]&!op[1] |
-		      op[0]&!op[3]&!op[1] |
+		      op[0]&!op[3]&op[1] |
 		      !op[0]&op[3]&op[1]
 		      );
    assign wb_en_im= op_2im &
@@ -260,9 +340,25 @@ module alu2
    assign wb_en_1= op_1 &
 		   (!op[3] |
 		    !op[1]&!op[2] |
-		    !op[0]&!op[2]
+		    !op[0]&!op[2] |
+		    !op[0]&op[1]
 		    );
    assign wb_en= wb_en_reg | wb_en_im | wb_en_1;
-   assign fo= fi; // TODO
+   assign fo= res_flags; // TODO
+
+   wire 		    flag_en_reg, flag_en_im, flag_en_1;
+   assign flag_en_reg= op_2reg &
+		       (op[2] |
+			op[3]&!op[1]
+			);
+   assign flag_en_im= op_2im &
+		      (op[2] |
+			op[3]&!op[1]
+			);
+   assign flag_en_1= op_1 &
+		     ((op[3]^op[2]) |
+		      op[3]&!op[1] |
+		      op[2]&op[0]);
+   assign flag_en= flag_en_reg | flag_en_im | flag_en_1;
    
 endmodule // alu2

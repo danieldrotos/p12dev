@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Fri Oct  7 08:09:23 2022
+[*] Fri Oct  7 10:23:36 2022
 [*]
 [dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Fri Oct  7 08:08:17 2022"
-[dumpfile_size] 5540001
+[dumpfile_mtime] "Fri Oct  7 10:22:57 2022"
+[dumpfile_size] 5783941
 [savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 32
+[timestart] 19
 [size] 1744 892
 [pos] 132 67
-*-2.629200 46 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-3.629200 83 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -72,24 +72,12 @@ tm.comp.PORTA[31:0]
 tm.comp.PORTB[31:0]
 tm.comp.PORTC[31:0]
 tm.comp.PORTD[31:0]
+tm.comp.genblk1.cpu.regs.r0out[31:0]
+@23
+tm.comp.genblk1.cpu.regs.r1out[31:0]
+@22
 tm.comp.genblk1.cpu.regs.r8out[31:0]
 tm.comp.genblk1.cpu.regs.r10out[31:0]
 tm.comp.genblk1.cpu.regs.r11out[31:0]
-tm.comp.genblk1.cpu.opa[31:0]
-tm.comp.genblk1.cpu.ldst_base[31:0]
-tm.comp.genblk1.cpu.ldst_offset[31:0]
-tm.comp.genblk1.cpu.aof_ldst[31:0]
-@23
-tm.comp.genblk1.cpu.mbus_aout[31:0]
-@22
-tm.comp.genblk1.cpu.mbus_dout[31:0]
-tm.comp.genblk1.cpu.mbus_din[31:0]
-@28
-tm.comp.genblk1.cpu.mbus_wen
-@22
-tm.comp.genblk1.cpu.regs.ra[3:0]
-tm.comp.genblk1.cpu.regs.da[31:0]
-tm.comp.genblk1.cpu.regs.rb[3:0]
-tm.comp.genblk1.cpu.regs.rd[3:0]
 [pattern_trace] 1
 [pattern_trace] 0

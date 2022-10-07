@@ -80,7 +80,7 @@ module cpu2
    assign flag_u= flags[`UIDX];
    assign flag_o= flag_v;
    assign flag_n= flag_s;
-   assign flag_wb_en= ena & alu_wb_en & phw;
+   assign flag_wb_en= ena & alu_flag_en & phw;
 
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic

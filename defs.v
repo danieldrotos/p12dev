@@ -18,3 +18,5 @@
 `define VIDX 3
 `define PIDX 4
 `define UIDX 5
+`define N1IDX 6
+`define N2IDX 7
