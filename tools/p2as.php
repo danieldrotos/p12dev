@@ -47,7 +47,14 @@
   );
 
   $insts= array(
-    "NOP" => array()
+    "NOP" => array(
+      "value"=>0x00000000,
+	"params"=>"",
+	"style"=>false),
+      "MOV" => array(
+	"value"=>0x00000000,
+	  "params"=>"DB",
+	  "style"=>false)
   );
   
   if (isset($argv[0]))
@@ -124,10 +131,10 @@
     return $inst;
   }
 
-  function is_sym($W)
+  function is_sym($w)
   {
-    if ($W[strlen($W)-1] == ":")
-      return substr($W, 0, strlen($W)-1);
+    if ($w[strlen($w)-1] == ":")
+      return substr($w, 0, strlen($w)-1);
     return false;
   }
   
@@ -191,6 +198,21 @@
         mk_symbol($n, $addr);
         $ok= true;
       }
+      else
+      {
+	$W= strtoupper($w);
+	if (($cond= is_cond($W)) !== false)
+	{
+          debug("proc_line; COND= ".sprintf("%08x",$cond));
+          $icode= $icode | $cond;
+          debug("proc_line; ICODE= ".sprintf("%08x",$icode));
+	}
+	if (($inst= is_inst($W)) !== false)
+	{
+	  debug("proc_line; INST= ".sprintf("%08x",$inst["value"])." params=${inst['params']}");
+	}
+      }
+      
       $prew= $w;
       $w= strtok($par_sep);
     }
