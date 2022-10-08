@@ -49,12 +49,17 @@
   $insts= array(
     "NOP" => array(
       "value"=>0x00000000,
-	"params"=>"",
-	"style"=>false),
+	"params"=>array(
+	  "_"=>false
+	)
+    ),
       "MOV" => array(
 	"value"=>0x00000000,
-	  "params"=>"DB",
-	  "style"=>false)
+	  "params"=>array(
+	    "rr"=>false,
+	      "rn"=>false
+	  )
+      )
   );
   
   if (isset($argv[0]))
@@ -131,32 +136,30 @@
     return $inst;
   }
 
-  function is_sym($w)
+  function is_label($w)
   {
     if ($w[strlen($w)-1] == ":")
       return substr($w, 0, strlen($w)-1);
     return false;
   }
   
-  function w2reg($w)
+  function is_reg($w)
   {
     $W= strtoupper($w);
+    $W= preg_replace("/[+*-]/", "", $W);
     if ($W == "PC")
       $r= 15;
     else if ($W == "LR")
     $r= 14;
     else if ($W == "SP")
     $r= 13;
-    else
+    else if (preg_match("/^R[0-9][0-9]*/", $W))
     {
-      if ($W[0] == 'R')
-      {
-	$w= substr($w, 1);
-        $W= substr($W, 1);
-      }
+      $w= substr($w, 1);
       $r= intval($w,0);
+      return($r);
     }
-    return $r;
+    return false;
   }
 
   function mk_symbol($name, $value, $constant= false)
@@ -169,6 +172,7 @@
 	"const" => $constant
     );
     $syms[$name]= $sym;
+    return $sym;
   }
 
   
@@ -178,7 +182,7 @@
     global $mem, $syms, $lnr, $addr;
     $org= $l;
     $icode= 0;
-    $sym= false;
+    $label= false;
     if (($w= strtok($l, " \t")) === false)
     {
       debug("proc_line; no words found in line $lnr");
@@ -191,35 +195,89 @@
     $ok= false;
     while ($w !== false)
     {
+      $W= strtoupper($w);
       debug("proc_line; w=$w");
-      if (($n= is_sym($w)) !== false)
+      if (($n= is_label($w)) !== false)
       {
 	debug("proc_line; found label=$n at addr=$addr");
-        mk_symbol($n, $addr);
+        $label= mk_symbol($n, $addr);
         $ok= true;
       }
-      else
+      else if (($cond= is_cond($W)) !== false)
       {
-	$W= strtoupper($w);
-	if (($cond= is_cond($W)) !== false)
-	{
-          debug("proc_line; COND= ".sprintf("%08x",$cond));
-          $icode= $icode | $cond;
-          debug("proc_line; ICODE= ".sprintf("%08x",$icode));
-	}
-	if (($inst= is_inst($W)) !== false)
-	{
-	  debug("proc_line; INST= ".sprintf("%08x",$inst["value"])." params=${inst['params']}");
-	}
+        debug("proc_line; COND= ".sprintf("%08x",$cond));
+        $icode= $icode | $cond;
+        debug("proc_line; ICODE= ".sprintf("%08x",$icode));
+      }
+      if (($inst= is_inst($W)) !== false)
+      {
+	debug("proc_line; INST= ".sprintf("%08x",$inst["value"]));
+	$mem[$addr]= array(
+          "code"=>$icode,
+            "label"=>$label,
+            "src"=>$org,
+            "error"=>$error
+        );
+        $o= sprintf("%04x %08x", $addr, $icode);
+        debug($o);
+	$ok= true;
+	break;
+      }
+      
+      else if (($W == "=") || ($W == "EQU"))
+      {
+	$w= strtok(" \t");
+	$val= intval($w,0);
+	debug("proc_line; EQU w=$w val=$val");
+	mk_symbol($prew, $val, $W=="=");
+	debug("proc_line; SYMBOL $prew=$val");
+	$ok= true;
+	return;
+      }
+
+      else if ($W == "ORG")
+      {
+        $w= strtok(" \t");
+        $addr= intval($w,0);
+        debug("proc_line; addr=$addr");
+        $ok= true;
+	return;
       }
       
       $prew= $w;
       $w= strtok($par_sep);
     }
-    
+    if ($inst === false)
+      return;
+    // continue with parameters
+    $prew= $w;
+    $w= strtok($par_sep);
+    $pattern= "";
+    $params= array();
+    while ($w != false)
+    {
+      $W= strtoupper($w);
+      if (($r= is_reg($W)) !== false)
+      {
+	$pattern.= "r";
+	$params[]= $r;
+      }
+      else
+      {
+	$pattern.= "n";
+	$params[]= $W;
+      }
+      $prew= $w;
+      $w= strtok($par_sep);
+    }
+    $pattern.= "_";
+    debug("param pattern=$pattern");
+    $addr++;
   }
 
 
+  // Load source file and do PHASE 1
+  
   $lsep= "\r\n";
   $l= strtok($src, $lsep);
   while ($l !== false)
@@ -234,15 +292,59 @@
   $mem[$addr]= 0;
   $addr= 1;
   for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
+  {
+    $l= trim($lines[$lnr]);
+    $l= preg_replace("/;.*$/", "", $l);
+    debug("\n");
+    debug("line[$lnr]: $l");
+    proc_line($l);
+  }
+
+  debug("\n\n");
+
+  $abc=10;
+  $s='$abc/2';
+  $r=eval("return $s ;");
+  debug("abc=$abc r=$r\n");
+
+  $hex= '';
+  debug("SYMBOLS");
+  //debug ("syms[0]= ${syms[0]}");
+  $hex.= "//; SYMBOLS\n";
+  if (!empty($syms))
+  {
+    foreach ($syms as $k => $s)
     {
-        $l= trim($lines[$lnr]);
-        $l= preg_replace("/;.*$/", "", $l);
-        debug("\n");
-        debug("line[$lnr]: $l");
-        proc_line($l);
+      if ($s['const'] == true)
+	$c= '=';
+      else
+	$c= ';';
+      $o= sprintf("//%s %08x", $c, $s["value"])." $k";
+      $hex.= $o."\n";
+      debug($o);
     }
+  }
 
-debug("\n\n");
 
+  // PAHSE 2
+  
+  debug(";  PHASE 2\n");
+  foreach ($mem as $a => $m)
+  {
+    //echo "a=$a, m=".print_r($m,true)."\n";
+    if (!is_array($m))
+      continue;
+  }
+  debug("; PHASE 2 done");
 
+  $hex.= "//; CODE\n";
+  $p= -1;
+  foreach ($mem as $a => $m)
+  {
+    if (!is_array($m))
+      continue;
+  }
+
+  echo $hex;
+  
 ?>
