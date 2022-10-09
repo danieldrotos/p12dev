@@ -13,5 +13,6 @@ cimm:	mi nop
 	mov r4,12
 	
 	mov r6,port
-	
+
+	db	1,port,abc,0xff
 	

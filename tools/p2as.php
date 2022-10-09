@@ -90,20 +90,36 @@
   );
 
   $insts= array(
-    "NOP" => array(
-      "icode"=>0x00000000,
-      "params"=>array(
+    "DB" => array("icode"=>0, "params"=>array(
+      "n_"=>array("icode"=>0,"placements"=>array("u8"))
+    )),
+      "DW" => array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("u16"))
+      )),
+      "DD" => array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("u32"))
+      )),
+      "NOP" => array("icode"=>0x00000000, "params"=>array(
         "_"=>array()
-      )
-    ),
-    "MOV" => array
-    (
-      "icode"=>0x00000000,
-      "params"=>array(
+      )),
+      "MOV" => array("icode"=>0x00000000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
-        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
-      )
-    )
+      )),
+      "SED" => array("icode"=>0x00000000, "params"=>array(
+	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+      )),
+      "MVL" => array("icode"=>0x00000000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "MVH" => array("icode"=>0x00000000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","h16"))
+      )),
+      "MVZL" => array("icode"=>0x00000000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","zl16"))
+      )),
+      "MVS" => array("icode"=>0x00000000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","s16"))
+      ))
   );
 
   function arri($a, $idx)
@@ -193,7 +209,7 @@
 
   function proc_line($l)
   {
-    global $mem, $syms, $lnr, $addr;
+    global $insts, $mem, $syms, $lnr, $addr;
     $org= $l;
     $icode= 0;
     $label= false;
@@ -223,21 +239,6 @@
         $icode= $icode | $cond;
         debug("proc_line; ICODE= ".sprintf("%08x",$icode));
       }
-      if (($inst= is_inst($W)) !== false)
-      {
-	debug("proc_line; INST= ".sprintf("%08x",$inst["icode"]));
-	$mem[$addr]= array(
-          "icode"=>$icode,
-            "label"=>$label,
-            "src"=>$org,
-            "error"=>$error,
-	    "inst"=>$inst
-        );
-        $o= sprintf("%04x %08x", $addr, $icode);
-        debug($o);
-	$ok= true;
-	break;
-      }
       
       else if (($W == "=") || ($W == "EQU"))
       {
@@ -258,7 +259,49 @@
         $ok= true;
 	return;
       }
+
+      else if ($W == "DB")
+      {
+	$orgw= $w;
+        $w= strtok(" \t,");
+	while ($w !== false)
+	{
+	  debug("Process param of DB: $w");
+	  $params= array();
+	  $params[]= $w;
+	  $mem[$addr]= array(
+	    "icode"=>0,
+	      "label"=>$label,
+	      "src"=>$orgw." ".$w,
+	      "error"=>$error,
+	      "inst"=>$insts["DB"],
+	      "pattern"=>"n_",
+	      "address"=>$addr,
+	      "params"=>$params
+	  );
+	  debug( sprintf("mem[%04x] Added DB $w",$addr) );
+	  $addr++;
+	  $w= strtok(",");
+	}
+	return;
+      }
       
+      else if (($inst= is_inst($W)) !== false)
+      {
+	debug("proc_line; INST= ".sprintf("%08x",$inst["icode"]));
+	$mem[$addr]= array(
+          "icode"=>$icode,
+            "label"=>$label,
+            "src"=>$org,
+            "error"=>$error,
+	    "inst"=>$inst
+        );
+        $o= sprintf("%04x %08x", $addr, $icode);
+        debug($o);
+	$ok= true;
+	break;
+      }
+
       $prew= $w;
       $w= strtok($par_sep);
     }
@@ -298,8 +341,9 @@
     global $syms;
     if (empty($p))
       return 0;
-    if (is_numeric($p))
-      return 0+$p;
+    if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
+      is_numeric($p))
+    return intval($p, 0);
     $s= arri($syms,$p);
     if (!empty($s) && is_array($s))
       return $s["value"];
@@ -310,21 +354,21 @@
   {
     // Allowed
     /* Array
-    (
+       (
        [icode] => 0
        [placements] => Array
        (
-          [0] => d
-          [1] => u16
+       [0] => d
+       [1] => u16
        )
-    )
+       )
      */
     // Used
     /* Array
-    (
+       (
        [0] => 6
        [1] => port
-    )
+       )
      */
     $c= $icode;
     if (count($allowed_params)==0)
@@ -339,32 +383,56 @@
       $pl= $allowed_params["placements"][$i];
       $pv= param_value($up);
       debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
+      $c= $icode;
       if ($pl == "rd")
       {
 	$pv&= 0xf;
 	$pv<<= 20;
-	$c= $icode;
 	$icode|= $pv;
       }
       else if ($pl == "ra")
       {
 	$pv&= 0xf;
 	$pv<<= 16;
-	$c= $icode;
 	$icode|= $pv;
       }
       else if ($pl == "rb")
       {
 	$pv&= 0xf;
 	$pv<<= 8;
-	$c= $icode;
+	$icode|= $pv;
+      }
+      else if ($pl == "u8")
+      {
+	$pv&= 0xff;
 	$icode|= $pv;
       }
       else if ($pl == "u16")
       {
 	$pv&= 0xffff;
-	$c= $icode;
 	$icode|= $pv;
+      }
+      else if ($pl == "s16")
+      {
+	$pv&= 0xffff;
+	if ($pv & 0x8000)
+	  $pv|= 0xffff0000;
+	$icode= $pv;
+      }
+      else if ($pl == "u32")
+      {
+	$icode= $pv;
+      }
+      else if ($pl == "h16")
+      {
+	$pv&= 0xffff;
+	$pv<<= 16;
+	$icode|= $pv;
+      }
+      else if ($pl == "zl16")
+      {
+	$pv&= 0xffff;
+	$icode= $pv;
       }
       debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
