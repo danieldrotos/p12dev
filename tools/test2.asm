@@ -1,18 +1,11 @@
 port	=	0xffff
 abc	equ	21
 	
-	nop
-	nop	a
-cimke:
-	z0 mov	r3,r5
-
-	org	20
-	
-cimm:	mi nop
-	al mov	r0xe,r10
-	mov r4,12
-	
-	mov r6,port
-
-	db	1,port,abc,0xff
+	mov	r1,r2
+	sed	r3,r4
+	mvl	r5,0xbeef
+	mvh	r5,0xdead
+	mvzl	r6,port
+	mvs	r7,abc
+	mvs	r8,port
 	

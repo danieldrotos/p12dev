@@ -1,7 +1,7 @@
 <?php
   
   $debugging= true;
-  //$debugging= false;
+  $debugging= false;
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
   $aw= 12;
@@ -105,21 +105,25 @@
       "MOV" => array("icode"=>0x00000000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
-      "SED" => array("icode"=>0x00000000, "params"=>array(
+      "SED" => array("icode"=>0x00030000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
       "MVL" => array("icode"=>0x00000000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVH" => array("icode"=>0x00000000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","h16"))
+      "MVH" => array("icode"=>0x00010000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVZL" => array("icode"=>0x00000000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","zl16"))
+      "MVZL"=> array("icode"=>0x00020000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVS" => array("icode"=>0x00000000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","s16"))
-      ))
+      "MVS" => array("icode"=>0x00030000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "ADD" => array("icode"=>0x00040000, "params"=>array(
+	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+    )),
   );
 
   function arri($a, $idx)
@@ -290,7 +294,7 @@
       {
 	debug("proc_line; INST= ".sprintf("%08x",$inst["icode"]));
 	$mem[$addr]= array(
-          "icode"=>$icode,
+          "icode"=>$inst['icode'],
             "label"=>$label,
             "src"=>$org,
             "error"=>$error,
@@ -451,9 +455,9 @@
   }
   $nuof_lines= $lnr;
   debug("$nuof_lines lines buffered");
-  $addr= 0;
-  $mem[$addr]= 0;
-  $addr= 1;
+  //$addr= 0;
+  //$mem[$addr]= 0;
+  //$addr= 1;
   for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
   {
     $l= trim($lines[$lnr]);
@@ -470,6 +474,42 @@
   $r=eval("return $s ;");
   debug("abc=$abc r=$r\n");
 
+
+  // PAHSE 2
+  
+  debug(";  PHASE 2\n");
+  foreach ($mem as $a => $m)
+  {
+    //echo "a=$a, m=".print_r($m,true)."\n";
+    if (!is_array($m))
+      continue;
+    //debug(print_r($m,true));
+    if (is_array(arri($m,"inst")) &&
+      is_array(arri($m,"params")) &&
+      !empty($m["pattern"]))
+    {
+      debug("mem[{$m['address']}] is an instruction: {$m['icode']} {$m['src']}");
+      //echo print_r($m,true);
+      $pat= arri($m,"pattern");
+      $ip= arri($m["inst"]["params"],$pat);
+      //debug("Looking $pat in array ".print_r($m["inst"]["params"],true));
+      //debug("ip=".print_r($ip,true));
+      if (!is_array($ip))
+      {
+	debug("Used pattern ($pat) does not match to any allowed");
+      }
+      else
+      {
+	debug("Used pattern matches to an allowed one: $pat");
+	$m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"]);
+      }
+    }
+    debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
+    $mem[$a]= $m;
+  }
+  debug("; PHASE 2 done");
+
+  
   $hex= '';
   debug("SYMBOLS");
   //debug ("syms[0]= ${syms[0]}");
@@ -489,44 +529,43 @@
   }
 
 
-  // PAHSE 2
-  
-  debug(";  PHASE 2\n");
-  foreach ($mem as $a => $m)
-  {
-    //echo "a=$a, m=".print_r($m,true)."\n";
-    if (!is_array($m))
-      continue;
-    debug(print_r($m,true));
-    if (is_array(arri($m,"inst")) &&
-      is_array(arri($m,"params")) &&
-      !empty($m["pattern"]))
-    {
-      debug("mem[{$m['address']}] is an instruction: {$m['src']}");
-      $pat= arri($m,"pattern");
-      $ip= arri($m["inst"]["params"],$pat);
-      //debug("Looking $pat in array ".print_r($m["inst"]["params"],true));
-      //debug("ip=".print_r($ip,true));
-      if (!is_array($ip))
-      {
-	debug("Used pattern ($pat) does not match to any allowed");
-      }
-      else
-      {
-	debug("Used pattern matches to an allowed one: $pat");
-	$m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"]);
-      }
-    }
-    debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
-  }
-  debug("; PHASE 2 done");
-
   $hex.= "//; CODE\n";
   $p= -1;
   foreach ($mem as $a => $m)
   {
     if (!is_array($m))
       continue;
+    //echo print_r($m,true);
+    if ($a != $p+1)
+    {
+      $p++;
+      while ($p < $a)
+      {
+        debug( $o= sprintf("%08x ;%04x", 0, $p) );
+        $hex.= $o."\n";
+        $p++;
+      }
+    }
+    $p= $a;
+    if ($m['icode'] !== false)
+    {
+      debug( $o= sprintf("%08x //;%04x %s", $m['icode'], $a, $m["src"]) );
+      $hex.= $o."\n";
+      if ($m["error"] != false)
+      {
+        $o= "; ERROR: ".$m['error'];
+        debug($o, "red");
+        $hex.= $o."\n";
+      }
+    }
+    else if ($m['error'] !== false)
+    {
+      $o= sprintf("; ERROR: %s in \"%s\"", $m['error'], $m['src']);
+      debug($o, "red");
+      $hex.= "; ".$o."\n";
+    }
+    else
+      debug(";ph3; what?");
   }
 
   echo $hex;
