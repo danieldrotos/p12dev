@@ -8,4 +8,4 @@ abc	equ	21
 	mvzl	r6,port
 	mvs	r7,abc
 	mvs	r8,port
-	
+
