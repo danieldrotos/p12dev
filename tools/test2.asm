@@ -9,8 +9,9 @@ cimke:
 	org	20
 	
 cimm:	mi nop
-	al mov	r0,r10
+	al mov	r0xe,r10
 	mov r4,12
 	
-	nop
+	mov r6,port
+	
 	

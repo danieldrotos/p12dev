@@ -91,17 +91,17 @@
 
   $insts= array(
     "NOP" => array(
-      "value"=>0x00000000,
+      "icode"=>0x00000000,
       "params"=>array(
         "_"=>array()
       )
     ),
     "MOV" => array
     (
-      "value"=>0x00000000,
+      "icode"=>0x00000000,
       "params"=>array(
-	"rr_"=>array("icode"=>0x00000000,"placements"=>array("d","a")),
-        "rn_"=>array("icode"=>0x00000000,"placements"=>array("d","u16"))
+	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )
     )
   );
@@ -225,9 +225,9 @@
       }
       if (($inst= is_inst($W)) !== false)
       {
-	debug("proc_line; INST= ".sprintf("%08x",$inst["value"]));
+	debug("proc_line; INST= ".sprintf("%08x",$inst["icode"]));
 	$mem[$addr]= array(
-          "code"=>$icode,
+          "icode"=>$icode,
             "label"=>$label,
             "src"=>$org,
             "error"=>$error,
@@ -280,7 +280,7 @@
       else
       {
 	$pattern.= "n";
-	$params[]= $W;
+	$params[]= $w;
       }
       $prew= $w;
       $w= strtok($par_sep);
@@ -293,7 +293,84 @@
     $addr++;
   }
 
-
+  function param_value($p)
+  {
+    global $syms;
+    if (empty($p))
+      return 0;
+    if (is_numeric($p))
+      return 0+$p;
+    $s= arri($syms,$p);
+    if (!empty($s) && is_array($s))
+      return $s["value"];
+    return 0;
+  }
+  
+  function proc_params($icode, $pattern, $allowed_params, $used_params)
+  {
+    // Allowed
+    /* Array
+    (
+       [icode] => 0
+       [placements] => Array
+       (
+          [0] => d
+          [1] => u16
+       )
+    )
+     */
+    // Used
+    /* Array
+    (
+       [0] => 6
+       [1] => port
+    )
+     */
+    $c= $icode;
+    if (count($allowed_params)==0)
+      return $icode;
+    $icode|= $allowed_params["icode"];
+    debug( sprintf("Pattern fixed %08x -> icode= %08x",$c,$icode) );
+    foreach ($used_params as $i => $up)
+    {
+      $pt= $pattern[$i];
+      if ($pt=="_")
+	break;
+      $pl= $allowed_params["placements"][$i];
+      $pv= param_value($up);
+      debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
+      if ($pl == "rd")
+      {
+	$pv&= 0xf;
+	$pv<<= 20;
+	$c= $icode;
+	$icode|= $pv;
+      }
+      else if ($pl == "ra")
+      {
+	$pv&= 0xf;
+	$pv<<= 16;
+	$c= $icode;
+	$icode|= $pv;
+      }
+      else if ($pl == "rb")
+      {
+	$pv&= 0xf;
+	$pv<<= 8;
+	$c= $icode;
+	$icode|= $pv;
+      }
+      else if ($pl == "u16")
+      {
+	$pv&= 0xffff;
+	$c= $icode;
+	$icode|= $pv;
+      }
+      debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
+    }
+    return $icode;
+  }
+  
   // Load source file and do PHASE 1
   
   $lsep= "\r\n";
@@ -352,7 +429,7 @@
     //echo "a=$a, m=".print_r($m,true)."\n";
     if (!is_array($m))
       continue;
-    //debug(print_r($m,true));
+    debug(print_r($m,true));
     if (is_array(arri($m,"inst")) &&
       is_array(arri($m,"params")) &&
       !empty($m["pattern"]))
@@ -369,8 +446,10 @@
       else
       {
 	debug("Used pattern matches to an allowed one: $pat");
+	$m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"]);
       }
     }
+    debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
   }
   debug("; PHASE 2 done");
 
