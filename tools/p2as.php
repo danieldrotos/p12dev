@@ -13,55 +13,6 @@
   $mem= array();
   $syms= array();
   
-
-  $conds= array(
-    "AL" => 0,
-      "EQ" => 0x1000000,
-      "ZS" => 0x1000000,
-      "Z1" => 0x1000000,
-      "Z" => 0x1000000,
-      "NE" => 0x2000000,
-      "ZC" => 0x2000000,
-      "Z0" => 0x2000000,
-      "NZ" => 0x2000000,
-      "CS" => 0x3000000,
-      "HS" => 0x3000000,
-      "CC" => 0x4000000,
-      "LO" => 0x4000000,
-      "MI" => 0x5000000,
-      "NS" => 0x5000000,
-      "SS" => 0x5000000,
-      "PL" => 0x6000000,
-      "NC" => 0x6000000,
-      "SC" => 0x6000000,
-      "VS" => 0x7000000,
-      "OS" => 0x7000000,
-      "VC" => 0x8000000,
-      "OC" => 0x8000000,
-      "HI" => 0x9000000,
-      "LS" => 0xa000000,
-      "GE" => 0xb000000,
-      "LT" => 0xc000000,
-      "GT" => 0xd000000,
-      "LE" => 0xe000000
-  );
-
-  $insts= array(
-    "NOP" => array(
-      "value"=>0x00000000,
-	"params"=>array(
-	  "_"=>false
-	)
-    ),
-      "MOV" => array(
-	"value"=>0x00000000,
-	  "params"=>array(
-	    "rr"=>false,
-	      "rn"=>false
-	  )
-      )
-  );
-  
   if (isset($argv[0]))
   {
     $fin= '';
@@ -104,6 +55,69 @@
       echo "<pre>";
     $src= $_REQUEST['src'];
   }
+
+  
+  $conds= array(
+    "AL" => 0,
+      "EQ" => 0x1000000,
+      "ZS" => 0x1000000,
+      "Z1" => 0x1000000,
+      "Z" => 0x1000000,
+      "NE" => 0x2000000,
+      "ZC" => 0x2000000,
+      "Z0" => 0x2000000,
+      "NZ" => 0x2000000,
+      "CS" => 0x3000000,
+      "HS" => 0x3000000,
+      "CC" => 0x4000000,
+      "LO" => 0x4000000,
+      "MI" => 0x5000000,
+      "NS" => 0x5000000,
+      "SS" => 0x5000000,
+      "PL" => 0x6000000,
+      "NC" => 0x6000000,
+      "SC" => 0x6000000,
+      "VS" => 0x7000000,
+      "OS" => 0x7000000,
+      "VC" => 0x8000000,
+      "OC" => 0x8000000,
+      "HI" => 0x9000000,
+      "LS" => 0xa000000,
+      "GE" => 0xb000000,
+      "LT" => 0xc000000,
+      "GT" => 0xd000000,
+      "LE" => 0xe000000
+  );
+
+  $insts= array(
+    "NOP" => array(
+      "value"=>0x00000000,
+      "params"=>array(
+        "_"=>array()
+      )
+    ),
+    "MOV" => array
+    (
+      "value"=>0x00000000,
+      "params"=>array(
+	"rr_"=>array("icode"=>0x00000000,"placements"=>array("d","a")),
+        "rn_"=>array("icode"=>0x00000000,"placements"=>array("d","u16"))
+      )
+    )
+  );
+
+  function arri($a, $idx)
+  {
+    if (empty($a))
+      return '';
+    if (!is_array($a))
+      return '';
+    if (!isset($a[$idx]))
+      return '';
+    return $a[$idx];
+  }
+
+  
 
   function debug($x)
   {
@@ -216,7 +230,8 @@
           "code"=>$icode,
             "label"=>$label,
             "src"=>$org,
-            "error"=>$error
+            "error"=>$error,
+	    "inst"=>$inst
         );
         $o= sprintf("%04x %08x", $addr, $icode);
         debug($o);
@@ -272,6 +287,9 @@
     }
     $pattern.= "_";
     debug("param pattern=$pattern");
+    $mem[$addr]["pattern"]= $pattern;
+    $mem[$addr]["params"]= $params;
+    $mem[$addr]["address"]= $addr;
     $addr++;
   }
 
@@ -334,6 +352,25 @@
     //echo "a=$a, m=".print_r($m,true)."\n";
     if (!is_array($m))
       continue;
+    //debug(print_r($m,true));
+    if (is_array(arri($m,"inst")) &&
+      is_array(arri($m,"params")) &&
+      !empty($m["pattern"]))
+    {
+      debug("mem[{$m['address']}] is an instruction: {$m['src']}");
+      $pat= arri($m,"pattern");
+      $ip= arri($m["inst"]["params"],$pat);
+      //debug("Looking $pat in array ".print_r($m["inst"]["params"],true));
+      //debug("ip=".print_r($ip,true));
+      if (!is_array($ip))
+      {
+	debug("Used pattern ($pat) does not match to any allowed");
+      }
+      else
+      {
+	debug("Used pattern matches to an allowed one: $pat");
+      }
+    }
   }
   debug("; PHASE 2 done");
 
