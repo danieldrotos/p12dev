@@ -74,3 +74,10 @@ cimke:
 	ld	r12,r13-,0
 	ld	r12,-r13,0
 	
+	jmp	cimke
+	
+	db	'H','e','l','l','o',' ',0
+	dw	1,-1,'a'
+	db	"Hello \"World\"!"
+	dd	0xdeadbeef
+	

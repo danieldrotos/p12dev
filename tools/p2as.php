@@ -113,9 +113,14 @@
       "DD"  =>array("icode"=>0, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("#32"))
       )),
-      // pseudo insts
+      // Macro insts
+      // NOP= mov r0,r0
       "NOP" =>array("icode"=>0x00000000, "params"=>array(
         "_"=>array()
+      )),
+      // JMP= mvzl r15,u16
+      "JMP" =>array("icode"=>0x01f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
       )),
       // 000: 000 0 ALU R  000 1 ALU #
       // ALU R only
@@ -271,6 +276,47 @@
       echo ";;debug;; $x\n";
   }
 
+  /**
+   * parse_string parses a string and returns an array of the parsed elements.
+   * This is an all-or-none function, and will return NULL if it cannot completely
+   * parse the string.
+   * @param string $string The OID to parse.
+   * @return array|NULL A list of OID elements, or null if error parsing.
+   */
+  function parse_string($string)
+  {
+    $result = array();
+    while (true)
+    {
+      $matches = array();
+      //$match_count = preg_match('/^(?:((?:[^\\\\\\. "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\. ])|$)/', $string, $matches);
+      $match_count = preg_match('/^(?:((?:[^\\\\\\, "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\, ])|$)/', $string, $matches);
+      if (null !== $match_count && $match_count > 0)
+      {
+        // [1] = unquoted, [2] = quoted
+        $value = strlen($matches[1]) > 0 ? $matches[1] : $matches[2];
+	
+        $result[] = stripcslashes($value);
+	
+        // Are we expecting any more parts?
+        if (strlen($matches[3]) > 0)
+        {
+          // I do this (vs keeping track of offset) to use ^ in regex
+          $string = substr($string, strlen($matches[0]));
+        }
+        else
+        {
+          return $result;
+        }
+      }
+      else
+      {
+        // All or nothing
+        return null;
+      }
+    } // while
+  }
+
   function is_cond($W)
   {
     global $conds;
@@ -419,9 +465,49 @@
 	return;
       }
 
-      else if ($W == "DB")
+      else if (preg_match('/^D[BWD]$/', $W))
       {
 	$orgw= $w;
+	$pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
+	debug("Param part of line: $pl");
+	if (!empty($pl) && ($pl[0]=="\""))
+	{
+	  $a= parse_string($pl);
+	  $s= $a[0];
+	  debug("Parsed string: \"{$s}\"");
+	  for ($i= 0; $i<strlen($s); $i++)
+	  {
+	    $params= array();
+	    $params[]= $pv= ord($s[$i]);
+	    $mem[$addr]= array(
+	      "icode"=>0,
+		"label"=>$label,
+		"src"=>$orgw." $pv",
+		"error"=>$error,
+		"inst"=>$insts[$W],
+		"pattern"=>"n_",
+		"address"=>$addr,
+		"params"=>$params
+	    );
+	    debug( sprintf("mem[%04x] Added char DB $pv",$addr) );
+	    $addr++;
+	  }
+	  $params= array();
+	  $params[]= 0;
+	  $mem[$addr]= array(
+	    "icode"=>0,
+	      "label"=>$label,
+	      "src"=>$orgw,
+	      "error"=>$error,
+	      "inst"=>$insts[$W],
+	      "pattern"=>"n_",
+	      "address"=>$addr,
+	      "params"=>$params
+	  );
+	  debug( sprintf("mem[%04x] Added string 0",$addr) );
+	  $addr++;
+	  return ;
+	}
         $w= strtok(" \t,");
 	while ($w !== false)
 	{
@@ -433,7 +519,7 @@
 	      "label"=>$label,
 	      "src"=>$orgw." ".$w,
 	      "error"=>$error,
-	      "inst"=>$insts["DB"],
+	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
 	      "address"=>$addr,
 	      "params"=>$params
@@ -521,6 +607,12 @@
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
       is_numeric($p))
     return intval($p, 0);
+    if ($p[0] == "'")
+    {
+      $c= substr($p,1,1);
+      $v= ord($c);
+      return $v;
+    }
     $s= arri($syms,$p);
     if (!empty($s) && is_array($s))
       return $s["value"];
