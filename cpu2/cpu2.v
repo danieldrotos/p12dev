@@ -229,7 +229,7 @@ module cpu2
    assign ldst_base= use_p?opa_changed:opa;
    assign ldst_offset= ic[26]?mem_im_offset:opb;
    assign base_offset= ldst_base+ldst_offset;
-   assign opa_offset= opa_ldst_offset;
+   assign opa_offset= opa+ldst_offset;
    assign aof_ldst= w?base_offset:opa_offset;
    
    // Register file
@@ -239,10 +239,10 @@ module cpu2
       .reset(reset),
       .ra(ra),
       .rb(rb),
-      .rd(rd),
-      .rt(rt),
+      .rd(inst_call?4'd15:rd),
+      .rt(test_rsel),
       .fn_inc_pc(phe),
-      .fn_link(),
+      .fn_link(ena & inst_call & phm),
       .fn_ra_change(ena & inst_mem & w & phm),
       .fn_wb(ena & inst_wb & phw),
       .wb_data(wb_data),

@@ -213,7 +213,8 @@ module rfm2
       .din2(ra_changed),
       .dout(pc)
       );
-
+   assign r15out= pc;
+   
    assign da= (ra==4'h0)?r0out:
 	      (ra==4'h1)?r1out:
 	      (ra==4'h2)?r2out:
