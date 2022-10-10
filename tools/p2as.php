@@ -122,6 +122,30 @@
       "JMP" =>array("icode"=>0x01f20000, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("#16"))
       )),
+      // JZ= z1 mvzl r15,u16
+      "JZ" =>array("icode"=>0x11f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JNZ= z0 mvzl r15,u16
+      "JNZ" =>array("icode"=>0x21f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JP= mov r15,rb
+      "JP"  =>array("icode"=>0x00f00000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rb"))
+      )),
+      // RET= mov r15,r14
+      "RET"  =>array("icode"=>0x00f00e00, "params"=>array(
+        "_"=>array()
+      )),
+      // PUSH= st rd,*r13,0
+      "PUSH"=>array("icode"=>0x0d0d0000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // POP= ld rd,*r13,0
+      "POP"=>array("icode"=>0x0f0d0000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
       // 000: 000 0 ALU R  000 1 ALU #
       // ALU R only
       "MOV"  =>array("icode"=>0x00000000, "params"=>array(
@@ -246,12 +270,14 @@
       // 1x0 W ST
       "ST"      =>array("icode"=>0x08000000, "params"=>array(
 	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
-	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16"))
+	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
+	"rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
       )),
       // 1x1 W LD
       "LD"      =>array("icode"=>0x0a000000, "params"=>array(
 	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
-	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16"))
+	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
+	"rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
       )),
   );
 
@@ -350,23 +376,25 @@
   function is_reg($w)
   {
     $W= strtoupper($w);
-    //debug("Check if $w/$W is a reg?");
+    debug("Check if $w/$W is a reg?");
     $W= preg_replace('/[+*-]/', "", $W);
-    //debug("Check if $w/$W is a reg?");
+    debug("Check if $w/$W is a reg?");
     if ($W == "PC")
-      $r= 15;
+    {  $r= 15; debug("pc=15"); }
     else if ($W == "LR")
-    $r= 14;
+    { $r= 14;; debug("lr=14"); }
     else if ($W == "SP")
-    $r= 13;
+    { $r= 13; debug("sp=13"); }
     else if (preg_match("/^R[0-9][0-9]*/", $W))
     {
       $w= substr($W, 1);
       $r= intval($w,0);
-      //debug("Match as a reg: w=$w r=$r");
+      debug("Match as a reg: w=$w r=$r");
       return($r);
     }
-    return false;
+    else
+      return false;
+    return $r;
   }
 
   function is_w($W)
@@ -465,6 +493,15 @@
 	return;
       }
 
+      else if ($W == "DS")
+      {
+	$x= 0 + strtok(" \t,");
+	$addr+= $x;
+	debug(";proc_line; addr=$addr");
+	$ok= true;
+	return;
+      }
+      
       else if (preg_match('/^D[BWD]$/', $W))
       {
 	$orgw= $w;
@@ -561,7 +598,9 @@
     {
       $W= strtoupper($w);
       debug("Parameter word: $w $W");
-      if (($r= is_reg($W)) !== false)
+      $r= is_reg($W);
+      debug("is_reg? r=$r");
+      if ($r !== false)
       {
 	$pattern.= "r";
 	$params[]= $r;

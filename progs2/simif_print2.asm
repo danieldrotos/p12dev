@@ -1,0 +1,36 @@
+	simif	equ	0xffff
+	mvzl	sp,topof_stack
+
+	mvzl	r1,Hello
+	call	print
+vege:	jmp	vege
+
+putchar:
+	push	r14
+	mvzl	r10,simif
+	mvzl	r12,'p'
+	st	r12,r10
+	st	r0,r10
+	pop	r14
+	ret
+
+	;; print 0 terminated string at R1
+print:
+	push	lr
+print_cikl:
+	ld	r0,r1
+	cmp	r0,0
+	jz	print_exit
+	call	putchar
+	add	r1,1
+	jmp	print_cikl
+print_exit:
+	pop	lr
+	ret
+	
+Hello:	db	"Hello World!\n"
+	
+
+	org	0x3ff
+topof_stack:
+	

@@ -212,19 +212,26 @@ module cpu2
 			  im16
 			  };
    wire [WIDTH-1:0] 	       aof_ldst;
+   wire [WIDTH-1:0] 	       base_offset;
+   wire [WIDTH-1:0] 	       opa_offset;
    wire [WIDTH-1:0] 	       ldst_base;
    wire [WIDTH-1:0] 	       ldst_mod;
    wire [WIDTH-1:0] 	       opa_changed;
    wire [WIDTH-1:0] 	       ldst_offset;
    wire 		       up_down, pre_post;
+   wire 		       use_u, use_p;
    assign up_down= ic[26]?flag_u:u;
    assign pre_post= ic[26]?flag_p:p;
-   assign ldst_mod= u?32'd1:32'hffffffff;
+   assign use_u= inst_ld_i ^ up_down;
+   assign use_p= inst_ld_i ^ pre_post;
+   assign ldst_mod= use_u?32'd1:32'hffffffff;
    assign opa_changed= opa+ldst_mod;
-   assign ldst_base= pre_post?opa_changed:opa;
+   assign ldst_base= use_p?opa_changed:opa;
    assign ldst_offset= ic[26]?mem_im_offset:opb;
-   assign aof_ldst= ldst_base+ldst_offset;
-
+   assign base_offset= ldst_base+ldst_offset;
+   assign opa_offset= opa_ldst_offset;
+   assign aof_ldst= w?base_offset:opa_offset;
+   
    // Register file
    rfm2 #(.WIDTH(WIDTH)) regs
      (

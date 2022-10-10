@@ -75,6 +75,15 @@ cimke:
 	ld	r12,-r13,0
 	
 	jmp	cimke
+
+itt:	nop
+	nop
+	jz	cimke
+	jnz	cimke
+	ret
+	push	r2
+	pop	r3
+	nop
 	
 	db	'H','e','l','l','o',' ',0
 	dw	1,-1,'a'
