@@ -191,6 +191,7 @@ module rfm2
       );
 
    wire [WIDTH-1:0] 	    r14out;
+   wire [WIDTH-1:0] 	    r15out;
    reg2in #(.WIDTH(WIDTH)) r14
      (
       .clk(clk),
@@ -202,7 +203,6 @@ module rfm2
       .dout(r14out)
       );
 
-   wire [WIDTH-1:0] 	    r15out;
    reg2in #(.WIDTH(WIDTH)) r15
      (
       .clk(clk),

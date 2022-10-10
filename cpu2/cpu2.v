@@ -28,6 +28,7 @@ module cpu2
    wire 		       phe;	// PC increment; execute
    wire 		       phm;	// memory r/w; link
    wire 		       phw;	// writeback
+   wire 		       ena;
    // selected data as parameteres
    wire [WIDTH-1:0] 	       opa;
    wire [WIDTH-1:0] 	       opb;
@@ -63,6 +64,8 @@ module cpu2
    wire 		       flag_p;
    wire 		       flag_u;
    wire 		       flag_wb_en;
+   wire 		       alu_flag_en;
+   wire 		       alu_wb_en;
    
    regm #(.WIDTH(8)) reg_flag
      (
@@ -132,7 +135,6 @@ module cpu2
 		   inst_ld;
 
    // decode condition
-   wire 		       ena;
    assign ena= (cond==4'h0)? 1 : // always
 	       (cond==4'h1)? flag_z : // EQ
 		     (cond==4'h2)? !flag_z : // NE
@@ -152,8 +154,6 @@ module cpu2
 		     0;
    
    // ALU inst
-   wire 		       alu_wb_en;
-   wire 		       alu_flag_en;
    alu2 alu
      (
       // inputs
