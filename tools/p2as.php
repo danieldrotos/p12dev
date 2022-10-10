@@ -1,7 +1,7 @@
 <?php
   
   $debugging= true;
-  $debugging= false;
+  //$debugging= false;
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
   $aw= 12;
@@ -62,25 +62,38 @@
       "EQ" => 0x1000000,
       "ZS" => 0x1000000,
       "Z1" => 0x1000000,
-      "Z" => 0x1000000,
+      "Z"  => 0x1000000,
       "NE" => 0x2000000,
       "ZC" => 0x2000000,
       "Z0" => 0x2000000,
       "NZ" => 0x2000000,
       "CS" => 0x3000000,
       "HS" => 0x3000000,
+      "C1" => 0x3000000,
+      "C"  => 0x3000000,
       "CC" => 0x4000000,
       "LO" => 0x4000000,
+      "C0" => 0x4000000,
+      "NC" => 0x4000000,
       "MI" => 0x5000000,
       "NS" => 0x5000000,
       "SS" => 0x5000000,
+      "S1" => 0x5000000,
+      "S " => 0x5000000,
       "PL" => 0x6000000,
-      "NC" => 0x6000000,
+      "NS" => 0x6000000,
       "SC" => 0x6000000,
+      "S0" => 0x6000000,
       "VS" => 0x7000000,
       "OS" => 0x7000000,
+      "V1" => 0x7000000,
+      "O1" => 0x7000000,
+      "V"  => 0x7000000,
+      "O"  => 0x7000000,
       "VC" => 0x8000000,
       "OC" => 0x8000000,
+      "NV" => 0x8000000,
+      "NO" => 0x8000000,
       "HI" => 0x9000000,
       "LS" => 0xa000000,
       "GE" => 0xb000000,
@@ -90,40 +103,140 @@
   );
 
   $insts= array(
-    "DB" => array("icode"=>0, "params"=>array(
+    // data placers
+    "DB"  =>array("icode"=>0, "params"=>array(
       "n_"=>array("icode"=>0,"placements"=>array("u8"))
     )),
-      "DW" => array("icode"=>0, "params"=>array(
+      "DW"  =>array("icode"=>0, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("u16"))
       )),
-      "DD" => array("icode"=>0, "params"=>array(
+      "DD"  =>array("icode"=>0, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("u32"))
       )),
-      "NOP" => array("icode"=>0x00000000, "params"=>array(
+      // pseudo insts
+      "NOP" =>array("icode"=>0x00000000, "params"=>array(
         "_"=>array()
       )),
-      "MOV" => array("icode"=>0x00000000, "params"=>array(
+      // 000: 000 0 ALU R  000 1 ALU #
+      // ALU R only
+      "MOV"  =>array("icode"=>0x00000000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
-      "SED" => array("icode"=>0x00030000, "params"=>array(
+      "SED"  =>array("icode"=>0x00030000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
-      "MVL" => array("icode"=>0x00000000, "params"=>array(
+      // ALU # only
+      "MVL"  =>array("icode"=>0x00000000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVH" => array("icode"=>0x00010000, "params"=>array(
+      "MVH"  =>array("icode"=>0x00010000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVZL"=> array("icode"=>0x00020000, "params"=>array(
+      "MVZL" =>array("icode"=>0x00020000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "MVS" => array("icode"=>0x00030000, "params"=>array(
+      "MVS"  =>array("icode"=>0x00030000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
       )),
-      "ADD" => array("icode"=>0x00040000, "params"=>array(
-	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+      // ALU R/# common
+      "ADD"    =>array("icode"=>0x00040000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
 	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
-    )),
+      )),
+      "ADC"    =>array("icode"=>0x00050000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "SUB"    =>array("icode"=>0x00060000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "SBB"    =>array("icode"=>0x00070000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "CMP"    =>array("icode"=>0x00080000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "MUL"    =>array("icode"=>0x00090000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "PLUS"   =>array("icode"=>0x000a0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "TEST"   =>array("icode"=>0x000c0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "OR"     =>array("icode"=>0x000d0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "XOR"    =>array("icode"=>0x000e0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      "AND"    =>array("icode"=>0x000f0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      )),
+      // 001 ALU 1op
+      "ZEB"   =>array("icode"=>0x02000000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
+      )),
+      "ZEW"   =>array("icode"=>0x02010000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEB"   =>array("icode"=>0x02020000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEW"   =>array("icode"=>0x02030000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "NOT"   =>array("icode"=>0x02040000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "NEG"   =>array("icode"=>0x02050000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "ROR"   =>array("icode"=>0x02060000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "ROL"   =>array("icode"=>0x02070000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHL"   =>array("icode"=>0x02080000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHR"   =>array("icode"=>0x02090000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHA"   =>array("icode"=>0x020a0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SZ"   =>array("icode"=>0x020b0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEC"   =>array("icode"=>0x020c0000, "params"=>array(
+	"_"  =>array()
+      )),
+      "CLC"   =>array("icode"=>0x020d0000, "params"=>array(
+	"_"  =>array()
+      )),
+      "GETF"   =>array("icode"=>0x020e0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SETF"   =>array("icode"=>0x020f0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      // 010 CALL
+      "CALL"  =>array("icode"=>0x04000000, "params"=>array(
+	"rn_" =>array("icode"=>0x01000000,"placements"=>array("rd","u20")),
+	"n_"  =>array("icode"=>0x00000000,"placements"=>array("u24"))
+      )),
   );
 
   function arri($a, $idx)
@@ -300,7 +413,7 @@
             "error"=>$error,
 	    "inst"=>$inst
         );
-        $o= sprintf("%04x %08x", $addr, $icode);
+        $o= sprintf("%04x %08x", $addr, $inst['icode']);
         debug($o);
 	$ok= true;
 	break;
@@ -316,9 +429,10 @@
     $w= strtok($par_sep);
     $pattern= "";
     $params= array();
-    while ($w != false)
+    while ($w !== false)
     {
       $W= strtoupper($w);
+      debug("Parameter word: $w $W");
       if (($r= is_reg($W)) !== false)
       {
 	$pattern.= "r";
@@ -414,6 +528,16 @@
       else if ($pl == "u16")
       {
 	$pv&= 0xffff;
+	$icode|= $pv;
+      }
+      else if ($pl == "u20")
+      {
+	$pv&= 0xfffff;
+	$icode|= $pv;
+      }
+      else if ($pl == "u24")
+      {
+	$pv&= 0xffffff;
 	$icode|= $pv;
       }
       else if ($pl == "s16")
