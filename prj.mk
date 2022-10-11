@@ -1,3 +1,3 @@
-PRG		= progs2/poll2
+PRG		= progs2/array_sum2
 AW		= 12
 INSTS		= 10000
