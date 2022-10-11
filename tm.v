@@ -79,9 +79,9 @@ module tm
 
    initial
      begin
-	#100 btn= 5'b01110;
-	#100 btn= 5'b11011;
-	#100 btn= 5'b10101;
+	#1000 btn= 1;
+	#1000 btn= 0;
+	#1000 btn= 1;
      end
    
    // Kimeneti file eloallitasa

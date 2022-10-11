@@ -565,10 +565,10 @@
 	  $addr++;
 	  return ;
 	}
-        $w= strtok(" \t,");
-	while ($w !== false)
+        $w= trim(strtok(" \t,"));
+	while (($w !== false) && ($w!=""))
 	{
-	  debug("Process param of DB: $w");
+	  debug("Process param of DB: \"$w\"");
 	  $params= array();
 	  $params[]= $w;
 	  $mem[$addr]= array(
@@ -583,7 +583,7 @@
 	  );
 	  debug( sprintf("mem[%04x] Added DB $w",$addr) );
 	  $addr++;
-	  $w= strtok(",");
+	  $w= trim(strtok(" \t,"));
 	}
 	return;
       }

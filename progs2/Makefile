@@ -3,7 +3,7 @@ TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
 
-all: simif_print2 counter2 array_sum2 ffir2
+all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2
 
 simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
 
@@ -12,6 +12,12 @@ counter2: counter2.hex counter2.asc counter2.cdb
 array_sum2: array_sum2.hex array_sum2.asc array_sum2.cdb
 
 ffir2: ffir2.hex ffir2.asc ffir2.cdb
+
+light12: light12.hex light12.asc light12.cdb
+
+light22: light22.hex light22.asc light22.cdb
+
+poll2: poll2.hex poll2.asc poll2.cdb
 
 .SUFFIXES: .hex .asm .asc .cdb
 
