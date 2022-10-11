@@ -146,6 +146,26 @@
       "POP"=>array("icode"=>0x0f0d0000, "params"=>array(
         "r_"=>array("icode"=>0,"placements"=>array("rd"))
       )),
+      // INC= add rd,#1
+      "INC"  =>array("icode"=>0x01040001, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // DEC= add rd,#-1
+      "DEC"  =>array("icode"=>0x0104ffff, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // LDL0= mvzl rd,#
+      "LDL0" =>array("icode"=>0x00020000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      // LDL= mvl rd,#
+      "LDL"  =>array("icode"=>0x00000000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      // LDH= mvh rd,#
+      "LDH"  =>array("icode"=>0x00010000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
       // 000: 000 0 ALU R  000 1 ALU #
       // ALU R only
       "MOV"  =>array("icode"=>0x00000000, "params"=>array(
@@ -850,6 +870,7 @@
       }
     }
     $p= $a;
+    $m['icode']&= 0xffffffff;
     if ($m['icode'] !== false)
     {
       debug( $o= sprintf("%08x //;%04x %s", $m['icode'], $a, $m["src"]) );

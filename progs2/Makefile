@@ -3,9 +3,13 @@ TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
 
-all: simif_print2
+all: simif_print2 counter2 array_sum2
 
-simif_print2: simif_print2.asc simif_print2.cdb
+simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
+
+counter2: counter2.hex counter2.asc counter2.cdb
+
+array_sum2: array_sum2.hex array_sum2.asc array_sum2.cdb
 
 .SUFFIXES: .hex .asm .asc .cdb
 

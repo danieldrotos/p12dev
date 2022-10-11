@@ -96,7 +96,7 @@ module cpu2
       );
 
    // pick parts of the IC
-   wire 		       cond= ic[31:28];
+   wire [3:0]		       cond= ic[31:28];
    wire [2:0] 		       inst= ic[27:25];
    wire 		       inst_param= ic[24];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
