@@ -1,9 +1,11 @@
+	.proc	p2
+	
 out	equ	0xf000		; address of GPIO output
 over	=	0x00080000	; overflowed display value
 	
 	ldl0	r0,out		; pointer to GPIO
-	ldl	r2,0 ;over	; constant to compare with
-	ldh	r2,0x8 ;over		;
+	ldl	r2,over		; constant to compare with
+	ldh	r2,over		;
 	
 first:	ldl0	r1,8		; first displayed pattern
 

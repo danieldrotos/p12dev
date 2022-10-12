@@ -22,7 +22,7 @@ poll2: poll2.hex poll2.asc poll2.cdb
 .SUFFIXES: .hex .asm .asc .cdb
 
 .asm.hex:
-	php $(TOOLS)/p2as.php -h $< >$@ 2>`tty`
+	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .hex.asc:
 	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@

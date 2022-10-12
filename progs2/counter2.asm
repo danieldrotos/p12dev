@@ -1,3 +1,5 @@
+	.proc	P2
+	
 out	equ	0xf000
 
 	org	0

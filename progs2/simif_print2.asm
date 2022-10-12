@@ -1,4 +1,7 @@
-	simif	equ	0xffff
+	.proc	p2
+	
+simif	equ	0xffff
+
 	mvzl	sp,topof_stack
 
 	mvzl	r1,Hello

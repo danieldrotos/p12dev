@@ -1,3 +1,5 @@
+	.proc	P2
+
 ;;; egy 10 elemu tomb adatinak osszegzese
 
 adat_db	=	10		; az adatok szama

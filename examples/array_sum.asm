@@ -11,7 +11,7 @@ porta	equ	0xf000		; kijelzo port cime
 	ld	r0,r1		; betoltes
 	ldl0	r1,porta
 	st	r0,r1		; kiiras a kijelzon
-	nop	r0,r1
+	nop	;r0,r1		;
 vege:	jmp	vege		; itt leall a program
 
 szum:

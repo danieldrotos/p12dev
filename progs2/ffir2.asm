@@ -1,11 +1,13 @@
+	.proc	p2
+	
 	leds	equ	0xf001
 	sw	equ	0xd000
 	
 	ldl0	r0,sw
 	ldl0	r1,leds
 	ldl0	r3,1
-	ldl	r4,0
-	ldh	r4,1
+	ldl	r4,0x00010000
+	ldh	r4,0x00010000
 	ldl0	r10,1
 	st	r10,r1
 cikl:

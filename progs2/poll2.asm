@@ -1,3 +1,5 @@
+	.proc	p2
+	
 	;; GPIO port addresses
 display	equ	0xf000		; address of 7seg display
 led	equ	0xf001		; address of LEDs
