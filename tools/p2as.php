@@ -12,7 +12,7 @@
   $obj_name= '';
   $lst_name= '';
   $lst= false;
-  $proc= "P2";
+  $proc= "P1";
   
   if (isset($argv[0]))
   {
@@ -146,12 +146,21 @@
 
 
   $insts1= array(
-    "NOP"=> array("icode"=>0x00000000, "params"=>array(
-      "rrr_"  =>array("icode"=>0,"placements"=>array("rd","ra","rb1")),
-	"rr_" =>array("icode"=>0,"placements"=>array("rd","ra")),
-	"r_"  =>array("icode"=>0,"placements"=>array("rd")),
-	"_"   =>array()
+    "DB"  =>array("icode"=>0, "params"=>array(
+      "n_"=>array("icode"=>0,"placements"=>array("#8"))
     )),
+      "DW"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      "DD"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#32"))
+      )),
+      "NOP"=> array("icode"=>0x00000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0,"placements"=>array("rd","ra","rb1")),
+	  "rr_" =>array("icode"=>0,"placements"=>array("rda","rb1")),
+	  "r_"  =>array("icode"=>0,"placements"=>array("rd")),
+	  "_"   =>array()
+      )),
       "LD"    =>array("icode"=>0x01000000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra"))
       )),
