@@ -17,6 +17,16 @@
  `define CPU_TYPE 1
 `endif
 
+`ifdef IVERILOG
+module BUFG
+(
+ input wire I,
+ output wire O
+ );
+   assign O=I;
+endmodule
+`endif
+
 module tm
   (
    input wire  i,
