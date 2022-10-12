@@ -1,6 +1,8 @@
 `timescale 1ns / 1ps
 
-`define PRG "examples/ff2ir.asc"
+`include "defs.v"
+
+`define PRG "progs2/counter2.asc"
 
 module comptest_n4
   (
@@ -138,7 +140,8 @@ module comptest_n4
    assign portj= {16'd0, switches};
    comp
      #(
-       .PROGRAM        ( `PRG )
+       .PROGRAM        ( `PRG ),
+       .CPU_TYPE       ( `CPU_TYPE )
        )
    computer
      (

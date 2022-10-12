@@ -12,7 +12,7 @@ module regm
 
    reg [WIDTH-1:0]     r;
 
-   always @(posedge clk, posedge reset)
+   always @(posedge clk/*, posedge reset*/)
      begin
 	if (reset)
 	  r <= 0;

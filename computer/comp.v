@@ -3,7 +3,7 @@ module comp //(clk, reset, test_sel, test_out);
     parameter WIDTH= 32,
     parameter PROGRAM= "",
     parameter MEM_ADDR_SIZE= 12,
-    parameter CPU_TYPE= 1
+    parameter CPU_TYPE= 2
     )
    (
     // base signals

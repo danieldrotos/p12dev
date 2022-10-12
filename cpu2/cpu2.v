@@ -42,6 +42,7 @@ module cpu2
    wire [3:0] 		       wb_address;
    wire [WIDTH-1:0] 	       wb_data;	// writeback data
    wire 		       wb_en;
+   reg [WIDTH-1:0] 	       mr_data;
 
    // scheduler generates phase signals
    schedm scheduler
@@ -242,7 +243,7 @@ module cpu2
       .rd(inst_call?4'd15:rd),
       .rt(test_rsel),
       .fn_inc_pc(phe),
-      .fn_link(ena & inst_call & phm),
+      .fn_link(ena & inst_call & phe),
       .fn_ra_change(ena & inst_mem & w & phm),
       .fn_wb(ena & inst_wb & phw),
       .wb_data(wb_data),
@@ -260,7 +261,6 @@ module cpu2
    wire 		       en_mr_data;
    assign en_mr_data= phm & inst_ld;
    // latched data read from memory
-   reg [WIDTH-1:0] 	       mr_data;
    always @(posedge clk)
      begin
 	if (en_mr_data)
