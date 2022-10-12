@@ -1,7 +1,7 @@
 all: test2.asc test2.cdb
 
 test2.hex: test2.asm p2as.php
-	php p2as.php $< >$@
+	php p2as.php $< -l -o $@
 
 test2.asc: test2.hex hex2asc.php
 	php hex2asc.php $< >$@

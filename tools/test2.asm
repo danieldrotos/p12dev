@@ -1,7 +1,8 @@
-port	=	0xffff
-abc	equ	21
-data	equ	0x4356
-	
+port	equ	0xffff
+abc	=	21
+data	=	0x4356
+
+cim:	
 	mov	r1,r2
 	sed	r3,r4
 	mvl	r5,0xbeef

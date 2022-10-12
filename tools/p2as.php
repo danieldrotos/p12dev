@@ -1,34 +1,31 @@
 <?php
   
   $debugging= true;
-  //$debugging= false;
+  $debugging= false;
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
-  $aw= 12;
-  $expand= false;
-  $view_hex= false;
 
   $lnr= 1;
   $addr= 0;
   $mem= array();
   $syms= array();
+  $obj_name= '';
+  $lst_name= '';
+  $lst= false;
   
   if (isset($argv[0]))
   {
     $fin= '';
     for ($i=1; $i<$argc; $i++)
     {
-      if ($argv[$i] == "-h")
-      {
-	$_REQUEST['submit']= "View hex";
-	//echo "HEX!\n";
-	$view_hex= true;
-      }
-      else if ($argv[$i] == "-m")
+      if ($argv[$i] == "-o")
       {
 	$i++;
-	$aw= $argv[$i];
-	$expand= true;
+	$obj_name= $argv[$i];
+      }
+      else if ($argv[$i] == "-l")
+      {
+	$debugging= true;
       }
       else
       {
@@ -38,10 +35,36 @@
     }
     if ($fin=='')
     {
-      echo "asm file missing\n";
+      echo "Asm file missing\n";
       exit(1);
     }
+    if (!file_exists($fin))
+    {
+      echo "Asm file does not exists\n";
+      exit(4);
+    }
     $src= file_get_contents($fin);
+    if ($obj_name == '')
+    {
+      $p= strrpos($fin, ".");
+      if ($p === false)
+      {
+	echo "Can not convert asm filename to obj filename\n";
+	exit(2);
+      }
+      $obj_name= substr($fin, 0, $p).".hex";
+    }
+    if ($debugging)
+    {
+      $p= strrpos($fin, ".");
+      if ($p === false)
+      {
+	echo "Can not convert asm filename to list filename\n";
+	exit(5);
+      }
+      $lst_name= substr($fin, 0, $p).".lst";
+      $lst= fopen($lst_name, "w");
+    }
   }
   else
   {
@@ -316,10 +339,15 @@
 
   function debug($x)
   {
-    global $debugging;
+    global $debugging, $lst;
     
     if ($debugging === true)
-      echo ";;debug;; $x\n";
+    {
+      if ($lst !== false)
+      {
+	fwrite($lst, ";; $x\n");
+      }
+    }
   }
 
   /**
@@ -447,14 +475,22 @@
     return true;
   }
   
-  function mk_symbol($name, $value, $constant= false)
+  function mk_symbol($name, $value, $type= "S")
   {
-    global $syms, $lnr;
+    global $syms, $fin, $lnr;
+    $s= arri($syms, $name);
+    if (is_array($s))
+    {
+      $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(9);
+    }
     $sym= array(
       "name" => $name,
 	"value" => $value,
 	"line" => $lnr,
-	"const" => $constant
+	"type" => $type
     );
     $syms[$name]= $sym;
     return $sym;
@@ -462,10 +498,11 @@
 
   function proc_line($l)
   {
-    global $insts, $mem, $syms, $lnr, $addr;
+    global $fin, $insts, $mem, $syms, $lnr, $addr;
     $org= $l;
     $icode= 0;
     $label= false;
+    $cond= false;
     if (($w= strtok($l, " \t")) === false)
     {
       debug("proc_line; no words found in line $lnr");
@@ -480,12 +517,14 @@
     {
       $W= strtoupper($w);
       debug("proc_line; w=$w");
+      
       if (($n= is_label($w)) !== false)
       {
 	debug("proc_line; found label=$n at addr=$addr");
-        $label= mk_symbol($n, $addr);
+        $label= mk_symbol($n, $addr, "L");
         $ok= true;
       }
+      
       else if (($cond= is_cond($W)) !== false)
       {
         debug("proc_line; COND= ".sprintf("%08x",$cond));
@@ -495,10 +534,17 @@
       
       else if (($W == "=") || ($W == "EQU"))
       {
+	if ($prew == '')
+	{
+	  $error= "{$fin}:{$lnr}: Label missing for assignment";
+	  debug("Error: ".$error);
+	  echo $error."\n";
+	  exit(7);
+	}
 	$w= strtok(" \t");
 	$val= intval($w,0);
 	debug("proc_line; EQU w=$w val=$val");
-	mk_symbol($prew, $val, $W=="=");
+	mk_symbol($prew, $val, ($W=="=")?"=":"S");
 	debug("proc_line; SYMBOL $prew=$val");
 	$ok= true;
 	return;
@@ -539,7 +585,8 @@
 	    $mem[$addr]= array(
 	      "icode"=>0,
 		"label"=>$label,
-		"src"=>$orgw." $pv",
+		"src"=>$orgw."\t$pv",
+		"lnr"=>$lnr,
 		"error"=>$error,
 		"inst"=>$insts[$W],
 		"pattern"=>"n_",
@@ -555,6 +602,7 @@
 	    "icode"=>0,
 	      "label"=>$label,
 	      "src"=>$orgw,
+	      "lnr"=>$lnr,
 	      "error"=>$error,
 	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
@@ -574,7 +622,8 @@
 	  $mem[$addr]= array(
 	    "icode"=>0,
 	      "label"=>$label,
-	      "src"=>$orgw." ".$w,
+	      "src"=>$orgw."\t".$w,
+	      "lnr"=>$lnr,
 	      "error"=>$error,
 	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
@@ -590,15 +639,17 @@
       
       else if (($inst= is_inst($W)) !== false)
       {
-	debug("proc_line; INST= ".sprintf("%08x",$icode|$inst["icode"]));
+	$icode= $icode | $inst['icode'];
+	debug("proc_line; INST= ".sprintf("%08x",$icode));
 	$mem[$addr]= array(
-          "icode"=>$icode|$inst['icode'],
+          "icode"=>$icode,
             "label"=>$label,
             "src"=>$org,
+	    "lnr"=>$lnr,
             "error"=>$error,
 	    "inst"=>$inst
         );
-        $o= sprintf("%04x %08x", $addr, $inst['icode']);
+        $o= sprintf("%04x %08x", $addr, $icode);
         debug($o);
 	$ok= true;
 	break;
@@ -607,8 +658,19 @@
       $prew= $w;
       $w= strtok($par_sep);
     }
-    if ($inst === false)
+    if (($prew != '') && ($ok === false))
+    {
+      $error= "{$fin}:{$lnr}: Unknown instruction";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(8);
       return;
+    }
+    if ($inst === false)
+    {
+      debug("Instructionless line");
+      return;
+    }
     // continue with parameters
     $prew= $w;
     $w= strtok($par_sep);
@@ -656,6 +718,15 @@
     $mem[$addr]["params"]= $params;
     $mem[$addr]["address"]= $addr;
     $addr++;
+
+    if (!$ok)
+    {
+      $error= "{$fin}:{$lnr}: Unrecognizable token $w";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(6);
+    }
+    
   }
 
   function param_value($p)
@@ -767,23 +838,28 @@
   }
   
   // Load source file and do PHASE 1
-  
+  $lines= preg_split("/\r\n|\n|\r/", $src);
+  $nuof_lines= count($lines);
+  /*
   $lsep= "\r\n";
   $l= strtok($src, $lsep);
   while ($l !== false)
   {
     $lines[$lnr]= $l;
+    debug("[{$lnr}] {$l}");
     $l= strtok($lsep);
     $lnr++;
   }
   $nuof_lines= $lnr;
+  */
   debug("$nuof_lines lines buffered");
   //$addr= 0;
   //$mem[$addr]= 0;
   //$addr= 1;
-  for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
+  for ($li= 0; $li < $nuof_lines; $li++)
   {
-    $l= trim($lines[$lnr]);
+    $lnr= $li+1;
+    $l= trim($lines[$li]);
     $l= preg_replace("/;.*$/", "", $l);
     debug("\n");
     debug("line[$lnr]: $l");
@@ -791,21 +867,23 @@
   }
 
   debug("\n\n");
-
+  /*
   $abc=10;
   $s='$abc/2';
   $r=eval("return $s ;");
   debug("abc=$abc r=$r\n");
-
+   */
 
   // PAHSE 2
   
-  debug(";  PHASE 2\n");
+  debug("PHASE 2\n");
   foreach ($mem as $a => $m)
   {
     //echo "a=$a, m=".print_r($m,true)."\n";
     if (!is_array($m))
       continue;
+    debug( print_r($m,true) );
+    $lnr= $m['lnr'];
     //debug(print_r($m,true));
     if (is_array(arri($m,"inst")) &&
       is_array(arri($m,"params")) &&
@@ -819,7 +897,9 @@
       //debug("ip=".print_r($ip,true));
       if (!is_array($ip))
       {
-	debug("Used pattern ($pat) does not match to any allowed");
+	$m['error']= "{$fin}:{$lnr}: Used pattern ($pat) does not match to any allowed";
+	debug( "Error: ".$m['error'] );
+	echo $m['error']."\n";
       }
       else
       {
@@ -841,16 +921,13 @@
   {
     foreach ($syms as $k => $s)
     {
-      if ($s['const'] == true)
-	$c= '=';
-      else
-	$c= ';';
-      $o= sprintf("//%s %08x", $c, $s["value"])." $k";
+      $o= sprintf("//%s %08x", $s['type'], $s["value"])." $k";
       $hex.= $o."\n";
       debug($o);
     }
   }
 
+  debug("\n\n");
 
   $hex.= "//; CODE\n";
   $p= -1;
@@ -858,6 +935,7 @@
   {
     if (!is_array($m))
       continue;
+    $lnr= $m['lnr'];
     //echo print_r($m,true);
     if ($a != $p+1)
     {
@@ -878,20 +956,31 @@
       if ($m["error"] != false)
       {
         $o= "; ERROR: ".$m['error'];
-        debug($o, "red");
+        debug($o);
+	echo $m['error'];
         $hex.= $o."\n";
       }
     }
     else if ($m['error'] !== false)
     {
       $o= sprintf("; ERROR: %s in \"%s\"", $m['error'], $m['src']);
-      debug($o, "red");
+      debug($o);
+      echo $m['error'];
       $hex.= "; ".$o."\n";
     }
     else
       debug(";ph3; what?");
   }
 
-  echo $hex;
+  $obj= fopen($obj_name, "w");
+  if ($obj === false)
+  {
+    echo "Can not open $obj_name for write\n";
+  }
+  else
+  {
+    fwrite($obj, $hex);
+    fclose($obj);
+  }
   
 ?>

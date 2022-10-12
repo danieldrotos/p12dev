@@ -29,7 +29,7 @@
   $lsep= "\n\r";
   $l= strtok($src, $lsep);
   $lnr= 0;
-  $mem_szie= 1 << $aw;
+  $mem_size= 1 << $aw;
   while ($l !== false)
   {
     //echo "$lnr procing line $l...\n";
@@ -41,6 +41,6 @@
     $l= strtok($lsep);
   }
 
-  for ( ; $lnr < $mem_szie; $lnr++)
+  for ( ; $lnr < $mem_size; $lnr++)
     echo "00000000\n";
 ?>
