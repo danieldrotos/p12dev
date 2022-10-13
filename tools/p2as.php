@@ -13,6 +13,8 @@
   $lst_name= '';
   $lst= false;
   $proc= "P1";
+  $insts= array();
+  $conds= array();
   
   if (isset($argv[0]))
   {
@@ -561,8 +563,8 @@
 
   function is_cond($W)
   {
-    global $conds;
-    debug("is_cond($W);");
+    global $conds, $proc;
+    debug("is_cond($W); ".count($conds)." $proc");
     if (!isset($conds[$W]))
       return false;
     $cond= $conds[$W];
@@ -666,7 +668,7 @@
 
   function proc_line($l)
   {
-    global $fin, $insts, $mem, $syms, $lnr, $addr;
+    global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
     $org= $l;
     $icode= 0;
@@ -729,6 +731,8 @@
 	  debug("Use Processor p2223");
 	}
 	$ok= true;
+	//debug("Size of insts= ".count($insts));
+	//debug("Size of conds= ".count($conds));
 	return;
       }
       
@@ -1088,6 +1092,10 @@
   //$addr= 0;
   //$mem[$addr]= 0;
   //$addr= 1;
+  //debug("Size of insts1= ".count($insts1));
+  //debug("Size of conds1= ".count($conds1));
+  //debug("Size of insts2= ".count($insts2));
+  //debug("Size of conds2= ".count($conds2));
   for ($li= 0; $li < $nuof_lines; $li++)
   {
     $lnr= $li+1;
@@ -1096,6 +1104,8 @@
     debug("\n");
     debug("line[$lnr]: $l");
     proc_line($l);
+    //debug("Size of insts= ".count($insts));
+    //debug("Size of conds= ".count($conds));
   }
 
   debug("\n\n");
