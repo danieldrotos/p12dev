@@ -111,6 +111,7 @@ module comp //(clk, reset, test_sel, test_out);
 		
    // select signals for bus slaves
    wire 		    cs_mem;
+   wire 		    cs_mem_code;
    wire 		    cs_timer;
    wire 		    cs_porti;
    wire 		    cs_portj;

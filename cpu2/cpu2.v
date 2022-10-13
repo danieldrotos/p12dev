@@ -130,7 +130,7 @@ module cpu2
    assign inst_st= inst_st_r | inst_st_i;
    assign inst_mem= inst_st | inst_ld;
    assign inst_alu= inst_alu1 | inst_alu2;
-   assign inst_br= inst_call | (inst_wb & (rd==4'd15));
+   assign inst_br= inst_call | ((inst_alu | inst_ld) & (rd==4'd15));
    assign inst_wb= (inst_alu & alu_wb_en) |
 		   inst_br |
 		   inst_ld;
