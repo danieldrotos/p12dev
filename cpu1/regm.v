@@ -15,7 +15,7 @@ module regm
    always @(posedge clk/*, posedge reset*/)
      begin
 	if (reset)
-	  r <= 0;
+	  r <= 32'b0;
 	else
 	  begin
 	     if (cen)
