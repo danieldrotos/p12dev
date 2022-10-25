@@ -1,3 +1,5 @@
+	.proc	p2
+	
 	;; GPIO port addresses
 display	equ	0xf000		; address of 7seg display
 led	equ	0xf001		; address of LEDs
@@ -16,22 +18,22 @@ sw	equ	0xd000		; address of SWs
 	st	r8,r3		; clear counter
 init:	
 	ld	r8,r0		; get actual BTN values
-	and	r8,r8,r5	; clear non-needed switches
+	and	r8,r5		; clear non-needed switches
 	st	r8,r2		; store actual BTN2 in prev
 	
 cycl:	ld	r8,r0		; get buttons
-	and	r8,r8,r5	; clear buttons but BTN2
+	and	r8,r5		; clear buttons but BTN2
 	ld	r9,r2		; load prev
-	cmp	r9,r9,r8	; compare actual and prev
+	cmp	r9,r8		; compare actual and prev
 	jz	nochange
 changed:
 	ldl0	r10,0		; check if actual is zero
-	cmp	r8,r8,r10	; we do not care H->L
+	cmp	r8,r10		; we do not care H->L
 	jz	init
 l_h:	
 	ld	r8,r1		; load actual LED values
 	ldl0	r9,0xff		; mask for negation
-	xor	r8,r8,r9	; negate all LEDs
+	xor	r8,r9		; negate all LEDs
 	st	r8,r1		; put new values on LEDs
 	jmp	init		; go to refresh prev
 	

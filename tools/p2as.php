@@ -4,31 +4,31 @@
   $debugging= false;
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
-  $aw= 12;
-  $expand= false;
-  $view_hex= false;
 
   $lnr= 1;
   $addr= 0;
   $mem= array();
   $syms= array();
+  $obj_name= '';
+  $lst_name= '';
+  $lst= false;
+  $proc= "P1";
+  $insts= array();
+  $conds= array();
   
   if (isset($argv[0]))
   {
     $fin= '';
     for ($i=1; $i<$argc; $i++)
     {
-      if ($argv[$i] == "-h")
-      {
-	$_REQUEST['submit']= "View hex";
-	//echo "HEX!\n";
-	$view_hex= true;
-      }
-      else if ($argv[$i] == "-m")
+      if ($argv[$i] == "-o")
       {
 	$i++;
-	$aw= $argv[$i];
-	$expand= true;
+	$obj_name= $argv[$i];
+      }
+      else if ($argv[$i] == "-l")
+      {
+	$debugging= true;
       }
       else
       {
@@ -38,10 +38,36 @@
     }
     if ($fin=='')
     {
-      echo "asm file missing\n";
+      echo "Asm file missing\n";
       exit(1);
     }
+    if (!file_exists($fin))
+    {
+      echo "Asm file does not exists\n";
+      exit(4);
+    }
     $src= file_get_contents($fin);
+    if ($obj_name == '')
+    {
+      $p= strrpos($fin, ".");
+      if ($p === false)
+      {
+	echo "Can not convert asm filename to obj filename\n";
+	exit(2);
+      }
+      $obj_name= substr($fin, 0, $p).".hex";
+    }
+    if ($debugging)
+    {
+      $p= strrpos($fin, ".");
+      if ($p === false)
+      {
+	echo "Can not convert asm filename to list filename\n";
+	exit(5);
+      }
+      $lst_name= substr($fin, 0, $p).".lst";
+      $lst= fopen($lst_name, "w");
+    }
   }
   else
   {
@@ -56,76 +82,418 @@
     $src= $_REQUEST['src'];
   }
 
+
   
-  $conds= array(
-    "AL" => 0,
-      "EQ" => 0x1000000,
-      "ZS" => 0x1000000,
-      "Z1" => 0x1000000,
-      "Z" => 0x1000000,
-      "NE" => 0x2000000,
-      "ZC" => 0x2000000,
-      "Z0" => 0x2000000,
-      "NZ" => 0x2000000,
-      "CS" => 0x3000000,
-      "HS" => 0x3000000,
-      "CC" => 0x4000000,
-      "LO" => 0x4000000,
-      "MI" => 0x5000000,
-      "NS" => 0x5000000,
-      "SS" => 0x5000000,
-      "PL" => 0x6000000,
-      "NC" => 0x6000000,
-      "SC" => 0x6000000,
-      "VS" => 0x7000000,
-      "OS" => 0x7000000,
-      "VC" => 0x8000000,
-      "OC" => 0x8000000,
-      "HI" => 0x9000000,
-      "LS" => 0xa000000,
-      "GE" => 0xb000000,
-      "LT" => 0xc000000,
-      "GT" => 0xd000000,
-      "LE" => 0xe000000
+  $conds1= array(
+    "ALL" => 0,
+      "AL" => 0,
+      "S0" => 0x10000000,
+      "S1" => 0x30000000,
+      "C0" => 0x50000000,
+      "C1" => 0x70000000,
+      "Z0" => 0x90000000,
+      "Z1" => 0xb0000000,
+      "O0" => 0xd0000000,
+      "O1" => 0xf0000000,
+
+      "Z"  => 0xb0000000,
+      "NZ" => 0x90000000
   );
 
-  $insts= array(
-    "DB" => array("icode"=>0, "params"=>array(
-      "n_"=>array("icode"=>0,"placements"=>array("u8"))
+
+  $conds2= array(
+    "AL" => 0,
+      "EQ" => 0x10000000,
+      "ZS" => 0x10000000,
+      "Z1" => 0x10000000,
+      "Z"  => 0x10000000,
+      "NE" => 0x20000000,
+      "ZC" => 0x20000000,
+      "Z0" => 0x20000000,
+      "NZ" => 0x20000000,
+      "CS" => 0x30000000,
+      "HS" => 0x30000000,
+      "C1" => 0x30000000,
+      "C"  => 0x30000000,
+      "CC" => 0x40000000,
+      "LO" => 0x40000000,
+      "C0" => 0x40000000,
+      "NC" => 0x40000000,
+      "MI" => 0x50000000,
+      "NS" => 0x50000000,
+      "SS" => 0x50000000,
+      "S1" => 0x50000000,
+      "S " => 0x50000000,
+      "PL" => 0x60000000,
+      "NS" => 0x60000000,
+      "SC" => 0x60000000,
+      "S0" => 0x60000000,
+      "VS" => 0x70000000,
+      "OS" => 0x70000000,
+      "V1" => 0x70000000,
+      "O1" => 0x70000000,
+      "V"  => 0x70000000,
+      "O"  => 0x70000000,
+      "VC" => 0x80000000,
+      "OC" => 0x80000000,
+      "NV" => 0x80000000,
+      "NO" => 0x80000000,
+      "HI" => 0x90000000,
+      "LS" => 0xa0000000,
+      "GE" => 0xb0000000,
+      "LT" => 0xc0000000,
+      "GT" => 0xd0000000,
+      "LE" => 0xe0000000
+  );
+
+
+  $insts1= array(
+    "DB"  =>array("icode"=>0, "params"=>array(
+      "n_"=>array("icode"=>0,"placements"=>array("#8"))
     )),
-      "DW" => array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("u16"))
+      "DW"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
       )),
-      "DD" => array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("u32"))
+      "DD"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#32"))
       )),
-      "NOP" => array("icode"=>0x00000000, "params"=>array(
+      "NOP"=> array("icode"=>0x00000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0,"placements"=>array("rd","ra","rb1")),
+	  "rr_" =>array("icode"=>0,"placements"=>array("rda","rb1")),
+	  "r_"  =>array("icode"=>0,"placements"=>array("rd")),
+	  "_"   =>array()
+      )),
+      "LD"    =>array("icode"=>0x01000000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra"))
+      )),
+      "ST"    =>array("icode"=>0x02000000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra"))
+      )),
+      "MOV"   =>array("icode"=>0x03000000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra"))
+      )),
+      "LDL0"  =>array("icode"=>0x04000000, "params"=>array(
+	"rn_" =>array("icode"=>0x00000000,"placements"=>array("rd","#16"))
+      )),
+      "LDL"   =>array("icode"=>0x05000000, "params"=>array(
+	"rn_" =>array("icode"=>0x00000000,"placements"=>array("rd","#16"))
+      )),
+      "LDH"   =>array("icode"=>0x06000000, "params"=>array(
+	"rn_" =>array("icode"=>0x00000000,"placements"=>array("rd","h16"))
+      )),
+      "CALL"  =>array("icode"=>0x08000000, "params"=>array(
+	"n_"  =>array("icode"=>0x00000000,"placements"=>array("rd","#27"))
+      )),
+      "ADD"    =>array("icode"=>0x07000000|(0<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "ADC"    =>array("icode"=>0x07000000|(1<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "SUB"    =>array("icode"=>0x07000000|(2<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "SBB"    =>array("icode"=>0x07000000|(3<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "INC"    =>array("icode"=>0x07000000|(4<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "DEC"    =>array("icode"=>0x07000000|(5<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "AND"    =>array("icode"=>0x07000000|(6<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "OR"     =>array("icode"=>0x07000000|(7<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "XOR"    =>array("icode"=>0x07000000|(8<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "SHL"    =>array("icode"=>0x07000000|(9<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "SHR"    =>array("icode"=>0x07000000|(10<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "ROL"    =>array("icode"=>0x07000000|(11<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "ROR"    =>array("icode"=>0x07000000|(12<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "MUL"    =>array("icode"=>0x07000000|(13<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      //"DIV"    =>array("icode"=>0x07000000|(14<<7), "params"=>array(
+      //"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+      //  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      //)),
+      "CMP"    =>array("icode"=>0x07000000|(15<<7), "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
+	  "rr_"=>array("icode"=>0x00000000,"placements"=>array("rda","rb1"))
+      )),
+      "SHA"    =>array("icode"=>0x07000000|(16<<7), "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra")),
+	  "r_" =>array("icode"=>0x00000000,"placements"=>array("rda"))
+      )),
+      "SETC"   =>array("icode"=>0x07000000|(17<<7), "params"=>array(
+	"_"    =>array()
+      )),
+      "CLRC"   =>array("icode"=>0x07000000|(18<<7), "params"=>array(
+	"_"    =>array()
+      )),
+      "JMP"  =>array("icode"=>0x04f00000, "params"=>array(
+	"n_" =>array("icode"=>0x00000000,"placements"=>array("#16"))
+      )),
+      "JZ"   =>array("icode"=>0xb4f00000, "params"=>array(
+	"n_" =>array("icode"=>0x00000000,"placements"=>array("#16"))
+      )),
+      "JNZ"  =>array("icode"=>0x94f00000, "params"=>array(
+	"n_" =>array("icode"=>0x00000000,"placements"=>array("#16"))
+      )),
+      "RET"  =>array("icode"=>0x03fe0000, "params"=>array(
+	"_" =>array()
+      )),
+      "PUSH" =>array("icode"=>0x020d0000, "params"=>array(
+	"r_" =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "POP"  =>array("icode"=>0x010d0000, "params"=>array(
+	"r_" =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+  );
+  
+  $insts2= array(
+    // data placers
+    "DB"  =>array("icode"=>0, "params"=>array(
+      "n_"=>array("icode"=>0,"placements"=>array("#8"))
+    )),
+      "DW"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      "DD"  =>array("icode"=>0, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#32"))
+      )),
+      // Macro insts
+      // NOP= mov r0,r0
+      "NOP" =>array("icode"=>0x00000000, "params"=>array(
         "_"=>array()
       )),
-      "MOV" => array("icode"=>0x00000000, "params"=>array(
+      // JMP= mvzl r15,u16
+      "JMP" =>array("icode"=>0x01f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JZ= z1 mvzl r15,u16
+      "JZ" =>array("icode"=>0x11f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JNZ= z0 mvzl r15,u16
+      "JNZ" =>array("icode"=>0x21f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JP= mov r15,rb
+      "JP"  =>array("icode"=>0x00f00000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rb"))
+      )),
+      // RET= mov r15,r14
+      "RET"  =>array("icode"=>0x00f00e00, "params"=>array(
+        "_"=>array()
+      )),
+      // PUSH= st rd,*r13,0
+      "PUSH"=>array("icode"=>0x0d0d0000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // POP= ld rd,*r13,0
+      "POP"=>array("icode"=>0x0f0d0000, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // INC= add rd,#1
+      "INC"  =>array("icode"=>0x01040001, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // DEC= add rd,#-1
+      "DEC"  =>array("icode"=>0x0104ffff, "params"=>array(
+        "r_"=>array("icode"=>0,"placements"=>array("rd"))
+      )),
+      // LDL0= mvzl rd,#
+      "LDL0" =>array("icode"=>0x00020000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      // LDL= mvl rd,#
+      "LDL"  =>array("icode"=>0x00000000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      // LDH= mvh rd,#
+      "LDH"  =>array("icode"=>0x00010000, "params"=>array(
+        "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","h16"))
+      )),
+      // 000: 000 0 ALU R  000 1 ALU #
+      // ALU R only
+      "MOV"  =>array("icode"=>0x00000000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
-      "SED" => array("icode"=>0x00030000, "params"=>array(
+      "SED"  =>array("icode"=>0x00030000, "params"=>array(
 	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
       )),
-      "MVL" => array("icode"=>0x00000000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      // ALU # only
+      "MVL"  =>array("icode"=>0x00000000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
-      "MVH" => array("icode"=>0x00010000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      "MVH"  =>array("icode"=>0x00010000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","h16"))
       )),
-      "MVZL"=> array("icode"=>0x00020000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      "MVZL" =>array("icode"=>0x00020000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
-      "MVS" => array("icode"=>0x00030000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
+      "MVS"  =>array("icode"=>0x00030000, "params"=>array(
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
-      "ADD" => array("icode"=>0x00040000, "params"=>array(
-	"rr_"=>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
-	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","u16"))
-    )),
+      // ALU R/# common
+      "ADD"    =>array("icode"=>0x00040000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "ADC"    =>array("icode"=>0x00050000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "SUB"    =>array("icode"=>0x00060000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "SBB"    =>array("icode"=>0x00070000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "CMP"    =>array("icode"=>0x00080000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "MUL"    =>array("icode"=>0x00090000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "PLUS"   =>array("icode"=>0x000a0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "TEST"   =>array("icode"=>0x000c0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "OR"     =>array("icode"=>0x000d0000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "XOR"    =>array("icode"=>0x000e0000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      "AND"    =>array("icode"=>0x000f0000, "params"=>array(
+	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_","rb")),
+	  "rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
+      // 001 ALU 1op
+      "ZEB"   =>array("icode"=>0x02000000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
+      )),
+      "ZEW"   =>array("icode"=>0x02010000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEB"   =>array("icode"=>0x02020000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEW"   =>array("icode"=>0x02030000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "NOT"   =>array("icode"=>0x02040000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "NEG"   =>array("icode"=>0x02050000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "ROR"   =>array("icode"=>0x02060000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
+	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "ROL"   =>array("icode"=>0x02070000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
+	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHL"   =>array("icode"=>0x02080000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
+	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHR"   =>array("icode"=>0x02090000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
+	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SHA"   =>array("icode"=>0x020a0000, "params"=>array(
+	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
+	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SZ"   =>array("icode"=>0x020b0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SEC"   =>array("icode"=>0x020c0000, "params"=>array(
+	"_"  =>array()
+      )),
+      "CLC"   =>array("icode"=>0x020d0000, "params"=>array(
+	"_"  =>array()
+      )),
+      "GETF"   =>array("icode"=>0x020e0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      "SETF"   =>array("icode"=>0x020f0000, "params"=>array(
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+      )),
+      // 010 CALL
+      "CALL"  =>array("icode"=>0x04000000, "params"=>array(
+	"rn_" =>array("icode"=>0x01000000,"placements"=>array("rd","#20")),
+	  "n_"  =>array("icode"=>0x00000000,"placements"=>array("#24"))
+      )),
+      // 011 -
+      // 1x0 W ST
+      "ST"      =>array("icode"=>0x08000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
+	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
+	  "rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
+      )),
+      // 1x1 W LD
+      "LD"      =>array("icode"=>0x0a000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
+	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
+	  "rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
+      )),
   );
 
+  $conds= $conds1;
+  $insts= $insts1;
+  
   function arri($a, $idx)
   {
     if (empty($a))
@@ -141,16 +509,62 @@
 
   function debug($x)
   {
-    global $debugging;
+    global $debugging, $lst;
     
     if ($debugging === true)
-      echo ";;debug;; $x\n";
+    {
+      if ($lst !== false)
+      {
+	fwrite($lst, ";; $x\n");
+      }
+    }
+  }
+
+  /**
+   * parse_string parses a string and returns an array of the parsed elements.
+   * This is an all-or-none function, and will return NULL if it cannot completely
+   * parse the string.
+   * @param string $string The OID to parse.
+   * @return array|NULL A list of OID elements, or null if error parsing.
+   */
+  function parse_string($string)
+  {
+    $result = array();
+    while (true)
+    {
+      $matches = array();
+      //$match_count = preg_match('/^(?:((?:[^\\\\\\. "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\. ])|$)/', $string, $matches);
+      $match_count = preg_match('/^(?:((?:[^\\\\\\, "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\, ])|$)/', $string, $matches);
+      if (null !== $match_count && $match_count > 0)
+      {
+        // [1] = unquoted, [2] = quoted
+        $value = strlen($matches[1]) > 0 ? $matches[1] : $matches[2];
+	
+        $result[] = stripcslashes($value);
+	
+        // Are we expecting any more parts?
+        if (strlen($matches[3]) > 0)
+        {
+          // I do this (vs keeping track of offset) to use ^ in regex
+          $string = substr($string, strlen($matches[0]));
+        }
+        else
+        {
+          return $result;
+        }
+      }
+      else
+      {
+        // All or nothing
+        return null;
+      }
+    } // while
   }
 
   function is_cond($W)
   {
-    global $conds;
-    debug("is_cond($W);");
+    global $conds, $proc;
+    debug("is_cond($W); ".count($conds)." $proc");
     if (!isset($conds[$W]))
       return false;
     $cond= $conds[$W];
@@ -180,43 +594,86 @@
   function is_reg($w)
   {
     $W= strtoupper($w);
-    $W= preg_replace("/[+*-]/", "", $W);
+    debug("Check if $w/$W is a reg?");
+    $W= preg_replace('/[+*-]/', "", $W);
+    debug("Check if $w/$W is a reg?");
     if ($W == "PC")
-      $r= 15;
+    {  $r= 15; debug("pc=15"); }
     else if ($W == "LR")
-    $r= 14;
+    { $r= 14;; debug("lr=14"); }
     else if ($W == "SP")
-    $r= 13;
+    { $r= 13; debug("sp=13"); }
     else if (preg_match("/^R[0-9][0-9]*/", $W))
     {
-      $w= substr($w, 1);
+      $w= substr($W, 1);
       $r= intval($w,0);
+      debug("Match as a reg: w=$w r=$r");
       return($r);
     }
-    return false;
+    else
+      return false;
+    return $r;
   }
 
-  function mk_symbol($name, $value, $constant= false)
+  function is_w($W)
   {
-    global $syms, $lnr;
+    if (empty($W))
+      return false;
+    if (preg_match('/^[+]/',$W) ||
+      preg_match('/^[*]/',$W) ||
+      preg_match('/^[-]/',$W) ||
+      preg_match('/[+]$/',$W) ||
+      preg_match('/[-]$/',$W))
+    return true;
+  }
+
+  function is_u($W)
+  {
+    if (empty($W))
+      return false;
+    if (preg_match('/^[+]/',$W) ||
+      preg_match('/[+]$/',$W))
+    return true;
+  }
+
+  function is_p($W)
+  {
+    if (empty($W))
+      return false;
+    if (preg_match('/^[+]/',$W) ||
+      preg_match('/^[-]/',$W))
+    return true;
+  }
+  
+  function mk_symbol($name, $value, $type= "S")
+  {
+    global $syms, $fin, $lnr;
+    $s= arri($syms, $name);
+    if (is_array($s))
+    {
+      $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(9);
+    }
     $sym= array(
       "name" => $name,
 	"value" => $value,
 	"line" => $lnr,
-	"const" => $constant
+	"type" => $type
     );
     $syms[$name]= $sym;
     return $sym;
   }
 
-  
-
   function proc_line($l)
   {
-    global $insts, $mem, $syms, $lnr, $addr;
+    global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
+    global $conds1, $conds2, $insts1, $insts2, $proc;
     $org= $l;
     $icode= 0;
     $label= false;
+    $cond= false;
     if (($w= strtok($l, " \t")) === false)
     {
       debug("proc_line; no words found in line $lnr");
@@ -231,25 +688,67 @@
     {
       $W= strtoupper($w);
       debug("proc_line; w=$w");
+      
       if (($n= is_label($w)) !== false)
       {
 	debug("proc_line; found label=$n at addr=$addr");
-        $label= mk_symbol($n, $addr);
+        $label= mk_symbol($n, $addr, "L");
         $ok= true;
       }
+      
       else if (($cond= is_cond($W)) !== false)
       {
         debug("proc_line; COND= ".sprintf("%08x",$cond));
         $icode= $icode | $cond;
         debug("proc_line; ICODE= ".sprintf("%08x",$icode));
       }
+
+      else if ($W == ".PROC")
+      {
+	$w= strtok(" \t");
+	$W= strtoupper($w);
+	$p1= strpos("P1", $W);
+	$p2= strpos("P2", $W);
+	if (($p1===false) && ($p2===false))
+	{
+	  $error= "{$fin}:{$lnr}: Unknown processor type";
+	  debug("Error: ".$error);
+	  echo $error."\n";
+	  exit(10);
+	}
+	if ($p1!==false)
+	{
+	  $conds= $conds1;
+	  $insts= $insts1;
+	  $proc= "P1";
+	  debug("Use Processor p1516");
+	}
+	if ($p2!==false)
+	{
+	  $conds= $conds2;
+	  $insts= $insts2;
+	  $proc= "P2";
+	  debug("Use Processor p2223");
+	}
+	$ok= true;
+	//debug("Size of insts= ".count($insts));
+	//debug("Size of conds= ".count($conds));
+	return;
+      }
       
       else if (($W == "=") || ($W == "EQU"))
       {
+	if ($prew == '')
+	{
+	  $error= "{$fin}:{$lnr}: Label missing for assignment";
+	  debug("Error: ".$error);
+	  echo $error."\n";
+	  exit(7);
+	}
 	$w= strtok(" \t");
 	$val= intval($w,0);
 	debug("proc_line; EQU w=$w val=$val");
-	mk_symbol($prew, $val, $W=="=");
+	mk_symbol($prew, $val, ($W=="=")?"=":"S");
 	debug("proc_line; SYMBOL $prew=$val");
 	$ok= true;
 	return;
@@ -264,39 +763,93 @@
 	return;
       }
 
-      else if ($W == "DB")
+      else if ($W == "DS")
+      {
+	$x= 0 + strtok(" \t,");
+	$addr+= $x;
+	debug(";proc_line; addr=$addr");
+	$ok= true;
+	return;
+      }
+      
+      else if (preg_match('/^D[BWD]$/', $W))
       {
 	$orgw= $w;
-        $w= strtok(" \t,");
-	while ($w !== false)
+	$pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
+	debug("Param part of line: $pl");
+	if (!empty($pl) && ($pl[0]=="\""))
 	{
-	  debug("Process param of DB: $w");
+	  $a= parse_string($pl);
+	  $s= $a[0];
+	  debug("Parsed string: \"{$s}\"");
+	  for ($i= 0; $i<strlen($s); $i++)
+	  {
+	    $params= array();
+	    $params[]= $pv= ord($s[$i]);
+	    $mem[$addr]= array(
+	      "icode"=>0,
+		"label"=>$label,
+		"src"=>$orgw."\t$pv",
+		"lnr"=>$lnr,
+		"error"=>$error,
+		"inst"=>$insts[$W],
+		"pattern"=>"n_",
+		"address"=>$addr,
+		"params"=>$params
+	    );
+	    debug( sprintf("mem[%04x] Added char DB $pv",$addr) );
+	    $addr++;
+	  }
+	  $params= array();
+	  $params[]= 0;
+	  $mem[$addr]= array(
+	    "icode"=>0,
+	      "label"=>$label,
+	      "src"=>$orgw,
+	      "lnr"=>$lnr,
+	      "error"=>$error,
+	      "inst"=>$insts[$W],
+	      "pattern"=>"n_",
+	      "address"=>$addr,
+	      "params"=>$params
+	  );
+	  debug( sprintf("mem[%04x] Added string 0",$addr) );
+	  $addr++;
+	  return ;
+	}
+        $w= trim(strtok(" \t,"));
+	while (($w !== false) && ($w!=""))
+	{
+	  debug("Process param of DB: \"$w\"");
 	  $params= array();
 	  $params[]= $w;
 	  $mem[$addr]= array(
 	    "icode"=>0,
 	      "label"=>$label,
-	      "src"=>$orgw." ".$w,
+	      "src"=>$orgw."\t".$w,
+	      "lnr"=>$lnr,
 	      "error"=>$error,
-	      "inst"=>$insts["DB"],
+	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
 	      "address"=>$addr,
 	      "params"=>$params
 	  );
 	  debug( sprintf("mem[%04x] Added DB $w",$addr) );
 	  $addr++;
-	  $w= strtok(",");
+	  $w= trim(strtok(" \t,"));
 	}
 	return;
       }
       
       else if (($inst= is_inst($W)) !== false)
       {
-	debug("proc_line; INST= ".sprintf("%08x",$inst["icode"]));
+	$icode= $icode | $inst['icode'];
+	debug("proc_line; INST= ".sprintf("%08x",$icode));
 	$mem[$addr]= array(
-          "icode"=>$inst['icode'],
+          "icode"=>$icode,
             "label"=>$label,
             "src"=>$org,
+	    "lnr"=>$lnr,
             "error"=>$error,
 	    "inst"=>$inst
         );
@@ -309,25 +862,56 @@
       $prew= $w;
       $w= strtok($par_sep);
     }
-    if ($inst === false)
+    if (($prew != '') && ($ok === false))
+    {
+      $error= "{$fin}:{$lnr}: Unknown instruction";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(8);
       return;
+    }
+    if ($inst === false)
+    {
+      debug("Instructionless line");
+      return;
+    }
     // continue with parameters
     $prew= $w;
     $w= strtok($par_sep);
     $pattern= "";
     $params= array();
-    while ($w != false)
+    while ($w !== false)
     {
       $W= strtoupper($w);
-      if (($r= is_reg($W)) !== false)
+      debug("Parameter word: $w $W");
+      $r= is_reg($W);
+      debug("is_reg? r=$r");
+      if ($r !== false)
       {
 	$pattern.= "r";
 	$params[]= $r;
+	if (is_w($W))
+	{
+	  $mem[$addr]['icode']|= 0x01000000;
+	  debug( sprintf("Set W bit: %08x",$mem[$addr]['icode']) );
+	}
+	if (is_u($W))
+	{
+	  $mem[$addr]['icode']|= 0x00008000;
+	  debug( sprintf("Set U bit: %08x",$mem[$addr]['icode']) );
+	}
+	if (is_p($W))
+	{
+	  $mem[$addr]['icode']|= 0x00004000;
+	  debug( sprintf("Set P bit: %08x",$mem[$addr]['icode']) );
+	}
+	debug("Parameter value: $r");
       }
       else
       {
 	$pattern.= "n";
 	$params[]= $w;
+	debug("Parameter value: $w");
       }
       $prew= $w;
       $w= strtok($par_sep);
@@ -338,6 +922,15 @@
     $mem[$addr]["params"]= $params;
     $mem[$addr]["address"]= $addr;
     $addr++;
+
+    if (!$ok)
+    {
+      $error= "{$fin}:{$lnr}: Unrecognizable token $w";
+      debug("Error: ".$error);
+      echo $error."\n";
+      exit(6);
+    }
+    
   }
 
   function param_value($p)
@@ -348,6 +941,12 @@
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
       is_numeric($p))
     return intval($p, 0);
+    if ($p[0] == "'")
+    {
+      $c= substr($p,1,1);
+      $v= ord($c);
+      return $v;
+    }
     $s= arri($syms,$p);
     if (!empty($s) && is_array($s))
       return $s["value"];
@@ -388,9 +987,21 @@
       $pv= param_value($up);
       debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
       $c= $icode;
-      if ($pl == "rd")
+      if ($pl == "_")
+      {
+	// just skip
+      }
+      else if ($pl == "rd")
       {
 	$pv&= 0xf;
+	$pv<<= 20;
+	$icode&= 0xff0fffff;
+	$icode|= $pv;
+      }
+      else if ($pl == "rda")
+      {
+	$pv&= 0xf;
+	$icode&= 0xff0fffff;
 	$pv<<= 20;
 	$icode|= $pv;
       }
@@ -398,97 +1009,129 @@
       {
 	$pv&= 0xf;
 	$pv<<= 16;
+	$icode&= 0xfff0ffff;
 	$icode|= $pv;
       }
       else if ($pl == "rb")
       {
 	$pv&= 0xf;
 	$pv<<= 8;
+	$icode&= 0xfffff0ff;
 	$icode|= $pv;
       }
-      else if ($pl == "u8")
+      else if ($pl == "rb1")
+      {
+	$pv&= 0xf;
+	$pv<<= 12;
+	$icode&= 0xffff0fff;
+	$icode|= $pv;
+      }
+      else if ($pl == "#8")
       {
 	$pv&= 0xff;
+	$icode&= 0xffffff00;
 	$icode|= $pv;
       }
-      else if ($pl == "u16")
+      else if ($pl == "#16")
       {
 	$pv&= 0xffff;
+	$icode&= 0xffff0000;
 	$icode|= $pv;
       }
-      else if ($pl == "s16")
+      else if ($pl == "#20")
       {
-	$pv&= 0xffff;
-	if ($pv & 0x8000)
-	  $pv|= 0xffff0000;
-	$icode= $pv;
+	$pv&= 0xfffff;
+	$icode&= 0xfff00000;
+	$icode|= $pv;
       }
-      else if ($pl == "u32")
+      else if ($pl == "#24")
+      {
+	$pv&= 0xffffff;
+	$icode&= 0xff000000;
+	$icode|= $pv;
+      }
+      else if ($pl == "#27")
+      {
+	$pv&= 0x0effffff;
+	$icode&= 0xf8000000;
+	$icode|= $pv;
+      }
+      else if ($pl == "#32")
       {
 	$icode= $pv;
       }
       else if ($pl == "h16")
       {
-	$pv&= 0xffff;
-	$pv<<= 16;
+	$pv>>= 16;
+	$pv&= 0x0000ffff;
+	$icode&= 0xffff0000;
 	$icode|= $pv;
       }
-      else if ($pl == "zl16")
-      {
-	$pv&= 0xffff;
-	$icode= $pv;
-      }
+      
       debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
     return $icode;
   }
   
   // Load source file and do PHASE 1
-  
-  $lsep= "\r\n";
-  $l= strtok($src, $lsep);
-  while ($l !== false)
-  {
-    $lines[$lnr]= $l;
-    $l= strtok($lsep);
-    $lnr++;
-  }
-  $nuof_lines= $lnr;
+  $lines= preg_split("/\r\n|\n|\r/", $src);
+  $nuof_lines= count($lines);
+  /*
+     $lsep= "\r\n";
+     $l= strtok($src, $lsep);
+     while ($l !== false)
+     {
+     $lines[$lnr]= $l;
+     debug("[{$lnr}] {$l}");
+     $l= strtok($lsep);
+     $lnr++;
+     }
+     $nuof_lines= $lnr;
+   */
   debug("$nuof_lines lines buffered");
   //$addr= 0;
   //$mem[$addr]= 0;
   //$addr= 1;
-  for ($lnr= 1; $lnr < $nuof_lines; $lnr++)
+  //debug("Size of insts1= ".count($insts1));
+  //debug("Size of conds1= ".count($conds1));
+  //debug("Size of insts2= ".count($insts2));
+  //debug("Size of conds2= ".count($conds2));
+  for ($li= 0; $li < $nuof_lines; $li++)
   {
-    $l= trim($lines[$lnr]);
+    $lnr= $li+1;
+    $l= trim($lines[$li]);
     $l= preg_replace("/;.*$/", "", $l);
     debug("\n");
     debug("line[$lnr]: $l");
     proc_line($l);
+    //debug("Size of insts= ".count($insts));
+    //debug("Size of conds= ".count($conds));
   }
 
   debug("\n\n");
-
-  $abc=10;
-  $s='$abc/2';
-  $r=eval("return $s ;");
-  debug("abc=$abc r=$r\n");
-
+  /*
+     $abc=10;
+     $s='$abc/2';
+     $r=eval("return $s ;");
+     debug("abc=$abc r=$r\n");
+   */
 
   // PAHSE 2
   
-  debug(";  PHASE 2\n");
+  debug("PHASE 2\n");
   foreach ($mem as $a => $m)
   {
     //echo "a=$a, m=".print_r($m,true)."\n";
     if (!is_array($m))
       continue;
+    //debug( print_r($m,true) );
+    $lnr= $m['lnr'];
     //debug(print_r($m,true));
     if (is_array(arri($m,"inst")) &&
       is_array(arri($m,"params")) &&
       !empty($m["pattern"]))
     {
-      debug("mem[{$m['address']}] is an instruction: {$m['icode']} {$m['src']}");
+      debug( sprintf("mem[%x] is an instruction: %08x %s",$m['address'],$m['icode'],$m['src']) );
       //echo print_r($m,true);
       $pat= arri($m,"pattern");
       $ip= arri($m["inst"]["params"],$pat);
@@ -496,7 +1139,9 @@
       //debug("ip=".print_r($ip,true));
       if (!is_array($ip))
       {
-	debug("Used pattern ($pat) does not match to any allowed");
+	$m['error']= "{$fin}:{$lnr}: Used pattern ($pat) does not match to any allowed";
+	debug( "Error: ".$m['error'] );
+	echo $m['error']."\n";
       }
       else
       {
@@ -513,21 +1158,21 @@
   $hex= '';
   debug("SYMBOLS");
   //debug ("syms[0]= ${syms[0]}");
+  $o= "//; PROC {$proc}";
+  $hex.= $o."\n";
+  debug($o);
   $hex.= "//; SYMBOLS\n";
   if (!empty($syms))
   {
     foreach ($syms as $k => $s)
     {
-      if ($s['const'] == true)
-	$c= '=';
-      else
-	$c= ';';
-      $o= sprintf("//%s %08x", $c, $s["value"])." $k";
+      $o= sprintf("//%s %08x", $s['type'], $s["value"])." $k";
       $hex.= $o."\n";
       debug($o);
     }
   }
 
+  debug("\n\n");
 
   $hex.= "//; CODE\n";
   $p= -1;
@@ -535,6 +1180,7 @@
   {
     if (!is_array($m))
       continue;
+    $lnr= $m['lnr'];
     //echo print_r($m,true);
     if ($a != $p+1)
     {
@@ -547,6 +1193,7 @@
       }
     }
     $p= $a;
+    $m['icode']&= 0xffffffff;
     if ($m['icode'] !== false)
     {
       debug( $o= sprintf("%08x //;%04x %s", $m['icode'], $a, $m["src"]) );
@@ -554,20 +1201,31 @@
       if ($m["error"] != false)
       {
         $o= "; ERROR: ".$m['error'];
-        debug($o, "red");
+        debug($o);
+	echo $m['error'];
         $hex.= $o."\n";
       }
     }
-    else if ($m['error'] !== false)
+    /*else if ($m['error'] !== false)
     {
       $o= sprintf("; ERROR: %s in \"%s\"", $m['error'], $m['src']);
-      debug($o, "red");
+      debug($o);
+      echo $m['error'];
       $hex.= "; ".$o."\n";
-    }
+    }*/
     else
       debug(";ph3; what?");
   }
 
-  echo $hex;
+  $obj= fopen($obj_name, "w");
+  if ($obj === false)
+  {
+    echo "Can not open $obj_name for write\n";
+  }
+  else
+  {
+    fwrite($obj, $hex);
+    fclose($obj);
+  }
   
 ?>

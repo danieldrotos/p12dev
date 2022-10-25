@@ -191,6 +191,7 @@ module rfm2
       );
 
    wire [WIDTH-1:0] 	    r14out;
+   wire [WIDTH-1:0] 	    r15out;
    reg2in #(.WIDTH(WIDTH)) r14
      (
       .clk(clk),
@@ -202,7 +203,6 @@ module rfm2
       .dout(r14out)
       );
 
-   wire [WIDTH-1:0] 	    r15out;
    reg2in #(.WIDTH(WIDTH)) r15
      (
       .clk(clk),
@@ -211,9 +211,10 @@ module rfm2
       .wen2(ra==15 & fn_ra_change),
       .din1(fn_inc_pc?(pc+1):wb_data),
       .din2(ra_changed),
-      .dout(pc)
+      .dout(r15out)
       );
-
+   assign pc= r15out;
+   
    assign da= (ra==4'h0)?r0out:
 	      (ra==4'h1)?r1out:
 	      (ra==4'h2)?r2out:

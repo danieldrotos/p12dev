@@ -90,7 +90,7 @@ module alu2
    wire 		    v_adder;
    adder #(.WIDTH(WIDTH)) adder
      (
-      .ci((op[5:0]==6'b100101)?1:cin),
+      .ci((op[5:0]==6'b100101)?1'b1:cin),
       .ai((op[5:0]==6'b100101)?32'h0:di),
       .bi((op[5:0]==6'b100101)?~di:adder_op2),
       .res(res_adder),

@@ -1,6 +1,26 @@
 module alu1 //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
   #(
-    parameter WIDTH=8
+    parameter WIDTH=8,
+    parameter op_add= 5'd0,
+   parameter op_adc= 5'd1,
+   parameter op_sub= 5'd2,
+   parameter op_sbb= 5'd3,
+   parameter op_inc= 5'd4,
+   parameter op_dec= 5'd5,
+   parameter op_and= 5'd6,
+   parameter op_or = 5'd7,
+   parameter op_xor= 5'd8,
+   parameter op_shl= 5'd9,
+   parameter op_shr= 5'd10,
+   parameter op_rol= 5'd11,
+   parameter op_ror= 5'd12,
+   parameter op_mul= 5'd13,
+   parameter op_div= 5'd14,
+   parameter op_cmp= 5'd15,
+   parameter op_sha= 5'd16,
+   parameter op_stc= 5'd17,
+   parameter op_clc= 5'd18,
+   parameter op_muh= 5'd19
     )
    (
     input wire [5:0] 	    op,
@@ -25,26 +45,6 @@ module alu1 //(op,ci,zi,si,vi,ai,bi,res,co,vo,zo,so);
    wire [WIDTH-1:0] 	    op1;
    wire [WIDTH-1:0] 	    op2;
    
-   parameter op_add= 5'd0;
-   parameter op_adc= 5'd1;
-   parameter op_sub= 5'd2;
-   parameter op_sbb= 5'd3;
-   parameter op_inc= 5'd4;
-   parameter op_dec= 5'd5;
-   parameter op_and= 5'd6;
-   parameter op_or = 5'd7;
-   parameter op_xor= 5'd8;
-   parameter op_shl= 5'd9;
-   parameter op_shr= 5'd10;
-   parameter op_rol= 5'd11;
-   parameter op_ror= 5'd12;
-   parameter op_mul= 5'd13;
-   parameter op_div= 5'd14;
-   parameter op_cmp= 5'd15;
-   parameter op_sha= 5'd16;
-   parameter op_stc= 5'd17;
-   parameter op_clc= 5'd18;
-   parameter op_muh= 5'd19;
    
    //parameter op_tst= 5'd8;
 

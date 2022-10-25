@@ -17,6 +17,16 @@
  `define CPU_TYPE 1
 `endif
 
+`ifdef IVERILOG
+module BUFG
+(
+ input wire I,
+ output wire O
+ );
+   assign O=I;
+endmodule
+`endif
+
 module tm
   (
    input wire  i,
@@ -79,9 +89,9 @@ module tm
 
    initial
      begin
-	#100 btn= 5'b01110;
-	#100 btn= 5'b11011;
-	#100 btn= 5'b10101;
+	#1000 btn= 4;
+	#1000 btn= 0;
+	#1000 btn= 4;
      end
    
    // Kimeneti file eloallitasa

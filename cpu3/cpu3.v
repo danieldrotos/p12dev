@@ -1,4 +1,4 @@
-module cpu2
+module cpu3
   #(
     parameter WIDTH= 32,
     parameter ADDR_SIZE= 32
@@ -44,6 +44,7 @@ module cpu2
    wire 		       wb_en;
    reg [WIDTH-1:0] 	       mr_data;
 
+   
    // scheduler generates phase signals
    schedm scheduler
      (
@@ -55,36 +56,7 @@ module cpu2
       .phw(phw),	// phase 4: WRITEBACK (store back result to register)
       .clk_stat(clk_stat)
       );
-
-   // FLAG register
-   wire [7:0] 		       flags;
-   wire 		       flag_c;
-   wire 		       flag_s, flag_n;
-   wire 		       flag_z;
-   wire 		       flag_v, flag_o;
-   wire 		       flag_p;
-   wire 		       flag_u;
-   wire 		       flag_wb_en;
-   wire 		       alu_flag_en;
-   wire 		       alu_wb_en;
-   
-   regm #(.WIDTH(8)) reg_flag
-     (
-      .clk(clk),
-      .reset(reset/*1'b0*/),
-      .cen(flag_wb_en),
-      .din (res_flags),
-      .dout(flags)
-      );
-   assign flag_c= flags[`CIDX];
-   assign flag_s= flags[`SIDX];
-   assign flag_z= flags[`ZIDX];
-   assign flag_v= flags[`VIDX];
-   assign flag_p= flags[`PIDX];
-   assign flag_u= flags[`UIDX];
-   assign flag_o= flag_v;
-   assign flag_n= flag_s;
-   assign flag_wb_en= ena & alu_flag_en & phw;
+ 
 
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
@@ -95,6 +67,7 @@ module cpu2
       .din(mbus_din),
       .dout(ic)
       );
+
 
    // pick parts of the IC
    wire [3:0]		       cond= ic[31:28];
@@ -110,7 +83,8 @@ module cpu2
    wire 		       u= ic[15];
    wire 		       p= ic[14];
    wire 		       w= ic[24];
-   
+
+
    // decode instructions
    wire 		       inst_alu2= inst==0;
    wire 		       inst_alu1= inst==1;
@@ -153,113 +127,66 @@ module cpu2
 		     (cond==4'he)? flag_z | (flag_s ^ flag_o): // LE
 		     (cond==4'hf)? 1 : // uncond
 		     0;
-   
-   // ALU inst
-   alu2 alu
-     (
-      // inputs
-      .op(alu_op),
-      .fi(flags),
-      .bi(opb),
-      .di(opd),
-      .im(im16),
-      // outputs
-      .res(res_alu),
-      .fo(res_flags),
-      .wb_en(alu_wb_en),
-      .flag_en(alu_flag_en)
-      );
 
-   // CALL inst
-   wire [WIDTH-1:0] 	       aof_call_abs;
-   wire [WIDTH-1:0] 	       aof_call_idx;
-   wire [WIDTH-1:0] 	       sex_im20;
-   wire 		       sof_im20= im20[19];
-   assign sex_im20= {sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,im20};
-   assign aof_call_abs= {8'b0, im24};
-   assign aof_call_idx= opd+sex_im20;
-   assign res_call= ic[24]?aof_call_idx:aof_call_abs;
 
-   // Select data for write back
-   assign wb_data= inst_alu?res_alu:
-		   inst_call?res_call:
-		   inst_ext?0:
-		   inst_ld?mr_data:
-		   inst_st?0:
-		   0;
-   assign wb_address= inst_call?4'd15:
-		      rd;
-   assign wb_en= ena & inst_wb & phw;
-
-   // MEM inst (ld/st)
-   wire [WIDTH-1:0] 	       mem_im_offset;
-   assign mem_im_offset= {
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16[15],
-			  im16
-			  };
-   wire [WIDTH-1:0] 	       aof_ldst;
-   wire [WIDTH-1:0] 	       base_offset;
-   wire [WIDTH-1:0] 	       opa_offset;
-   wire [WIDTH-1:0] 	       ldst_base;
-   wire [WIDTH-1:0] 	       ldst_mod;
-   wire [WIDTH-1:0] 	       opa_changed;
-   wire [WIDTH-1:0] 	       ldst_offset;
-   wire 		       up_down, pre_post;
-   wire 		       use_u, use_p;
-   assign up_down= ic[26]?flag_u:u;
-   assign pre_post= ic[26]?flag_p:p;
-   assign use_u= inst_ld_i ^ up_down;
-   assign use_p= inst_ld_i ^ pre_post;
-   assign ldst_mod= use_u?32'd1:32'hffffffff;
-   assign opa_changed= opa+ldst_mod;
-   assign ldst_base= use_p?opa_changed:opa;
-   assign ldst_offset= ic[26]?mem_im_offset:opb;
-   assign base_offset= ldst_base+ldst_offset;
-   assign opa_offset= opa+ldst_offset;
-   assign aof_ldst= w?base_offset:opa_offset;
-   
    // Register file
    rfm2 #(.WIDTH(WIDTH)) regs
      (
       .clk(clk),
       .reset(reset),
-      .ra(ra),
-      .rb(rb),
-      .rd(inst_call?4'd15:rd),
-      .rt(test_rsel),
+      .ra(/*ra*/4'b0),
+      .rb(/*rb*/4'b0),
+      .rd(/*inst_call?4'd15:rd*/4'b0),
+      .rt(/*test_rsel*/4'b0),
       .fn_inc_pc(phe),
-      .fn_link(ena & inst_call & phe),
-      .fn_ra_change(ena & inst_mem & w & phm),
-      .fn_wb(ena & inst_wb & phw),
-      .wb_data(wb_data),
-      .ra_changed(opa_changed),
+      .fn_link(/*ena & inst_call & phe*/1'b0),
+      .fn_ra_change(/*ena & inst_mem & w & phm*/1'b0),
+      .fn_wb(/*ena & inst_wb & phw*/1'b0),
+      .wb_data(/*wb_data*/32'b0),
+      .ra_changed(/*opa_changed*/32'b0),
       .da(opa),
       .db(opb),
       .dd(opd),
       .dt(test_reg),
       .pc(pc)
       );
+
    
+   // FLAG register
+   wire [7:0] 		       flags;
+   wire 		       flag_c;
+   wire 		       flag_s, flag_n;
+   wire 		       flag_z;
+   wire 		       flag_v, flag_o;
+   wire 		       flag_p;
+   wire 		       flag_u;
+   wire 		       flag_wb_en;
+   wire 		       alu_flag_en;
+   wire 		       alu_wb_en;
+   
+   regm #(.WIDTH(8)) reg_flag
+     (
+      .clk(clk),
+      .reset(reset),
+      .cen(/*flag_wb_en*/1'b0),
+      .din (res_flags),
+      .dout(flags)
+      );
+   assign flag_c= flags[`CIDX];
+   assign flag_s= flags[`SIDX];
+   assign flag_z= flags[`ZIDX];
+   assign flag_v= flags[`VIDX];
+   assign flag_p= flags[`PIDX];
+   assign flag_u= flags[`UIDX];
+   assign flag_o= flag_v;
+   assign flag_n= flag_s;
+   assign flag_wb_en= ena & alu_flag_en & phw;
+
    // memory interface
    
    // handle input data lines
    wire 		       en_mr_data;
-   assign en_mr_data= phm & inst_ld;
+   assign en_mr_data= phm /*& inst_ld*/;
    // latched data read from memory
    always @(posedge clk)
      begin
@@ -274,9 +201,9 @@ module cpu2
    wire [WIDTH-1:0] addr_phw;
 
    assign addr_phf= pc;
-   assign addr_phe= inst_ld?aof_ldst:pc;
-   assign addr_phm= (inst_ld|inst_st)?aof_ldst:pc;
-   assign addr_phw= (inst_br&ena)?wb_data:pc;
+   assign addr_phe= /*inst_ld?aof_ldst:*/pc;
+   assign addr_phm= /*(inst_ld|inst_st)?aof_ldst:*//*pc*/32'h0000f000;
+   assign addr_phw= /*(inst_br&ena)?wb_data:*/pc;
    assign mbus_aout= phf?addr_phf:
 		     phe?addr_phe:
 		     phm?addr_phm:
@@ -284,7 +211,7 @@ module cpu2
 		     pc;
 
    // produce data outpouts   
-   assign mbus_dout= opd;
-   assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
-
-endmodule // cpu2
+   assign mbus_dout= /*opd*/ic;
+   assign mbus_wen = phm;//1'b0;//ena & (phm/*|phe*/) & inst_st;
+   
+endmodule // cpu3

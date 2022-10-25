@@ -8,14 +8,7 @@ module simif
     input wire 	       cs,
     input wire 	       wen,
     input wire [0:0]   addr,
-    input [WIDTH-1:0]  din,
-
-    output [WIDTH-1:0] dout,
-    
-    output [WIDTH-1:0] porta,
-    output [WIDTH-1:0] portb,
-    output [WIDTH-1:0] portc,
-    output [WIDTH-1:0] portd
+    input [WIDTH-1:0]  din
     );
 
    reg 		       got_p;

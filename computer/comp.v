@@ -3,7 +3,7 @@ module comp //(clk, reset, test_sel, test_out);
     parameter WIDTH= 32,
     parameter PROGRAM= "",
     parameter MEM_ADDR_SIZE= 12,
-    parameter CPU_TYPE= 1
+    parameter CPU_TYPE= 2
     )
    (
     // base signals
@@ -83,6 +83,21 @@ module comp //(clk, reset, test_sel, test_out);
 	     .test_reg(test_reg),
 	     .clk_stat(CLKstat)
 	     );
+	3: cpu3
+	  #(.WIDTH(WIDTH)) cpu
+	    (
+	     .clk(clk),
+	     .reset(reset),
+	     .mbus_aout(bus_address),
+	     .mbus_din(bus_data_in),
+	     .mbus_dout(bus_data_out),
+	     .mbus_wen(bus_wen),
+	     .test_sel(test_sel),
+	     .test_out(test_out),
+	     .test_rsel(test_rsel),
+	     .test_reg(test_reg),
+	     .clk_stat(CLKstat)
+	     );
       endcase // case (CPU_TYPE)
    endgenerate
    
@@ -96,6 +111,7 @@ module comp //(clk, reset, test_sel, test_out);
 		
    // select signals for bus slaves
    wire 		    cs_mem;
+   wire 		    cs_mem_code;
    wire 		    cs_timer;
    wire 		    cs_porti;
    wire 		    cs_portj;

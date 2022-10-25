@@ -31,38 +31,31 @@
   foreach ($la as $l)
   {
     //echo "$lnr procing line $l...\n";
-    $f1= strtok($l, "// ");
-    if ($f1 == "=")
+    $f1= strtok($l, " \t");
+    $f2= strtok(" \t");
+    if ($f2 == "CODE")
+      exit(0);
+    if ($f2 == "SYMBOLS")
+    {
+      $in= true;
       continue;
-    if ($f1 == ";")
-      $f1= strtok(" ");
+    }
     if ($in)
     {
-      if ($f1 == "CODE")
-	exit(0);
       //echo "IN\n";
-      $f2= strtok("//; ");
-      $f3= strtok("//; ");
+      $f3= strtok(" \t");
       //echo " fields= f1=$f1 f2=$f2 f3=$f3\n";
-      $a= hexdec($f1);
-      $s= $f2;
+      $type= substr($f1, 2);
+      //echo " type=$type\n";
+      if ($type == ";") continue;
+      if ($type == "=") continue;
+      $a= hexdec($f2);
+      $s= $f3;
       echo 'F:G$'.$s.'$0$0(),C,0,0,0,0,0'."\n";
       echo 'L:G$'.$s.'$0$0:';
       printf("%x", $a);
       echo "\n";
     }
-    else
-      //echo "OUT\n";
-      {
-	if ($f1 == "SYMBOLS")
-	  $in= true;
-	if ($f1 == "CODE")
-	{
-	  $in= false;
-	  exit(0);
-	}
-	//echo " $in\n";
-      }
     $lnr++;
   }
 ?>
