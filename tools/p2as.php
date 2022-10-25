@@ -398,6 +398,10 @@
 	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
 	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
+      "BTST"   =>array("icode"=>0x000b0000, "params"=>array(
+	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
+	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
+      )),
       "TEST"   =>array("icode"=>0x000c0000, "params"=>array(
 	"rr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb")),
 	  "rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
