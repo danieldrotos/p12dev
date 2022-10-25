@@ -62,6 +62,7 @@ module alu2
    assign oex_im= {16'hffff, im};
    assign op2= op_2reg?bi:
 	       (op[3:2]=={2'b00})? zex_im :
+	       (op[3:0]=={4'b1011})? zex_im :
 	       (op[3:0]=={4'b1111})? oex_im :
 	       (op[3:2]=={2'b11})? zex_im :
 	       sex_im;
@@ -167,11 +168,11 @@ module alu2
 		 (op[3:0]==4'h8)? res_adder :
 		 (op[3:0]==4'h9)? di * op2 :
 		 (op[3:0]==4'ha)? res_adder :
-		 (op[3:0]==4'hb)? di :
-		 (op[3:0]==4'hc)? di & op2 :
+		 (op[3:0]==4'hb)? di & op2 : // BCL : AND zex
+		 (op[3:0]==4'hc)? di & op2 : // TEST: AND zex (no BW)
 		 (op[3:0]==4'hd)? di | op2 :
 		 (op[3:0]==4'he)? di ^ op2 :
-		 (op[3:0]==4'hf)? di & op2 :
+		 (op[3:0]==4'hf)? di & op2 : // AND : AND oex
 		 di;
 
    wire [WIDTH-1:0] 	    res_zeb;
