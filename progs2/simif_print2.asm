@@ -8,6 +8,7 @@ simif	equ	0xffff
 	call	print
 vege:	jmp	vege
 
+	org	0x20
 putchar:
 	push	r14
 	mvzl	r10,simif
@@ -17,6 +18,7 @@ putchar:
 	pop	r14
 	ret
 
+	org	0x30
 	;; print 0 terminated string at R1
 print:
 	push	lr

@@ -243,7 +243,7 @@ module cpu2
       .rd(inst_call?4'd15:rd),
       .rt(test_rsel),
       .fn_inc_pc(phe),
-      .fn_link(ena & inst_call & phe),
+      .fn_link(ena & inst_call & phm),
       .fn_ra_change(ena & inst_mem & w & phm),
       .fn_wb(ena & inst_wb & phw),
       .wb_data(wb_data),

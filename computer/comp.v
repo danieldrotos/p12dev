@@ -100,41 +100,15 @@ module comp //(clk, reset, test_sel, test_out);
 	     );
       endcase // case (CPU_TYPE)
    endgenerate
-   /*
-   wire [15:0] 		    chip_selects;
-	
-   decoder #(.ADDR_SIZE(4)) addr_decoder
-     (
-      .addr(bus_address[15:12]),
-      .sel(chip_selects)
-      );
-    */		
-   // select signals for bus slaves
-   //wire 		    cs_mem;
+
    wire 		    cs_mem;
    wire 		    cs_timer;
    wire 		    cs_porti;
    wire 		    cs_portj;
    wire 		    cs_portabcd;
    wire 		    cs_simif;
-   /*
-   wire addr_64k;
-   assign addr_64k= (bus_address[31:16] == 16'd0);
-    */
-   // 4*4= 16k (max)
-   /*
-   assign cs_mem_code= addr_64k &
-		       (chip_selects[0]|
-			chip_selects[1]|
-			chip_selects[2]|
-			chip_selects[3]);
-   assign cs_timer= addr_64k & chip_selects[12];
-   assign cs_portj= addr_64k & chip_selects[13];
-   assign cs_porti= addr_64k & chip_selects[14];
-   assign cs_portabcd= addr_64k & chip_selects[15];
-   assign cs_simif= addr_64k & (bus_address[15:0]==16'hffff);
-   */
    wire [15:0] 		    cs_io;
+
    addrdec1 adec
      (
       .addr(bus_address),
