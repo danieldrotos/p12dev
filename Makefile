@@ -37,25 +37,11 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-ASM_SOURCES	= examples/array_sum.asm \
-		examples/counter.asm \
-		examples/light1.asm \
-		examples/light2.asm \
-		examples/blink_tmr.asm \
-		examples/poll.asm \
-		examples/ff2ir.asm \
-		$(PRG).asm
+all: progs utils $(PRG).asc show
 
-HEX_FILES	= $(patsubst %.asm,%.hex,$(ASM_SOURCES))
-
-MEM_FILES	= $(patsubst %.hex,%.v,$(HEX_FILES))
-
-ASC_FILES	= $(patsubst %.hex,%.asc,$(HEX_FILES))
-
-CDB_FILES	= $(patsubst %.hex,%.cdb,$(HEX_FILES))
-
-#all: utils $(PRG).asc compile show
-all: utils $(PRG).asc show
+progs:
+	$(MAKE) -C examples all
+	$(MAKE) -C progs2 all
 
 utils: #hex2asc
 
@@ -84,17 +70,14 @@ hw: $(VVP)
 
 .SUFFIXES: .hex .asm .v .asc .cdb
 
-#.asm.hex:
-#	php $(TOOLS)/assembler.php -h $< >$@ 2>`tty`
+.asm.hex:
+	php $(TOOLS)/p2as.php -l -o $@ $<
 
-#.asm.v:
-#	php $(TOOLS)/assembler.php $< >$@
+.hex.asc:
+	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
 
-#.hex.asc:
-#	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
-
-#.hex.cdb:
-#	php $(TOOLS)/hex2cdb.php $< >$@
+.hex.cdb:
+	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
