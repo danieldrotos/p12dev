@@ -1,4 +1,6 @@
-porta	equ	0xf000		; address of GPIO output
+	.proc	P1
+	
+porta	equ	0xff00		; address of GPIO output
 
 	ldl0	r1,porta	; pointer to output
 	

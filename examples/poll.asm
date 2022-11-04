@@ -1,8 +1,10 @@
+	.proc	P1
+	
 	;; GPIO port addresses
-display	equ	0xf000		; address of 7seg display
-led	equ	0xf001		; address of LEDs
-btn	equ	0xe000		; address of BTNs
-sw	equ	0xd000		; address of SWs
+display	equ	0xff00		; address of 7seg display
+led	equ	0xff01		; address of LEDs
+btn	equ	0xff20 ;0xe000	; address of BTNs
+sw	equ	0xff10 ;0xd000	; address of SWs
 
 	ldl0	r0,btn		; load addresses to pointers
 	ldl0	r1,led

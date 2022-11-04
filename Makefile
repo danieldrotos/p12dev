@@ -8,6 +8,7 @@ MODS		= defs \
 		  computer/decoder \
 		  computer/comp \
 		    computer/addrdec1 \
+		    computer/addrdec2 \
 		    computer/memory \
 		    cpu1/cpu1 \
 		      cpu1/regm \

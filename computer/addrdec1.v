@@ -29,16 +29,16 @@ module addrdec1
    wire 		    cs_portj;
    wire 		    cs_portabcd;
 
-   assign cs_timer= addr_64k & chip_selects[12];
-   assign cs_portj= addr_64k & chip_selects[13];
-   assign cs_porti= addr_64k & chip_selects[14];
-   assign cs_portabcd= addr_64k & chip_selects[15];
-   assign cs_simif= addr_64k & (bus_address[15:0]==16'hffff);
+   assign cs_timer= addr_64k & chip_selects[12]; // 0xc000
+   assign cs_portj= addr_64k & chip_selects[13]; // 0xd000
+   assign cs_porti= addr_64k & chip_selects[14]; // 0xe000
+   assign cs_portabcd= addr_64k & chip_selects[15]; // 0xf000
+   assign cs_simif= addr_64k & (bus_address[15:0]==16'hffff); // 0xffff
 
-   assign cs_io[0]= cs_timer;
+   assign cs_io[0]= cs_portabcd;
    assign cs_io[1]= cs_portj;
    assign cs_io[2]= cs_porti;
-   assign cs_io[3]= cs_portabcd;
+   assign cs_io[3]= cs_timer;
 
    assign cs_mem_code= addr_64k &
 		       (chip_selects[0]|

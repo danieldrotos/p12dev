@@ -1,6 +1,6 @@
 	.proc	p2
 	
-out	equ	0xf000		; address of GPIO output
+out	equ	0xff00		; address of GPIO output
 over	=	0x00080000	; overflowed display value
 	
 	ldl0	r0,out		; pointer to GPIO

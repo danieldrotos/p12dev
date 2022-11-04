@@ -1,6 +1,6 @@
 	.proc	P2
 	
-out	equ	0xf000
+out	equ	0xff00
 
 	org	0
 

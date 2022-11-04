@@ -1,4 +1,6 @@
-	porta	=	0xf000
+	.proc	P1
+	
+porta	=	0xff00
 	
 	ldl0	r0,porta
 	ldl0	r3,0xa

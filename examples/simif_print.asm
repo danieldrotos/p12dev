@@ -1,4 +1,6 @@
-	simif	equ	0xffff
+	.proc	P1
+	
+simif	equ	0xffff
 	ldl0	sp,stack
 
 	ldl0	r1,Hello

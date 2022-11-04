@@ -1,5 +1,7 @@
-	leds	equ	0xf001
-	sw	equ	0xd000
+	.proc	P1
+	
+	leds	equ	0xff01
+	sw	equ	0xff10 ;0xd000
 	
 	ldl0	r0,sw
 	ldl0	r1,leds

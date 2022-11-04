@@ -3,7 +3,8 @@ module comp //(clk, reset, test_sel, test_out);
     parameter WIDTH= 32,
     parameter PROGRAM= "",
     parameter MEM_ADDR_SIZE= 12,
-    parameter CPU_TYPE= 2
+    parameter CPU_TYPE= 2,
+    parameter COMP_TYPE= 1
     )
    (
     // base signals
@@ -101,25 +102,37 @@ module comp //(clk, reset, test_sel, test_out);
       endcase // case (CPU_TYPE)
    endgenerate
 
-   wire 		    cs_mem;
-   wire 		    cs_timer;
-   wire 		    cs_porti;
-   wire 		    cs_portj;
-   wire 		    cs_portabcd;
-   wire 		    cs_simif;
+   wire 		    cs_mem;      // 0x0fff     0x1ffff
+   wire 		    cs_portabcd; // 0xf000     0xff00
+   wire 		    cs_portj;    // 0xd000     0xff10
+   wire 		    cs_porti;    // 0xe000     0xff20
+   wire 		    cs_timer;    // 0xc000     0xff30
+   wire 		    cs_simif;    // 0xffff     0xffff
    wire [15:0] 		    cs_io;
 
-   addrdec1 adec
-     (
-      .addr(bus_address),
-      .cs_mem(cs_mem),
-      .cs_io(cs_io),
-      .cs_simif(cs_simif)
-      );
-   assign cs_timer= cs_io[0];
+   generate
+      case (COMP_TYPE)
+	1: addrdec1 adec
+	  (
+	   .addr(bus_address),
+	   .cs_mem(cs_mem),
+	   .cs_io(cs_io),
+	   .cs_simif(cs_simif)
+	   );
+	2: addrdec2 adec
+	  (
+	   .addr(bus_address),
+	   .cs_mem(cs_mem),
+	   .cs_io(cs_io),
+	   .cs_simif(cs_simif)
+	   );
+      endcase // case (COMP_TYPE)
+   endgenerate
+   
+   assign cs_portabcd= cs_io[0];
    assign cs_portj= cs_io[1];
    assign cs_porti= cs_io[2];
-   assign cs_portabcd= cs_io[3];
+   assign cs_timer= cs_io[3];
    
    memory_1in_1out
      #(

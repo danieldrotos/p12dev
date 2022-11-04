@@ -1,12 +1,14 @@
-	timer_ctrl 	equ	0xc000
-	timer_ar	equ	0xc001
-	timer_cntr	equ	0xc002
-	timer_stat	equ	0xc003
+	.proc	P1
+	
+	timer_ctrl 	equ	0xff30 ;0xc000
+	timer_ar	equ	0xff31 ;0xc001
+	timer_cntr	equ	0xff32 ;0xc002
+	timer_stat	equ	0xff33 ;0xc003
 
-	display		equ	0xf000 ; port A
-	led		equ	0xf001 ; port B
-	portc		equ	0xf002 ; port C
-	portd		equ	0xf003 ; port D
+	display		equ	0xff00 ; port A
+	led		equ	0xff01 ; port B
+	portc		equ	0xff02 ; port C
+	portd		equ	0xff03 ; port D
 	
 	;nop
 	ldl0	r0,timer_ctrl

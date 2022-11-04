@@ -3,7 +3,7 @@
 ;;; egy 10 elemu tomb adatinak osszegzese
 
 adat_db	=	10		; az adatok szama
-porta	equ	0xf000		; kijelzo port cime
+porta	equ	0xff00		; kijelzo port cime
 	
 	mvzl	sp,verem_vege	; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez

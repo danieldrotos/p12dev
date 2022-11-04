@@ -1,3 +1,3 @@
-PRG		= progs2/simif_print2
+PRG		= progs2/poll2
 AW		= 12
 INSTS		= 10000

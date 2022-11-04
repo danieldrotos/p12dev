@@ -6,7 +6,7 @@
 `endif
 
 `ifndef AW
- `define AW 12
+ `define AW 17
 `endif
 
 `ifndef INSTS
@@ -52,7 +52,8 @@ module tm
        .WIDTH(32),
        .MEM_ADDR_SIZE(`AW),
        .PROGRAM( `PRG ),
-       .CPU_TYPE(`CPU_TYPE)
+       .CPU_TYPE(`CPU_TYPE),
+       .COMP_TYPE(`COMP_TYPE)
        )
    comp
      (

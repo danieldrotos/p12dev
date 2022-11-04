@@ -1,10 +1,10 @@
 F:G$leds$0$0(),C,0,0,0,0,0
-L:G$leds$0$0:f001
+L:G$leds$0$0:ff01
 F:G$sw$0$0(),C,0,0,0,0,0
-L:G$sw$0$0:d000
+L:G$sw$0$0:ff10
 F:G$cikl$0$0(),C,0,0,0,0,0
-L:G$cikl$0$0:8
+L:G$cikl$0$0:7
 F:G$egyik$0$0(),C,0,0,0,0,0
-L:G$egyik$0$0:b
+L:G$egyik$0$0:a
 F:G$masik$0$0(),C,0,0,0,0,0
-L:G$masik$0$0:11
+L:G$masik$0$0:10
