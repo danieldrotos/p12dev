@@ -85,8 +85,12 @@ clean_files	= *~ $(VCD) $(VVP) \
 		hex2asc source.txt
 
 clean:
+	$(MAKE) -C examples clean
+	$(MAKE) -C progs2 clean
 	rm -f $(clean_files)
 
 wclean:
+	$(MAKE) -C examples wclean
+	$(MAKE) -C progs2 wclean
 	del /f $(clean_files)
 

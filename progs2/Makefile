@@ -31,4 +31,7 @@ poll2: poll2.hex poll2.asc poll2.cdb
 	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean:
-	rm -f *.hex *.asc *.cdb *~
+	rm -f *.hex *.asc *.cdb *~ *.lst
+
+wclean:
+	del /f *.hex *.asc *.cdb *~ *.lst
