@@ -2,7 +2,7 @@
 
 `include "defs.v"
 
-`define PRG "progs2/ffir2.asc"
+`define PRG "progs2/counter2.asc"
 
 module comptest_n4
   (

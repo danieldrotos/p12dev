@@ -20,7 +20,7 @@ module schedm
    
    reg [2:0] 	     s;
 
-   always @(negedge clk, posedge reset)
+   always @(negedge clk/*, posedge reset*/)
      begin
 	if (reset)
 	  s<= S_RESET1;

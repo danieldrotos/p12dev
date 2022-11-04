@@ -84,6 +84,9 @@ module cpu3
    wire 		       p= ic[14];
    wire 		       w= ic[24];
 
+   wire 		       flag_wb_en;
+   wire 		       alu_flag_en;
+   wire 		       alu_wb_en;
 
    // decode instructions
    wire 		       inst_alu2= inst==0;
@@ -160,9 +163,6 @@ module cpu3
    wire 		       flag_v, flag_o;
    wire 		       flag_p;
    wire 		       flag_u;
-   wire 		       flag_wb_en;
-   wire 		       alu_flag_en;
-   wire 		       alu_wb_en;
    
    regm #(.WIDTH(8)) reg_flag
      (
