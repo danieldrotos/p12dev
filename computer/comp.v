@@ -100,7 +100,7 @@ module comp //(clk, reset, test_sel, test_out);
 	     );
       endcase // case (CPU_TYPE)
    endgenerate
-   
+   /*
    wire [15:0] 		    chip_selects;
 	
    decoder #(.ADDR_SIZE(4)) addr_decoder
@@ -108,20 +108,21 @@ module comp //(clk, reset, test_sel, test_out);
       .addr(bus_address[15:12]),
       .sel(chip_selects)
       );
-		
+    */		
    // select signals for bus slaves
+   //wire 		    cs_mem;
    wire 		    cs_mem;
-   wire 		    cs_mem_code;
    wire 		    cs_timer;
    wire 		    cs_porti;
    wire 		    cs_portj;
    wire 		    cs_portabcd;
    wire 		    cs_simif;
-   
+   /*
    wire addr_64k;
    assign addr_64k= (bus_address[31:16] == 16'd0);
-
+    */
    // 4*4= 16k (max)
+   /*
    assign cs_mem_code= addr_64k &
 		       (chip_selects[0]|
 			chip_selects[1]|
@@ -132,6 +133,19 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_porti= addr_64k & chip_selects[14];
    assign cs_portabcd= addr_64k & chip_selects[15];
    assign cs_simif= addr_64k & (bus_address[15:0]==16'hffff);
+   */
+   wire [15:0] 		    cs_io;
+   addrdec1 adec
+     (
+      .addr(bus_address),
+      .cs_mem(cs_mem),
+      .cs_io(cs_io),
+      .cs_simif(cs_simif)
+      );
+   assign cs_timer= cs_io[0];
+   assign cs_portj= cs_io[1];
+   assign cs_porti= cs_io[2];
+   assign cs_portabcd= cs_io[3];
    
    memory_1in_1out
      #(
@@ -142,7 +156,7 @@ module comp //(clk, reset, test_sel, test_out);
    mem
      (
       .clk(clk),
-      .cs(cs_mem_code),
+      .cs(cs_mem),
       .din(bus_data_out),
       .wen(bus_wen),
       .ra(bus_address[MEM_ADDR_SIZE-1:0]),
@@ -214,7 +228,7 @@ module comp //(clk, reset, test_sel, test_out);
       );
 
    assign bus_data_in
-     = cs_mem_code?bus_mem_code_out:
+     = cs_mem?bus_mem_code_out:
        cs_timer?bus_timer_out:
        cs_porti?bus_porti_out:
        cs_portj?bus_portj_out:

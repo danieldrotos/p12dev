@@ -144,7 +144,8 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
    comp
      #(
        .PROGRAM        ( `PRG ),
-       .CPU_TYPE       ( `CPU_TYPE )
+       .CPU_TYPE       ( `CPU_TYPE ),
+       .MEM_ADDR_SIZE  ( 17 )
        )
    computer
      (
