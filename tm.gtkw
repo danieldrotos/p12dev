@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Mon Nov  7 14:44:48 2022
+[*] Mon Nov  7 17:52:14 2022
 [*]
-[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Mon Nov  7 14:43:36 2022"
-[dumpfile_size] 13450229
-[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
+[dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Mon Nov  7 17:51:53 2022"
+[dumpfile_size] 14071004
+[savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
 [timestart] 0
 [size] 1744 892
 [pos] 0 33
-*-6.629200 131 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-7.629200 33 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -128,7 +128,14 @@ tm.comp.genblk1.cpu.regs.r15out[31:0]
 @28
 tm.comp.io_uart.utx.uart_tx_en
 tm.comp.TxD
-@29
 tm.comp.io_uart.utx.uart_tx_busy
+@22
+tm.comp.io_uart.control[31:0]
+@28
+tm.comp.io_uart.utx_wen
+@22
+tm.comp.io_uart.addr[3:0]
+@29
+tm.comp.io_uart.cs
 [pattern_trace] 1
 [pattern_trace] 0

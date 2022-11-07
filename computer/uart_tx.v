@@ -6,13 +6,16 @@
 // - UART transmitter module.
 //
 
-module uart_tx(
-input  wire         clk         , // Top level system clock input.
-input  wire         resetn      , // Asynchronous active low reset.
-output wire         uart_txd    , // UART transmit pin.
-output wire         uart_tx_busy, // Module busy sending previous item.
-input  wire         uart_tx_en  , // Send the data on uart_tx_data
-input  wire [PAYLOAD_BITS-1:0]   uart_tx_data  // The data to be sent
+module uart_tx
+(
+ input wire 		       clk , // Top level system clock input.
+ input wire 		       resetn , // Asynchronous active low reset.
+ output wire 		       uart_txd , // UART transmit pin.
+ output wire 		       uart_tx_busy, // Module busy sending previous item.
+ input wire 		       uart_tx_en , // Send the data on uart_tx_data
+ input wire [PAYLOAD_BITS-1:0] uart_tx_data, // The data to be sent
+ // dd
+ input wire [31:0] cycles_per_bit			       
 );
 
 // --------------------------------------------------------------------------- 
@@ -44,11 +47,10 @@ parameter   STOP_BITS       = 1;
 //
 // Number of clock cycles per uart bit.
 //localparam       CYCLES_PER_BIT     = BIT_P / CLK_P;
-   localparam CYCLES_PER_BIT = 16;
    
 //
 // Size of the registers which store sample counts and bit durations.
-localparam       COUNT_REG_LEN      = 1+$clog2(CYCLES_PER_BIT);
+   localparam       COUNT_REG_LEN      = 32;//1+$clog2(CYCLES_PER_BIT);
 
 // --------------------------------------------------------------------------- 
 // Internal registers.
@@ -89,7 +91,7 @@ localparam FSM_STOP = 3;
 assign uart_tx_busy = fsm_state != FSM_IDLE;
 assign uart_txd     = txd_reg;
 
-wire next_bit     = cycle_counter == CYCLES_PER_BIT;
+wire next_bit     = cycle_counter == cycles_per_bit;
 wire payload_done = bit_counter   == PAYLOAD_BITS  ;
 wire stop_done    = bit_counter   == STOP_BITS && fsm_state == FSM_STOP;
 

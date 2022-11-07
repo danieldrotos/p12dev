@@ -6,15 +6,17 @@
 // - UART reciever module.
 //
 
-module uart_rx(
-input  wire       clk          , // Top level system clock input.
-input  wire       resetn       , // Asynchronous active low reset.
-input  wire       uart_rxd     , // UART Recieve pin.
-input  wire       uart_rx_en   , // Recieve enable
-output wire       uart_rx_break, // Did we get a BREAK message?
-output wire       uart_rx_valid, // Valid data recieved and available.
-output reg  [PAYLOAD_BITS-1:0] uart_rx_data   // The recieved data.
-);
+module uart_rx
+  (
+   input wire 			 clk , // Top level system clock input.
+   input wire 			 resetn , // Asynchronous active low reset.
+   input wire 			 uart_rxd , // UART Recieve pin.
+   input wire 			 uart_rx_en , // Recieve enable
+   output wire 			 uart_rx_break, // Did we get a BREAK message?
+   output wire 			 uart_rx_valid, // Valid data recieved and available.
+   output reg [PAYLOAD_BITS-1:0] uart_rx_data, // The recieved data.
+   input [31:0] 		 cycles_per_bit
+   );
 
 // --------------------------------------------------------------------------- 
 // External parameters.
@@ -44,11 +46,11 @@ parameter   STOP_BITS       = 1;
 
 //
 // Number of clock cycles per uart bit.
-localparam       CYCLES_PER_BIT     = BIT_P / CLK_P;
+//localparam       CYCLES_PER_BIT     = BIT_P / CLK_P;
 
 //
 // Size of the registers which store sample counts and bit durations.
-localparam       COUNT_REG_LEN      = 1+$clog2(CYCLES_PER_BIT);
+   localparam       COUNT_REG_LEN      = 31;//1+$clog2(CYCLES_PER_BIT);
 
 // -------------------------------------------------------------------------- 
 // Internal registers.
@@ -86,6 +88,9 @@ localparam FSM_START= 1;
 localparam FSM_RECV = 2;
 localparam FSM_STOP = 3;
 
+   wire [31:0] cpb2;
+   assign cpb2= {1'b0,cycles_per_bit[30:1]}; // cycles_per_bit/2
+   
 // --------------------------------------------------------------------------- 
 // Output assignment
 // 
@@ -105,9 +110,9 @@ end
 // FSM next state selection.
 // 
 
-wire next_bit     = cycle_counter == CYCLES_PER_BIT ||
+wire next_bit     = cycle_counter == cycles_per_bit ||
                         fsm_state       == FSM_STOP && 
-                        cycle_counter   == CYCLES_PER_BIT/2;
+                        cycle_counter   == cpb2/*cycles_per_bit/2*/;
 wire payload_done = bit_counter   == PAYLOAD_BITS  ;
 
 //
@@ -159,7 +164,7 @@ end
 always @(posedge clk) begin : p_bit_sample
     if(!resetn) begin
         bit_sample <= 1'b0;
-    end else if (cycle_counter == CYCLES_PER_BIT/2) begin
+    end else if (cycle_counter == cpb2/*cycles_per_bit/2*/) begin
         bit_sample <= rxd_reg;
     end
 end
