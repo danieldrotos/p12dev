@@ -17,6 +17,8 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] PORTB,
     output wire [WIDTH-1:0] PORTC,
     output wire [WIDTH-1:0] PORTD,
+    input wire 		    RxD,
+    output wire 	    TxD,
     
     // test the CPU
     input wire [3:0] 	    test_sel,
@@ -47,6 +49,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_porti_out;
    wire [WIDTH-1:0] 	    bus_portj_out;
    wire [WIDTH-1:0] 	    bus_portabcd_out;
+   wire [WIDTH-1:0] 	    bus_uart_out;
    wire [WIDTH-1:0] 	    bus_address;
    wire 		    bus_wen;
       
@@ -107,6 +110,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_portj;    // 0xd000     0xff10
    wire 		    cs_porti;    // 0xe000     0xff20
    wire 		    cs_timer;    // 0xc000     0xff30
+   wire 		    cs_uart;     // -          0xff40
    wire 		    cs_simif;    // 0xffff     0xffff
    wire [15:0] 		    cs_io;
 
@@ -133,6 +137,7 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_portj= cs_io[1];
    assign cs_porti= cs_io[2];
    assign cs_timer= cs_io[3];
+   assign cs_uart= cs_io[4];
    
    memory_1in_1out
      #(
@@ -203,6 +208,19 @@ module comp //(clk, reset, test_sel, test_out);
       .portd(PORTD)
       );
 
+   uart io_uart
+     (
+      .clk(clk),
+      .reset(reset),
+      .cs(cs_uart),
+      .wen(bus_wen),
+      .addr(bus_address[3:0]),
+      .din(bus_data_out),
+      .dout(bus_uart_out),
+      .RxD (RxD),
+      .TxD (TxD)
+      );
+     
    // write only, no data out
    simif #(.WIDTH(WIDTH)) sim_interface
      (
@@ -220,6 +238,8 @@ module comp //(clk, reset, test_sel, test_out);
        cs_porti?bus_porti_out:
        cs_portj?bus_portj_out:
        cs_portabcd?bus_portabcd_out:
+       cs_uart?bus_uart_out:
+       
        bus_mem_code_out
        ;
    

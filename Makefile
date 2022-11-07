@@ -25,7 +25,10 @@ MODS		= defs \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
 		    computer/timer \
-		    computer/simif
+		    computer/simif \
+		    computer/uart \
+		    computer/uart_rx \
+		    computer/uart_tx
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 
