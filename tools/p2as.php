@@ -355,7 +355,7 @@
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
       "MVH"  =>array("icode"=>0x00010000, "params"=>array(
-	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","h16"))
+	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
       )),
       "MVZL" =>array("icode"=>0x00020000, "params"=>array(
 	"rn_"=>array("icode"=>0x01000000,"placements"=>array("rd","#16"))
