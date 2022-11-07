@@ -365,11 +365,13 @@ module alu2
    wire 		    flag_en_reg, flag_en_im, flag_en_1;
    assign flag_en_reg= op_2reg &
 		       (op[2] |
-			op[3]&!op[1]
+			op[3]&!op[1] |
+			op[0]&op[3]
 			);
    assign flag_en_im= op_2im &
 		      (op[2] |
-			op[3]&!op[1]
+			op[3]&!op[1] |
+			op[0]&op[3]
 			);
    assign flag_en_1= op_1 &
 		     ((op[3]^op[2]) |
