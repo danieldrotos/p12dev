@@ -4,8 +4,8 @@
 	STAT	equ	0xff41
 	CTRL	equ	0xff42
 
-	mvl	SP,0xffff
-	mvh	SP,1
+	mvl	SP,0x1ffff
+	mvh	SP,0x1ffff
 	
 	mvzl	r1,0x3		; enable rx, tx
 	mvzl	r2,CTRL
