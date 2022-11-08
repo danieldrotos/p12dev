@@ -341,17 +341,16 @@ module alu2
    wire 		    wb_en_reg, wb_en_im, wb_en_1;
    assign wb_en_reg= op_2reg &
 		     (op[2]&!op[3] |
-		      op[2]&op[1] |
 		      !op[0]&!op[3]&!op[1] |
-		      op[0]&op[3]&!op[1] |
-		      op[0]&!op[3]&op[1] |
-		      !op[0]&op[3]&op[1]
+		      op[2]&op[1] |
+		      op[0]&op[1] |
+		      op[0]&op[3] |
+		      op[3]&op[1]
 		      );
    assign wb_en_im= op_2im &
 		    (!op[3] |
-		     op[2]&op[1] |
-		     op[0]&op[2] |
-		     (op[0]^op[1])
+		     op[1] |
+		     op[0]
 		     );
    assign wb_en_1= op_1 &
 		   (!op[3] |
