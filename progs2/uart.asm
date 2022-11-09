@@ -15,7 +15,7 @@
 	mvzl	r2,DR
 	st	r1,r2
 ;	call	wait_cyc	;
-
+start:	
 	mvzl	r0,'A'
 main_cyc:
 	call	send
@@ -25,7 +25,7 @@ main_cyc:
 	cmp	r0,r2
 	jnz	main_cyc
 	
-end:	jmp	end
+end:	jmp	start
 
 	
 wait_tx:

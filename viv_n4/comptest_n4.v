@@ -2,7 +2,7 @@
 
 `include "defs.v"
 
-`define PRG "progs2/counter2.asc"
+`define PRG "progs2/uart.asc"
 
 module comptest_n4
   (
@@ -21,7 +21,10 @@ module comptest_n4
    output wire [4:1] JCa,
    output wire [10:7] JCb,
    output wire [4:1] JDa,
-   output wire [10:7] JDb
+   output wire [10:7] JDb,
+   
+   input wire UART_TXD_IN,
+   output wire UART_RXD_OUT
    );
    
    wire 	      res;
@@ -193,6 +196,8 @@ assign JDa[4]= f1Hz;
       .PORTB          (portb),
       .PORTC          (portc),
       .PORTD          (portd),
+      .RxD            (UART_TXD_IN),
+      .TxD            (UART_RXD_OUT),
       
       .test_sel       (test_out_select),
       .test_out       (test_out),
