@@ -73,12 +73,13 @@ endmodule
 
 module clk_gen
   (
-   input wire f100MHz,
+   input wire  f100MHz,
    output wire f50MHz,
    output wire f25MHz,
    output wire f20MHz,
    output wire f10MHz,
    output wire f1MHz,
+   output wire f2MHz,
    output wire f100kHz,
    output wire f10kHz,
    output wire f1kHz,
@@ -86,16 +87,14 @@ module clk_gen
    output wire f10Hz,
    output wire f1Hz
    );
-
-    wire w2MHz;
     
-   d2  i0_50 (.i(f100MHz), .o(f50MHz));
-   d2  i1    (.i(f50MHz),  .o(f25MHz));
-   d5  i0_20 (.i(f100MHz), .o(f20MHz));
-   d10 i0_10 (.i(f100MHz), .o(f10MHz));
+   d2  i100_50 (.i(f100MHz), .o(f50MHz));
+   d2  i50_25  (.i(f50MHz),  .o(f25MHz));
+   d5  i100_20 (.i(f100MHz), .o(f20MHz));
+   d10 i100_10 (.i(f100MHz), .o(f10MHz));
    
-   d5  i2    (.i(f10MHz),  .o(w2MHz));
-   d2  i3    (.i(w2MHz),   .o(f1MHz));
+   d5  i10_2   (.i(f10MHz),  .o(f2MHz));
+   d10 i10_1   (.i(f10MHz),  .o(f1MHz));
    
    d10 i4    (.i(f1MHz),   .o(f100kHz));
    d10 i5    (.i(f100kHz), .o(f10kHz));

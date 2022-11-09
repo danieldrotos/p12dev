@@ -8,14 +8,14 @@
 
 module uart_rx
   (
-   input wire 			 clk , // Top level system clock input.
-   input wire 			 resetn , // Asynchronous active low reset.
-   input wire 			 uart_rxd , // UART Recieve pin.
-   input wire 			 uart_rx_en , // Recieve enable
-   output wire 			 uart_rx_break, // Did we get a BREAK message?
-   output wire 			 uart_rx_valid, // Valid data recieved and available.
-   output reg [PAYLOAD_BITS-1:0] uart_rx_data, // The recieved data.
-   input [31:0] 		 cycles_per_bit
+   input wire 	     clk , // Top level system clock input.
+   input wire 	     resetn , // Asynchronous active low reset.
+   input wire 	     uart_rxd , // UART Recieve pin.
+   input wire 	     uart_rx_en , // Recieve enable
+   output wire 	     uart_rx_break, // Did we get a BREAK message?
+   output wire 	     uart_rx_valid, // Valid data recieved and available.
+   output reg [31:0] uart_rx_data, // The recieved data.
+   input [31:0]      cycles_per_bit
    );
 
 // --------------------------------------------------------------------------- 
@@ -35,7 +35,6 @@ localparam  CLK_P           = 1_000_000_000 * 1/CLK_HZ; // nanoseconds
 //
 // Number of data bits recieved per UART packet.
 parameter   PAYLOAD_BITS    = 8;
-
 //
 // Number of stop bits indicating the end of a packet.
 parameter   STOP_BITS       = 1;
@@ -140,7 +139,7 @@ always @(posedge clk) begin : p_recieved_data
     end else if(fsm_state == FSM_IDLE             ) begin
         recieved_data <= {PAYLOAD_BITS{1'b0}};
     end else if(fsm_state == FSM_RECV && next_bit ) begin
-        recieved_data[PAYLOAD_BITS-1] <= bit_sample;
+       recieved_data[PAYLOAD_BITS-1] <= bit_sample;
         for ( i = PAYLOAD_BITS-2; i >= 0; i = i - 1) begin
             recieved_data[i] <= recieved_data[i+1];
         end

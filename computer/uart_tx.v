@@ -8,14 +8,15 @@
 
 module uart_tx
 (
- input wire 		       clk , // Top level system clock input.
- input wire 		       resetn , // Asynchronous active low reset.
- output wire 		       uart_txd , // UART transmit pin.
- output wire 		       uart_tx_busy, // Module busy sending previous item.
- input wire 		       uart_tx_en , // Send the data on uart_tx_data
- input wire [PAYLOAD_BITS-1:0] uart_tx_data, // The data to be sent
+ input wire 	   clk , // Top level system clock input.
+ input wire 	   resetn , // Asynchronous active low reset.
+ output wire 	   uart_txd , // UART transmit pin.
+ output wire 	   uart_tx_busy, // Module busy sending previous item.
+ input wire 	   uart_tx_en , // Send the data on uart_tx_data
+ input wire [31:0] uart_tx_data, // The data to be sent
  // dd
- input wire [31:0] cycles_per_bit			       
+ input wire [31:0] cycles_per_bit,
+ input wire [31:0] data_bits
 );
 
 // --------------------------------------------------------------------------- 

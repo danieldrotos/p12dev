@@ -17,14 +17,10 @@ module uart
     );
 
    // Addresses of registers
-   // 0-3 general registers
    localparam REG_DR= 4'd0; // data
    localparam REG_STAT= 4'd1; // Status
    localparam REG_CTRL= 4'd2; // Control
-   // 4-7 parameters
-   localparam REG_CPB= 4'd4; // Cycles per bit
-   localparam REG_DATA_BITS= 4'd5; // Number of data bits
-   localparam REG_STOP_BITS= 4'd6; // Number of stop bits
+   localparam REG_CPB= 4'd3; // Cycles per bit
    
    // Bits of status register
    localparam STAT_RXNE= 0;
@@ -35,47 +31,31 @@ module uart
    localparam CTRL_RX_EN= 0;
    localparam CTRL_TX_EN= 1;
 
-   
-   // General registers
-   wire 	general_wen;
-   assign general_wen= cs & wen & (addr[3:2]==2'b00);
-   reg [WIDTH-1:0] general[3:0];
+   wire 	wr= cs & wen;
 
+   // CONTROL register
+   reg [WIDTH-1:0] control;
    always @(posedge clk)
      begin
-	if (reset)
-	  begin
-	     general[0]<= 0;
-	     general[1]<= 0;
-	     general[2]<= 0;
-	     general[3]<= 0;
-	  end
-	else
-	  begin
-	     if (general_wen)
-	       general[addr[1:0]]<= din;
-	  end
+	if (reset) control<= 0;
+	else if (wr & (addr==REG_CTRL))
+	  control<= din;
      end
-   wire [WIDTH-1:0] control= general[REG_CTRL];
-   
 
+   
    // Parameter registers
    reg [WIDTH-1:0] cycles_per_bit= 32'd16;
-   
    always @(posedge clk)
      begin
 	if (reset)
-	  cycles_per_bit<= 32'd16;
+	   cycles_per_bit<= 32'd16;
 	else
-	  begin
-	     if (cs & wen & (addr==REG_CPB))
-	       cycles_per_bit<= din;
-	  end
+	  if (wr & (addr==REG_CPB))
+	    cycles_per_bit<= din;
      end
    
    
    // Storage registers
-   
    reg [WIDTH-1:0] regs [3:0];
    wire 	regs_wen;
    assign regs_wen= cs & wen & addr[3:2]==2'b11;
@@ -149,6 +129,8 @@ module uart
 				  rx_valid
 				  }:
 		(addr==REG_CTRL)?control:
+		(addr==REG_CPB)?cycles_per_bit:
+		(addr[3:2]==2'b11)?regs[addr[1:0]]:
 		0;
    
 endmodule // uart
