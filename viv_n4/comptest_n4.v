@@ -92,7 +92,7 @@ module comptest_n4
    wire sel_clk;
    reg [31:0] 	      clk_test;
    mux16 #(.WIDTH(1)) clkmx(
-        .sel(clk_select),
+        .sel(/*clk_select*/4'd9),
         .out(sel_clk),
         .in0(f1Hz),
         .in1(f10Hz),
