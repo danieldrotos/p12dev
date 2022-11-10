@@ -769,9 +769,9 @@
 
       else if ($W == "DS")
       {
-	$x= 0 + strtok(" \t,");
+	$x= 0 + intval(strtok(" \t,"),0);
 	$addr+= $x;
-	debug(";proc_line; addr=$addr");
+	debug("proc_line; addr=$addr");
 	$ok= true;
 	return;
       }
@@ -937,7 +937,7 @@
     
   }
 
-  function param_value($p)
+  function param_value($p, $fin, $lnr)
   {
     global $syms;
     if (empty($p))
@@ -954,10 +954,13 @@
     $s= arri($syms,$p);
     if (!empty($s) && is_array($s))
       return $s["value"];
+    $error= "{$fin}:{$lnr}: Symbol not found: {$p}";
+    debug("Error: ".$error);
+    echo $error."\n";
     return 0;
   }
   
-  function proc_params($icode, $pattern, $allowed_params, $used_params)
+  function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
   {
     // Allowed
     /* Array
@@ -988,7 +991,7 @@
       if ($pt=="_")
 	break;
       $pl= $allowed_params["placements"][$i];
-      $pv= param_value($up);
+      $pv= param_value($up, $fin, $lnr);
       debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
       $c= $icode;
       if ($pl == "_")
@@ -1150,7 +1153,7 @@
       else
       {
 	debug("Used pattern matches to an allowed one: $pat");
-	$m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"]);
+	$m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"], $fin, $lnr);
       }
     }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );

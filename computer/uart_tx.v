@@ -110,17 +110,25 @@ end
 //
 // Handle updates to the sent data register.
 integer i = 0;
-always @(posedge clk) begin : p_data_to_send
-    if(!resetn) begin
-        data_to_send <= {PAYLOAD_BITS{1'b0}};
-    end else if(fsm_state == FSM_IDLE && uart_tx_en) begin
-        data_to_send <= uart_tx_data;
-    end else if(fsm_state       == FSM_SEND       && next_bit ) begin
-        for ( i = PAYLOAD_BITS-2; i >= 0; i = i - 1) begin
-            data_to_send[i] <= data_to_send[i+1];
-        end
-    end
-end
+always @(posedge clk)
+  begin : p_data_to_send
+     if(!resetn)
+       begin
+          data_to_send <= {PAYLOAD_BITS{1'b0}};
+       end
+     else if(fsm_state == FSM_IDLE && uart_tx_en)
+       begin
+          data_to_send <= uart_tx_data;
+	  $write("%s", uart_tx_data);
+       end
+     else if(fsm_state       == FSM_SEND       && next_bit )
+       begin
+          for ( i = PAYLOAD_BITS-2; i >= 0; i = i - 1)
+	    begin
+               data_to_send[i] <= data_to_send[i+1];
+            end
+       end
+  end
 
 
 //
