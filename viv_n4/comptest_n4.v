@@ -34,7 +34,6 @@ module comptest_n4
    wire 	      f25MHz;
    wire 	      f20MHz;
    wire 	      f10MHz;
-   wire 	      f2MHz;
    wire 	      f1MHz;
    wire 	      f100kHz;
    wire 	      f10kHz;
@@ -61,14 +60,13 @@ module comptest_n4
    assign test_reg_select= switches[3:0];
    
    assign f100MHz= CLK;
-   /*clk_gen clock_generator
+   clk_gen clock_generator
      (
       .f100MHz(f100MHz),
       .f50MHz(f50MHz),
       .f25MHz(f25MHz),
       .f20MHz(f20MHz),
       .f10MHz(f10MHz),
-      .f2MHz(f2MHz),
       .f1MHz(f1MHz),
       .f100kHz(f100kHz),
       .f10kHz(f10kHz),
@@ -77,19 +75,6 @@ module comptest_n4
       .f10Hz(f10Hz),
       .f1Hz(f1Hz)
       );
-   */
-   d2  i100_50 (.i(f100MHz), .o(f50MHz));
-   d2  i50_25  (.i(f50MHz),  .o(f25MHz));
-   d5  i100_20 (.i(f100MHz), .o(f20MHz));
-   d10 i100_10 (.i(f100MHz), .o(f10MHz));
-   //d5 i10_2   (.i(f10MHz),  .o(f2MHz));
-   d10 i10_1   (.i(f10MHz),  .o(f1MHz));
-   d10 i4      (.i(f1MHz),   .o(f100kHz));
-   d10 i5      (.i(f100kHz), .o(f10kHz));
-   d10 i6      (.i(f10kHz),  .o(f1kHz));
-   d10 i7      (.i(f1kHz),   .o(f100Hz));
-   d10 i8      (.i(f100Hz),  .o(f10Hz));
-   d10 i9      (.i(f10Hz),   .o(f1Hz));
    
    wire 	      selected_clk;
    wire sel_clk;
@@ -119,7 +104,7 @@ assign JCa[1]= f100MHz;
 assign JCa[2]= f50MHz;
 assign JCa[3]= f25MHz;
 assign JCa[4]= f10MHz;
-assign JCb[7]= f2MHz;
+assign JCb[7]= UART_RXD_OUT;
 assign JCb[8]= f1MHz;
 assign JCb[9]= f100kHz;
 assign JCb[10]=f10kHz;

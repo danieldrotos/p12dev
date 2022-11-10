@@ -4,10 +4,14 @@ module d10
    output wire o
    );
 
+   wire osig;
    reg [3:0]   c;
-
-   initial
+   reg oreg;
+   
+   initial begin
      c= 4'd0;
+     oreg= 0;
+   end
 
    wire last;
    assign last= c==4'd9;
@@ -20,7 +24,10 @@ module d10
 	  c<= c+1;
      end
    
-   assign o= (c==0) || (c==1) || (c==2) || (c==3) || (c==4)
+   always @(posedge i)
+     oreg<= osig;
+     
+   assign osig= (c==0) || (c==1) || (c==2) || (c==3) || (c==4)
 /*
 	     ((~c[3] & ~c[2]) & (~c[1] & ~c[0])) |
 	     ((~c[3] & ~c[2]) & (~c[1] &  c[0])) |
@@ -29,6 +36,8 @@ module d10
              ((~c[3] &  c[2]) & (~c[1] & ~c[0]))
              */
         ;
+   
+   assign o= oreg;
    
 endmodule // div10
 
@@ -51,23 +60,33 @@ module d5
    input wire i,
    output wire o
   );
-  
+
+  wire osig;  
   reg [2:0] c;
+  reg oreg;
   
-  initial
+  initial begin
     c= 3'd0;
-    
+    oreg= 0;
+  end
+  
+  wire last;
+  assign last= c==3'd4; 
   always @(posedge i)
-    if (c==3'd4)
+    if (last)
       c<= 0;
     else
       c<= c+1;
       
-  assign o= (c==0) || (c==1) || (c==2)
+  always @(posedge i)
+    oreg<= osig;
+    
+  assign osig= (c==0) || (c==1) || (c==2)
 	   //(~c[2] & ~c[1] & ~c[0]) |
            //(~c[2] & ~c[1] &  c[0]) |
            //(~c[2] &  c[1] & ~c[0])
              ;
+  assign o= oreg;
             
 endmodule
 
@@ -79,7 +98,6 @@ module clk_gen
    output wire f20MHz,
    output wire f10MHz,
    output wire f1MHz,
-   output wire f2MHz,
    output wire f100kHz,
    output wire f10kHz,
    output wire f1kHz,
@@ -92,10 +110,7 @@ module clk_gen
    d2  i50_25  (.i(f50MHz),  .o(f25MHz));
    d5  i100_20 (.i(f100MHz), .o(f20MHz));
    d10 i100_10 (.i(f100MHz), .o(f10MHz));
-   
-   d5  i10_2   (.i(f10MHz),  .o(f2MHz));
    d10 i10_1   (.i(f10MHz),  .o(f1MHz));
-   
    d10 i4    (.i(f1MHz),   .o(f100kHz));
    d10 i5    (.i(f100kHz), .o(f10kHz));
    d10 i6    (.i(f10kHz),  .o(f1kHz));
