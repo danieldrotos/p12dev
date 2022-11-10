@@ -7,11 +7,11 @@
 	
 	org	0
 
-	jmp	_m_start
+	jmp	start
 
-_m_start:
+start:
 	;; Setup STACK
-	mvzl	sp,_m_stack_end
+	mvzl	sp,stack_end
 	;; Setup UART
 	mvzl	r0,UART_CPB
 	mvzl	r1,217
@@ -20,42 +20,45 @@ _m_start:
 	mvzl	r1,3
 	st	r1,r0
 
-	mvzl	r0,_m_final_sign
-	call	_m_prints
+	mvzl	r0,final_sign
+	call	prints
 
 	;; Setup variables
-	call	_m_setup_line
+	call	setup_line
 	
 	;; Ready to work
-	jmp	_m_main
+	jmp	main
 
 	;; Setup line buffer
-_m_setup_line:
+setup_line:
 	;push	lr
-	mvzl	r0,_m_lptr
+	mvzl	r0,line_ptr	; lptr= 0
 	mvzl	r1,0
 	st	r1,r0
-	mvzl	r0,_m_line
+	mvzl	r0,line		; line[0]= 0
+	st	r1,r0
+	mvzl	r0,at_eol	; at_eol= 1
+	mvzl	r1,1
 	st	r1,r0
 	;pop	lr
 	ret
 	
-_m_main:
-	call	_m_check_uart
-	jz	_m_no_input
+main:
+	call	check_uart
+	jz	no_input
 	;; input avail
-	call	_m_read
-	call	_m_proc_input
-	C0 jmp	_m_no_line
+	call	read
+	call	proc_input
+	C0 jmp	no_line
 	;; line is ready
-	call	_m_proc_line
-	call	_m_setup_line
-_m_no_line:	
-_m_no_input:	
-	jmp	_m_main
+	call	proc_line
+	call	setup_line
+no_line:	
+no_input:	
+	jmp	main
 
 	;; IN: - OUT: Flag.Z=0 input avail
-_m_check_uart:
+check_uart:
 	;push	lr
 	mvzl	r0,UART_STAT
 	ld	r1,r0
@@ -64,7 +67,7 @@ _m_check_uart:
 	ret
 
 	;; IN: - OUT: R0
-_m_read:
+read:
 	;push	lr
 	mvzl	r0,UART_DR
 	ld	r0,r0
@@ -72,66 +75,86 @@ _m_read:
 	ret
 
 	;; IN: R0 character OUT: line, Flag.C=1 line is ready
-_m_proc_input:
+proc_input:
 	push	lr
 	cmp	r0,10
-	EQ sec
-	EQ jmp	_m_proc_input_done
+	EQ jmp	got_eol
 	cmp	r0,13
-	EQ sec
-	EQ jmp	_m_proc_input_done
-
+	EQ jmp	got_eol
+got_char:	
+	mvzl	r1,at_eol	; at_aol= 0
+	mvzl	r2,0
+	st	r2,r1
+	mvzl	r1,line_ptr	; line[line_ptr]= char
+	ld	r3,r1
+	mvzl	r2,line
+	st	r0,r2,r3
+	;; TODO: check line_ptr for overlow
+	plus	r3,1		; line_ptr++
+	st	r3,r1
+	mvzl	r4,0
+	st	r4,r2,r3	; line[line_ptr]= 0
 	clc
-_m_proc_input_done:	
+	jmp	proc_input_ret
+got_eol:	
+	mvzl	r1,at_eol
+	ld	r1,r1
+	sz	r1		; Z=0 at eol -> skip, not ready
+	Z0 clc
+	Z1 sec
+proc_input_ret:	
 	pop	lr
 	ret
 
 	;; IN: OUT:
-_m_proc_line:
+proc_line:
 	push	lr
+
+	mvzl	r0,at_eol	; at_eol= 1
+	mvzl	r1,1
+	st	r1,r0
 	pop	lr
 	ret
 	
 	;; IN: r0
-_m_putchar:
+putchar:
 	;push	lr
 	mvzl	r2,UART_STAT
-_m_wait_tc:	
+wait_tc:	
 	ld	r1,r2
 	test	r1,2
-	jz	_m_wait_tc
+	jz	wait_tc
 	mvzl	r2,UART_DR
 	st	r0,r2
 	;pop	lr
 	ret
 
 	;; IN: R0 address of string
-_m_prints:
+prints:
 	push	lr
 	mvzl	r4,0
-_m_prints_go:
+prints_go:
 	ld	r3,r4+,r0
 	sz	r3
-	jz	_m_prints_done
+	jz	prints_done
 	push	r0
 	mov	r0,r3
-	call	_m_putchar
+	call	putchar
 	pop	r0
-	jmp	_m_prints_go
-_m_prints_done:
+	jmp	prints_go
+prints_done:
 	pop	lr
 	ret
 	
-_m_line:
-	ds	100
-_m_lptr:
-	ds	1
+line:		ds	100
+line_ptr:	ds	1
+at_eol:		ds	1
 	
-_m_stack:
+stack:
 	ds	0x100
-_m_stack_end:
+stack_end:
 	ds	1
-_m_final_sign:
+final_sign:
 	db	"EOF P MONITOR\n"
 	
 	
