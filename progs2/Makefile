@@ -3,7 +3,8 @@ TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
 
-all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 uart
+all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 \
+	uart uart2
 
 simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
 
@@ -20,6 +21,8 @@ light22: light22.hex light22.asc light22.cdb
 poll2: poll2.hex poll2.asc poll2.cdb
 
 uart: uart.hex uart.asc uart.cdb
+
+uart2: uart2.hex uart2.asc uart2.cdb
 
 .SUFFIXES: .hex .asm .asc .cdb
 
