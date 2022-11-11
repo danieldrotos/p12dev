@@ -44,11 +44,11 @@ module uart
 
    
    // Parameter registers
-   reg [WIDTH-1:0] cycles_per_bit= 32'd217; // 25MHz -> 115200 Baud
+   reg [WIDTH-1:0] cycles_per_bit= 32'd434;//217; // 25MHz -> 115200 Baud
    always @(posedge clk)
      begin
 	if (reset)
-	   cycles_per_bit<= 32'd217;
+	  cycles_per_bit<= 32'd434;//217;
 	else
 	  if (wr & (addr==REG_CPB))
 	    cycles_per_bit<= din;
@@ -107,7 +107,7 @@ module uart
    wire rx_valid;
    wire [7:0] rx_data;
    assign rx_en= control[CTRL_RX_EN];
-   
+
    uart_rx urx
      (
       .clk (clk),
@@ -120,13 +120,36 @@ module uart
       .cycles_per_bit (cycles_per_bit)
       );
 
-
+   localparam FSM_IDLE= 2'b00;
+   localparam FSM_GOT= 2'b01;
+   localparam FSM_READOUT= 2'b10;
+   
+   reg [1:0]  rx_fsm= FSM_IDLE;
+   wire       rx_readout;
+   wire       rx_not_empty;
+   assign rx_readout= cs & !wen & (addr==REG_DR);
+   
+   always @(posedge clk)
+     begin
+	if (reset)
+	  rx_fsm= FSM_IDLE;
+	else
+	  case (rx_fsm)
+	    FSM_IDLE   : rx_fsm<= rx_valid   ? FSM_GOT     : FSM_IDLE;
+	    FSM_GOT    : rx_fsm<= rx_readout ? FSM_READOUT : FSM_GOT;
+	    FSM_READOUT: rx_fsm<= !rx_valid  ? FSM_IDLE    : FSM_READOUT;
+	    default    : rx_fsm<= FSM_IDLE;
+	  endcase
+     end
+   assign rx_not_empty= rx_fsm==FSM_GOT;
+   
    // Output data
    assign dout= (addr==REG_DR)?{24'd0,rx_data}:
-		(addr==REG_STAT)?{29'd0,
+		(addr==REG_STAT)?{28'd0,
+				  rx_valid,
 				  rx_break,
 				  !tx_busy,
-				  rx_valid
+				  rx_not_empty
 				  }:
 		(addr==REG_CTRL)?control:
 		(addr==REG_CPB)?cycles_per_bit:
