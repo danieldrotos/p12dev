@@ -22,6 +22,11 @@ main_cyc:
 	jz	main_cyc
 	mvzl	r2,DR
 	ld	r0,r2
+got_char:
+	mvzl	r2,0x20
+	xor	r2,0xffff
+	sew	r2
+	and	r0,r2		; covert to UPCASE
 	call	send
 	jmp	main_cyc
 	
