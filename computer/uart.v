@@ -44,11 +44,11 @@ module uart
 
    
    // Parameter registers
-   reg [WIDTH-1:0] cycles_per_bit= 32'd434;//217; // 25MHz -> 115200 Baud
+   reg [WIDTH-1:0] cycles_per_bit= 32'd217; // 25MHz -> 115200 Baud
    always @(posedge clk)
      begin
 	if (reset)
-	  cycles_per_bit<= 32'd434;//217;
+	  cycles_per_bit<= 32'd217;
 	else
 	  if (wr & (addr==REG_CPB))
 	    cycles_per_bit<= din;

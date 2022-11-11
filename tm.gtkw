@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Fri Nov 11 22:05:49 2022
+[*] Fri Nov 11 22:39:27 2022
 [*]
 [dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Fri Nov 11 22:05:06 2022"
-[dumpfile_size] 55992180
+[dumpfile_mtime] "Fri Nov 11 22:23:27 2022"
+[dumpfile_size] 52507702
 [savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 0
+[timestart] 4444
 [size] 1744 892
-[pos] 0 33
-*-14.629200 33 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 19 69
+*-5.622228 4499 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -26,7 +26,6 @@ tm.comp.genblk1.cpu.phm
 tm.comp.genblk1.cpu.phw
 @22
 tm.comp.genblk1.cpu.pc[31:0]
-tm.comp.genblk1.cpu.regs.r15.r[31:0]
 @c00022
 tm.comp.genblk1.cpu.ic[31:0]
 @28
@@ -127,10 +126,17 @@ tm.comp.genblk1.cpu.regs.r14out[31:0]
 tm.comp.genblk1.cpu.regs.r15out[31:0]
 @28
 tm.comp.io_uart.rx_fsm[1:0]
+tm.comp.io_uart.utx.uart_tx_en
+tm.comp.io_uart.RxD
+tm.comp.io_uart.TxD
 @29
-tm.comp.io_uart.rx_valid
+tm.comp.io_uart.tx_busy
 @28
+tm.comp.io_uart.rx_valid
 tm.comp.io_uart.rx_not_empty
+@22
+tm.comp.io_uart.rx_data[7:0]
+@28
 tm.comp.io_uart.rx_readout
 [pattern_trace] 1
 [pattern_trace] 0

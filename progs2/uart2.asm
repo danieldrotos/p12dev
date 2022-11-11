@@ -14,7 +14,6 @@
 	mvzl	r1,'>'		; send prompt
 	mvzl	r2,DR
 	st	r1,r2
-;	call	wait_cyc	;
 start:	
 
 main_cyc:
@@ -34,13 +33,13 @@ end:	jmp	start
 
 	
 wait_tx:
-	push	LR
+	;push	LR
 	mvzl	r2,STAT
 wait_cyc:
 	ld	r3,r2
 	btst	r3,2
 	jz	wait_cyc
-	pop	LR
+	;pop	LR
 	ret
 
 send:
@@ -52,10 +51,10 @@ send:
 	ret
 	
 check_input:
-	push	lr
+	;push	lr
 	mvzl	r2,STAT
-	ld	r2,r2
-	test	r2,1		; Z=0 Received avail
-	pop	LR
+	ld	r4,r2
+	test	r4,1		; Z=0 Received avail
+	;pop	LR
 	ret
 	

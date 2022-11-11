@@ -39,7 +39,7 @@ module tm
    reg [3:0]   test_rsel;
    reg [31:0]  btn= 0;
    reg [31:0]  sw= 0;
-   
+   reg 	       rxd= 1;
    wire [31:0] test_out, test_reg;
    wire [31:0] porta, portb, portc, portd;
 
@@ -65,6 +65,7 @@ module tm
       .PORTB(portb),
       .PORTC(portc),
       .PORTD(portd),
+      .RxD(rxd),
       .test_sel(test_sel),
       .test_out(test_out),
       .test_rsel(test_rsel),
@@ -88,6 +89,12 @@ module tm
        #5000 sw= 1;
     end
 
+   initial
+     begin
+	#66000 rxd= 0;
+	#2000 rxd= 1;
+     end
+   
    initial
      begin
 	#1000 btn= 4;
