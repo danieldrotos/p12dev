@@ -91,7 +91,7 @@ module tm
 
    initial
      begin
-	#66000 rxd= 0;
+	#99000 rxd= 0;
 	#2000 rxd= 1;
      end
    

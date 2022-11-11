@@ -1,3 +1,3 @@
-PRG		= progs2/uart2
+PRG		= monitor/pmon
 AW		= 17
 INSTS		= 20000

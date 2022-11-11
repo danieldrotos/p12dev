@@ -257,8 +257,14 @@ module alu2
 
    // Calculate flags
    wire 		    co, zo, so, vo;
-   assign zo= (op[5:0]==6'b101111)?di[`ZIDX]:~|res;
-   assign so= (op[5:0]==6'b101111)?di[`SIDX]:res[WIDTH-1];
+   assign zo= (op[5:0]==6'b101111)?di[`ZIDX]:	// setf
+	      (op[5:0]==6'b101100)?zi:		// sec
+	      (op[5:0]==6'b101101)?zi:		// clc
+	      ~|res;
+   assign so= (op[5:0]==6'b101111)?di[`SIDX]:	// setf
+	      (op[5:0]==6'b101100)?si:		// sec
+	      (op[5:0]==6'b101101)?si:		// clc
+	      res[WIDTH-1];
    wire 		    co_reg, co_im, co_1;
    assign co_reg= (op[3:0]==4'h0)? ci :
 		  (op[3:0]==4'h1)? ci :

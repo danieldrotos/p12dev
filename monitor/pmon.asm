@@ -78,8 +78,8 @@ no_input:
 check_uart:
 	;push	lr
 	mvzl	r0,UART_STAT
-	ld	r1,r0
-	test	r1,1		; Z=1: nochar Z=0: input avail
+	ld	r10,r0
+	test	r10,1		; Z=1: nochar Z=0: input avail
 	clc
 	Z0 sec
 	;pop	lr
@@ -201,8 +201,8 @@ putchar:
 	;push	lr
 	mvzl	r2,UART_STAT
 wait_tc:	
-	ld	r1,r2
-	test	r1,2
+	ld	r9,r2
+	test	r9,2
 	jz	wait_tc
 	mvzl	r2,UART_DR
 	st	r0,r2
