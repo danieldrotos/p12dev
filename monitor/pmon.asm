@@ -4,6 +4,7 @@
 	UART_STAT =	0xff41
 	UART_CTRL =	0xff42
 	UART_CPB =	0xff43
+	NL	=	10
 	
 	org	0
 
@@ -94,6 +95,7 @@ got_char:
 	st	r3,r1
 	mvzl	r4,0
 	st	r4,r2,r3	; line[line_ptr]= 0
+	call	putchar		; echo
 	clc
 	jmp	proc_input_ret
 got_eol:	
@@ -109,13 +111,22 @@ proc_input_ret:
 	;; IN: OUT:
 proc_line:
 	push	lr
+	;; eol is not echoed, so start with print LN
+	mvzl	r0,NL
+	call	putchar
 
+	mvzl	r0,s1
+	call	prints
+	mvzl	r0,line
+	call	prints
+	mvzl	r0,10
+	call	putchar
 	mvzl	r0,at_eol	; at_eol= 1
 	mvzl	r1,1
 	st	r1,r0
 	pop	lr
 	ret
-	
+s1:	db	"Got:"	
 	;; IN: r0
 putchar:
 	;push	lr
