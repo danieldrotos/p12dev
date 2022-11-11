@@ -21,7 +21,7 @@ start:
 	mvzl	r1,3
 	st	r1,r0
 
-	mvzl	r0,final_sign
+	mvzl	r0,msg_start
 	call	prints
 
 	;; Setup variables
@@ -32,7 +32,7 @@ start:
 
 	;; Setup line buffer
 setup_line:
-	;push	lr
+	push	lr
 	mvzl	r0,line_ptr	; lptr= 0
 	mvzl	r1,0
 	st	r1,r0
@@ -41,7 +41,10 @@ setup_line:
 	mvzl	r0,at_eol	; at_eol= 1
 	mvzl	r1,1
 	st	r1,r0
-	;pop	lr
+	;; print prompt
+	mvzl	r0,prompt
+	call	prints
+	pop	lr
 	ret
 	
 main:
@@ -160,6 +163,9 @@ prints_done:
 line:		ds	100
 line_ptr:	ds	1
 at_eol:		ds	1
+
+msg_start:	db	"PMon v1.0\n"
+prompt:		db	">"
 	
 stack:
 	ds	0x100
@@ -167,5 +173,3 @@ stack_end:
 	ds	1
 final_sign:
 	db	"EOF P MONITOR\n"
-	
-	
