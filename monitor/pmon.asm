@@ -5,14 +5,18 @@
 	UART_CTRL =	0xff42
 	UART_CPB =	0xff43
 	NL	=	10
+	CR	=	13
 	
 	org	0
-
 	jmp	start
 
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
+
+	;; test
+	;; test
+	
 	;; Setup UART
 	mvzl	r0,UART_CPB
 	mvzl	r1,217
@@ -20,9 +24,9 @@ start:
 	mvzl	r0,UART_CTRL
 	mvzl	r1,3
 	st	r1,r0
-
+	;; Print welcome message
 	mvzl	r0,msg_start
-	call	prints
+	call	printsnl
 
 	;; Setup variables
 	call	setup_line
@@ -30,7 +34,9 @@ start:
 	;; Ready to work
 	jmp	main
 
+	
 	;; Setup line buffer
+	;; -----------------
 setup_line:
 	push	lr
 	mvzl	r0,line_ptr	; lptr= 0
@@ -46,10 +52,13 @@ setup_line:
 	call	prints
 	pop	lr
 	ret
+
 	
+	;; MAIN cycle
+	;; ==========
 main:
 	call	check_uart
-	jz	no_input
+	C0 jmp	no_input
 	;; input avail
 	call	read
 	call	proc_input
@@ -61,16 +70,24 @@ no_line:
 no_input:	
 	jmp	main
 
-	;; IN: - OUT: Flag.Z=0 input avail
+
+	;; Check UART for input available
+	;; ------------------------------
+	;; IN: -
+	;; OUT: Flag.C=1 input avail
 check_uart:
 	;push	lr
 	mvzl	r0,UART_STAT
 	ld	r1,r0
 	test	r1,1		; Z=1: nochar Z=0: input avail
+	clc
+	Z0 sec
 	;pop	lr
 	ret
 
-	;; IN: - OUT: R0
+	
+	;; IN: -
+	;; OUT: R0
 read:
 	;push	lr
 	mvzl	r0,UART_DR
@@ -78,12 +95,14 @@ read:
 	;pop	lr
 	ret
 
-	;; IN: R0 character OUT: line, Flag.C=1 line is ready
+	
+	;; IN: R0 character 
+	;; OUT: line, Flag.C=1 line is ready
 proc_input:
 	push	lr
-	cmp	r0,10
+	cmp	r0,NL
 	EQ jmp	got_eol
-	cmp	r0,13
+	cmp	r0,CR
 	EQ jmp	got_eol
 got_char:	
 	mvzl	r1,at_eol	; at_aol= 0
@@ -111,26 +130,73 @@ proc_input_ret:
 	pop	lr
 	ret
 
-	;; IN: OUT:
+
+	;; Process content of line buffer
+	;; ------------------------------
+	;; IN: -
+	;; OUT: -
 proc_line:
 	push	lr
-	;; eol is not echoed, so start with print LN
+	;; eol is not echoed, so start with print NL
 	mvzl	r0,NL
 	call	putchar
 
+	;; Simple echo
 	mvzl	r0,s1
 	call	prints
 	mvzl	r0,line
-	call	prints
-	mvzl	r0,10
-	call	putchar
+	call	printsnl
+	
 	mvzl	r0,at_eol	; at_eol= 1
 	mvzl	r1,1
 	st	r1,r0
 	pop	lr
 	ret
-s1:	db	"Got:"	
+s1:	db	"Got:"
+
+
+	;; Check if a character is a delimiter
+	;; -----------------------------------
+	;; IN: R0 character
+	;; OUT: Flag.C=1 if true
+is_delimiter:
+	push	lr
+	mvzl	r1,delimiters
+	call	strchr
+	pop	lr
+	ret
+
+
+;;; STRING UTILITIES
+;;; ==================================================================
+
+	;; locate charater in string
+	;; IN: R0 character, R1 string address
+	;; OUT: R1 address of char found, or NULL, Flag.C=1 if found
+strchr:
+	ld	r2,r1
+	sz	r2
+	jz	strchr_no	; eof string found
+	cmp	r2,r0		; compare
+	jz	strchr_yes
+	plus	r1,1		; go to next char
+	jmp	strchr
+strchr_yes:
+	sec
+	ret
+strchr_no:
+	mvzl	r1,0
+	clc
+	ret
+
+	
+;;; SERIAL IO
+;;; ==================================================================
+	
+	;; Send one character
+	;; ------------------
 	;; IN: r0
+	;; OUT: -
 putchar:
 	;push	lr
 	mvzl	r2,UART_STAT
@@ -143,7 +209,11 @@ wait_tc:
 	;pop	lr
 	ret
 
+	
+	;; Print string
+	;; ------------
 	;; IN: R0 address of string
+	;; OUT: -
 prints:
 	push	lr
 	mvzl	r4,0
@@ -159,17 +229,39 @@ prints_go:
 prints_done:
 	pop	lr
 	ret
-	
-line:		ds	100
-line_ptr:	ds	1
-at_eol:		ds	1
 
-msg_start:	db	"PMon v1.0\n"
-prompt:		db	">"
+
+	;; Print string and append a NL
+	;; ----------------------------
+	;; IN: R0 address of string
+	;; OUT: -
+printsnl:
+	push	lr
+	call	prints
+	push	r0
+	mvzl	r0,NL
+	call	putchar
+	pop	r0
+	pop	lr
+	ret
+
 	
+;;; VARIABLES
+;;; ---------
+line:		ds	100	; line buffer
+line_ptr:	ds	1	; line pointer (index)
+at_eol:		ds	1	; bool, true if EOL arrived
+
+msg_start:	db	"PMonitor v1.0"
+prompt:		db	">"
+delimiters:	db	" \t\v,="
+	
+	
+;;; STACK
+;;; -----
 stack:
 	ds	0x100
 stack_end:
 	ds	1
 final_sign:
-	db	"EOF P MONITOR\n"
+	db	"EOF PMonitor\n"
