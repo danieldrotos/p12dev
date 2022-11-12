@@ -40,16 +40,13 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-all: progs utils mon $(PRG).asc show
+all: progs utils $(PRG).asc show
 
 progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
 
 utils: #hex2asc
-
-mon:
-	$(MAKE) -C monitor all
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc

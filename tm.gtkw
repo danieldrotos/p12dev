@@ -1,10 +1,10 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sat Nov 12 11:11:21 2022
+[*] Sat Nov 12 19:16:57 2022
 [*]
 [dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Sat Nov 12 11:10:40 2022"
-[dumpfile_size] 52099072
+[dumpfile_mtime] "Sat Nov 12 19:15:18 2022"
+[dumpfile_size] 54523478
 [savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
 [timestart] 0
 [size] 1744 930
@@ -63,9 +63,6 @@ tm.comp.genblk1.cpu.ic[31:0]
 (31)tm.comp.genblk1.cpu.ic[31:0]
 @1401200
 -group_end
-@28
-tm.comp.genblk1.cpu.flag_c
-tm.comp.genblk1.cpu.flag_z
 @22
 tm.comp.genblk1.cpu.wb_data[31:0]
 tm.comp.PORTI[31:0]
@@ -126,10 +123,8 @@ tm.comp.genblk1.cpu.regs.r11out[31:0]
 tm.comp.genblk1.cpu.regs.r12out[31:0]
 tm.comp.genblk1.cpu.regs.r13out[31:0]
 tm.comp.genblk1.cpu.regs.r14out[31:0]
-tm.comp.genblk1.cpu.regs.r15out[31:0]
-@29
-tm.comp.io_uart.RxD
 @28
+tm.comp.io_uart.RxD
 tm.comp.io_uart.rx_not_empty
 tm.comp.io_uart.utx.uart_tx_en
 tm.comp.io_uart.TxD

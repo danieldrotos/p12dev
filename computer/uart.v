@@ -130,7 +130,7 @@ module uart
    reg [1:0]  rx_fsm= FSM_IDLE;
    wire       rx_readout;
    wire       rx_not_empty;
-   assign rx_readout= cs & !wen & (addr==REG_DR);
+   assign rx_readout= cs & !wen & (addr==REG_DR); 
    
    always @(posedge clk)
      begin
