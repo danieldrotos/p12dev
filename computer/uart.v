@@ -18,14 +18,17 @@ module uart
 
    // Addresses of registers
    localparam REG_DR= 4'd0; // data
-   localparam REG_STAT= 4'd1; // Status
-   localparam REG_CTRL= 4'd2; // Control
-   localparam REG_CPB= 4'd3; // Cycles per bit
+   localparam REG_CTRL= 4'd1; // Control
+   localparam REG_RSTAT= 4'd2; // Receive Status
+   localparam REG_TSTAT= 4'd3; // Transmit Status
+   localparam REG_CPB= 4'd4; // Cycles per bit
    
-   // Bits of status register
+   // Bits of RX status register
    localparam STAT_RXNE= 0;
-   localparam STAT_TC= 1;
-   localparam STAT_BREAK= 2;
+   localparam STAT_BREAK= 1;
+   localparam STAT_RXVALID= 2;
+   // Bits of TX status register
+   localparam STAT_TC= 0;
    
    // Bits of control register
    localparam CTRL_RX_EN= 0;
@@ -145,13 +148,15 @@ module uart
    
    // Output data
    assign dout= (addr==REG_DR)?{24'd0,rx_data}:
-		(addr==REG_STAT)?{28'd0,
+		(addr==REG_CTRL)?control:
+		(addr==REG_RSTAT)?{29'd0,
 				  rx_valid,
 				  rx_break,
-				  !tx_busy,
 				  rx_not_empty
 				  }:
-		(addr==REG_CTRL)?control:
+		(addr==REG_TSTAT)?{31'd0,
+				  !tx_busy
+				  }:
 		(addr==REG_CPB)?cycles_per_bit:
 		(addr[3:2]==2'b11)?regs[addr[1:0]]:
 		0;

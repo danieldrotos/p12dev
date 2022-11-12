@@ -1,9 +1,10 @@
 	.proc	P2
 
 	UART_DR	=	0xff40
-	UART_STAT =	0xff41
-	UART_CTRL =	0xff42
-	UART_CPB =	0xff43
+	UART_CTRL =	0xff41
+	UART_RSTAT =	0xff42
+	UART_TSTAT =	0xff43
+	UART_CPB =	0xff44
 	NL	=	10
 	CR	=	13
 	
@@ -77,7 +78,7 @@ no_input:
 	;; OUT: Flag.C=1 input avail
 check_uart:
 	;push	lr
-	mvzl	r0,UART_STAT
+	mvzl	r0,UART_RSTAT
 	ld	r10,r0
 	test	r10,1		; Z=1: nochar Z=0: input avail
 	clc
@@ -199,10 +200,10 @@ strchr_no:
 	;; OUT: -
 putchar:
 	;push	lr
-	mvzl	r2,UART_STAT
+	mvzl	r2,UART_TSTAT
 wait_tc:	
 	ld	r9,r2
-	test	r9,2
+	test	r9,1
 	jz	wait_tc
 	mvzl	r2,UART_DR
 	st	r0,r2

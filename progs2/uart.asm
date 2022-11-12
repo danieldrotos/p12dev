@@ -1,8 +1,9 @@
 	.proc	P2
 
 	DR	equ	0xff40
-	STAT	equ	0xff41
-	CTRL	equ	0xff42
+	CTRL	equ	0xff41
+	RSTAT	equ	0xff42
+	TSTAT	equ	0xff43
 
 	mvl	SP,0x1ffff
 	mvh	SP,0x1ffff
@@ -30,10 +31,10 @@ end:	jmp	start
 	
 wait_tx:
 	push	LR
-	mvzl	r2,STAT
+	mvzl	r2,TSTAT
 wait_cyc:
 	ld	r3,r2
-	btst	r3,2
+	btst	r3,1
 	jz	wait_cyc
 	pop	LR
 	ret
