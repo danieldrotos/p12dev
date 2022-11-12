@@ -1,12 +1,13 @@
 	.proc	P2
 
-	UART_DR	=	0xff40
-	UART_CTRL =	0xff41
-	UART_RSTAT =	0xff42
-	UART_TSTAT =	0xff43
-	UART_CPB =	0xff44
-	NL	=	10
-	CR	=	13
+	UART_DR		=	0xff40
+	UART_CTRL	=	0xff41
+	UART_RSTAT	=	0xff42
+	UART_TSTAT	=	0xff43
+	UART_CPB	=	0xff44
+	LF		=	10
+	CR		=	13
+	MAX_WORDS	=	5
 	
 	org	0
 	jmp	start
@@ -72,36 +73,11 @@ no_input:
 	jmp	main
 
 
-	;; Check UART for input available
-	;; ------------------------------
-	;; IN: -
-	;; OUT: Flag.C=1 input avail
-check_uart:
-	;push	lr
-	mvzl	r0,UART_RSTAT
-	ld	r10,r0
-	test	r10,1		; Z=1: nochar Z=0: input avail
-	clc
-	Z0 sec
-	;pop	lr
-	ret
-
-	
-	;; IN: -
-	;; OUT: R0
-read:
-	;push	lr
-	mvzl	r0,UART_DR
-	ld	r0,r0
-	;pop	lr
-	ret
-
-	
 	;; IN: R0 character 
 	;; OUT: line, Flag.C=1 line is ready
 proc_input:
 	push	lr
-	cmp	r0,NL
+	cmp	r0,LF
 	EQ jmp	got_eol
 	cmp	r0,CR
 	EQ jmp	got_eol
@@ -117,7 +93,8 @@ got_char:
 	plus	r3,1		; line_ptr++
 	st	r3,r1
 	mvzl	r4,0
-	st	r4,r2,r3	; line[line_ptr]= 0
+	st	r4,r3+,r2	; line[line_ptr]= 0
+	st	r4,r3		; double 0 at end, needed by tokenizer
 	call	putchar		; echo
 	clc
 	jmp	proc_input_ret
@@ -139,7 +116,7 @@ proc_input_ret:
 proc_line:
 	push	lr
 	;; eol is not echoed, so start with print NL
-	mvzl	r0,NL
+	mvzl	r0,LF
 	call	putchar
 
 	;; Simple echo
@@ -147,6 +124,17 @@ proc_line:
 	call	prints
 	mvzl	r0,line
 	call	printsnl
+
+	call	tokenize
+	
+	mvzl	r4,0
+aa1:	mvzl	r5,words
+	ld	r0,r4+,r5
+	push	r4
+	call	printsnl
+	pop	r4
+	cmp	r4,MAX_WORDS
+	NE jmp	aa1
 	
 	mvzl	r0,at_eol	; at_eol= 1
 	mvzl	r1,1
@@ -168,6 +156,55 @@ is_delimiter:
 	ret
 
 
+	;; Tokenize line
+	;; -------------
+	;; IN: line
+	;; OUT: words table
+tokenize:
+	push	lr
+	mvzl	r4,words	; array of result
+	mvzl	r5,line		; address of next char
+	mvzl	r6,0		; nuof words found
+	mvzl	r7,0		; bool in_word
+tok_cycle:	
+	ld	r0,r5		; pick a char
+	sz	r0		; check end
+	jz	tok_delimiter	; found end, pretend delim
+tok_neol:	
+	call	is_delimiter
+	C1 jmp	tok_delimiter
+tok_char:			; found a non-delimiter
+	sz	r7
+	jnz	tok_next	; still inside word
+	;; delim->word, start of word
+	mvzl	r7,1		; in_word=true
+	st	r5,r6+,r4	; record word address
+	cmp	r6,MAX_WORDS	; If no more space
+	EQ jmp	tok_ret		; then return
+	jmp	tok_next
+tok_delimiter:			; found a non-delimiter
+	sz	r7
+	jz	tok_next	; still between words
+	;; word->delim, end of word
+	mvzl	r7,0		; in_word=false
+	mvzl	r1,0		; put a 0 at the end of word
+	st	r1,r5,r1
+tok_next:
+	sz	r0		; check EOL
+	jz	tok_ret		; jump out if char==0
+	add	r5,1
+	jmp	tok_cycle
+tok_ret:
+	mvzl	r1,0
+	cmp	r6,MAX_WORDS
+	jz	tok_end
+	st	r1,r6+,r4
+	jmp	tok_ret
+tok_end:	
+	pop	lr
+	ret
+
+	
 ;;; STRING UTILITIES
 ;;; ==================================================================
 
@@ -175,24 +212,55 @@ is_delimiter:
 	;; IN: R0 character, R1 string address
 	;; OUT: R1 address of char found, or NULL, Flag.C=1 if found
 strchr:
+	push	r1
+	push	r2
+strchr_cyc:
 	ld	r2,r1
 	sz	r2
 	jz	strchr_no	; eof string found
 	cmp	r2,r0		; compare
 	jz	strchr_yes
 	plus	r1,1		; go to next char
-	jmp	strchr
+	jmp	strchr_cyc
 strchr_yes:
 	sec
-	ret
+	jmp	strchr_ret
 strchr_no:
 	mvzl	r1,0
 	clc
+strchr_ret:
+	pop	r2
+	pop	r1
 	ret
 
 	
 ;;; SERIAL IO
 ;;; ==================================================================
+	
+	;; Check UART for input available
+	;; ------------------------------
+	;; IN: -
+	;; OUT: Flag.C=1 input avail
+check_uart:
+	push	r0
+	mvzl	r0,UART_RSTAT
+	ld	r0,r0
+	test	r0,1		; Z=1: nochar Z=0: input avail
+	clc
+	Z0 sec
+	pop	r0
+	ret
+
+	
+	;; IN: -
+	;; OUT: R0
+read:
+	;push	lr
+	mvzl	r0,UART_DR
+	ld	r0,r0
+	;pop	lr
+	ret
+
 	
 	;; Send one character
 	;; ------------------
@@ -200,6 +268,8 @@ strchr_no:
 	;; OUT: -
 putchar:
 	;push	lr
+	push	r2
+	push	r9
 	mvzl	r2,UART_TSTAT
 wait_tc:	
 	ld	r9,r2
@@ -207,6 +277,8 @@ wait_tc:
 	jz	wait_tc
 	mvzl	r2,UART_DR
 	st	r0,r2
+	pop	r9
+	pop	r2
 	;pop	lr
 	ret
 
@@ -217,7 +289,13 @@ wait_tc:
 	;; OUT: -
 prints:
 	push	lr
+	push	r0
+	push	r3
+	push	r4
+	
 	mvzl	r4,0
+	sz	r0
+	Z1 mvzl	r0,null_str
 prints_go:
 	ld	r3,r4+,r0
 	sz	r3
@@ -227,7 +305,11 @@ prints_go:
 	call	putchar
 	pop	r0
 	jmp	prints_go
+	
 prints_done:
+	pop	r4
+	pop	r3
+	pop	r0
 	pop	lr
 	ret
 
@@ -240,7 +322,7 @@ printsnl:
 	push	lr
 	call	prints
 	push	r0
-	mvzl	r0,NL
+	mvzl	r0,LF
 	call	putchar
 	pop	r0
 	pop	lr
@@ -249,13 +331,15 @@ printsnl:
 	
 ;;; VARIABLES
 ;;; ---------
-line:		ds	100	; line buffer
-line_ptr:	ds	1	; line pointer (index)
-at_eol:		ds	1	; bool, true if EOL arrived
-
+line:		ds	100		; line buffer
+line_ptr:	ds	1		; line pointer (index)
+at_eol:		ds	1		; bool, true if EOL arrived
+words:		ds	5		; Tokens of line
+	
 msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
-delimiters:	db	" \t\v,="
+delimiters:	db	" \t\v,=[]"
+null_str:	db	"(null)"
 	
 	
 ;;; STACK
