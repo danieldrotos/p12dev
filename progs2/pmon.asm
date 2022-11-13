@@ -12,11 +12,17 @@
 	org	0
 	jmp	start
 
+s1:	db	"AbC"
+s2:	db	"aBc"
+	
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
 
 	;; test
+	mvzl	r0,s1
+	mvzl	r1,s2
+	call	streq
 	;; test
 	
 	;; Setup UART
@@ -141,7 +147,7 @@ aa1:	mvzl	r5,words
 	st	r1,r0
 	pop	lr
 	ret
-s1:	db	"Got:"
+sdummy1:	db	"Got:"
 
 
 	;; Check if a character is a delimiter
@@ -204,6 +210,10 @@ tok_end:
 	pop	lr
 	ret
 
+
+cmd_m:
+	ret
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -231,6 +241,92 @@ strchr_no:
 strchr_ret:
 	pop	r2
 	pop	r1
+	ret
+
+
+	;; Check if strings are equal
+	;; --------------------------
+	;; IN: R0, R1 addresses of strings
+	;;     R3==true case sensitive
+	;;     R3==false case insensitive
+	;; OUT: Flag.C=1 equal
+str_cmp_eq:
+	push	lr		; Save used registers
+	push	r0		; and input parameters
+	push	r1
+	push	r2
+	push	r4
+	push	r5
+	push	r6
+streq_cyc:	
+	ld	r2,r0		; Got one-one char
+	ld	r6,r1		; from two strings
+	sz	r3		; Prepare for comparing
+	Z1 or	r2,0x20		; if insensitive case
+	sz	r3
+	Z1 or	r6,0x20
+	cmp	r2,r6		; compare them
+	jnz	streq_no	; if differs: strings are not equal
+
+	ld	r2,r0		; Pick original (non-prepared)
+	ld	r6,r1		; chars to check EOS
+	sz	r2		; convert them to boolean
+	Z0 mvzl	r2,1		; values in R2,R6
+	Z1 mvzl	r2,0		; and copy in R4,R5
+	mov	r4,r2
+	sz	r6
+	Z0 mvzl	r6,1
+	Z1 mvzl r6,0
+	mov	r5,r6
+	or	r4,r5		; if both are EOS: equal
+	jz	streq_yes
+	and 	r2,r6		; just one is EOS: not equal
+	jz	streq_no
+	plus	r0,1		; non are EOS: go to check next char
+	plus	r1,1
+	jmp	streq_cyc
+	
+streq_no:
+	clc			; False result
+	jmp	streq_ret
+
+streq_yes:
+	sec			; True result
+	
+streq_ret:
+	pop	r6
+	pop	r5
+	pop	r4
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	lr
+	ret
+	
+
+	;; Compare strings case sensitive way
+	;; IN: R0, R1 addresses of strings
+	;; OUT Flag.C==1 if equals
+streq:
+	push	lr
+	push	r3
+	mvzl	r3,1
+	call	str_cmp_eq
+	pop	r3
+	pop	lr
+	ret
+
+	
+	;; Compare strings case insensitive way
+	;; IN: R0, R1 addresses of strings
+	;; OUT Flag.C==1 if equals
+strieq:
+	push	lr
+	push	r3
+	mvzl	r3,0
+	call	str_cmp_eq
+	pop	r3
+	pop	lr
 	ret
 
 	
@@ -341,6 +437,11 @@ prompt:		db	">"
 delimiters:	db	" \t\v,=[]"
 null_str:	db	"(null)"
 	
+
+;;; Command table
+commands:
+	dd	cmd_m
+	ds	"m"
 	
 ;;; STACK
 ;;; -----
