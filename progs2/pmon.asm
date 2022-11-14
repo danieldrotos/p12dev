@@ -385,7 +385,8 @@ check_uart:
 	push	r0
 	mvzl	r0,UART_RSTAT
 	ld	r0,r0
-	test	r0,1		; Z=1: nochar Z=0: input avail
+	; Z=1: nochar Z=0: input avail
+	test	r0,1
 	clc
 	Z0 sec
 	pop	r0

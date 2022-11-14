@@ -721,8 +721,10 @@
       debug("proc_line; no words found in line $lnr");
       return;
     }
+    if (($w!==false) && ($w[0]==';'))
+      return;
     $prew= "";
-    $par_sep= " \t,[]():;";
+    $par_sep= " \t,[]():";
     $inst= false;
     $error= false;
     $ok= false;
@@ -748,6 +750,8 @@
       else if ($W == ".PROC")
       {
 	$w= strtok(" \t");
+	if (($w!==false) && ($w[0]==';'))
+	  return;
 	$W= strtoupper($w);
 	$p1= strpos("P1", $W);
 	$p2= strpos("P2", $W);
@@ -788,6 +792,8 @@
 	  exit(7);
 	}
 	$w= strtok(" \t");
+	if (($w!==false) && ($w[0]==';'))
+	  return;
 	$val= intval($w,0);
 	debug("proc_line; EQU w=$w val=$val");
 	mk_symbol($prew, $val, ($W=="=")?"=":"S");
@@ -799,6 +805,8 @@
       else if ($W == "ORG")
       {
         $w= strtok(" \t");
+	if (($w!==false) && ($w[0]==';'))
+	  return;
         $addr= intval($w,0);
         debug("proc_line; addr=$addr");
         $ok= true;
@@ -807,7 +815,10 @@
 
       else if ($W == "DS")
       {
-	$x= 0 + intval(strtok(" \t,"),0);
+	$w= strtok(" \t,");
+	if (($w!==false) && ($w[0]==';'))
+	  return;
+	$x= 0 + intval($w,0);
 	$addr+= $x;
 	debug("proc_line; addr=$addr");
 	$ok= true;
@@ -862,6 +873,8 @@
 	  return ;
 	}
         $w= trim(strtok(" \t,"));
+	if (($w!==false) && ($w[0]==';'))
+	  return;
 	while (($w !== false) && ($w!=""))
 	{
 	  debug("Process param of DB: \"$w\"");
@@ -881,6 +894,8 @@
 	  debug( sprintf("mem[%04x] Added DB $w",$addr) );
 	  $addr++;
 	  $w= trim(strtok(" \t,"));
+	  if (($w!==false) && ($w!='') && ($w[0]==';'))
+	    return;
 	}
 	return;
       }
@@ -905,6 +920,8 @@
 
       $prew= $w;
       $w= strtok($par_sep);
+      if (($w!==false) && ($w[0]==';'))
+	return;
     }
     if (($prew != '') && ($ok === false))
     {
@@ -922,6 +939,8 @@
     // continue with parameters
     $prew= $w;
     $w= strtok($par_sep);
+    if (($w!==false) && ($w[0]==';'))
+      return;
     $pattern= "";
     $params= array();
     while ($w !== false)
@@ -959,6 +978,8 @@
       }
       $prew= $w;
       $w= strtok($par_sep);
+      if (($w!==false) && ($w[0]==';'))
+	break;
     }
     $pattern.= "_";
     debug("param pattern=$pattern");
@@ -1122,37 +1143,44 @@
   
   // Load source file and do PHASE 1
   $lines= preg_split("/\r\n|\n|\r/", $src);
+  /*$lines= array();
+  $at_eol= true;
+  $l= '';
+  $len= strlen($src);
+  for ($i=0; ($i<$len) && (ord($src[$i])!=0); $i++)
+  {
+    $ch= $src[$i];
+    $c= ord($ch);
+    $is_eol= ($c==10)||($c==13);
+    if (!$at_eol && !$is_eol)
+    {
+      $l.= $ch;
+    }
+    if (!$at_eol && $is_eol)
+    {
+      // line end reached
+      $at_eol= true;
+      $lines[]= $l;
+      $l= '';
+    }
+    if ($at_eol && !$is_eol)
+    {
+      $at_eol= false;
+      $l= $ch;
+    }
+    if ($at_eol && $is_eol)
+      ;
+  }*/
   $nuof_lines= count($lines);
-  /*
-     $lsep= "\r\n";
-     $l= strtok($src, $lsep);
-     while ($l !== false)
-     {
-     $lines[$lnr]= $l;
-     debug("[{$lnr}] {$l}");
-     $l= strtok($lsep);
-     $lnr++;
-     }
-     $nuof_lines= $lnr;
-   */
   debug("$nuof_lines lines buffered");
-  //$addr= 0;
-  //$mem[$addr]= 0;
-  //$addr= 1;
-  //debug("Size of insts1= ".count($insts1));
-  //debug("Size of conds1= ".count($conds1));
-  //debug("Size of insts2= ".count($insts2));
-  //debug("Size of conds2= ".count($conds2));
   for ($li= 0; $li < $nuof_lines; $li++)
   {
     $lnr= $li+1;
     $l= trim($lines[$li]);
-    $l= preg_replace("/;.*$/", "", $l);
+    //$l= preg_replace("/;.*$/", "", $l);
     debug("\n");
     debug("line[$lnr]: $l");
     proc_line($l);
-    //debug("Size of insts= ".count($insts));
-    //debug("Size of conds= ".count($conds));
   }
 
   debug("\n\n");
@@ -1243,7 +1271,12 @@
     $m['icode']&= 0xffffffff;
     if ($m['icode'] !== false)
     {
-      debug( $o= sprintf("%08x //;%04x %s", $m['icode'], $a, $m["src"]) );
+      /*if (isset($m["label"]) && ($m["label"]!==false))
+      {
+	debug ($o= sprintf("//; %s", $m["label"]["name"]) );
+	$hex.= $o."\n";
+      }*/
+      debug( $o= sprintf("%08x //C %04x %s", $m['icode'], $a, $m["src"]) );
       $hex.= $o."\n";
       if ($m["error"] != false)
       {

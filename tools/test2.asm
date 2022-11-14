@@ -1,3 +1,13 @@
+	.proc	P2
+
+str:	db	"_;_a\"b\"_c\n_"
+
+	;; egy
+a:	;ketto
+c:	mov	r1,r2		;zz
+
+	test	r9,33		; nn
+	
 port	equ	0xffff
 abc	=	21
 data	=	0x4356
@@ -88,6 +98,6 @@ itt:	nop
 	
 	db	'H','e','l','l','o',' ',0
 	dw	1,-1,'a'
-	db	"Hello \"World\"!"
+;	db	"Hello \"World\"!" ;
 	dd	0xdeadbeef
 	
