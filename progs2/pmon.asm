@@ -12,17 +12,11 @@
 	org	0
 	jmp	start
 
-s1:	db	"AbC"
-s2:	db	"aBc"
-	
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
 
 	;; test
-	mvzl	r0,s1
-	mvzl	r1,s2
-	call	streq
 	;; test
 	
 	;; Setup UART
@@ -126,13 +120,13 @@ proc_line:
 	call	putchar
 
 	;; Simple echo
-	mvzl	r0,s1
+	mvzl	r0,sdummy1
 	call	prints
 	mvzl	r0,line
 	call	printsnl
 
 	call	tokenize
-	
+	;; DEBUG: print words
 	mvzl	r4,0
 aa1:	mvzl	r5,words
 	ld	r0,r4+,r5
@@ -141,14 +135,25 @@ aa1:	mvzl	r5,words
 	pop	r4
 	cmp	r4,MAX_WORDS
 	NE jmp	aa1
-	
+
+	call	find_cmd
+	C0 jmp	cmd_not_found
+cmd_found:
+
+	jmp	proc_line_ret
+cmd_not_found:
+	mvzl	r0,snotfound
+	call	printsnl
+
+proc_line_ret:	
 	mvzl	r0,at_eol	; at_eol= 1
 	mvzl	r1,1
 	st	r1,r0
 	pop	lr
 	ret
 sdummy1:	db	"Got:"
-
+snotfound:	db	"Unknown command"
+	
 
 	;; Check if a character is a delimiter
 	;; -----------------------------------
@@ -210,7 +215,48 @@ tok_end:
 	pop	lr
 	ret
 
+	
+	;; Look up command table
+	;; IN: first words in tokenized list
+	;; OUT: Flag.C=1 if command found
+	;;      R0 address of command function, or NULL
+find_cmd:
+	push	lr
+	push	r1
+	push	r2
+	push	r10
+	push	r11
+	mvzl	r0,words	; R0= 1st word of command
+	ld	r0,r0
+	sz	r0
+	jz	find_cmd_false
+	
+	mvzl	r10,commands
+find_cmd_cyc:	
+	ld	r2,r10		; R2= cmd addr
+	sz	r2
+	jz	find_cmd_false
+	add	r10,1
+	mov	r1,r10		; R1= cmd string
+	add	r10,1
+	call	streq
+	C0 jmp	find_cmd_cyc
+find_cmd_true:
+	mov	r0,r2
+	sec
+	jmp	find_cmd_ret	
+find_cmd_false:
+	clc
+	mvzl	r0,0
+find_cmd_ret:
+	pop	r11
+	pop	r10
+	pop	r2
+	pop	r1
+	pop	lr
+	ret
 
+	
 cmd_m:
 	ret
 
@@ -441,7 +487,9 @@ null_str:	db	"(null)"
 ;;; Command table
 commands:
 	dd	cmd_m
-	ds	"m"
+	db	"m"
+	dd	0
+	db	0
 	
 ;;; STACK
 ;;; -----
