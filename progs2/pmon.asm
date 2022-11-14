@@ -94,7 +94,7 @@ got_char:
 	st	r3,r1
 	mvzl	r4,0
 	st	r4,r3+,r2	; line[line_ptr]= 0
-	st	r4,r3		; double 0 at end, needed by tokenizer
+	st	r4,r3,r2	; double 0 at end, needed by tokenizer
 	call	putchar		; echo
 	clc
 	jmp	proc_input_ret
@@ -136,8 +136,8 @@ aa1:	mvzl	r5,words
 	cmp	r4,MAX_WORDS
 	NE jmp	aa1
 
-	call	find_cmd
-	C0 jmp	cmd_not_found
+;	call	find_cmd
+;	C0 jmp	cmd_not_found
 cmd_found:
 
 	jmp	proc_line_ret
@@ -225,7 +225,6 @@ find_cmd:
 	push	r1
 	push	r2
 	push	r10
-	push	r11
 	mvzl	r0,words	; R0= 1st word of command
 	ld	r0,r0
 	sz	r0
@@ -249,7 +248,6 @@ find_cmd_false:
 	clc
 	mvzl	r0,0
 find_cmd_ret:
-	pop	r11
 	pop	r10
 	pop	r2
 	pop	r1
@@ -480,7 +478,8 @@ words:		ds	5		; Tokens of line
 	
 msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
-delimiters:	db	" \t\v,=[]"
+delimiters:	db	59		; asci of ;
+		db	" \t\v,=[]"
 null_str:	db	"(null)"
 	
 
