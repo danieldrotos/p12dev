@@ -478,8 +478,7 @@ words:		ds	5		; Tokens of line
 	
 msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
-delimiters:	db	59		; asci of ;
-		db	" \t\v,=[]"
+delimiters:	db	" ;\t\v,=[]"
 null_str:	db	"(null)"
 	
 

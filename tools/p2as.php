@@ -565,6 +565,44 @@
     } // while
   }
 
+  function my_parse_string($s)
+  {
+    $r= array();
+    $i= 0;
+    if (strlen($s)==0) return $r;
+    if ($s[0]=='"') $i= 1;
+    for (;($i<strlen($s)) && (ord($s[$i])!=0) && ($s[$i]!="\"");$i++)
+    {
+      $ch= $s[$i];
+      $c= ord($ch);
+      //echo "s[{$i}]={$c} {$ch}\n";
+      if ($ch=="\\")
+      {
+	$i++;
+	$ch= $s[$i];
+	$c= ord($ch);
+	//echo "s[{$i}]={$c} {$ch}\n";
+	if ($c==0) break;
+	if ($ch=="\"") $r[]= "\"";
+	if ($ch=="a") $r[]= chr(7);
+	if ($ch=="b") $r[]= chr(8);
+	if ($ch=="e") $r[]= chr(0x1b);
+	if ($ch=="f") $r[]= chr(0xc);
+	if ($ch=="n") $r[]= chr(0xa);
+	if ($ch=="r") $r[]= chr(0xd);
+	if ($ch=="0") $r[]= chr(0);
+	if ($ch=="t") $r[]= "\t";
+	if ($ch=="v") $r[]= "\v";
+	if ($ch=="\\") $r[]= "\\";
+	if ($ch=="\'") $r[]= "\'";
+	if ($ch=="?") $r[]= "?";
+      }
+      else
+	$r[]= $ch;
+    }
+    return $r;
+  }
+  
   function is_cond($W)
   {
     global $conds, $proc;
@@ -780,16 +818,18 @@
       {
 	$orgw= $w;
 	$pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
-	debug("Param part of line: $pl");
+	debug("Param part of line: '$pl'");
 	if (!empty($pl) && ($pl[0]=="\""))
 	{
-	  $a= parse_string($pl);
-	  $s= $a[0];
-	  debug("Parsed string: \"{$s}\"");
-	  for ($i= 0; $i<strlen($s); $i++)
+	  debug("Parsing string...");
+	  $a= my_parse_string($pl);
+	  //$s= $a[0];
+	  //debug("Parsed string: \"{$s}\"");
+	  //for ($i= 0; $i<strlen($s); $i++)
+	  foreach ($a as $i=>$ch)
 	  {
 	    $params= array();
-	    $params[]= $pv= ord($s[$i]);
+	    $params[]= $pv= ord(/*$s[$i]*/$ch);
 	    $mem[$addr]= array(
 	      "icode"=>0,
 		"label"=>$label,
