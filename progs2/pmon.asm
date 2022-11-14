@@ -15,7 +15,10 @@
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
-
+	mvzl	r0,1
+	mvzl	r1,echo
+	st	r0,r1
+	
 	;; test
 	;; test
 	
@@ -95,7 +98,10 @@ got_char:
 	mvzl	r4,0
 	st	r4,r3+,r2	; line[line_ptr]= 0
 	st	r4,r3,r2	; double 0 at end, needed by tokenizer
-	call	putchar		; echo
+	mvzl	r4,echo		; check if echo is turned on
+	ld	r4,r4
+	sz	r4
+	NZ call	putchar		; echo
 	clc
 	jmp	proc_input_ret
 got_eol:	
@@ -243,8 +249,19 @@ find_cmd_cyc:
 find_cmd_true:
 	mov	r0,r2
 	sec
-	jmp	find_cmd_ret	
+	jmp	find_cmd_ret
+c_cmd_name:	db	"//C"
 find_cmd_false:
+	add	r0,1		; check second word
+	ld	r1,r0		; for //C command
+	sz	r1
+	jz	find_cmd_very_false
+	mvzl	r0,c_cmd_name
+	call	streq
+	jnz	find_cmd_very_false
+	mvzl	r2,cmd_c
+	jmp	find_cmd_true
+find_cmd_very_false:	
 	clc
 	mvzl	r0,0
 find_cmd_ret:
@@ -254,10 +271,17 @@ find_cmd_ret:
 	pop	lr
 	ret
 
-	
+;;; M ADDR [VALUE]
 cmd_m:
 	ret
 
+;;; E [BOOL]
+cmd_e:
+	ret
+
+;;; VALUE //C ADDR
+cmd_c:
+	ret
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -373,6 +397,78 @@ strieq:
 	pop	lr
 	ret
 
+
+hexchar2value:
+	cmp	r0,'/'
+	LS jmp	hc2v_nok
+	cmp	r0,'9'
+	LS jmp	hc2v_0_9
+	cmp	r0,'@'
+	LS jmp	hc2v_nok
+	cmp	r0,'F'
+	LS jmp	hc2v_A_F
+	cmp	r0,'`'
+	LS jmp	hc2v_nok
+	cmp	r0,'f'
+	LS jmp	hc2v_a_f
+	jmp	hc2v_nok
+hc2v_a_f:
+	add	r0,10
+	sub	r0,'a'
+	jmp	hc2v_ok
+hc2v_A_F:
+	add	r0,10
+	sub	r0,'A'
+	jmp	hc2v_ok
+hc2v_0_9:
+	sub	r0,'0'
+hc2v_ok:
+	sec
+	ret
+hc2v_nok:	
+	clc
+	ret
+	
+	;; Convert string to number (hexadecimal)
+	;; IN: R0 addr of string
+	;; OUT: R1 value
+	;;      Flag.C=1 success
+htoi:
+	push	lr
+	push	r2
+	push	r3
+	mvzl	r1,0		; return value
+	mvzl	r3,0		; index
+htoi_cyc:
+	ld	r2,r3+,r0	; pick a char
+	sz	r2		; check eof string
+	jz	htoi_eos
+	push	r0
+	mov	r0,r2
+	call	hexchar2value
+	mov	r2,r0
+	pop	r0
+	C0 jmp	htoi_nok
+	shl	r1
+	shl	r1
+	shl	r1
+	shl	r1
+	and	r2,0xf
+	or	r1,r2
+	jmp	htoi_cyc
+htoi_nok:
+	clc
+	jmp	htoi_ret
+htoi_eos:
+	cmp	r3,1
+	Z1 clc
+	Z0 sec
+htoi_ret:	
+	pop	r3
+	pop	r2
+	pop	lr
+	ret
+	
 	
 ;;; SERIAL IO
 ;;; ==================================================================
@@ -476,6 +572,7 @@ line:		ds	100		; line buffer
 line_ptr:	ds	1		; line pointer (index)
 at_eol:		ds	1		; bool, true if EOL arrived
 words:		ds	5		; Tokens of line
+echo:		ds	1		; bool, do echo or not
 	
 msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
@@ -485,8 +582,10 @@ null_str:	db	"(null)"
 
 ;;; Command table
 commands:
-	dd	cmd_m
+	dd	cmd_m		; M(emory) address [value]
 	db	"m"
+	dd	cmd_e		; E(cho) on/off
+	db	"e"
 	dd	0
 	db	0
 	
