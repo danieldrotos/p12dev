@@ -126,26 +126,28 @@ proc_line:
 	call	putchar
 
 	;; Simple echo
-	mvzl	r0,sdummy1
-	call	prints
-	mvzl	r0,line
-	call	printsnl
+;	mvzl	r0,sdummy1
+;	call	prints
+;	mvzl	r0,line
+;	call	printsnl
 
 	call	tokenize
 	;; DEBUG: print words
-	mvzl	r4,0
-aa1:	mvzl	r5,words
-	ld	r0,r4+,r5
-	push	r4
-	call	printsnl
-	pop	r4
-	cmp	r4,MAX_WORDS
-	NE jmp	aa1
+;	mvzl	r4,0
+;aa1:	mvzl	r5,words
+;	ld	r0,r4+,r5
+;	push	r4
+;	call	printsnl
+;	pop	r4
+;	cmp	r4,MAX_WORDS
+;	NE jmp	aa1
 
-;	call	find_cmd
-;	C0 jmp	cmd_not_found
+	call	find_cmd
+	C0 jmp	cmd_not_found
+
 cmd_found:
-
+	call	r0,0
+	
 	jmp	proc_line_ret
 cmd_not_found:
 	mvzl	r0,snotfound
@@ -273,8 +275,55 @@ find_cmd_ret:
 
 ;;; M ADDR [VALUE]
 cmd_m:
+	push	lr
+	mvzl	r2,words
+	mvzl	r0,0
+	ld	r3,r0+,r2	; "m"
+	ld	r4,r0+,r2	; addr
+	ld	r5,r0,r2	; value
+	sz 	r4
+	jz	m_ret
+	
+	mov	r0,r4
+	call	htoi
+	mov	r4,r1
+	C1 jmp	m_addr_ok
+	mvzl	r0,m_err_addr
+	call	printsnl
+	jmp	m_ret
+m_addr_ok:
+	sz	r5
+	jz	m_read
+m_write:	
+	cmp	r4,the_end
+	HI jmp	m_addrv_ok
+	mvzl	r0,m_err_addrv
+	call	printsnl
+	jmp	m_ret
+m_addrv_ok:
+	mov	r0,r5
+	call	htoi
+	mov	r5,r1
+	C1 jmp	m_value_ok
+	mvzl	r0,m_err_value
+	call	printsnl
+	jmp	m_ret
+m_value_ok:
+	st	r5,r4
+	;jmp	m_ret
+m_read:	
+	ld	r0,r4
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,LF
+	call	putchar
+m_ret:
+	pop	lr
 	ret
-
+m_err_addr:	db	"Address error"
+m_err_addrv:	db	"Monitor's address"
+m_err_value:	db	"Value error"
+	
 ;;; E [BOOL]
 cmd_e:
 	ret
@@ -428,6 +477,24 @@ hc2v_ok:
 hc2v_nok:	
 	clc
 	ret
+
+	
+value2Hexchar:
+	push	r1
+	and	r0,0xf
+	mvzl	r1,v2hc_table
+	ld	r0,r1,r0
+	pop	r1
+	ret
+v2hc_table:	db	"0123456789ABCDEF"
+
+value2hexchar:
+	push	lr
+	call	value2Hexchar
+	or	r0,0x20
+	pop	lr
+	ret
+
 	
 	;; Convert string to number (hexadecimal)
 	;; IN: R0 addr of string
@@ -565,6 +632,55 @@ printsnl:
 	pop	lr
 	ret
 
+
+	;; Print a value in hex format
+	;; IN: R0 value
+	;;     R1 nr char between .
+print_vhex:
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	mov	r3,r0
+	mvzl	r2,0
+	mvzl	r4,1
+
+print_vhex_cyc:	
+	mvzl	r0,0
+	shl	r3
+	rol	r0
+	shl	r3
+	rol	r0
+	shl	r3
+	rol	r0
+	shl	r3
+	rol	r0
+	call	value2Hexchar
+	call	putchar
+	add	r2,1
+	cmp	r2,8
+	jz	print_vhex_ret
+	sz	r1
+	jz	print_vhex_nosep
+	cmp	r4,r1
+	jnz	print_vhex_nosep
+	mvzl	r0,'.'
+	call	putchar
+	mvzl	r4,0
+print_vhex_nosep:
+	add	r4,1
+	jmp	print_vhex_cyc
+print_vhex_ret:	
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	lr
+	ret
+	
 	
 ;;; VARIABLES
 ;;; ---------
