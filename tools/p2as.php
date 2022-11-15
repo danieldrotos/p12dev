@@ -1262,7 +1262,7 @@
       $p++;
       while ($p < $a)
       {
-        debug( $o= sprintf("%08x ;%04x", 0, $p) );
+        debug( $o= sprintf("%08x ;%05x", 0, $p) );
         $hex.= $o."\n";
         $p++;
       }
@@ -1276,7 +1276,7 @@
 	debug ($o= sprintf("//; %s", $m["label"]["name"]) );
 	$hex.= $o."\n";
       }*/
-      debug( $o= sprintf("%08x //C %04x %s", $m['icode'], $a, $m["src"]) );
+      debug( $o= sprintf("%08x //C %05x %s", $m['icode'], $a, $m["src"]) );
       $hex.= $o."\n";
       if ($m["error"] != false)
       {

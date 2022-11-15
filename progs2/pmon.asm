@@ -278,9 +278,9 @@ cmd_m:
 	push	lr
 	mvzl	r2,words
 	mvzl	r0,0
-	ld	r3,r0+,r2	; "m"
-	ld	r4,r0+,r2	; addr
-	ld	r5,r0,r2	; value
+	;ld	r3,r0+,r2	; "m"
+	ld	r4,r2,1		; addr
+	ld	r5,r2,2		; value
 	sz 	r4
 	jz	m_ret
 	
@@ -311,7 +311,12 @@ m_addrv_ok:
 m_value_ok:
 	st	r5,r4
 	;jmp	m_ret
-m_read:	
+m_read:
+	mov	r0,r4
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,0x20
+	call	putchar
 	ld	r0,r4
 	mvzl	r1,4
 	call	print_vhex
@@ -510,6 +515,10 @@ htoi_cyc:
 	ld	r2,r3+,r0	; pick a char
 	sz	r2		; check eof string
 	jz	htoi_eos
+	cmp	r2,'.'		; skip separators
+	jz	htoi_cyc
+	cmp	r2,'_'
+	jz	htoi_cyc
 	push	r0
 	mov	r0,r2
 	call	hexchar2value
