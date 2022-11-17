@@ -20,6 +20,7 @@ start:
 	st	r0,r1
 	
 	;; test
+	
 	;; test
 	
 	;; Setup UART
@@ -232,6 +233,7 @@ find_cmd:
 	push	lr
 	push	r1
 	push	r2
+	push	r3
 	push	r10
 	mvzl	r0,words	; R0= 1st word of command
 	ld	r0,r0
@@ -245,7 +247,14 @@ find_cmd_cyc:
 	jz	find_cmd_false
 	add	r10,1
 	mov	r1,r10		; R1= cmd string
+	;; step R10 forward to next command in cmd table
+find_cmd_fw:
 	add	r10,1
+	ld	r3,r10
+	sz	r3
+	jnz	find_cmd_fw
+	add	r10,1
+	;; now compare word[0] and cmd table item
 	call	streq
 	C0 jmp	find_cmd_cyc
 find_cmd_true:
@@ -268,6 +277,7 @@ find_cmd_very_false:
 	mvzl	r0,0
 find_cmd_ret:
 	pop	r10
+	pop	r3
 	pop	r2
 	pop	r1
 	pop	lr
@@ -328,11 +338,55 @@ m_ret:
 m_err_addr:	db	"Address error"
 m_err_addrv:	db	"Monitor's address"
 m_err_value:	db	"Value error"
+
+
+;;; D start end
+cmd_d:
+	push	lr
+	mvzl	r2,words
+	ld	r0,r2,1		; start address
+	call	htoi
+	mov	r3,r1
+	ld	r0,r2,2		; end address
+	call	htoi
+	mov	r4,r1
+	cmp	r3,r4		; check if start>end
+	HI jmp d_bad
+;	mov	r2,r4		; check end-start
+;	sub	r2,r3
+;	cmp	r2,100		; max 100 line...
+;	LS jmp	d_cyc
+;	mov	r4,r3
+;	add	r4,100
+d_cyc:
+	mov	r0,r3		; print address
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,0x20		; print one space
+	call	putchar
+	ld	r0,r3		; load data
+	mvzl	r1,4		; print data
+	call	print_vhex
+	mvzl	r0,LF		; print new line
+	call	putchar
+	cmp	r3,r4
+	jz	d_ret
+	add	r3,1
+	jmp	d_cyc
+d_bad:
+	mvzl	r0,d_err_bad
+	call	printsnl
+d_ret:	
+	pop	lr
+	ret
+d_err_bad:	db	"Wrong end address"
+
 	
 ;;; E [BOOL]
 cmd_e:
 	ret
 
+	
 ;;; VALUE //C ADDR
 cmd_c:
 	ret
@@ -709,6 +763,12 @@ null_str:	db	"(null)"
 commands:
 	dd	cmd_m		; M(emory) address [value]
 	db	"m"
+	dd	cmd_m		; Mem(ory) address [value]
+	db	"mem"
+	dd	cmd_d		; D(ump) start end
+	db	"d"
+	dd	cmd_d
+	db	"dump"
 	dd	cmd_e		; E(cho) on/off
 	db	"e"
 	dd	0

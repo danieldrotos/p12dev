@@ -145,8 +145,10 @@ module cpu2
 		     (cond==4'h6)? !flag_s : // PL
 		     (cond==4'h7)? flag_o : // VS
 		     (cond==4'h8)? !flag_o : // VC
-		     (cond==4'h9)? flag_c & !flag_z : // HI
-		     (cond==4'ha)? !flag_c | flag_z : // LS
+		     // Unsigned compares
+		     (cond==4'h9)? flag_c & !flag_z : // HI op1>op2
+		     (cond==4'ha)? !flag_c | flag_z : // LS op1<=op2
+		     // Signed compares
 		     (cond==4'hb)? !(flag_s ^ flag_o): // GE
 		     (cond==4'hc)? flag_s ^ flag_o : // LT
 		     (cond==4'hd)? !flag_z & !(flag_s ^ flag_o) : // GT
