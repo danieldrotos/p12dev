@@ -396,11 +396,16 @@ cmd_c:
 cmd_l:
 	mvzl	r10,0		; state (nr of words)
 	mvzl	r8,0		; value
+	mvzl	r6,'?'		; Record type
 l_cyc:
 	call	check_uart
 	C0 jmp	l_cyc
 	call	read
 	mov	r11,r0		; Copy of char in R11
+	cmp	r0,10		; check EOL chars
+	jz	l_eol
+	cmp	r0,13
+	jz	l_eol
 	
 	cmp	r10,0
 	jnz	l_no0
@@ -416,24 +421,107 @@ l_state_0:
 	jmp	l_cyc
 l_eof_0:
 	mvzl	r10,1		; state0 -> state1
-	mvzl	r12,0		; No //C yet
-	mvzl	r9,0		; address
+	mvzl	r6,'?'		; No //C yet
+	mvzl	r7,0		; No '/' yet
 	jmp	l_cyc
 
 l_no0:
 	cmp	r10,1
 	jnz	l_no1
 l_state_1:
+	sz	r7
+	jnz	l_s1_2nd
+l_s1_1st:	
+	cmp	r0,'/'
+	jnz	l_cyc
+	mvzl	r7,1
+	jmp	l_cyc
+l_s1_2nd:
+	cmp	r0,'/'
+	jz	l_cyc
+	cmp	r0,'C'
+	jnz	l_s1_noC
+l_s1_C:
+	mvzl	r6,'C'
+	;; state1 -> state2
+	mvzl	r10,2
+	mvzl	r9,0		; address= 0
+	mvzl	r5,0		; where we are in word: before
+	jmp	l_cyc
+l_s1_noC:	
+	cmp	r0,'E'
+	jnz	l_s1_noE
+l_s1_E:
+	mvzl	r6,'E'
+	;; state1 -> state3
+	mvzl	r10,3
+	jmp	l_cyc
+l_s1_noE:	
 	jmp	l_cyc
 
 l_no1:
 	cmp	r10,2
 	jnz	l_no2
 l_state_2:
+	cmp	r5,0
+	jnz	l_s2_no0
+l_s2_0:	
+	call	hexchar2value
+	C0 jmp	l_cyc
+	mvzl	r5,1
+l_s2_got:
+	shl	r9
+	shl	r9
+	shl	r9
+	shl	r9
+	and	r0,0xf
+	or	r9,r0
+l_s2_eos:	
 	jmp	l_cyc
-
+l_s2_no0:
+	cmp	r5,1
+	jnz	l_s2_no1
+l_s2_1:
+	call	hexchar2value
+	C1 jmp	l_s2_got
+	mvzl	r5,2
+	jmp	l_cyc
+l_s2_no1:
+	jmp	l_cyc
 l_no2:
+	cmp	r10,3
+	jnz	l_no3
+l_state_3:
+	jmp	l_cyc		; do nothing, just wait EOL
+	
+l_no3:	
 	jmp	l_ret
+
+	;; Process eol
+l_eol:
+	cmp	r10,0		; in state0
+	jz	l_cyc		; just skip
+	cmp	r10,1		; in state1
+	jz	l_bad		; garbage
+	cmp	r10,2		; in state2
+	jz	l_proc		; process record
+	cmp	r10,3		; in state3
+	jz	l_ret		; eol in end record: finish
+	jmp	l_cyc
+l_bad:
+	jmp	l_ret
+l_proc:
+	cmp	r6,'C'		; is it a C record?
+	jnz	l_eop
+	st	r8,r9		; store
+l_eop:
+	mov	r0,r6		; echo record type
+	call	putchar
+	;; back to state0
+	mvzl	r10,0
+	mvzl	r8,0
+	mvzl	r6,'?'
+	jmp	l_cyc
 l_ret:	
 	push	lr
 	pop	lr
