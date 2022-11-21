@@ -4,7 +4,7 @@ TOOLS		= $(PRJ)/tools
 include $(PRJ)/prj.mk
 
 all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 \
-	uart uart2 pmon
+	uart uart2 pmon test
 
 simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
 
@@ -25,6 +25,8 @@ uart: uart.hex uart.asc uart.cdb
 uart2: uart2.hex uart2.asc uart2.cdb
 
 pmon: pmon.hex pmon.asc pmon.cdb
+
+test: test.hex test.asc test.cdb
 
 .SUFFIXES: .hex .asm .asc .cdb
 

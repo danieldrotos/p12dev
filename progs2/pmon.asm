@@ -348,8 +348,15 @@ cmd_d:
 	call	htoi
 	mov	r3,r1
 	ld	r0,r2,2		; end address
+	sz	r0
+	jnz	d_end_ok
+	mov	r4,r3
+	add	r4,0x10
+	jmp	d_chk_end
+d_end_ok:
 	call	htoi
 	mov	r4,r1
+d_chk_end:	
 	cmp	r3,r4		; check if start>end
 	HI jmp d_bad
 ;	mov	r2,r4		; check end-start
@@ -417,7 +424,7 @@ l_state_0:
 	shl	r8
 	shl	r8
 	shl	r8
-	and	r0,0xf
+	btst	r0,0xf
 	or	r8,r0
 	jmp	l_cyc
 l_eof_0:
@@ -475,7 +482,7 @@ l_s2_got:
 	shl	r9
 	shl	r9
 	shl	r9
-	and	r0,0xf
+	btst	r0,0xf
 	or	r9,r0
 l_s2_eos:	
 	jmp	l_cyc
@@ -521,7 +528,9 @@ l_proc:
 	mvzl	r8,0
 	mvzl	r6,'?'
 	jmp	l_cyc
-l_ret:	
+l_ret:
+	mvzl	r0,LF
+	call	putchar
 	pop	lr
 	ret
 
@@ -730,8 +739,8 @@ htoi_nok:
 	jmp	htoi_ret
 htoi_eos:
 	cmp	r3,1
-	Z1 clc
-	Z0 sec
+	HI clc
+	LS sec
 htoi_ret:	
 	pop	r3
 	pop	r2
@@ -868,7 +877,7 @@ print_vhex_cyc:
 	jz	print_vhex_nosep
 	cmp	r4,r1
 	jnz	print_vhex_nosep
-	mvzl	r0,'.'
+	mvzl	r0,'_'
 	call	putchar
 	mvzl	r4,0
 print_vhex_nosep:
