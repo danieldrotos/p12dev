@@ -1,5 +1,12 @@
 	.proc	P2
 
+	nop
+	
+aaa:	
+	sec
+	jmp	cim
+	ret
+	
 str:	db	"_;_a\"b\"_c\n_"
 
 	;; egy

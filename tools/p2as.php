@@ -107,10 +107,12 @@
       "ZS" => 0x10000000,
       "Z1" => 0x10000000,
       "Z"  => 0x10000000,
+      "F"  => 0x10000000,
       "NE" => 0x20000000,
       "ZC" => 0x20000000,
       "Z0" => 0x20000000,
       "NZ" => 0x20000000,
+      "T"  => 0x20000000,
       "CS" => 0x30000000,
       "HS" => 0x30000000,
       "C1" => 0x30000000,
@@ -302,8 +304,24 @@
       "JZ" =>array("icode"=>0x11f20000, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("#16"))
       )),
+      // FALSE= z1 mvzl r15,u16
+      "FALSE" =>array("icode"=>0x11f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
       // JNZ= z0 mvzl r15,u16
       "JNZ" =>array("icode"=>0x21f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // TRUE= z0 mvzl r15,u16
+      "TRUE" =>array("icode"=>0x21f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JC= c1 mvzl r15,u16
+      "JC" =>array("icode"=>0x31f20000, "params"=>array(
+        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+      )),
+      // JNC= c0 mvzl r15,u16
+      "JNC" =>array("icode"=>0x41f20000, "params"=>array(
         "n_"=>array("icode"=>0,"placements"=>array("#16"))
       )),
       // JP= mov r15,rb
@@ -735,7 +753,8 @@
       
       if (($n= is_label($w)) !== false)
       {
-	debug("proc_line; found label=$n at addr=$addr");
+	$xaddr= sprintf("%x", $addr);
+	debug("proc_line; found label=$n at addr=$xaddr");
         $label= mk_symbol($n, $addr, "L");
         $ok= true;
       }
@@ -808,7 +827,7 @@
 	if (($w!==false) && ($w[0]==';'))
 	  return;
         $addr= intval($w,0);
-        debug("proc_line; addr=$addr");
+        debug(sprintf("proc_line; addr=%x",$addr));
         $ok= true;
 	return;
       }
@@ -820,7 +839,7 @@
 	  return;
 	$x= 0 + intval($w,0);
 	$addr+= $x;
-	debug("proc_line; addr=$addr");
+	debug(sprintf("proc_line; addr=%x",$addr));
 	$ok= true;
 	return;
       }
@@ -852,7 +871,7 @@
 		"address"=>$addr,
 		"params"=>$params
 	    );
-	    debug( sprintf("mem[%04x] Added char DB $pv",$addr) );
+	    debug( sprintf("mem[%x] Added char DB $pv",$addr) );
 	    $addr++;
 	  }
 	  $params= array();
@@ -868,7 +887,7 @@
 	      "address"=>$addr,
 	      "params"=>$params
 	  );
-	  debug( sprintf("mem[%04x] Added string 0",$addr) );
+	  debug( sprintf("mem[%x] Added string 0",$addr) );
 	  $addr++;
 	  return ;
 	}
@@ -891,7 +910,7 @@
 	      "address"=>$addr,
 	      "params"=>$params
 	  );
-	  debug( sprintf("mem[%04x] Added DB $w",$addr) );
+	  debug( sprintf("mem[%x] Added DB $w",$addr) );
 	  $addr++;
 	  $w= trim(strtok(" \t,"));
 	  if (($w!==false) && ($w!='') && ($w[0]==';'))
@@ -912,8 +931,9 @@
             "error"=>$error,
 	    "inst"=>$inst
         );
-        $o= sprintf("%04x %08x", $addr, $icode);
+        $o= sprintf("%05x %08x", $addr, $icode);
         debug($o);
+	debug("");
 	$ok= true;
 	break;
       }
@@ -923,6 +943,7 @@
       if (($w!==false) && ($w[0]==';'))
 	return;
     }
+    debug(sprintf("first word precessed, addr=%x",$addr));
     if (($prew != '') && ($ok === false))
     {
       $error= "{$fin}:{$lnr}: Unknown instruction";
@@ -937,10 +958,18 @@
       return;
     }
     // continue with parameters
+    debug("Continue with params");
     $prew= $w;
     $w= strtok($par_sep);
+    $now= false;
     if (($w!==false) && ($w[0]==';'))
-      return;
+    {
+      //debug("Is return ok here?");
+      //return;
+      // emulate no params
+      $w= false;
+      $now= true;
+    }
     $pattern= "";
     $params= array();
     while ($w !== false)
@@ -977,7 +1006,10 @@
 	debug("Parameter value: $w");
       }
       $prew= $w;
-      $w= strtok($par_sep);
+      if ($now)
+	$w= false;
+      else
+	$w= strtok($par_sep);
       if (($w!==false) && ($w[0]==';'))
 	break;
     }
@@ -986,7 +1018,9 @@
     $mem[$addr]["pattern"]= $pattern;
     $mem[$addr]["params"]= $params;
     $mem[$addr]["address"]= $addr;
+    debug(sprintf("mem[%x] is ready", $addr));
     $addr++;
+    debug(sprintf("new addr=%x", $addr));
 
     if (!$ok)
     {
