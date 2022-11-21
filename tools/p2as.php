@@ -1296,6 +1296,8 @@
     else
       debug(";ph3; what?");
   }
+  debug( $o= "//E" );
+  $hex.= $o."\n";
 
   $obj= fopen($obj_name, "w");
   if ($obj === false)

@@ -390,6 +390,55 @@ cmd_e:
 ;;; VALUE //C ADDR
 cmd_c:
 	ret
+
+	
+;;; L load command with own cycle
+cmd_l:
+	mvzl	r10,0		; state (nr of words)
+	mvzl	r8,0		; value
+l_cyc:
+	call	check_uart
+	C0 jmp	l_cyc
+	call	read
+	mov	r11,r0		; Copy of char in R11
+	
+	cmp	r10,0
+	jnz	l_no0
+l_state_0:
+	call	hexchar2value
+	C0 jmp	l_eof_0
+	shl	r8		; shift val(char) into value
+	shl	r8
+	shl	r8
+	shl	r8
+	and	r0,0xf
+	or	r8,r0
+	jmp	l_cyc
+l_eof_0:
+	mvzl	r10,1		; state0 -> state1
+	mvzl	r12,0		; No //C yet
+	mvzl	r9,0		; address
+	jmp	l_cyc
+
+l_no0:
+	cmp	r10,1
+	jnz	l_no1
+l_state_1:
+	jmp	l_cyc
+
+l_no1:
+	cmp	r10,2
+	jnz	l_no2
+l_state_2:
+	jmp	l_cyc
+
+l_no2:
+	jmp	l_ret
+l_ret:	
+	push	lr
+	pop	lr
+	ret
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -506,6 +555,10 @@ strieq:
 	ret
 
 
+	;; Convert one hex char to value
+	;; IN: R0 char
+	;; OUT: R0 value
+	;;      Flag.C=1 valid char
 hexchar2value:
 	cmp	r0,'/'
 	LS jmp	hc2v_nok
@@ -771,6 +824,10 @@ commands:
 	db	"dump"
 	dd	cmd_e		; E(cho) on/off
 	db	"e"
+	dd	cmd_l		; L(oad)
+	db	"l"
+	dd	cmd_l
+	db	"load"
 	dd	0
 	db	0
 	
