@@ -394,6 +394,7 @@ cmd_c:
 	
 ;;; L load command with own cycle
 cmd_l:
+	push	lr
 	mvzl	r10,0		; state (nr of words)
 	mvzl	r8,0		; value
 	mvzl	r6,'?'		; Record type
@@ -512,9 +513,7 @@ l_bad:
 	jmp	l_ret
 l_proc:
 	cmp	r6,'C'		; is it a C record?
-	jnz	l_eop
-	st	r8,r9		; store
-l_eop:
+	z st	r8,r9		; store
 	mov	r0,r6		; echo record type
 	call	putchar
 	;; back to state0
@@ -523,7 +522,6 @@ l_eop:
 	mvzl	r6,'?'
 	jmp	l_cyc
 l_ret:	
-	push	lr
 	pop	lr
 	ret
 
