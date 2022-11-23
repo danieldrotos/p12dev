@@ -4,7 +4,7 @@ TOOLS		= $(PRJ)/tools
 include $(PRJ)/prj.mk
 
 all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 \
-	uart uart2 pmon test
+	uart uart2 pmon_app test
 
 simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
 
@@ -24,11 +24,15 @@ uart: uart.hex uart.asc uart.cdb
 
 uart2: uart2.hex uart2.asc uart2.cdb
 
-pmon: pmon.hex pmon.asc pmon.cdb
+pmon_app: pmon.hex pmon.asc pmon.cdb pmon.cc
+	cp pmon.cc ../../ucsim/main/p1516.src
+
+pmon.cc: pmon.hex
+	php $(TOOLS)/hex2c.php $< >$@
 
 test: test.hex test.asc test.cdb
 
-.SUFFIXES: .hex .asm .asc .cdb
+.SUFFIXES: .hex .asm .asc .cdb .cc
 
 .asm.hex:
 	php $(TOOLS)/p2as.php -l -o $@ $<
