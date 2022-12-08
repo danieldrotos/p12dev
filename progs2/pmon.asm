@@ -12,6 +12,7 @@
 	org	0
 	jmp	start
 
+	org	0xf800
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
