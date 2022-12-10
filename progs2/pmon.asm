@@ -13,6 +13,22 @@
 	jmp	start
 
 	org	0xf800
+_f800:	jmp	callin
+_f801:	jmp	strchr
+_f802:	jmp	streq
+_f803:	jmp	strieq
+_f804:	jmp	hexchar2value
+_f805:	jmp	value2hexchar
+_f806:	jmp	htoi
+_f807:	jmp	check_uart
+_f808:	jmp	read
+_f809:	jmp	putchar
+_f80a:	jmp	prints
+_f80b:	jmp	printsnl
+_f80c:	jmp	print_vhex
+	
+callin:
+	jmp	start
 start:
 	;; Setup STACK
 	mvzl	sp,stack_end
@@ -535,6 +551,14 @@ l_ret:
 	pop	lr
 	ret
 
+
+;;; G [ADDRESS]
+cmd_g:
+	push	lr
+
+	pop	lr
+	ret
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -924,6 +948,14 @@ commands:
 	db	"l"
 	dd	cmd_l
 	db	"load"
+	dd	cmd_g		; G(o) [address]
+	db	"g"
+	dd	cmd_g
+	db	"go"
+	dd	cmd_g		; R(un) [address]
+	db	"r"
+	dd	cmd_g
+	db	"run"
 	dd	0
 	db	0
 	

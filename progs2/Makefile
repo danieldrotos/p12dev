@@ -4,7 +4,7 @@ TOOLS		= $(PRJ)/tools
 include $(PRJ)/prj.mk
 
 all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 \
-	uart uart2 pmon_app test
+	uart uart2 test pmon_app
 
 simif_print2: simif_print2.hex simif_print2.asc simif_print2.cdb
 
@@ -25,7 +25,13 @@ uart: uart.hex uart.asc uart.cdb
 uart2: uart2.hex uart2.asc uart2.cdb
 
 pmon_app: pmon.hex pmon.asc pmon.cdb pmon.cc
+
+pass: pmon.cc
+	git -C ../../ucsim pull
 	cp pmon.cc ../../ucsim/main/p1516.src
+	git -C ../../ucsim/main/p1516.src add pmon.cc
+	git -C ../../ucsim/main/p1516.src commit -m "monitor update"
+	git -C ../../ucsim push
 
 pmon.cc: pmon.hex
 	php $(TOOLS)/hex2c.php $< >$@

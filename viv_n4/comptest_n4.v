@@ -2,7 +2,7 @@
 
 `include "defs.v"
 
-`define PRG "progs2/uart.asc"
+`define PRG "monitor/pmon.asc"
 
 module comptest_n4
   (
