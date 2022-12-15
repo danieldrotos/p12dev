@@ -555,10 +555,37 @@ l_ret:
 ;;; G [ADDRESS]
 cmd_g:
 	push	lr
-
+	mvzl	r2,words
+	ld	r0,r2,1		; address
+	sz	r0
+	jz	g_no_addr
+	call	htoi
+	mov	r11,r1
+	mvzl	r0,d_msg_run
+	call	prints
+	mov	r0,r11
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,LF
+	call	putchar
+	
+	mvzl	r2,UART_TSTAT
+g_wait_tc:
+	ld	r9,r2
+	test	r9,1
+	jz	g_wait_tc
+	
+	mov	r15,r11
+	
+g_no_addr:
+	mvzl	r0,g_err_addr
+	call	printsnl
+g_ret:	
 	pop	lr
 	ret
-
+g_err_addr:	db	"No address"
+d_msg_run:	db	"Run "
+	
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
