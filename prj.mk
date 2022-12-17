@@ -1,3 +1,3 @@
-PRG		= progs2/pmon
+PRG		= progs2/regsave
 AW		= 17
 INSTS		= 20000

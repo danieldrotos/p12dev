@@ -99,6 +99,15 @@ module cpu2
    // pick parts of the IC
    wire [3:0]		       cond= ic[31:28];
    wire [2:0] 		       inst= ic[27:25];
+   
+   wire 		       inst_alu2= inst==0;
+   wire 		       inst_alu1= inst==1;
+   wire 		       inst_call= inst==2;
+   wire 		       inst_ext = inst==3;
+   wire 		       inst_st_r= inst==4;
+   wire 		       inst_ld_r= inst==5;
+   wire 		       inst_st_i= inst==6;
+
    wire 		       inst_param= ic[24];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
    wire [3:0] 		       ra= ic[19:16];
@@ -107,27 +116,25 @@ module cpu2
    wire [15:0] 		       im16= ic[15:0];
    wire [23:0] 		       im24= ic[23:0];
    wire [19:0] 		       im20= ic[19:0];
+   wire [3:0] 		       ext_code= ic[19:16];
    wire 		       u= ic[15];
    wire 		       p= ic[14];
-   wire 		       w= ic[24];
+   wire 		       w= ic[24] & !inst_ext;
    
    // decode instructions
-   wire 		       inst_alu2= inst==0;
-   wire 		       inst_alu1= inst==1;
-   wire 		       inst_call= inst==2;
-   wire 		       inst_ext = inst==3;
-   wire 		       inst_st_r= inst==4;
-   wire 		       inst_ld_r= inst==5;
-   wire 		       inst_st_i= inst==6;
+   wire 		       inst_st_ext= inst_ext & (ext_code==4'd0) & ~ic[24];
    wire 		       inst_ld_i= inst==7;
+   wire 		       inst_ld_ext= inst_ext & (ext_code==4'd0) & ic[24];
    wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
    wire 		       inst_mem;
+   wire 		       inst_ext_mem;
    wire 		       inst_br;
    wire 		       inst_wb;
-   assign inst_ld= inst_ld_r | inst_ld_i;
-   assign inst_st= inst_st_r | inst_st_i;
+   assign inst_ld= inst_ld_r | inst_ld_i | inst_ld_ext;
+   assign inst_st= inst_st_r | inst_st_i | inst_st_ext;
+   assign inst_ext_mem= inst_ld_ext | inst_st_ext;
    assign inst_mem= inst_st | inst_ld;
    assign inst_alu= inst_alu1 | inst_alu2;
    assign inst_br= inst_call | ((inst_alu | inst_ld) & (rd==4'd15));
@@ -185,7 +192,6 @@ module cpu2
    // Select data for write back
    assign wb_data= inst_alu?res_alu:
 		   inst_call?res_call:
-		   inst_ext?0:
 		   inst_ld?mr_data:
 		   inst_st?0:
 		   0;
@@ -214,6 +220,9 @@ module cpu2
 			  im16[15],
 			  im16
 			  };
+   wire [WIDTH-1:0] 	       mem_direct_address;
+   assign mem_direct_address= {16'd0,im16};
+   
    wire [WIDTH-1:0] 	       aof_ldst;
    wire [WIDTH-1:0] 	       base_offset;
    wire [WIDTH-1:0] 	       opa_offset;
@@ -233,7 +242,8 @@ module cpu2
    assign ldst_offset= ic[26]?mem_im_offset:opb;
    assign base_offset= ldst_base+ldst_offset;
    assign opa_offset= opa+ldst_offset;
-   assign aof_ldst= w?base_offset:opa_offset;
+   assign aof_ldst= inst_ext_mem?mem_direct_address:
+		    w?base_offset:opa_offset;
    
    // Register file
    rfm2 #(.WIDTH(WIDTH)) regs

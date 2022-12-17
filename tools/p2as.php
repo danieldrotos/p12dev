@@ -460,56 +460,61 @@
       )),
       "ROR"   =>array("icode"=>0x02060000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
-	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	  "r_"=>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "ROL"   =>array("icode"=>0x02070000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
-	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	  "r_"=>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "SHL"   =>array("icode"=>0x02080000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
-	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	  "r_"=>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "SHR"   =>array("icode"=>0x02090000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
-	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	  "r_"=>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "SHA"   =>array("icode"=>0x020a0000, "params"=>array(
 	"rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","_")),
-	  "r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	  "r_"=>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "SZ"   =>array("icode"=>0x020b0000, "params"=>array(
-	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
+	"r_" =>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
-      "SEC"   =>array("icode"=>0x020c0000, "params"=>array(
+      "SEC"  =>array("icode"=>0x020c0000, "params"=>array(
 	"_"  =>array()
       )),
-      "CLC"   =>array("icode"=>0x020d0000, "params"=>array(
+      "CLC"  =>array("icode"=>0x020d0000, "params"=>array(
 	"_"  =>array()
       )),
-      "GETF"   =>array("icode"=>0x020e0000, "params"=>array(
+      "GETF"  =>array("icode"=>0x020e0000, "params"=>array(
 	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
-      "SETF"   =>array("icode"=>0x020f0000, "params"=>array(
+      "SETF"  =>array("icode"=>0x020f0000, "params"=>array(
 	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       // 010 CALL
       "CALL"  =>array("icode"=>0x04000000, "params"=>array(
 	"rn_" =>array("icode"=>0x01000000,"placements"=>array("rd","#20")),
-	  "n_"  =>array("icode"=>0x00000000,"placements"=>array("#24"))
+	  "n_"=>array("icode"=>0x00000000,"placements"=>array("#24"))
       )),
       // 011 -
       // 1x0 W ST
-      "ST"      =>array("icode"=>0x08000000, "params"=>array(
-	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
-	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
-	  "rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
+      "ST"      =>array("icode"=>0x00000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0x08000000,"placements"=>array("rd","ra","rb")),
+	  "rrn_"=>array("icode"=>0x0c000000,"placements"=>array("rd","ra","#16")),
+	  "rr_" =>array("icode"=>0x0c000000,"placements"=>array("rd","ra")),
+	  // EXT 011L
+	  "rn_" =>array("icode"=>0x06000000,"placements"=>array("rd","#16")),
+	  "nr_" =>array("icode"=>0x06000000,"placements"=>array("#16","rd")),
       )),
       // 1x1 W LD
-      "LD"      =>array("icode"=>0x0a000000, "params"=>array(
-	"rrr_"  =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb")),
-	  "rrn_"=>array("icode"=>0x04000000,"placements"=>array("rd","ra","#16")),
-	  "rr_"   =>array("icode"=>0x04000000,"placements"=>array("rd","ra"))
+      "LD"      =>array("icode"=>0x02000000, "params"=>array(
+	"rrr_"  =>array("icode"=>0x0a000000,"placements"=>array("rd","ra","rb")),
+	  "rrn_"=>array("icode"=>0x0e000000,"placements"=>array("rd","ra","#16")),
+	  "rr_" =>array("icode"=>0x0e000000,"placements"=>array("rd","ra")),
+	  // EXT 011L
+	  "rn_" =>array("icode"=>0x07000000,"placements"=>array("rd","#16"))
       )),
   );
 
