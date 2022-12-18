@@ -595,6 +595,9 @@ g_wait_tc:
 	test	r9,1
 	jz	g_wait_tc
 
+	ld	r0,0
+	st	r0,called
+	
 	ld	r0,regf
 	setf	r0
 	ld	r0,reg0
