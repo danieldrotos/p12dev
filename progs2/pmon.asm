@@ -10,7 +10,7 @@
 	MAX_WORDS	=	5
 	
 	org	0
-	jmp	start
+	jmp	cold_start
 
 	org	0xf800
 _f800:	jmp	callin
@@ -28,25 +28,28 @@ _f80b:	jmp	printsnl
 _f80c:	jmp	print_vhex
 	
 callin:
-	jmp	start
-start:
-	;; Setup STACK
+	jmp	common_start
+hot_start:
+	jmp	common_start
+cold_start:
+	jmp	common_start:	
+common_start:
+	;; Setup STACK, flags
 	mvzl	sp,stack_end
 	mvzl	r0,1
-	mvzl	r1,echo
-	st	r0,r1
+	st	r0,echo
+	mvzl	r0,0
+	setf	r0
 	
 	;; test
 	
 	;; test
 	
 	;; Setup UART
-	mvzl	r0,UART_CPB
 	mvzl	r1,217
-	st	r1,r0
-	mvzl	r0,UART_CTRL
+	st	r1,UART_CPB
 	mvzl	r1,3
-	st	r1,r0
+	st	r1,UART_CTRL
 	;; Print welcome message
 	mvzl	r0,msg_start
 	call	printsnl
@@ -62,14 +65,11 @@ start:
 	;; -----------------
 setup_line:
 	push	lr
-	mvzl	r0,line_ptr	; lptr= 0
-	mvzl	r1,0
-	st	r1,r0
-	mvzl	r0,line		; line[0]= 0
-	st	r1,r0
-	mvzl	r0,at_eol	; at_eol= 1
-	mvzl	r1,1
-	st	r1,r0
+	mvzl	r1,0		; lptr= 0
+	st	r1,line_ptr
+	st	r1,line		; line[0]= 0
+	mvzl	r1,1		; at_eol= 1
+	st	r1,at_eol
 	;; print prompt
 	mvzl	r0,prompt
 	call	prints
@@ -103,9 +103,8 @@ proc_input:
 	cmp	r0,CR
 	EQ jmp	got_eol
 got_char:	
-	mvzl	r1,at_eol	; at_aol= 0
-	mvzl	r2,0
-	st	r2,r1
+	mvzl	r2,0		; at_aol= 0
+	st	r2,at_eol
 	mvzl	r1,line_ptr	; line[line_ptr]= char
 	ld	r3,r1
 	mvzl	r2,line
@@ -172,9 +171,8 @@ cmd_not_found:
 	call	printsnl
 
 proc_line_ret:	
-	mvzl	r0,at_eol	; at_eol= 1
-	mvzl	r1,1
-	st	r1,r0
+	mvzl	r1,1		; at_eol= 1
+	st	r1,at_eol
 	pop	lr
 	ret
 sdummy1:	db	"Got:"
@@ -252,8 +250,7 @@ find_cmd:
 	push	r2
 	push	r3
 	push	r10
-	mvzl	r0,words	; R0= 1st word of command
-	ld	r0,r0
+	ld	r0,words	; R0= 1st word of command
 	sz	r0
 	jz	find_cmd_false
 	
@@ -586,6 +583,28 @@ g_ret:
 g_err_addr:	db	"No address"
 d_msg_run:	db	"Run "
 	
+
+;;; H[elp]
+cmd_h:
+	push	lr
+	mvzl	r2,helps
+	mvzl	r3,0
+h_cyc:
+	ld	r0,r3+,r2	; pick a char
+	sz	r0		; is it eos?
+	jnz	h_print
+h_eos:
+	;add	r3,1		; at eos: go to next string
+	ld	r0,r3+,r2	; get first char of next string
+	sz	r0
+	jz	h_eof
+h_print:
+	call	putchar
+	jmp	h_cyc
+h_eof:	
+	pop	lr
+	ret
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -809,8 +828,7 @@ htoi_ret:
 	;; OUT: Flag.C=1 input avail
 check_uart:
 	push	r0
-	mvzl	r0,UART_RSTAT
-	ld	r0,r0
+	ld	r0,UART_RSTAT
 	; Z=1: nochar Z=0: input avail
 	test	r0,1
 	clc
@@ -822,10 +840,7 @@ check_uart:
 	;; IN: -
 	;; OUT: R0
 read:
-	;push	lr
-	mvzl	r0,UART_DR
-	ld	r0,r0
-	;pop	lr
+	ld	r0,UART_DR
 	ret
 
 	
@@ -834,19 +849,13 @@ read:
 	;; IN: r0
 	;; OUT: -
 putchar:
-	;push	lr
-	push	r2
 	push	r9
-	mvzl	r2,UART_TSTAT
 wait_tc:	
-	ld	r9,r2
+	ld	r9,UART_TSTAT
 	test	r9,1
 	jz	wait_tc
-	mvzl	r2,UART_DR
-	st	r0,r2
+	st	r0,UART_DR
 	pop	r9
-	pop	r2
-	;pop	lr
 	ret
 
 	
@@ -975,16 +984,28 @@ commands:
 	db	"l"
 	dd	cmd_l
 	db	"load"
-	dd	cmd_g		; G(o) [address]
+	dd	cmd_g		; G(o)|run [address]
 	db	"g"
 	dd	cmd_g
 	db	"go"
-	dd	cmd_g		; R(un) [address]
-	db	"r"
 	dd	cmd_g
 	db	"run"
+	dd	cmd_h
+	db	"?"
+	dd	cmd_h
+	db	"h"		; H[elp]
+	dd	cmd_h
+	db	"help"
 	dd	0
-	db	0
+	dd	0
+
+helps:	db	"m[em]  addr [value]  Get/set memory\n"
+	db	"d[ump] start end     Dump memory content\n"
+	db	"e\n"
+	db	"l[oad]               Load hex file to memory\n"
+	db	"g(o)|run addr        Run from address\n"
+	dd	0
+
 	
 ;;; STACK
 ;;; -----
