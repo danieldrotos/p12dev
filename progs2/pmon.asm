@@ -28,10 +28,32 @@ _f80b:	jmp	printsnl
 _f80c:	jmp	print_vhex
 	
 callin:
+	st	r0,reg0
+	st	r1,reg1
+	st	r2,reg2
+	st	r3,reg3
+	st	r4,reg4
+	st	r5,reg5
+	st	r6,reg6
+	st	r7,reg7
+	st	r8,reg8
+	st	r9,reg9
+	st	r10,reg10
+	st	r11,reg11
+	st	r12,reg12
+	st	r13,reg13
+	st	r14,reg14
+	st	r14,reg15
+	getf	r0
+	st	r0,regf
+	mvzl	r0,1
+	st	r0,called
 	jmp	common_start
 hot_start:
 	jmp	common_start
 cold_start:
+	mvzl	r0,0
+	st	r0,called
 	jmp	common_start:	
 common_start:
 	;; Setup STACK, flags
@@ -565,14 +587,33 @@ cmd_g:
 	call	print_vhex
 	mvzl	r0,LF
 	call	putchar
+	st	r11,reg15
 	
 	mvzl	r2,UART_TSTAT
 g_wait_tc:
 	ld	r9,r2
 	test	r9,1
 	jz	g_wait_tc
-	
-	mov	r15,r11
+
+	ld	r0,regf
+	setf	r0
+	ld	r0,reg0
+	ld	r1,reg1
+	ld	r2,reg2
+	ld	r3,reg3
+	ld	r4,reg4
+	ld	r5,reg5
+	ld	r6,reg6
+	ld	r7,reg7
+	ld	r8,reg8
+	ld	r9,reg9
+	ld	r10,reg10
+	ld	r11,reg11
+	ld	r12,reg12
+	ld	r13,reg13
+	ld	r14,reg14
+
+	ld	r15,reg15
 	
 g_no_addr:
 	mvzl	r0,g_err_addr
@@ -961,6 +1002,25 @@ line_ptr:	ds	1		; line pointer (index)
 at_eol:		ds	1		; bool, true if EOL arrived
 words:		ds	5		; Tokens of line
 echo:		ds	1		; bool, do echo or not
+called:		dd	0		; bool, entered by CALLIN
+	
+reg0:		dd	0
+reg1:		dd	0
+reg2:		dd	0
+reg3:		dd	0
+reg4:		dd	0
+reg5:		dd	0
+reg6:		dd	0
+reg7:		dd	0
+reg8:		dd	0
+reg9:		dd	0
+reg10:		dd	0
+reg11:		dd	0
+reg12:		dd	0
+reg13:		dd	0
+reg14:		dd	0
+reg15:		dd	0
+regf:		dd	0
 	
 msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
