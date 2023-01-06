@@ -445,6 +445,7 @@ l_cyc:
 	call	check_uart
 	C0 jmp	l_cyc
 	call	read
+l_start:	
 	mov	r11,r0		; Copy of char in R11
 	cmp	r0,10		; check EOL chars
 	jz	l_eol
@@ -466,7 +467,9 @@ l_state_0:
 l_eof_0:
 	mvzl	r10,1		; state0 -> state1
 	mvzl	r6,'?'		; No //C yet
-	mvzl	r7,0		; No '/' yet
+	cmp	r11,'/'		; is it start of //
+	z1 mvzl	r7,1		; Yes, first / found
+	z0 mvzl	r7,0		; No '/' yet
 	jmp	l_cyc
 
 l_no0:
@@ -500,7 +503,10 @@ l_s1_E:
 	;; state1 -> state3
 	mvzl	r10,3
 	jmp	l_cyc
-l_s1_noE:	
+l_s1_noE:
+	;; we found a record that can be skipped
+	call	putchar		; print record type
+	mvzl	r10,0xf		; special state: skip everything
 	jmp	l_cyc
 
 l_no1:
@@ -538,19 +544,27 @@ l_no2:
 l_state_3:
 	jmp	l_cyc		; do nothing, just wait EOL
 	
-l_no3:	
+l_no3:
+	cmp	r10,0xf
+	jmp	l_nof
+	jmp	l_cyc		; just skip
+	
+l_nof:
+	jmp	l_cyc
 	jmp	l_ret
 
 	;; Process eol
 l_eol:
 	cmp	r10,0		; in state0
-	jz	l_cyc		; just skip
+	jz	l_back_to_0	; just restart
 	cmp	r10,1		; in state1
-	jz	l_bad		; garbage
+	jz	l_back_to_0 	;l_cyc ;l_bad ; garbage
 	cmp	r10,2		; in state2
 	jz	l_proc		; process record
 	cmp	r10,3		; in state3
 	jz	l_ret		; eol in end record: finish
+	cmp	r10,0xf		; in state skip
+	jz	l_back_to_0	; reset state for new line
 	jmp	l_cyc
 l_bad:
 	jmp	l_ret
@@ -559,7 +573,10 @@ l_proc:
 	z st	r8,r9		; store
 	mov	r0,r6		; echo record type
 	call	putchar
+l_back_to_0:	
 	;; back to state0
+	mvzl	r0,'.'
+	call	putchar
 	mvzl	r10,0
 	mvzl	r8,0
 	mvzl	r6,'?'
