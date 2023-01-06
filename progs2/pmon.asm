@@ -1172,6 +1172,7 @@ helps:	db	"m[em]  addr [value]  Get/set memory\n"
 	db	"e\n"
 	db	"l[oad]               Load hex file to memory\n"
 	db	"g(o)|run addr        Run from address\n"
+	db	"r                    Print registers\n"
 	db	"h,?                  Help\n"
 	dd	0
 
