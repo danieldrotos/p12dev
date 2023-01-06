@@ -14,18 +14,19 @@
 
 	org	0xf800
 _f800:	jmp	callin
-_f801:	jmp	strchr
-_f802:	jmp	streq
-_f803:	jmp	strieq
-_f804:	jmp	hexchar2value
-_f805:	jmp	value2hexchar
-_f806:	jmp	htoi
-_f807:	jmp	check_uart
-_f808:	jmp	read
-_f809:	jmp	putchar
-_f80a:	jmp	prints
-_f80b:	jmp	printsnl
-_f80c:	jmp	print_vhex
+_f801:	jmp	cold_start
+_f802:	jmp	strchr
+_f803:	jmp	streq
+_f804:	jmp	strieq
+_f805:	jmp	hexchar2value
+_f806:	jmp	value2hexchar
+_f807:	jmp	htoi
+_f808:	jmp	check_uart
+_f809:	jmp	read
+_f80a:	jmp	putchar
+_f80b:	jmp	prints
+_f80c:	jmp	printsnl
+_f80d:	jmp	print_vhex
 	
 callin:
 	st	r0,reg0
@@ -51,9 +52,18 @@ callin:
 	jmp	common_start
 hot_start:
 	jmp	common_start
+def_zero:
+	jmp	cold_start
 cold_start:
 	mvzl	r0,0
 	st	r0,called
+	mvzl	r0,def_zero	; restore jmp to monitor at zero
+	ld	r0,r0
+	st	r0,0
+	mvzl	r0,0		; def values of some regs
+	st	r0,regf		; FALGS= 0
+	mvzl	r0,0xf7ff	; R13= 0xf7ff
+	st	r0,reg13
 	jmp	common_start:	
 common_start:
 	;; Setup STACK, flags
@@ -645,7 +655,7 @@ g_err_addr:	db	"No address"
 d_msg_run:	db	"Run "
 	
 
-;;; H[elp]
+;;; H(elp)
 cmd_h:
 	push	lr
 	mvzl	r2,helps
@@ -663,6 +673,82 @@ h_print:
 	call	putchar
 	jmp	h_cyc
 h_eof:	
+	pop	lr
+	ret
+
+
+	;; In: R0 reg number
+print_reg_name:
+	push	lr
+	push	r1
+	mov	r1,r0
+	cmp	r1,16		; go out if nr>16
+	HI jmp	prn_ret
+	cmp	r1,15		; nr=Flag?
+	LS jmp	prn_015
+prn_16:
+	mvzl	r0,'F'
+	call	putchar
+	mvzl	r0,32
+	call	putchar
+	call	putchar
+	jmp	prn_ret
+prn_015:
+	mvzl	r0,'R'
+	call	putchar	
+	cmp	r1,9
+	HI jmp	prn_1015
+prn_09:	
+	mov	r0,r1
+	add	r0,'0'
+	call	putchar
+	mvzl	r0,32
+	call	putchar
+	jmp	prn_ret
+prn_1015:
+	mvzl	r0,'1'
+	call	putchar
+	mov	r0,r1
+	sub	r0,10
+	add	r0,'0'
+	call	putchar
+prn_ret:	
+	pop	r1
+	pop	lr
+	ret
+	
+	;; In: R0 reg number 0..16
+print_reg_value:
+	push	lr
+	push	r1
+	cmp	r0,16
+	HI jmp	prv_ret
+	mvzl	r1,reg0
+	ld	r0,r1,r0
+	mvzl	r1,4
+	call	print_vhex
+prv_ret:
+	pop	r1
+	pop	lr
+	ret
+
+	
+;;; R(eg)
+cmd_r:
+	push	lr
+	mvzl	r10,0
+r_cyc:
+	mov	r0,r10
+	call	print_reg_name
+	mvzl	r0,32
+	call	putchar
+	mov	r0,r10
+	call	print_reg_value
+	mvzl	r0,LF
+	call	putchar
+	add	r10,1
+	cmp	r10,17
+	jnz	r_cyc
 	pop	lr
 	ret
 
@@ -1076,6 +1162,8 @@ commands:
 	db	"h"		; H[elp]
 	dd	cmd_h
 	db	"help"
+	dd	cmd_r		; R(eg)
+	db	"r"
 	dd	0
 	dd	0
 
@@ -1084,6 +1172,7 @@ helps:	db	"m[em]  addr [value]  Get/set memory\n"
 	db	"e\n"
 	db	"l[oad]               Load hex file to memory\n"
 	db	"g(o)|run addr        Run from address\n"
+	db	"h,?                  Help\n"
 	dd	0
 
 	

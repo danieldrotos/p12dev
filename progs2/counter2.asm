@@ -9,8 +9,8 @@ out	equ	0xff00
 	mvzl	r1,0
 
 cyc:
-	call	0xf807		; check uart
-	c1 call	0xf800		; call back to monitor
+	call	0xf808		; check uart
+	c1 call	0xf800		; call monitor
 	st	r1,r0
 	add	r1,1
 	jmp	cyc
