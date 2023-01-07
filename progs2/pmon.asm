@@ -701,6 +701,27 @@ prn_16:
 	call	putchar
 	jmp	prn_ret
 prn_015:
+	cmp	r1,15
+	jnz	prn_no15
+	mvzl	r0,prn_PC
+	call	prints
+	jmp	prn_ret
+prn_PC:	db	"PC "
+prn_no15:
+	cmp	r1,14
+	jnz	prn_no14
+	mvzl	r0,prn_LR
+	call	prints
+	jmp	prn_ret
+prn_LR:	db	"LR "
+prn_no14:
+	cmp	r1,13
+	jnz	prn_no13
+	mvzl	r0,prn_SP
+	call	prints
+	jmp	prn_ret
+prn_SP:	db	"SP "
+prn_no13:	
 	mvzl	r0,'R'
 	call	putchar	
 	cmp	r1,9
@@ -739,6 +760,22 @@ prv_ret:
 	pop	lr
 	ret
 
+
+	;; IN: R0 flag name char
+	;;     R1 flag values
+	;;     R2 mask
+	;;     R3 last char to print
+print_flag:
+	push	lr
+	call	putchar
+	test	r1,r2
+	NZ mvzl r0,'1'
+	Z  mvzl r0,'0'
+	call	putchar
+	mov	r0,r3
+	call	putchar
+	pop	lr
+	ret
 	
 ;;; R(eg)
 cmd_r:
@@ -756,6 +793,28 @@ r_cyc:
 	add	r10,1
 	cmp	r10,17
 	jnz	r_cyc
+r_flags:
+	ld	r1,regf
+	mvzl	r3,32
+	mvzl	r0,'U'
+	mvzl	r2,0x20
+	call	print_flag
+	mvzl	r0,'P'
+	mvzl	r2,0x10
+	call	print_flag
+	mvzl	r0,'O'
+	mvzl	r2,8
+	call	print_flag
+	mvzl	r0,'Z'
+	mvzl	r2,4
+	call	print_flag
+	mvzl	r0,'C'
+	mvzl	r2,2
+	call	print_flag
+	mvzl	r0,'S'
+	mvzl	r2,1
+	mvzl	r3,LF
+	call	print_flag
 	pop	lr
 	ret
 
@@ -1197,4 +1256,3 @@ stack_end:
 final_sign:
 	db	"EOF PMonitor\n"
 the_end:
-	

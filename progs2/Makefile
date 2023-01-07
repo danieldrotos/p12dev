@@ -27,6 +27,7 @@ uart2: uart2.p2h uart2.asc uart2.cdb
 regsave: regsave.p2h regsave.asc regsave.cdb
 
 pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc
+	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
 
 pass: pmon.cc
 	git -C ../../ucsim pull
