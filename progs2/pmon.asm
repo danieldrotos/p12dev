@@ -100,7 +100,7 @@ setup_line:
 	mvzl	r1,0		; lptr= 0
 	st	r1,line_ptr
 	st	r1,line		; line[0]= 0
-	mvzl	r1,1		; at_eol= 1
+	mvzl	r1,0		; at_eol= 0
 	st	r1,at_eol
 	;; print prompt
 	mvzl	r0,prompt
@@ -119,6 +119,7 @@ main:
 	call	proc_input
 	C0 jmp	no_line
 	;; line is ready
+line_ready:
 	call	proc_line
 	call	setup_line
 no_line:	
@@ -173,7 +174,11 @@ proc_line:
 	;; eol is not echoed, so start with print NL
 	mvzl	r0,LF
 	call	putchar
-
+	;; check empty line
+	ld	r0,line
+	sz	r0
+	jz	proc_line_ret
+	
 	;; Simple echo
 ;	mvzl	r0,sdummy1
 ;	call	prints
