@@ -607,6 +607,7 @@ cmd_g:
 	jz	g_no_addr
 	call	htoi
 	mov	r11,r1
+g_go11:	
 	mvzl	r0,d_msg_run
 	call	prints
 	mov	r0,r11
@@ -615,7 +616,7 @@ cmd_g:
 	mvzl	r0,LF
 	call	putchar
 	st	r11,reg15
-	
+g_go:	
 	mvzl	r2,UART_TSTAT
 g_wait_tc:
 	ld	r9,r2
@@ -646,6 +647,12 @@ g_wait_tc:
 	ld	r15,reg15
 	
 g_no_addr:
+	ld	r0,called
+	sz	r0
+	jz	g_err
+	ld	r11,reg15
+	jmp	g_go11
+g_err:	
 	mvzl	r0,g_err_addr
 	call	printsnl
 g_ret:	
