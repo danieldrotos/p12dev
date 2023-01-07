@@ -290,7 +290,40 @@ find_cmd:
 	ld	r0,words	; R0= 1st word of command
 	sz	r0
 	jz	find_cmd_false
+
+	;; check for RXX first
+	ld	r1,r0		; 1st char of word1
+	ld	r2,r0,1		; 2nd char
+	ld	r3,r0,2		; 3rd char
+	and	r1,0xffdf	; upcase 1st char
+	cmp	r1,'R'
+	jnz	find_not_rx
+	cmp	r2,'/'		; '0'-1
+	LS jmp	find_not_rx
+	cmp	r2,'9'
+	HI jmp	find_not_rx
+	sz	r3
+	jz	find_rx_09
+find_rx_1015:	
+	cmp	r2,'1'		; first char must be '1'
+	jnz	find_not_rx
+	cmp	r3,'/'		; '0'-1
+	LS jmp	find_not_rx
+	cmp	r3,'5'
+	HI jmp	find_not_rx
+	sub	r3,'0'
+	add	r3,10
+	st	r3,nuof_reg
+	jmp	find_rx
+find_rx_09:
+	sub	r2,'0'
+	st	r2,nuof_reg
+find_rx:
+	mvzl	r0,cmd_rx
+	sec
+	jmp	find_cmd_ret
 	
+find_not_rx:	
 	mvzl	r10,commands
 find_cmd_cyc:	
 	ld	r2,r10		; R2= cmd addr
@@ -823,6 +856,19 @@ r_flags:
 	pop	lr
 	ret
 
+
+;;; Rx [value]
+;;; In: 
+cmd_rx:	
+	push	lr
+	ld	r0,nuof_reg
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,LF
+	call	putchar
+	pop	lr
+	ret
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -1180,6 +1226,7 @@ at_eol:		ds	1		; bool, true if EOL arrived
 words:		ds	5		; Tokens of line
 echo:		ds	1		; bool, do echo or not
 called:		dd	0		; bool, entered by CALLIN
+nuof_reg:	dd	0		; nr of reg for Rx command
 	
 reg0:		dd	0
 reg1:		dd	0
