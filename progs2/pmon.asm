@@ -869,6 +869,34 @@ cmd_rx:
 	pop	lr
 	ret
 
+
+;;; SP [value]
+cmd_sp:
+	mvzl	r0,13
+	st	r0,nuof_reg
+	jmp	cmd_rx
+
+	
+;;; LR [value]
+cmd_lr:
+	mvzl	r0,14
+	st	r0,nuof_reg
+	jmp	cmd_rx
+
+	
+;;; PC [value]
+cmd_pc:
+	mvzl	r0,15
+	st	r0,nuof_reg
+	jmp	cmd_rx
+
+	
+;;; F [value]
+cmd_f:
+	mvzl	r0,16
+	st	r0,nuof_reg
+	jmp	cmd_rx
+
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -1286,6 +1314,14 @@ commands:
 	db	"reg"
 	dd	cmd_r
 	db	"regs"
+	dd	cmd_sp
+	db	"sp"
+	dd	cmd_lr
+	db	"lr"
+	dd	cmd_pc
+	db	"pc"
+	dd	cmd_f
+	db	"f"
 	dd	0
 	dd	0
 
