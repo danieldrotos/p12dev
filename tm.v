@@ -89,11 +89,13 @@ module tm
        #5000 sw= 1;
     end
 
+   /*
    initial
      begin
 	#99000 rxd= 0;
 	#2000 rxd= 1;
      end
+   */
    
    initial
      begin

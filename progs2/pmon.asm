@@ -27,7 +27,8 @@ _f80a:	jmp	putchar
 _f80b:	jmp	prints
 _f80c:	jmp	printsnl
 _f80d:	jmp	print_vhex
-	
+
+	org	0xf820
 callin:
 	st	r0,reg0
 	st	r1,reg1
@@ -90,6 +91,7 @@ common_start:
 	call	setup_line
 	
 	;; Ready to work
+end:	jmp	end
 	jmp	main
 
 	
@@ -1192,21 +1194,21 @@ prints:
 	push	r0
 	push	r3
 	push	r4
+	push	r2
 	
 	mvzl	r4,0
 	sz	r0
 	Z1 mvzl	r0,null_str
+	mov	r2,r0
 prints_go:
-	ld	r3,r4+,r0
-	sz	r3
+	ld	r0,r4+,r2
+	sz	r0
 	jz	prints_done
-	push	r0
-	mov	r0,r3
 	call	putchar
-	pop	r0
 	jmp	prints_go
 	
 prints_done:
+	pop	r2
 	pop	r4
 	pop	r3
 	pop	r0
@@ -1372,7 +1374,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 ;;; STACK
 ;;; -----
 stack:
-	ds	0x100
+	ds	0xc0
 stack_end:
 	ds	1
 final_sign:

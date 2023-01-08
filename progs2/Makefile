@@ -4,7 +4,7 @@ TOOLS		= $(PRJ)/tools
 include $(PRJ)/prj.mk
 
 all: simif_print2 counter2 array_sum2 ffir2 light12 light22 poll2 \
-	uart uart2 test pmon_app regsave
+	uart uart2 test pmon_app regsave test2
 
 simif_print2: simif_print2.p2h simif_print2.asc simif_print2.cdb
 
@@ -25,6 +25,8 @@ uart: uart.p2h uart.asc uart.cdb
 uart2: uart2.p2h uart2.asc uart2.cdb
 
 regsave: regsave.p2h regsave.asc regsave.cdb
+
+test2: test2.p2h test2.asc test2.cdb
 
 pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc
 	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
