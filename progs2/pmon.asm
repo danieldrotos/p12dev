@@ -473,11 +473,6 @@ d_ret:
 d_err_bad:	db	"Wrong end address"
 
 	
-;;; E [BOOL]
-cmd_e:
-	ret
-
-	
 ;;; VALUE //C ADDR
 cmd_c:
 	ret
@@ -799,6 +794,25 @@ prv_ret:
 	ret
 
 
+	;; Print register name and value and NL
+	;; In: r10: register number
+print_reg_name_value:
+	push	lr
+	push	r10
+	push	r0
+	mov	r0,r10
+	call	print_reg_name
+	mvzl	r0,32
+	call	putchar
+	mov	r0,r10
+	call	print_reg_value
+	mvzl	r0,LF
+	call	putchar
+	pop	r0
+	pop	r10
+	pop	lr
+	ret
+	
 	;; IN: R0 flag name char
 	;;     R1 flag values
 	;;     R2 mask
@@ -820,14 +834,7 @@ cmd_r:
 	push	lr
 	mvzl	r10,0
 r_cyc:
-	mov	r0,r10
-	call	print_reg_name
-	mvzl	r0,32
-	call	putchar
-	mov	r0,r10
-	call	print_reg_value
-	mvzl	r0,LF
-	call	putchar
+	call	print_reg_name_value
 	add	r10,1
 	cmp	r10,17
 	jnz	r_cyc
@@ -861,11 +868,36 @@ r_flags:
 ;;; In: 
 cmd_rx:	
 	push	lr
-	ld	r0,nuof_reg
-	mvzl	r1,4
-	call	print_vhex
-	mvzl	r0,LF
-	call	putchar
+	ld	r10,nuof_reg	; Reg num is in R10
+	cmp	r10,16
+	LS jmp	rx_nr_ok
+	mvzl	r0,rx_err_nr
+	call	printsnl
+	jmp	rx_ret
+rx_err_nr:
+	db	"No such register"
+rx_nr_ok:	
+	mvzl	r2,words
+	ld	r4,r2,1		; get aof first parameter
+	sz	r4		; is it NULL?
+	jz	rx_print
+	mov	r0,r4
+	call	htoi
+	mov	r5,r1		; Value is in R5
+	C1 jmp	rx_val_ok
+	mvzl	r0,rx_err_val
+	call	printsnl
+	jmp	rx_ret
+rx_err_val:
+	db	"Value error"
+rx_val_ok:
+	cmp	r10,16		; Flag reg?
+	EQ and	r5,0x3f
+	mvzl	r0,reg0
+	st	r5,r0,r10
+rx_print:
+	call	print_reg_name_value
+rx_ret:	
 	pop	lr
 	ret
 
@@ -1290,8 +1322,6 @@ commands:
 	db	"d"
 	dd	cmd_d
 	db	"dump"
-	dd	cmd_e		; E(cho) on/off
-	db	"e"
 	dd	cmd_l		; L(oad)
 	db	"l"
 	dd	cmd_l
@@ -1325,13 +1355,17 @@ commands:
 	dd	0
 	dd	0
 
-helps:	db	"m[em]  addr [value]  Get/set memory\n"
-	db	"d[ump] start end     Dump memory content\n"
-	db	"e\n"
-	db	"l[oad]               Load hex file to memory\n"
-	db	"g(o)|run addr        Run from address\n"
-	db	"r[eg[s]]             Print registers\n"
-	db	"h,?                  Help\n"
+helps:	db	"m[em] addr [val]  Get/set memory\n"
+	db	"d[ump] start end  Dump memory content\n"
+	db	"l[oad]            Load hex file to memory\n"
+	db	"g[o]|run [addr]   Run from address\n"
+	db	"r[eg[s]]          Print registers\n"
+	db	"rX [val]          Get/set RX\n"
+	db	"sp [val]          Get/set R13\n"
+	db	"lr [val]          Get/set R14\n"
+	db	"pc [val]          Get/set R15\n"
+	db	"f [val]           Get/set flags\n"
+	db	"h,?               Help\n"
 	dd	0
 
 	
