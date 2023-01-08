@@ -22,13 +22,13 @@ _f805:	jmp	hexchar2value
 _f806:	jmp	value2hexchar
 _f807:	jmp	htoi
 _f808:	jmp	check_uart
-_f809:	jmp	read
-_f80a:	jmp	putchar
-_f80b:	jmp	prints
-_f80c:	jmp	printsnl
-_f80d:	jmp	print_vhex
+;_f809:	jmp	read
+;_f80a:	jmp	putchar
+;_f80b:	jmp	prints
+;_f80c:	jmp	printsnl
+;_f80d:	jmp	print_vhex
 
-	org	0xf820
+;	org	0xf820
 callin:
 	st	r0,reg0
 	st	r1,reg1
@@ -68,7 +68,7 @@ cold_start:
 	jmp	common_start:	
 common_start:
 	;; Setup STACK, flags
-	mvzl	sp,stack_end
+	mvzl	sp,0xffff ;stack_end
 	mvzl	r0,1
 	st	r0,echo
 	mvzl	r0,0
@@ -91,7 +91,7 @@ common_start:
 	call	setup_line
 	
 	;; Ready to work
-end:	jmp	end
+;end:	jmp	end
 	jmp	main
 
 	
@@ -1374,7 +1374,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 ;;; STACK
 ;;; -----
 stack:
-	ds	0xc0
+	ds	0xf0
 stack_end:
 	ds	1
 final_sign:
