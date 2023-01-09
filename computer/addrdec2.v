@@ -10,9 +10,11 @@ module addrdec2
     );
 
    wire [15:0] 			   chip_selects;
+   wire 			   top_256;
 	
-   decoder #(.ADDR_SIZE(4)) addr_decoder
+   decoder_en #(.ADDR_SIZE(4)) addr_decoder
      (
+      .en(top_256),
       .addr(addr[7:4]),
       .sel(chip_selects)
       );
@@ -20,7 +22,6 @@ module addrdec2
    wire 			   addr_64k;
    assign addr_64k= (addr[MEM_ADDR_SIZE-1:16] == 0);
 
-   wire 			   top_256;
    assign top_256= addr_64k & (addr[15:8] == 8'hff);
    
    assign cs_simif= top_256 & (addr[7:0]==8'hff);
