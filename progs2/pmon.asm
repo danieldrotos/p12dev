@@ -1166,15 +1166,18 @@ check_uart:
 	push	r0
 	push	r1
 	push	r2
+	ld	r0,sc_active
+	sz	r0
+	jnz	check_uart_ret_true
 	ld	r0,GPIO_PORTI
 	btst	r0,1
 	ld	r1,prev_porti
 	btst	r1,1
 	cmp	r0,r1
-	EQ jmp	check_uart_ret
+	EQ jmp	check_uart_ret_false
 	st	r0,prev_porti
 	btst	r0,1
-	jz	check_uart_ret
+	jz	check_uart_ret_false
 	;; rising edge on PORTI.0
 	mvzl	r2,0
 	mvzl	r0,1
@@ -1183,11 +1186,15 @@ check_uart:
 	st	r0,sc_ptr
 	mvzl	r1,'h'
 	st	r1,r0+,r2
-	mvzl	r1,LF
+	mvzl	r1,CR
 	st	r1,r0+,r2
 	mvzl	r1,0
 	st	r1,r0+,r2
+check_uart_ret_true:	
 	sec
+	jmp	check_uart_ret
+check_uart_ret_false:
+	clc
 check_uart_ret:
 	pop	r2
 	pop	r1
@@ -1199,7 +1206,27 @@ prev_porti:
 	;; IN: -
 	;; OUT: R0
 read:
+	push	r1
+	push	r2
+	ld	r1,sc_active
+	sz	r1
+	jz	read_uart
+read_sc:	
+	ld	r1,sc_ptr
+	ld	r0,r1
+	add	r1,1
+	st	r1,sc_ptr
+	ld	r2,r1
+	sz	r2
+	jnz	read_sc_ret
+	;mvzl	r2,0
+	st	r2,sc_active
+	jmp	read_sc_ret
+read_uart:	
 	ld	r0,UART_DR
+read_sc_ret:	
+	pop	r2
+	pop	r1
 	ret
 
 	
