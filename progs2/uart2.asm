@@ -5,6 +5,7 @@
 	RSTAT	equ	0xff42
 	TSTAT	equ	0xff43
 
+	org	1
 	mvl	SP,0x1ffff
 	mvh	SP,0x1ffff
 	

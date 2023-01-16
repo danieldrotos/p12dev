@@ -2,6 +2,7 @@
 	
 simif	equ	0xffff
 
+	org	1
 	mvzl	sp,topof_stack
 
 	mvzl	r1,Hello

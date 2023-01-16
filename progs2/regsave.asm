@@ -1,6 +1,6 @@
 	.proc	P2
 
-	org	0
+	org	1
 	mvzl	r14,0x1234
 	mvh	r14,0xabcd0000
 	st	r14,place

@@ -2,7 +2,8 @@
 	
 	leds	equ	0xff01
 	sw	equ	0xff10 ;0xd000
-	
+
+	org	1
 	ldl0	r0,sw
 	ldl0	r1,leds
 	ldl0	r3,1
