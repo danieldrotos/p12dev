@@ -5,6 +5,7 @@
 	UART_RSTAT	=	0xff42
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
+	GPIO_PORTI	=	0xff20
 	SIMIF		=	0xffff
 	LF		=	10
 	CR		=	13
@@ -1160,8 +1161,40 @@ check_uart:
 	clc
 	Z0 sec
 	pop	r0
-	ret
+	C1 ret
 
+	push	r0
+	push	r1
+	push	r2
+	ld	r0,GPIO_PORTI
+	btst	r0,1
+	ld	r1,prev_porti
+	btst	r1,1
+	cmp	r0,r1
+	EQ jmp	check_uart_ret
+	st	r0,prev_porti
+	btst	r0,1
+	jz	check_uart_ret
+	;; rising edge on PORTI.0
+	mvzl	r2,0
+	mvzl	r0,1
+	st	r0,sc_active
+	mvzl	r0,sc_buffer
+	st	r0,sc_ptr
+	mvzl	r1,'h'
+	st	r1,r0+,r2
+	mvzl	r1,LF
+	st	r1,r0+,r2
+	mvzl	r1,0
+	st	r1,r0+,r2
+	sec
+check_uart_ret:
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
+prev_porti:
+	db	0
 	
 	;; IN: -
 	;; OUT: R0
@@ -1315,7 +1348,9 @@ msg_start:	db	"PMonitor v1.0"
 prompt:		db	">"
 delimiters:	db	" ;\t\v,=[]"
 null_str:	db	"(null)"
-	
+sc_active:	db	0
+sc_ptr:		db	0
+sc_buffer:	ds	10
 
 ;;; Command table
 commands:
