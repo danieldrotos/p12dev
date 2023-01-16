@@ -5,6 +5,7 @@
 	UART_RSTAT	=	0xff42
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
+	SIMIF		=	0xffff
 	PORTA		=	0xff00
 	
 	LF		=	10
@@ -14,23 +15,22 @@
 	org	0
 	jmp	cold_start
 
-	org	0xf800
-_f800:	jmp	callin
-_f801:	jmp	cold_start
-_f802:	jmp	0 ;strchr
-_f803:	jmp	0 ;streq
-_f804:	jmp	0 ;strieq
-_f805:	jmp	0 ;hexchar2value
-_f806:	jmp	0 ;value2hexchar
-_f807:	jmp	0 ;htoi
-_f808:	jmp	0 ;check_uart
-_f809:	jmp	0 ;read
-_f80a:	jmp	putchar
-_f80b:	jmp	prints
-_f80c:	jmp	printsnl
-_f80d:	jmp	print_vhex
+	org	0xf000
+_f000:	jmp	callin
+_f001:	jmp	cold_start
+_f002:	jmp	0 ;strchr
+_f003:	jmp	0 ;streq
+_f004:	jmp	0 ;strieq
+_f005:	jmp	0 ;hexchar2value
+_f006:	jmp	0 ;value2hexchar
+_f007:	jmp	0 ;htoi
+_f008:	jmp	0 ;check_uart
+_f009:	jmp	0 ;read
+_f00a:	jmp	putchar
+_f00b:	jmp	prints
+_f00c:	jmp	printsnl
+_f00d:	jmp	print_vhex
 
-	org	0xf820
 callin:
 	st	r0,reg0
 	st	r1,reg1
@@ -1182,6 +1182,9 @@ setup_line:
 org 0xfb90 ; good fba6, bad fba7
 putchar:
 	push	r9
+	mvzl	r9,'p'
+	st	r9,SIMIF
+	st	r0,SIMIF
 wait_tc:	
 	ld	r9,UART_TSTAT
 	test	r9,1

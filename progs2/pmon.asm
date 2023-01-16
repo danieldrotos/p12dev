@@ -5,6 +5,7 @@
 	UART_RSTAT	=	0xff42
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
+	SIMIF		=	0xffff
 	LF		=	10
 	CR		=	13
 	MAX_WORDS	=	5
@@ -12,23 +13,22 @@
 	org	0
 	jmp	cold_start
 
-	org	0xf800
-_f800:	jmp	callin
-_f801:	jmp	cold_start
-_f802:	jmp	strchr
-_f803:	jmp	streq
-_f804:	jmp	strieq
-_f805:	jmp	hexchar2value
-_f806:	jmp	value2hexchar
-_f807:	jmp	htoi
-_f808:	jmp	check_uart
-;_f809:	jmp	read
-;_f80a:	jmp	putchar
-;_f80b:	jmp	prints
-;_f80c:	jmp	printsnl
-;_f80d:	jmp	print_vhex
+	org	0xf000
+_f000:	jmp	callin
+_f001:	jmp	cold_start
+_f002:	jmp	strchr
+_f003:	jmp	streq
+_f004:	jmp	strieq
+_f005:	jmp	hexchar2value
+_f006:	jmp	value2hexchar
+_f007:	jmp	htoi
+_f008:	jmp	check_uart
+_f009:	jmp	read
+_f00a:	jmp	putchar
+_f00b:	jmp	prints
+_f00c:	jmp	printsnl
+_f00d:	jmp	print_vhex
 
-;	org	0xf820
 callin:
 	st	r0,reg0
 	st	r1,reg1
@@ -68,7 +68,7 @@ cold_start:
 	jmp	common_start:	
 common_start:
 	;; Setup STACK, flags
-	mvzl	sp,0xffff ;stack_end
+	mvzl	sp,stack_end
 	mvzl	r0,1
 	st	r0,echo
 	mvzl	r0,0
@@ -1176,7 +1176,10 @@ read:
 	;; OUT: -
 putchar:
 	push	r9
-wait_tc:	
+	mvzl	r9,'p'
+	st	r9,SIMIF
+	st	r0,SIMIF
+wait_tc:
 	ld	r9,UART_TSTAT
 	test	r9,1
 	jz	wait_tc
@@ -1374,7 +1377,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 ;;; STACK
 ;;; -----
 stack:
-	ds	0xf0
+	ds	0x40
 stack_end:
 	ds	1
 final_sign:
