@@ -84,7 +84,7 @@ module cpu2
    assign flag_u= flags[`UIDX];
    assign flag_o= flag_v;
    assign flag_n= flag_s;
-   assign flag_wb_en= ena & alu_flag_en & phw;
+   assign flag_wb_en= ena & inst_alu & alu_flag_en & phw;
 
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
@@ -180,6 +180,7 @@ module cpu2
       );
 
    // CALL inst
+   wire 		       inst_call_idx;
    wire [WIDTH-1:0] 	       aof_call_abs;
    wire [WIDTH-1:0] 	       aof_call_idx;
    wire [WIDTH-1:0] 	       sex_im20;
@@ -187,7 +188,8 @@ module cpu2
    assign sex_im20= {sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,sof_im20,im20};
    assign aof_call_abs= {8'b0, im24};
    assign aof_call_idx= opd+sex_im20;
-   assign res_call= ic[24]?aof_call_idx:aof_call_abs;
+   assign inst_call_idx= inst_call & ic[24];
+   assign res_call= /*ic[24]*/inst_call_idx?aof_call_idx:aof_call_abs;
 
    // Select data for write back
    assign wb_data= inst_alu?res_alu:
@@ -252,7 +254,8 @@ module cpu2
       .reset(reset),
       .ra(ra),
       .rb(rb),
-      .rd(inst_call?4'd15:rd),
+      .rd(rd),
+      .rw(inst_call?4'd15:rd),
       .rt(test_rsel),
       .fn_inc_pc(phe),
       .fn_link(ena & inst_call & phm),
@@ -299,4 +302,14 @@ module cpu2
    assign mbus_dout= opd;
    assign mbus_wen = ena & (phm/*|phe*/) & inst_st;
 
+   reg [WIDTH-1:0]  dbg_reg= 0;
+   always @(posedge clk)
+     begin
+	if (phf & flags[7])
+	  begin
+	     dbg_reg<= mbus_din;
+	     $write("F: %x %x %x\n", pc, mbus_din, {25'b0,flags[6:0]});
+	  end
+     end
+   
 endmodule // cpu2

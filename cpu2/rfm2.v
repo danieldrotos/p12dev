@@ -8,6 +8,7 @@ module rfm2
     input wire [3:0] 	    ra,
     input wire [3:0] 	    rb,
     input wire [3:0] 	    rd,
+    input wire [3:0] 	    rw,
     input wire [3:0] 	    rt,
     input wire 		    fn_inc_pc,
     input wire 		    fn_link,
@@ -27,7 +28,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==0 & fn_wb),
+      .wen1(rw==0 & fn_wb),
       .wen2(ra==0 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -39,7 +40,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==1 & fn_wb),
+      .wen1(rw==1 & fn_wb),
       .wen2(ra==1 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -51,7 +52,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==2 & fn_wb),
+      .wen1(rw==2 & fn_wb),
       .wen2(ra==2 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -63,7 +64,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==3 & fn_wb),
+      .wen1(rw==3 & fn_wb),
       .wen2(ra==3 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -75,7 +76,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==4 & fn_wb),
+      .wen1(rw==4 & fn_wb),
       .wen2(ra==4 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -87,7 +88,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==5 & fn_wb),
+      .wen1(rw==5 & fn_wb),
       .wen2(ra==5 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -99,7 +100,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==6 & fn_wb),
+      .wen1(rw==6 & fn_wb),
       .wen2(ra==6 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -111,7 +112,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==7 & fn_wb),
+      .wen1(rw==7 & fn_wb),
       .wen2(ra==7 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -123,7 +124,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==8 & fn_wb),
+      .wen1(rw==8 & fn_wb),
       .wen2(ra==8 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -135,7 +136,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==9 & fn_wb),
+      .wen1(rw==9 & fn_wb),
       .wen2(ra==9 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -147,7 +148,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==10 & fn_wb),
+      .wen1(rw==10 & fn_wb),
       .wen2(ra==10 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -159,7 +160,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==11 & fn_wb),
+      .wen1(rw==11 & fn_wb),
       .wen2(ra==11 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -171,7 +172,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==12 & fn_wb),
+      .wen1(rw==12 & fn_wb),
       .wen2(ra==12 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -183,7 +184,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(rd==13 & fn_wb),
+      .wen1(rw==13 & fn_wb),
       .wen2(ra==13 & fn_ra_change),
       .din1(wb_data),
       .din2(ra_changed),
@@ -196,7 +197,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(fn_link | (rd==14 & fn_wb)),
+      .wen1(fn_link | (rw==14 & fn_wb)),
       .wen2(ra==14 & fn_ra_change),
       .din1(fn_link?r15out:wb_data),
       .din2(ra_changed),
@@ -207,7 +208,7 @@ module rfm2
      (
       .clk(clk),
       .reset(reset),
-      .wen1(fn_inc_pc | (rd==15 & fn_wb)),
+      .wen1(fn_inc_pc | (rw==15 & fn_wb)),
       .wen2(ra==15 & fn_ra_change),
       .din1(fn_inc_pc?(pc+1):wb_data),
       .din2(ra_changed),

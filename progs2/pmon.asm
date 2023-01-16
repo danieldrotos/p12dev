@@ -5,6 +5,7 @@
 	UART_RSTAT	=	0xff42
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
+	GPIO_PORTA	=	0xff00
 	GPIO_PORTI	=	0xff20
 	SIMIF		=	0xffff
 	LF		=	10
@@ -123,7 +124,13 @@ main:
 	C0 jmp	no_line
 	;; line is ready
 line_ready:
+	;mvzl	r0,0x80
+	;setf	r0
 	call	proc_line
+	;mvzl	r0,0x40
+	;setf	r0
+	;mvzl	r0,0
+	;setf	r0
 	call	setup_line
 no_line:	
 no_input:	
@@ -1239,11 +1246,14 @@ putchar:
 	mvzl	r9,'p'
 	st	r9,SIMIF
 	st	r0,SIMIF
+	;st	r0,GPIO_PORTA
+	;jmp	putchar_ret
 wait_tc:
 	ld	r9,UART_TSTAT
 	test	r9,1
 	jz	wait_tc
 	st	r0,UART_DR
+putchar_ret:
 	pop	r9
 	ret
 

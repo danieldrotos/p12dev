@@ -87,6 +87,7 @@ module tm
    initial
     begin
        #5000 sw= 1;
+       #100 sw= 0;
     end
 
    /*
@@ -99,9 +100,8 @@ module tm
    
    initial
      begin
-	#1000 btn= 4;
-	#1000 btn= 0;
-	#1000 btn= 4;
+	#100000 btn= 1;
+	#10000 btn= 0;
      end
    
    // Kimeneti file eloallitasa
