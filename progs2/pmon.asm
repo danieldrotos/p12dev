@@ -17,20 +17,43 @@
 
 	org	0xf000
 _f000:	jmp	callin
-_f001:	jmp	cold_start
-_f002:	jmp	strchr
-_f003:	jmp	streq
-_f004:	jmp	strieq
-_f005:	jmp	hexchar2value
-_f006:	jmp	value2hexchar
-_f007:	jmp	htoi
+_f001:	jmp	enter_by_uart
+_f002:	ret
+_f003:	ret
+_f004:	ret
+_f005:	jmp	cold_start
+_f006:	jmp	strchr
+_f007:	jmp	streq
 _f008:	jmp	check_uart
-_f009:	jmp	read
-_f00a:	jmp	putchar
-_f00b:	jmp	prints
-_f00c:	jmp	printsnl
-_f00d:	jmp	print_vhex
+_f009:	jmp	hexchar2value
+_f00a:	jmp	value2hexchar
+_f00b:	jmp	htoi
+_f00c:	jmp	strieq
+_f00d:	jmp	read
+_f00e:	jmp	putchar
+_f00f:	jmp	prints
+_f010:	jmp	printsnl
+_f011:	jmp	print_vhex
 
+enter_by_uart:
+	push	r0
+	getf	r0
+	push	r0
+	ld	r0,UART_RSTAT
+	test	r0,1
+	jnz	ebu_callin
+ebu_return:
+	pop	r0
+	setf	r0
+	pop	r0
+	ret
+ebu_callin:
+	ld	r0,UART_DR
+	pop	r0
+	setf	r0
+	pop	r0
+	jmp	callin
+	
 callin:
 	st	r0,reg0
 	st	r1,reg1
@@ -85,9 +108,24 @@ common_start:
 	st	r1,UART_CPB
 	mvzl	r1,3
 	st	r1,UART_CTRL
+
 	;; Print welcome message
 	mvzl	r0,msg_start
 	call	printsnl
+	;; Print addr if called from
+	ld	r0,called
+	sz	r0
+	jz	no_called_from
+	mvzl	r0,LF
+	call	putchar
+	mvzl	r0,msg_stopat
+	call	prints
+	ld	r0,reg14
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,LF
+	call	putchar
+no_called_from:	
 
 	;; Setup variables
 	call	setup_line
@@ -1169,72 +1207,76 @@ check_uart:
 	Z0 sec
 	pop	r0
 	C1 ret
-
-	push	r0
-	push	r1
-	push	r2
-	ld	r0,sc_active
-	sz	r0
-	jnz	check_uart_ret_true
-	ld	r0,GPIO_PORTI
-	btst	r0,1
-	ld	r1,prev_porti
-	btst	r1,1
-	cmp	r0,r1
-	EQ jmp	check_uart_ret_false
-	st	r0,prev_porti
-	btst	r0,1
-	jz	check_uart_ret_false
-	;; rising edge on PORTI.0
-	mvzl	r2,0
-	mvzl	r0,1
-	st	r0,sc_active
-	mvzl	r0,sc_buffer
-	st	r0,sc_ptr
-	mvzl	r1,'h'
-	st	r1,r0+,r2
-	mvzl	r1,CR
-	st	r1,r0+,r2
-	mvzl	r1,0
-	st	r1,r0+,r2
-check_uart_ret_true:	
-	sec
-	jmp	check_uart_ret
-check_uart_ret_false:
-	clc
-check_uart_ret:
-	pop	r2
-	pop	r1
-	pop	r0
 	ret
-prev_porti:
-	db	0
+	
+;; 	push	r0
+;; 	push	r1
+;; 	push	r2
+;; 	ld	r0,sc_active
+;; 	sz	r0
+;; 	jnz	check_uart_ret_true
+;; 	ld	r0,GPIO_PORTI
+;; 	btst	r0,1
+;; 	ld	r1,prev_porti
+;; 	btst	r1,1
+;; 	cmp	r0,r1
+;; 	EQ jmp	check_uart_ret_false
+;; 	st	r0,prev_porti
+;; 	btst	r0,1
+;; 	jz	check_uart_ret_false
+;; 	;; rising edge on PORTI.0
+;; 	mvzl	r2,0
+;; 	mvzl	r0,1
+;; 	st	r0,sc_active
+;; 	mvzl	r0,sc_buffer
+;; 	st	r0,sc_ptr
+;; 	mvzl	r1,'h'
+;; 	st	r1,r0+,r2
+;; 	mvzl	r1,CR
+;; 	st	r1,r0+,r2
+;; 	mvzl	r1,0
+;; 	st	r1,r0+,r2
+;; check_uart_ret_true:	
+;; 	sec
+;; 	jmp	check_uart_ret
+;; check_uart_ret_false:
+;; 	clc
+;; check_uart_ret:
+;; 	pop	r2
+;; 	pop	r1
+;; 	pop	r0
+;; 	ret
+;; prev_porti:
+;; 	db	0
 	
 	;; IN: -
 	;; OUT: R0
 read:
-	push	r1
-	push	r2
-	ld	r1,sc_active
-	sz	r1
-	jz	read_uart
-read_sc:	
-	ld	r1,sc_ptr
-	ld	r0,r1
-	add	r1,1
-	st	r1,sc_ptr
-	ld	r2,r1
-	sz	r2
-	jnz	read_sc_ret
-	;mvzl	r2,0
-	st	r2,sc_active
-	jmp	read_sc_ret
-read_uart:	
 	ld	r0,UART_DR
-read_sc_ret:	
-	pop	r2
-	pop	r1
 	ret
+	
+;; 	push	r1
+;; 	push	r2
+;; 	ld	r1,sc_active
+;; 	sz	r1
+;; 	jz	read_uart
+;; read_sc:	
+;; 	ld	r1,sc_ptr
+;; 	ld	r0,r1
+;; 	add	r1,1
+;; 	st	r1,sc_ptr
+;; 	ld	r2,r1
+;; 	sz	r2
+;; 	jnz	read_sc_ret
+;; 	;mvzl	r2,0
+;; 	st	r2,sc_active
+;; 	jmp	read_sc_ret
+;; read_uart:	
+;; 	ld	r0,UART_DR
+;; read_sc_ret:	
+;; 	pop	r2
+;; 	pop	r1
+;; 	ret
 
 	
 	;; Send one character
@@ -1382,7 +1424,8 @@ reg15:		dd	0
 regf:		dd	0
 	
 msg_start:	db	"PMonitor v1.0"
-prompt:		db	">"
+msg_stopat:	db	"Stop at: "
+prompt:		db	":"
 delimiters:	db	" ;\t\v,=[]"
 null_str:	db	"(null)"
 sc_active:	db	0
