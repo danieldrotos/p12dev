@@ -183,7 +183,31 @@ proc_input:
 	EQ jmp	got_eol
 	cmp	r0,CR
 	EQ jmp	got_eol
-got_char:	
+	cmp	r0,8
+	jz	got_BS
+	cmp	r0,127
+	jz	got_DEL
+	jmp	got_char
+got_BS:
+got_DEL:
+	ld	r0,line_ptr
+	sz	r0
+	jz	got_done
+	sub	r0,1
+	st	r0,line_ptr
+	mvzl	r1,line
+	mvzl	r2,0
+	st	r2,r1,r0
+	mvzl	r0,msg_BS
+	call	prints
+got_done:
+	clc
+	jmp	proc_input_ret
+got_char:
+	cmp	r0,31		; refuse control chars
+	LS jmp	proc_input_ret
+	cmp	r0,126		; refuse graph chars
+	HI jmp	proc_input_ret
 	mvzl	r2,0		; at_aol= 0
 	st	r2,at_eol
 	mvzl	r1,line_ptr	; line[line_ptr]= char
@@ -1425,6 +1449,7 @@ regf:		dd	0
 	
 msg_start:	db	"PMonitor v1.0"
 msg_stopat:	db	"Stop at: "
+msg_BS:		db	8,32,8,0
 prompt:		db	":"
 delimiters:	db	" ;\t\v,=[]"
 null_str:	db	"(null)"
