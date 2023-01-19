@@ -904,6 +904,22 @@ print_flag:
 ;;; R(eg)
 cmd_r:
 	push	lr
+	ld	r0,called
+	sz	r0
+	jz	r_not_called
+r_called:
+	mvzl	r0,msg_r_called
+	call	prints
+	ld	r0,reg15
+	mvzl	r1,4
+	call	print_vhex
+	mvzl	r0,LF
+	call	putchar
+	jmp	r_start
+r_not_called:
+	mvzl	r0,msg_r_notcalled
+	call	prints
+r_start:	
 	mvzl	r10,0
 r_cyc:
 	call	print_reg_name_value
@@ -934,7 +950,8 @@ r_flags:
 	call	print_flag
 	pop	lr
 	ret
-
+msg_r_called:		db	"Monitor called from: "
+msg_r_notcalled:	db	"Monitor not called by user\n"
 
 ;;; Rx [value]
 ;;; In: 
