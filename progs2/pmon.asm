@@ -1188,6 +1188,8 @@ htoi_cyc:
 	jz	htoi_cyc
 	cmp	r2,'_'
 	jz	htoi_cyc
+	cmp	r2,'-'
+	jz	htoi_cyc
 	push	r0
 	mov	r0,r2
 	call	hexchar2value
