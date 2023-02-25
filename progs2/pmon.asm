@@ -1,5 +1,6 @@
 	.proc	P2
 
+	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
 	UART_CTRL	=	0xff41
 	UART_RSTAT	=	0xff42
@@ -7,6 +8,8 @@
 	UART_CPB	=	0xff44
 	GPIO_PORTA	=	0xff00
 	GPIO_PORTI	=	0xff20
+	IO_END		=	0xffff
+	
 	SIMIF		=	0xffff
 	LF		=	10
 	CR		=	13
@@ -16,6 +19,8 @@
 	jmp	cold_start
 
 	org	0xf000
+the_begin:
+	
 _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	ret
@@ -460,9 +465,21 @@ cmd_m:
 m_addr_ok:
 	sz	r5
 	jz	m_read
-m_write:	
-	cmp	r4,the_end
+m_write:
+	mvzl	r3,the_begin
+	cmp	r3,r4
 	HI jmp	m_addrv_ok
+	mvzl	r3,the_end
+	cmp	r3,r4
+	HI jmp	m_addrv_nok
+	jmp	m_addrv_ok
+;	mvzl	r3,IO_BEGIN
+;	cmp	r3,r4
+;	HI jmp	m_addrv_ok
+;	mvzl	r3,IO_END
+;	cmp	r4,r3
+;	HI jmp	m_addrv_ok
+m_addrv_nok:	
 	mvzl	r0,m_err_addrv
 	call	printsnl
 	jmp	m_ret
