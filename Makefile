@@ -4,7 +4,7 @@ include prj.mk
 
 TOOLS		= ./tools
 
-MODS		= defs \
+MODS		= defs hwconf \
 		  computer/decoder \
 		  computer/comp \
 		    computer/addrdec1 \
@@ -21,7 +21,6 @@ MODS		= defs \
 		      cpu2/alu2 \
 		      cpu2/reg2in \
 		      cpu2/rfm2 \
-		    cpu3/cpu3 \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
 		    computer/timer \
@@ -71,15 +70,15 @@ hw: $(VVP)
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
-.SUFFIXES: .hex .asm .v .asc .cdb
+.SUFFIXES: .asm .v .asc .cdb .p2h
 
-.asm.hex:
+.asm.p2h:
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
-.hex.asc:
-	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
+.p2h.asc:
+	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
 
-.hex.cdb:
+.p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \

@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
   
   $debugging= true;
@@ -1301,8 +1302,8 @@
       $p++;
       while ($p < $a)
       {
-        debug( $o= sprintf("%08x ;%05x", 0, $p) );
-        $hex.= $o."\n";
+        //debug( $o= sprintf("%08x ;%05x", 0, $p) );
+        //$hex.= $o."\n";
         $p++;
       }
     }

@@ -49,7 +49,7 @@ test: test.p2h test.asc test.cdb
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .p2h.asc:
-	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
+	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
 
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@

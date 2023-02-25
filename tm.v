@@ -1,4 +1,5 @@
 `include "defs.v"
+`include "hwconf.v"
 
 `unconnected_drive pull0
 `ifndef PRG

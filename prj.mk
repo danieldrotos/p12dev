@@ -1,3 +1,3 @@
-PRG		= progs2/pmon
+PRG		= cpu2/st
 AW		= 17
-INSTS		= 200000
+INSTS		= 2000
