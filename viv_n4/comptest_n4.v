@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 `include "defs.v"
+`include "hwconf.v"
 
 `define PRG "progs2/pmon.asc"
 
