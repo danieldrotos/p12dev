@@ -152,13 +152,13 @@ $debugging= true;
 
   $insts1= array(
     "DB"  =>array("icode"=>0, "params"=>array(
-      "n_"=>array("icode"=>0,"placements"=>array("#8"))
+      "n_"=>array("icode"=>0,"placements"=>array("d8"))
     )),
       "DW"  =>array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+        "n_"=>array("icode"=>0,"placements"=>array("d16"))
       )),
       "DD"  =>array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("#32"))
+        "n_"=>array("icode"=>0,"placements"=>array("d32"))
       )),
       "NOP"=> array("icode"=>0x00000000, "params"=>array(
 	"rrr_"  =>array("icode"=>0,"placements"=>array("rd","ra","rb1")),
@@ -284,13 +284,13 @@ $debugging= true;
   $insts2= array(
     // data placers
     "DB"  =>array("icode"=>0, "params"=>array(
-      "n_"=>array("icode"=>0,"placements"=>array("#8"))
+      "n_"=>array("icode"=>0,"placements"=>array("d8"))
     )),
       "DW"  =>array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("#16"))
+        "n_"=>array("icode"=>0,"placements"=>array("d16"))
       )),
       "DD"  =>array("icode"=>0, "params"=>array(
-        "n_"=>array("icode"=>0,"placements"=>array("#32"))
+        "n_"=>array("icode"=>0,"placements"=>array("d32"))
       )),
       // Macro insts
       // NOP= mov r0,r0
@@ -1134,53 +1134,57 @@ $debugging= true;
 	$icode&= 0xffff0fff;
 	$icode|= $pv;
       }
-      else if ($pl == "#8")
+      else if (($pl == "#8") || ($pl == "d8"))
       {
-          $pv&= 0xff;
-          $icode&= 0xffffff00;
-          $icode|= $pv;
-          debug( sprintf("//I  #8 %08x", $pv) );
+        $pv&= 0xff;
+        $icode&= 0xffffff00;
+        $icode|= $pv;
+        if ($pl=="#8")
+	  debug( sprintf("//I  #8 %08x", $pv) );
       }
-      else if ($pl == "#16")
+      else if (($pl == "#16") || ($pl == "d16"))
       {
-          $pv&= 0xffff;
-          $icode&= 0xffff0000;
-          $icode|= $pv;
-          debug( sprintf("//I #16 %08x", $pv) );
+        $pv&= 0xffff;
+        $icode&= 0xffff0000;
+        $icode|= $pv;
+        if ($pl=="#16")
+	  debug( sprintf("//I #16 %08x", $pv) );
       }
       else if ($pl == "#20")
       {
-          $pv&= 0xfffff;
-          $icode&= 0xfff00000;
-          $icode|= $pv;
-          debug( sprintf("//I #20 %08x", $pv) );
+        $pv&= 0xfffff;
+        $icode&= 0xfff00000;
+        $icode|= $pv;
+        debug( sprintf("//I #20 %08x", $pv) );
       }
       else if ($pl == "#24")
       {
-          $pv&= 0xffffff;
-          $icode&= 0xff000000;
-          $icode|= $pv;
-          debug( sprintf("//I #24 %08x", $pv) );
+        $pv&= 0xffffff;
+        $icode&= 0xff000000;
+        $icode|= $pv;
+        debug( sprintf("//I #24 %08x", $pv) );
       }
       else if ($pl == "#27")
       {
-          $pv&= 0x0effffff;
-          $icode&= 0xf8000000;
-          $icode|= $pv;
-          debug( sprintf("//I #27 %08x", $pv) );
+        $pv&= 0x0effffff;
+        $icode&= 0xf8000000;
+        $icode|= $pv;
+        debug( sprintf("//I #27 %08x", $pv) );
       }
-      else if ($pl == "#32")
+      else if (($pl == "#32") || ($pl == "d32"))
       {
-          $icode= $pv;
-          debug( sprintf("//I #32 %08x", $pv) );
+        $icode= $pv;
+        if ($pl=="#32")
+	  debug( sprintf("//I #32 %08x", $pv) );
       }
       else if ($pl == "h16")
       {
-          $pv>>= 16;
-          $pv&= 0x0000ffff;
-          $icode&= 0xffff0000;
-          $icode|= $pv;
-          debug( sprintf("//I h16 %08x", $pv) );
+	$porg= $pv;
+        $pv>>= 16;
+        $pv&= 0x0000ffff;
+        $icode&= 0xffff0000;
+        $icode|= $pv;
+        debug( sprintf("//I h16 %08x", $porg) );
       }
       
       debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
