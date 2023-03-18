@@ -21,13 +21,6 @@ regsave: regsave.p2h regsave.asc regsave.cdb
 pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc
 	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
 
-pass: pmon.cc
-	git -C ../../ucsim pull
-	cp pmon.cc ../../ucsim/main/p1516.src
-	git -C ../../ucsim/main/p1516.src add pmon.cc
-	git -C ../../ucsim/main/p1516.src commit -m "monitor update"
-	git -C ../../ucsim push
-
 pmon.cc: pmon.p2h
 	php $(TOOLS)/hex2c.php $< >$@
 
