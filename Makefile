@@ -75,7 +75,7 @@ hw: $(VVP)
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .p2h.asc:
-	php $(TOOLS)/hex2asc.php -m $(AW) progs2/pmon.p2h $< >$@
+	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
 
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@
@@ -88,10 +88,12 @@ clean_files	= *~ $(VCD) $(VVP) \
 clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
+	$(MAKE) -C tools clean
 	rm -f $(clean_files)
 
 wclean:
 	$(MAKE) -C examples wclean
 	$(MAKE) -C progs2 wclean
+	$(MAKE) -C tools clean
 	del /f $(clean_files)
 
