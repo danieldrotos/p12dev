@@ -3,38 +3,67 @@ TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
 
-all: simif_print counter array_sum ff2ir light1 light2 poll \
+all: \
+	simif_print \
+	simif_print2 \
+	counter \
+	counter2 \
+	array_sum \
+	array_sum2 \
+	ff2ir \
+	ff2ir2 \
+	light1 \
+	light12 \
+	light2 \
+	light22 \
+	poll \
+	poll2 \
 	shift_digit
 
-simif_print: simif_print.hex simif_print.asc simif_print.cdb
+simif_print: simif_print.p2h simif_print.asc simif_print.cdb
 
-shift_digit: shift_digit.hex shift_digit.asc shift_digit.cdb
+simif_print2: simif_print2.p2h simif_print2.asc simif_print2.cdb
 
-counter: counter.hex counter.asc counter.cdb
+shift_digit: shift_digit.p2h shift_digit.asc shift_digit.cdb
 
-array_sum: array_sum.hex array_sum.asc array_sum.cdb
+counter: counter.p2h counter.asc counter.cdb
 
-ff2ir: ff2ir.hex ff2ir.asc ff2ir.cdb
+counter2: counter2.p2h counter2.asc counter2.cdb
 
-light1: light1.hex light1.asc light1.cdb
+array_sum: array_sum.p2h array_sum.asc array_sum.cdb
 
-light2: light2.hex light2.asc light2.cdb
+array_sum2: array_sum2.p2h array_sum2.asc array_sum2.cdb
 
-poll: poll.hex poll.asc poll.cdb
+ff2ir: ff2ir.p2h ff2ir.asc ff2ir.cdb
 
-.SUFFIXES: .hex .asm .asc .cdb
+ff2ir2: ff2ir2.p2h ff2ir2.asc ff2ir2.cdb
 
-.asm.hex:
+light1: light1.p2h light1.asc light1.cdb
+
+light12: light12.p2h light12.asc light12.cdb
+
+light2: light2.p2h light2.asc light2.cdb
+
+light22: light22.p2h light22.asc light22.cdb
+
+poll: poll.p2h poll.asc poll.cdb
+
+poll2: poll2.p2h poll2.asc poll2.cdb
+
+
+.SUFFIXES: .p2h .asm .asc .cdb
+
+.asm.p2h:
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
-.hex.asc:
-	php $(TOOLS)/hex2asc.php -- -m $(AW) $< >$@
+.p2h.asc:
+	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
 
-.hex.cdb:
+.p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean:
-	rm -f *.hex *.asc *.cdb *~ *.lst
+	rm -f *.hex *.p2h *.asc *.cdb *~ *.lst
 
 wclean:
-	del /f *.hex *.asc *.cdb *~ *.lst
+	del /f *.hex *.p2h *.asc *.cdb *~ *.lst

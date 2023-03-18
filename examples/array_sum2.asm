@@ -5,7 +5,7 @@
 adat_db	=	10		; az adatok szama
 porta	equ	0xff00		; kijelzo port cime
 
-	org	1
+	org	0
 	mvzl	sp,verem_vege	; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez
 	mvzl	r1,eredmeny	; az eredmeny vizsgalata

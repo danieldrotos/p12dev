@@ -2,7 +2,6 @@
 	
 simif	equ	0xffff
 
-	org	1
 	mvzl	sp,topof_stack
 
 	mvzl	r1,Hello
@@ -37,6 +36,6 @@ print_exit:
 Hello:	db	"Hello World!\n"
 	
 
-	org	0x3ff
+	ds	0xff
 topof_stack:
 	

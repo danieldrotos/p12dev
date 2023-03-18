@@ -1,3 +1,3 @@
-PRG		= cpu2/st
+PRG		= examples/counter2
 AW		= 17
 INSTS		= 2000

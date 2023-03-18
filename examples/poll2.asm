@@ -6,7 +6,6 @@ led	equ	0xff01		; address of LEDs
 btn	equ	0xff20		; address of BTNs
 sw	equ	0xff10		; address of SWs
 
-	org	1
 	ldl0	r0,btn		; load addresses to pointers
 	ldl0	r1,led
 	ldl0	r2,prev

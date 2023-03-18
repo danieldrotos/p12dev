@@ -4,7 +4,6 @@ porta	equ	0xff00		; address of GPIO output
 
 	ldl0	r1,porta	; pointer to output
 
-	org	1
 start:	ldl0	r0,patterns	; start of table
 	
 cycl:	ld	r2,r0		; get one item
