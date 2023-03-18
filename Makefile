@@ -61,7 +61,6 @@ $(VCD): $(VVP)
 $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
-		-DAW=$(AW) \
 		-DINSTS=$(INSTS) \
 		-DIVERILOG=1 \
 		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)

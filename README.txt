@@ -16,8 +16,6 @@ Töltsük ki/módosítsuk a prj.mk fájlt. Paraméterek:
   könyvtárába is (ahol a prj.mk fájl van), akkor nem kell a névbe
   útvonal. Vagy készíthetünk saját alkönyvtárat.
 
-- AW a memória cíbusz mérete bitekben. Max 14 lehet.
-
 - INSTS a szimulációban lefuttatandó utasítások száma.
 
 
@@ -42,14 +40,11 @@ parancs kiadásával végezhetjük el. Geany-ban válasszuk az
 "Összeállítás" menübõl a "Make" pontot (Shift-F9). A geany ilyenkor
 elmenti a módosított fájlokat.
 
-A mûvelet után célszerû ellenõrizni a PRG nevû, .hex kiterjesztésû
-fájlt, mert a fordító hibaüzeneteit ebben lehet megtalálni!
-
 A make parancs
 
 - lefordítja az assembly forrást
 - lefordítja a HW tervet
-- lefuttatja a szimulációt, ez generálja VCD fájlt
+- lefuttatja a szimulációt, ez generálja a VCD fájlt
 - megnyitja a VCD fájlt a megjelenítõben (gtkwave)
 
 A fordításnak a gtkwave bezárásakor lesz vége, a geany-ban ez után
@@ -67,7 +62,7 @@ make wclean # windows esetén
 Geany esetén: "Összeállítás" menü "Make egyéni céllal"
 (Shift-Ctrl-F9), majd írjuk be a clean, vagy wclean célt.
 
-Csak a szoftver lefordítása:
+A program lefordítása szimuláció nélkül:
 
 make compile
 
