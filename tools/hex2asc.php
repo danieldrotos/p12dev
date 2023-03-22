@@ -13,15 +13,15 @@
       if ($argv[$i] == "-m")
       {
 	$i++;
-	$aw= $argv[$i];
+	$aw= intval($argv[$i]);
       }
       else
 	$fin[]= $argv[$i];
     }
   }
 
-  $mem_size= 1 << $aw;
-  $mem= array();
+$mem_size= 1 << (0+$aw);
+$mem= array();
   for ($i= 0; $i<$mem_size; $i++)
     $mem[$i]= 0;
 
@@ -66,4 +66,6 @@
     //echo " {$mem[$a]}";
     echo "\n";
   }
+
+exit(0);
 ?>

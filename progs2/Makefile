@@ -2,6 +2,7 @@ PRJ		= ..
 TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
+AW		?= 17
 
 all: pmon_app \
 	counter2 \

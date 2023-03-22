@@ -3,41 +3,41 @@ module uart
     parameter WIDTH=32
     )
    (
-    input wire clk,
-    input wire reset,
-    input wire cs,
-    input wire wen,
-    input wire [3:0] addr,
+    input wire		   clk,
+    input wire		   reset,
+    input wire		   cs,
+    input wire		   wen,
+    input wire [3:0]	   addr,
     input wire [WIDTH-1:0] din,
 
-    output [WIDTH-1:0] dout,
+    output [WIDTH-1:0]	   dout,
 
-    input wire RxD,
-    output wire TxD
+    input wire		   RxD,
+    output wire		   TxD
     );
 
    // Addresses of registers
-   localparam REG_DR= 4'd0; // data
-   localparam REG_CTRL= 4'd1; // Control
-   localparam REG_RSTAT= 4'd2; // Receive Status
-   localparam REG_TSTAT= 4'd3; // Transmit Status
-   localparam REG_CPB= 4'd4; // Cycles per bit
+   localparam		   REG_DR= 4'd0; // data
+   localparam		   REG_CTRL= 4'd1; // Control
+   localparam		   REG_RSTAT= 4'd2; // Receive Status
+   localparam		   REG_TSTAT= 4'd3; // Transmit Status
+   localparam		   REG_CPB= 4'd4; // Cycles per bit
    
    // Bits of RX status register
-   localparam STAT_RXNE= 0;
-   localparam STAT_BREAK= 1;
-   localparam STAT_RXVALID= 2;
+   localparam		   STAT_RXNE= 0;
+   localparam		   STAT_BREAK= 1;
+   localparam		   STAT_RXVALID= 2;
    // Bits of TX status register
-   localparam STAT_TC= 0;
+   localparam		   STAT_TC= 0;
    
    // Bits of control register
-   localparam CTRL_RX_EN= 0;
-   localparam CTRL_TX_EN= 1;
+   localparam		   CTRL_RX_EN= 0;
+   localparam		   CTRL_TX_EN= 1;
 
-   wire 	wr= cs & wen;
+   wire			   wr= cs & wen;
 
    // CONTROL register
-   reg [WIDTH-1:0] control;
+   reg [WIDTH-1:0]	   control;
    always @(posedge clk)
      begin
 	if (reset) control<= 0;
@@ -60,7 +60,7 @@ module uart
    
    // Storage registers
    reg [WIDTH-1:0] regs [3:0];
-   wire 	regs_wen;
+   wire		   regs_wen;
    assign regs_wen= cs & wen & addr[3:2]==2'b11;
    
    initial
@@ -145,18 +145,23 @@ module uart
 	  endcase
      end
    assign rx_not_empty= rx_fsm==FSM_GOT;
+
+   wire [WIDTH-1:0] rstat_value;
+   wire [WIDTH-1:0] tstat_value;
+   assign rstat_value= {29'd0,
+			rx_valid,
+			rx_break,
+			rx_not_empty
+			};
+   assign tstat_value= {31'd0,
+			!tx_busy
+			};
    
    // Output data
    assign dout= (addr==REG_DR)?{24'd0,rx_data}:
 		(addr==REG_CTRL)?control:
-		(addr==REG_RSTAT)?{29'd0,
-				  rx_valid,
-				  rx_break,
-				  rx_not_empty
-				  }:
-		(addr==REG_TSTAT)?{31'd0,
-				  !tx_busy
-				  }:
+		(addr==REG_RSTAT)?rstat_value:
+		(addr==REG_TSTAT)?tstat_value:
 		(addr==REG_CPB)?cycles_per_bit:
 		(addr[3:2]==2'b11)?regs[addr[1:0]]:
 		0;

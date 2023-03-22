@@ -1,6 +1,7 @@
 TB		= tm
 
 include prj.mk
+AW		?= 17
 
 TOOLS		= ./tools
 

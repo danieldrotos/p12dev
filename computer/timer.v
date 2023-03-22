@@ -84,14 +84,17 @@ module timer
    
    reg [WIDTH-1:0] 	    obuf;
 
+   wire			    ovf;
    wire [WIDTH-1:0] 	    counter;
    wire [WIDTH-1:0] 	    cnt_next;
    wire [WIDTH-1:0] 	    cnt_set;
    wire 		    cnt_load;
    wire 		    eq_ar;
-      
-   assign ar_reached= (counter == ar);
+   wire [WIDTH-1:0]	    stat_value;
 
+   assign ar_reached= (counter == ar);
+   assign stat_value= {{(WIDTH-2){1'b0}},ovf,control[0]};
+		      
    assign cnt_next
      =
       (control[0])?
@@ -136,7 +139,7 @@ module timer
 		  obuf<= (addr==REG_CTRL)?control:
 			 (addr==REG_AR  )?ar:
 			 (addr==REG_CNTR)?counter:
-			 (addr==REG_STAT)?{{(WIDTH-2){1'b0}},ovf,control[0]}:
+			 (addr==REG_STAT)?stat_value:
 			 counter;
 	       end // else: !if(wen)
 	  end
