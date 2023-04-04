@@ -1,2 +1,2 @@
-PRG		= examples/counter2
+PRG		= tt
 INSTS		= 2000

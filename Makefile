@@ -40,7 +40,7 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-all: progs utils $(PRG).asc show
+all: progs utils $(PRG).asc $(PRG).p2h $(PRG).cdb show
 
 progs:
 	$(MAKE) -C examples all
