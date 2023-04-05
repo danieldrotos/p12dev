@@ -772,7 +772,9 @@ $debugging= true;
         debug("proc_line; ICODE= ".sprintf("%08x",$icode));
       }
 
-      else if ($W == ".PROC")
+      else if (($W == ".PROC") || 
+	($W == "PROC") ||
+	($W == "CPU"))
       {
 	$w= strtok(" \t");
 	if (($w!==false) && ($w[0]==';'))
@@ -875,7 +877,8 @@ $debugging= true;
 		"inst"=>$insts[$W],
 		"pattern"=>"n_",
 		"address"=>$addr,
-		"params"=>$params
+		"params"=>$params,
+		"cell_type"=>"C"
 	    );
 	    debug( sprintf("mem[%x] Added char DB $pv",$addr) );
 	    $addr++;
@@ -891,7 +894,8 @@ $debugging= true;
 	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
 	      "address"=>$addr,
-	      "params"=>$params
+	      "params"=>$params,
+	      "cell_type"=>"C"
 	  );
 	  debug( sprintf("mem[%x] Added string 0",$addr) );
 	  $addr++;
@@ -914,7 +918,8 @@ $debugging= true;
 	      "inst"=>$insts[$W],
 	      "pattern"=>"n_",
 	      "address"=>$addr,
-	      "params"=>$params
+	      "params"=>$params,
+	      "cell_type"=>"C"
 	  );
 	  debug( sprintf("mem[%x] Added DB $w",$addr) );
 	  $addr++;
@@ -935,7 +940,8 @@ $debugging= true;
             "src"=>$org,
 	    "lnr"=>$lnr,
             "error"=>$error,
-	    "inst"=>$inst
+	    "inst"=>$inst,
+	    "cell_type"=>"I"
         );
         $o= sprintf("%05x %08x", $addr, $icode);
         debug($o);
@@ -1327,7 +1333,7 @@ debug("; PHASE 2 done");
 	debug ($o= sprintf("//; %s", $m["label"]["name"]) );
 	$hex.= $o."\n";
       }*/
-      debug( $o= sprintf("%08x //C %05x %s", $m['icode'], $a, $m["src"]) );
+      debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m["src"]) );
       $hex.= $o."\n";
       if ($m["error"] != false)
       {

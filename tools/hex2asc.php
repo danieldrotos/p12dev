@@ -45,7 +45,7 @@ $mem= array();
       $w3= strtok(" ");
       //echo " w1=$w1 w2=$w2 w3=$w3\n";
       $p1= preg_match('/^[0-9a-fA-F]+$/', $w1);
-      $p2= ($w2=='//C');
+      $p2= ($w2=='//C') || ($w2=='//I');
       $p3= preg_match('/^[0-9a-fA-F]+$/', $w3);
       //echo " p1=$p1 p2=$p2 p3=$p3\n";
       if ($p1 && $p2 && $p3)
