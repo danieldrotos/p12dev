@@ -76,7 +76,8 @@ hw: $(VVP)
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .p2h.asc:
-	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
+	$(MAKE) -C progs2 pmon.p2h
+	php $(TOOLS)/hex2asc.php -m $(AW) progs2/pmon.p2h $< >$@
 
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@

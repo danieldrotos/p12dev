@@ -1,2 +1,2 @@
-PRG		= examples/simif_print2
+PRG		= test
 INSTS		= 2000
