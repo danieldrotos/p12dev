@@ -50,6 +50,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_portj_out;
    wire [WIDTH-1:0] 	    bus_portabcd_out;
    wire [WIDTH-1:0] 	    bus_uart_out;
+   wire [WIDTH-1:0]	    bus_simif_out;	    
    wire [WIDTH-1:0] 	    bus_address;
    wire 		    bus_wen;
       
@@ -214,7 +215,8 @@ module comp //(clk, reset, test_sel, test_out);
       .cs(cs_simif),
       .wen(bus_wen),
       .addr(bus_address[0:0]),
-      .din(bus_data_out)
+      .din(bus_data_out),
+      .dout(bus_simif_out)
       );
 
    assign bus_data_in
@@ -224,6 +226,7 @@ module comp //(clk, reset, test_sel, test_out);
        cs_portj?bus_portj_out:
        cs_portabcd?bus_portabcd_out:
        cs_uart?bus_uart_out:
+       cs_simif?bus_simif_out:
        
        bus_mem_code_out
        ;

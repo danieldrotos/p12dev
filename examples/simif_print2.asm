@@ -1,9 +1,15 @@
 	.proc	p2
-	
+
+porta	equ	0xff00
 simif	equ	0xffff
 
 	mvzl	sp,topof_stack
 
+	mvzl	r1,'_'
+	st	r1,simif
+	ld	r1,simif
+	st	r1,porta
+	
 	mvzl	r1,Hello
 	call	print
 vege:	jmp	vege
