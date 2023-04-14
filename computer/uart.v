@@ -135,7 +135,7 @@ module uart
    always @(posedge clk)
      begin
 	if (reset)
-	  rx_fsm= FSM_IDLE;
+	  rx_fsm<= FSM_IDLE;
 	else
 	  case (rx_fsm)
 	    FSM_IDLE   : rx_fsm<= rx_valid   ? FSM_GOT     : FSM_IDLE;
