@@ -10,7 +10,7 @@ module adder //(ci,ai,bi,res,co,vo);
     output wire 	    co,
     output wire 	    vo
     );
-    
+   /*    
    wire [WIDTH:0] 	    r;
    
    assign r= {1'b0,ai} + {1'b0,bi} + ci;
@@ -19,6 +19,11 @@ module adder //(ci,ai,bi,res,co,vo);
    assign co= r[WIDTH];
    assign vo= (ai[WIDTH-1] & bi[WIDTH-1] & ~r[WIDTH-1]) |
 	      (~ai[WIDTH-1] & ~bi[WIDTH-1] & r[WIDTH-1]);
+   */
+   wire			    c31;
+   assign {c31,res[WIDTH-2:0]}= ai[WIDTH-2:0] + bi[WIDTH-2:0] + ci;
+   assign {co,res[WIDTH-1]}= ai[WIDTH-1] + bi[WIDTH-1] + c31;
+   assign vo= c31 ^ co;
    
 endmodule // adder
 
