@@ -21,7 +21,7 @@ module bool_top
    output wire TxD
    );
    
-   wire RESET=BTN[0];
+   wire RESET= ~BTN[0];
    wire [15:0] LEDS= LED;
    wire 	      res;
 
@@ -200,8 +200,8 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
    
    seg7_2x4 seg7drv
      (
-      .clk            (f1MHz),
-      .reset          (RESET),
+      .clk            (f25MHz),
+      .reset          (res),
       .di             (display_data),
       .segl           (SEGL),
       .anl            (ANL),

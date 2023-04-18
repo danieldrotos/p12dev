@@ -55,7 +55,8 @@ module seg7_1x4
    parameter F      = 8'b0010_0000;
    parameter G      = 8'b0100_0000;
    
-   assign seg = ~(
+   wire [7:0] sego;
+   assign sego = ~(
 		  (digit[3:0] == 4'h0) ? A|B|C|D|E|F :
 		  (digit[3:0] == 4'h1) ? B|C :
 		  (digit[3:0] == 4'h2) ? A|B|G|E|D :
@@ -77,5 +78,7 @@ module seg7_1x4
 		  (digit[3:0] == 4'hf) ? A|F|G|E :
 		  8'b0000_0000
 		  );
+   
+   assign seg= reset?8'hff:sego;
    
 endmodule // seg7_1x4
