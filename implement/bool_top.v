@@ -5,29 +5,24 @@
 
 `define PRG "progs2/pmon.asc"
 
-module n4_top
+module bool_top
   (
    input wire 	      CLK,
-   input wire 	      RESET,
+   //input wire 	      RESET,
    input wire [15:0]  SW,
-   input wire 	      BTNC,
-   input wire 	      BTNU,
-   input wire 	      BTND,
-   input wire 	      BTNL,
-   input wire 	      BTNR,
-   output wire [15:0] LEDS,
-   output wire [7:0]  seg,
-   output wire [7:0]  an,
-   
-   output wire [4:1] JCa,
-   output wire [10:7] JCb,
-   output wire [4:1] JDa,
-   output wire [10:7] JDb,
-   
+   input wire [3:0]   BTN,
+   output wire [15:0] LED,
+   output wire [7:0]  SEGL,
+   output wire [3:0]  ANL,
+   output wire [7:0]  SEGH,
+   output wire [3:0]  ANH,
+ 
    input wire RxD,
    output wire TxD
    );
    
+   wire RESET=BTN[0];
+   wire [15:0] LEDS= LED;
    wire 	      res;
 
    wire 	      f100MHz;
@@ -43,11 +38,7 @@ module n4_top
    wire 	      f10Hz;
    wire 	      f1Hz;
    
-   reg 		      btnc;
-   reg 		      btnu;
-   reg 		      btnd;
-   reg 		      btnl;
-   reg 		      btnr;
+   reg [3:0]	      btn;
    reg [15:0] 	      switches;
    
    wire [3:0] clk_select;
@@ -101,19 +92,6 @@ module n4_top
         .in15(btnc));
    
 BUFG clkg(.I(sel_clk), .O(selected_clk));
-assign JCa[1]= f100MHz;
-assign JCa[2]= f50MHz;
-assign JCa[3]= f25MHz;
-assign JCa[4]= f10MHz;
-assign JCb[7]= TxD;
-assign JCb[8]= f1MHz;
-assign JCb[9]= f100kHz;
-assign JCb[10]=f10kHz;
-
-assign JDa[1]= f1kHz;
-assign JDa[2]= f100Hz;
-assign JDa[3]= f10Hz;
-assign JDa[4]= f1Hz;
 
    always @(posedge selected_clk, posedge res)
      if (res)
@@ -124,12 +102,8 @@ assign JDa[4]= f1Hz;
    
    always @(posedge f100Hz)
      begin
-        btnc= BTNC;
-        btnu= BTNU;
-        btnd= BTND;
-        btnl= BTNL;
-        btnr= BTNR;
-        switches= SW;
+        btn<= BTN;
+        switches<= SW;
      end
    
    reg res_syncer;
@@ -161,14 +135,14 @@ assign JDa[4]= f1Hz;
    
    wire [2:0]  clk_stat;
    
-   assign porti= {27'd0, btnl, btnr, btnu, btnd, btnc};
+   assign porti= {28'd0, btn};
    assign portj= {16'd0, switches};
    comp
      #(
        .PROGRAM        ( `PRG ),
        .CPU_TYPE       ( `CPU_TYPE ),
        .COMP_TYPE      ( `COMP_TYPE ),
-       .MEM_ADDR_SIZE  ( `AW )
+       .MEM_ADDR_SIZE  ( /*`AW*/16 )
        )
    computer
      (
@@ -224,12 +198,15 @@ assign JDa[4]= f1Hz;
         .in15(addr),
         .out(display_data));
    
-   seg7 #(4) seg7drv
+   seg7_2x4 seg7drv
      (
       .clk            (f1MHz),
+      .reset          (RESET),
       .di             (display_data),
-      .seg            (seg),
-      .an             (an)
+      .segl           (SEGL),
+      .anl            (ANL),
+      .segh           (SEGH),
+      .anh            (ANH)
       );
    
    assign LEDS= portb[15:0];
@@ -245,4 +222,4 @@ assign JDa[4]= f1Hz;
 		 };
    */
    
-endmodule // comptest_n4
+endmodule // bool_top
