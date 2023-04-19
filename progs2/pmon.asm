@@ -1350,9 +1350,9 @@ read:
 	;; OUT: -
 putchar:
 	push	r9
-	mvzl	r9,'p'
-	st	r9,SIMIF
-	st	r0,SIMIF
+;	mvzl	r9,'p'
+;	st	r9,SIMIF
+;	st	r0,SIMIF
 	;st	r0,GPIO_PORTA
 	;jmp	putchar_ret
 wait_tc:
