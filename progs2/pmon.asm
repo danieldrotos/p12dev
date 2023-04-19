@@ -619,9 +619,12 @@ l_s1_2nd:
 	cmp	r0,'/'
 	jz	l_cyc
 	cmp	r0,'C'
+	jz	l_s1_C
+	cmp	r0,'I'
 	jnz	l_s1_noC
 l_s1_C:
-	mvzl	r6,'C'
+;	mvzl	r6,'C'
+	mov	r6,r0		; record type is in r0, store in r6
 	;; state1 -> state2
 	mvzl	r10,2
 	mvzl	r9,0		; address= 0
@@ -701,8 +704,10 @@ l_eol:
 l_bad:
 	jmp	l_ret
 l_proc:
-	cmp	r6,'C'		; is it a C record?
-	z st	r8,r9		; store
+	cmp	r6,'C'		; is it a C or I record?
+	z st	r8,r9		; then store
+	cmp	r6,'I'
+	z st	r8,r9
 	mov	r0,r6		; echo record type
 	call	putchar
 l_back_to_0:	

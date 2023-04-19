@@ -941,7 +941,7 @@ $debugging= true;
 	    "lnr"=>$lnr,
             "error"=>$error,
 	    "inst"=>$inst,
-          "cell_type"=> "C" //"I"
+          "cell_type"=> "I" //"I"
         );
         $o= sprintf("%05x %08x", $addr, $icode);
         debug($o);

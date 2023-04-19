@@ -33,6 +33,6 @@ elapsed:
 	jmp	cyc
 	
 last:	dd	0
-period:	dd	500
+period:	dd	2
 	ds	100
 stack:	

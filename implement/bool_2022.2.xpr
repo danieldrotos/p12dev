@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="61" Path="/mhome/staff/drdani/prj/proc1516v/implement/bool_2022.2.xpr">
+<Project Version="7" Minor="61" Path="/extra/drdani/prj/proc1516v/implement/bool_2022.2.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1674eb9463374933aab0455684d79eab"/>
@@ -130,6 +130,13 @@
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/clk_gen.v"/>
           <Attr Name="ImportTime" Val="1544274701"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../computer/clock.v">
+        <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
