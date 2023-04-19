@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.114 (w)1999-2023 BSI
-[*] Sat Mar 18 15:32:27 2023
+[*] Wed Apr 19 08:27:31 2023
 [*]
-[dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Sat Mar 18 15:32:08 2023"
-[dumpfile_size] 5457640
-[savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
+[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Wed Apr 19 08:22:08 2023"
+[dumpfile_size] 158893883
+[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
 [timestart] 0
 [size] 1744 930
 [pos] 42 42
-*-6.026117 107045 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-45.966026 8500000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -67,8 +67,9 @@ tm.comp.genblk1.cpu.ic[31:0]
 tm.comp.genblk1.cpu.wb_data[31:0]
 tm.comp.PORTI[31:0]
 tm.comp.PORTJ[31:0]
-@23
 tm.comp.PORTA[31:0]
+@23
+tm.comp.ms_clock.clock[31:0]
 @c00022
 tm.comp.PORTB[31:0]
 @28

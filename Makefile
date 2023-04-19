@@ -28,7 +28,9 @@ MODS		= defs hwconf \
 		    computer/simif \
 		    computer/uart \
 		    computer/uart_rx \
-		    computer/uart_tx
+		    computer/uart_tx \
+		    computer/clock
+
 
 TB_VER		= $(patsubst %,%.v,$(TB))
 

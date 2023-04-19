@@ -51,9 +51,10 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_portabcd_out;
    wire [WIDTH-1:0] 	    bus_uart_out;
    wire [WIDTH-1:0]	    bus_simif_out;	    
+   wire [WIDTH-1:0]	    bus_clock_out;
    wire [WIDTH-1:0] 	    bus_address;
    wire 		    bus_wen;
-      
+   
    wire irq_timer;
    
    generate
@@ -97,6 +98,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_porti;    // 0xe000     0xff20
    wire 		    cs_timer;    // 0xc000     0xff30
    wire 		    cs_uart;     // -          0xff40
+   wire			    cs_clock;    // -          0xff50
    wire 		    cs_simif;    // 0xffff     0xffff
    wire [15:0] 		    cs_io;
 
@@ -124,6 +126,7 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_porti= cs_io[2];
    assign cs_timer= cs_io[3];
    assign cs_uart= cs_io[4];
+   assign cs_clock= cs_io[5];
    
    memory_1in_1out
      #(
@@ -219,6 +222,17 @@ module comp //(clk, reset, test_sel, test_out);
       .dout(bus_simif_out)
       );
 
+   clock #(.WIDTH(32)) ms_clock
+     (
+      .clk(clk),
+      .reset(reset),
+      .cs(cs_clock),
+      .wen(bus_wen),
+      .addr(bus_address),
+      .din(bus_data_out),
+      .dout(bus_clock_out)
+      );
+   
    assign bus_data_in
      = cs_mem?bus_mem_code_out:
        cs_timer?bus_timer_out:
@@ -227,6 +241,7 @@ module comp //(clk, reset, test_sel, test_out);
        cs_portabcd?bus_portabcd_out:
        cs_uart?bus_uart_out:
        cs_simif?bus_simif_out:
+       cs_clock?bus_clock_out:
        
        bus_mem_code_out
        ;
