@@ -19,8 +19,8 @@ all: \
 	light22 \
 	poll \
 	poll2 \
-	shift_digit \
-	msblink2
+	shift_digit
+
 
 simif_print: simif_print.p2h simif_print.asc simif_print.cdb
 
@@ -51,8 +51,6 @@ light22: light22.p2h light22.asc light22.cdb
 poll: poll.p2h poll.asc poll.cdb
 
 poll2: poll2.p2h poll2.asc poll2.cdb
-
-msblink2: msblink2.p2h msblink2.asc msblink2.cdb
 
 
 .SUFFIXES: .p2h .asm .asc .cdb

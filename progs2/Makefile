@@ -9,7 +9,9 @@ all: pmon_app \
 	uart \
 	uart2 \
 	test \
-	regsave
+	regsave \
+	msblink2
+
 
 counter2: counter2.p2h counter2.asc counter2.cdb
 
@@ -21,6 +23,8 @@ regsave: regsave.p2h regsave.asc regsave.cdb
 
 pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc
 #	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
+
+msblink2: msblink2.p2h msblink2.asc msblink2.cdb
 
 pmon.cc: pmon.p2h
 	php $(TOOLS)/hex2c.php $< >$@

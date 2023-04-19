@@ -47,7 +47,7 @@
       $w1= strtok($l, $sep);
       $w2= strtok($sep);
       $w3= strtok($sep);
-      if ($w2=="//C")
+      if (($w2=="//C") || ($w2=="//I"))
       {
 	$a= intval($w3, 16);
 	$d= intval($w1, 16);
