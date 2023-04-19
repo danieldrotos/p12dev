@@ -2,8 +2,8 @@
 	
 	PRE	= 0xff51
 	CLK	= 0xff50
-	PA	= 0xff00
-	PB	= 0xff01
+	PA	= 0xff00	; seg7= now
+	PB	= 0xff01	; led= blink
 	
 	org	1
 
@@ -33,6 +33,6 @@ elapsed:
 	jmp	cyc
 	
 last:	dd	0
-period:	dd	2
+period:	dd	500
 	ds	100
 stack:	

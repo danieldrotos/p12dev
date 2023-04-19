@@ -1,2 +1,2 @@
-PRG		= examples/msblink2
-INSTS		= 50000
+PRG		= examples/counter2
+INSTS		= 2000
