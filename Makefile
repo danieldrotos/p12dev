@@ -58,6 +58,10 @@ show: sim
 
 sim: $(VCD)
 
+synt: $(VVP)
+
+hw: $(VVP)
+
 $(VCD): $(VVP)
 	vvp $(VVP)
 
@@ -67,8 +71,6 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 		-DINSTS=$(INSTS) \
 		-DIVERILOG=1 \
 		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
-
-hw: $(VVP)
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
