@@ -71,8 +71,8 @@ module clock
 	  else if (cs & wen & sel[i])       bcnt[i]<= din;
    endgenerate
    
-   assign dout= sel[0]?pre:
-		sel[1]?clock:
+   assign dout= sel[0]?clock:
+		sel[1]?pre:
 		sel[2]?bcnt[2]:
 		sel[3]?bcnt[3]:
 		sel[4]?bcnt[4]:
