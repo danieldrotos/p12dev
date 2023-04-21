@@ -42,11 +42,13 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-all: progs utils $(PRG).asc $(PRG).p2h $(PRG).cdb show
+all: progs utils sw
 
 progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
+
+sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
 utils: #hex2asc
 
