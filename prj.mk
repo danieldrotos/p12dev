@@ -1,2 +1,2 @@
-PRG		= examples/simif_print2
+PRG		= progs2/div
 INSTS		= 2000

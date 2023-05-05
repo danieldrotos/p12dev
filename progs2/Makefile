@@ -10,7 +10,8 @@ all: pmon_app \
 	uart2 \
 	test \
 	regsave \
-	msblink2
+	msblink2 \
+	div
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -30,6 +31,8 @@ pmon.cc: pmon.p2h
 	php $(TOOLS)/hex2c.php $< >$@
 
 test: test.p2h test.asc test.cdb
+
+div: div.p2h div.asc div.cdb
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 

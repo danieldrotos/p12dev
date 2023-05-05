@@ -87,8 +87,8 @@ module tm
    // Gombnyomas szimulalasa
    initial
     begin
-       #5000 sw= 1;
-       #100 sw= 0;
+       #5000 btn= 1;
+       #100 btn= 0;
     end
 
    /*
