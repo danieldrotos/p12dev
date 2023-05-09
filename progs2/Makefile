@@ -11,7 +11,8 @@ all: pmon_app \
 	test \
 	regsave \
 	msblink2 \
-	div
+	div \
+	ff
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -33,6 +34,8 @@ pmon.cc: pmon.p2h
 test: test.p2h test.asc test.cdb
 
 div: div.p2h div.asc div.cdb
+
+ff: ff.p2h ff.asc ff.cdb
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 
