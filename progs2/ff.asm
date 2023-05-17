@@ -60,7 +60,7 @@ ido_tabla:
 	dd	500
 	dd	750
 	dd	1000
-		
+	
 ff_leptetes:
 	push	lr
 	ld	r0,run
