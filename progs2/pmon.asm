@@ -640,6 +640,7 @@ l_s1_E:
 	jmp	l_cyc
 l_s1_noE:
 	;; we found a record that can be skipped
+				;
 	call	putchar		; print record type
 	mvzl	r10,0xf		; special state: skip everything
 	jmp	l_cyc

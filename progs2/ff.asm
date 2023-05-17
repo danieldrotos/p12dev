@@ -18,9 +18,11 @@ ffcnt	= 0xff52
 	
 	ldl0	sp,verem
 
-;	ldl0	r0,hello_string
-;	call	print
-
+	call	print_hack
+	db	"a\n"
+vege:
+	jmp	vege
+	
 	ldl0	r0,25000
 	st	r0,pre
 	ldl0	r0,100
@@ -60,7 +62,7 @@ ido_tabla:
 	dd	500
 	dd	750
 	dd	1000
-	
+		
 ff_leptetes:
 	push	lr
 	ld	r0,run
@@ -96,7 +98,34 @@ print_ciklus:
 print_vege:		
 	pop	lr
 	ret
-	
+
+	;; Print string which follows the CALL
+	;; Returns to address after the string
+	;; Input: R14: address of str, must be after CALL
+print_hack:
+	push	r1
+	push	lr
+	push	r2
+	push	r0
+	mov	r0,lr
+	mov	r1,r0
+	ldl0	r2,0
+printh_ciklus:
+	ld	r0,r1+,r2
+	sz	r0
+	Z jmp	printh_vissza
+	call	putchar
+	jmp	printh_ciklus
+	;; R1 points after string 0
+	;; return to that address
+printh_vissza:
+	pop	r0
+	pop	r2
+	pop	lr
+	mov	lr,r1
+	pop	r1
+	ret
+
 ; R0: bit mask of examined BTN
 pressed:
 	push	lr
