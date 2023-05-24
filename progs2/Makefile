@@ -12,7 +12,8 @@ all: pmon_app \
 	regsave \
 	msblink2 \
 	div \
-	ff
+	ff \
+	game
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -36,6 +37,8 @@ test: test.p2h test.asc test.cdb
 div: div.p2h div.asc div.cdb
 
 ff: ff.p2h ff.asc ff.cdb
+
+game: game.p2h game.asc game.cdb
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 

@@ -1,5 +1,6 @@
 
 xfce4-terminal -e "./tnto 5555" -H &
+
 I="-I if=rom[0xffff]"
 #I=""
 xfce4-terminal -e "./tnto 6666" -H &
