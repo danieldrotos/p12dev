@@ -142,7 +142,7 @@ module uart
 	else
 	  case (rx_fsm)
 	    FSM_IDLE   : rx_fsm<= rx_valid   ? FSM_QUEUE   : FSM_IDLE;
-	    FSM_QUEUE  : rx_fsm<= FSM_GOT;
+	    FSM_QUEUE  : rx_fsm<= FSM_IDLE;//FSM_GOT;
 	    FSM_GOT    : rx_fsm<= rx_readout ? FSM_READOUT : FSM_GOT;
 	    FSM_READOUT: rx_fsm<= !rx_valid  ? FSM_IDLE    : FSM_READOUT;
 	    default    : rx_fsm<= FSM_IDLE;
