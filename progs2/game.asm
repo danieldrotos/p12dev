@@ -25,7 +25,13 @@ ffcnt	= 0xff52
 	ld	r0,btn
 	st	r0,last_btn
 
-
+	ldl0	r0,s_clrscr
+	call	prints
+	ldl0	r0,1
+	st	r0,x
+	st	r0,y
+	call	drawit
+	
 	;; MAIN cycle
 	;; ----------------------------------------------------------------
 	;; checks for input events
@@ -67,18 +73,119 @@ proc_input:
 	shl	r1
 	or	r1,r0
 	st	r1,porta
+
+	cmp	r0,32
+	NE jmp	pi_no_space
+	ld	r0,down
+	xor	r0,1
+	st	r0,down
+	ldl0	r0,s_left
+	call	prints
+	call	drawit
+	jmp	pi_end
+	
+pi_no_space:
 	cmp	r0,'w'
 	NE jmp	pi_no_w
-	ldl0	r0,s_clrch
+pi_w:
+	ld	r0,y		; hatar?
+	cmp	r0,1		; y==1
+	EQ jmp	pi_end
+	ld	r0,down
+	sz	r0
+	Z ldl0	r0,s_clrch	; clear *
+	NZ ldl0	r0,s_left
 	call	prints
+	ld	r0,y		; y--
+	dec	r0
+	st	r0,y
+	ldl0	r0,s_up		; cursor UP
+	call	prints
+	call	drawit	
 	jmp	pi_end
+
 pi_no_w:
-	call	putchar
+	cmp	r0,'a'
+	NE jmp	pi_no_a
+pi_a:
+	ld	r0,x		; hatar?
+	cmp	r0,1		; x==1
+	EQ jmp	pi_end
+	ld	r0,down
+	sz	r0
+	Z ldl0	r0,s_clrch	; clear *
+	NZ ldl0	r0,s_left
+	call	prints
+	ld	r0,x		; x--
+	dec	r0
+	st	r0,x
+	ldl0	r0,s_left	; cursor LEFT
+	call	prints
+	call	drawit
+	jmp	pi_end
+
+pi_no_a:
+	cmp	r0,'s'
+	NE jmp	pi_no_s
+pi_s:
+	ld	r0,y		; hatar?
+	cmp	r0,24		; y==24
+	EQ jmp	pi_end
+	ld	r0,down
+	sz	r0
+	Z ldl0	r0,s_clrch	; clear *
+	NZ ldl0	r0,s_left
+	call	prints
+	ld	r0,y		; y++
+	inc	r0
+	st	r0,y
+	ldl0	r0,s_down	; cursor DOWN
+	call	prints
+	call	drawit
+	jmp	pi_end
+	
+pi_no_s:
+	cmp	r0,'d'
+	NE jmp	pi_no_d
+pi_d:
+	ld	r0,x		; hatar?
+	cmp	r0,79		; x==79
+	EQ jmp	pi_end
+	ld	r0,down
+	sz	r0
+	Z ldl0	r0,s_clrch	; clear *
+	NZ ldl0	r0,s_left
+	call	prints
+	ld	r0,x		; x++
+	inc	r0
+	st	r0,x
+	ldl0	r0,s_right	; cursor RIGHT
+	call	prints
+	call	drawit
+	jmp	pi_end
+
+pi_no_d:
+	;call	putchar
 pi_end:	
 	pop	lr
 	ret
 s_clrch: db	"\e[D \e[D"
+s_up:	db	"\e[A"
+s_down:	db	"\e[B"
+s_left:	db	"\e[D"
+s_right: db	"\e[C"
 
+drawit:
+	push	lr
+	push	r0
+	ld	r0,down
+	sz	r0
+	Z ldl0	r0,'o'
+	NZ ldl0	r0,'*'
+	call	putchar
+	pop	r0
+	pop	lr
+	ret
 	
 	;; Check button press
 	;; ----------------------------------------------------------------
@@ -158,8 +265,16 @@ div_ret:
 
 	;; Varialbles
 	;; ----------------------------------------------------------------
+s_clrscr: db	"\e[2J\e[H"
+
 last_btn:
 	ds	1
+x:
+	ds	1
+y:
+	ds	1
+down:
+	dd	0
 counter:
 	dd	0
 
