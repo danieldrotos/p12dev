@@ -4,7 +4,9 @@
 	CTRL	equ	0xff41
 	RSTAT	equ	0xff42
 	TSTAT	equ	0xff43
-
+	CPB	equ	0xff44
+	QUEUE	equ	0xff45
+	
 	org	1
 	mvl	SP,0x1ffff
 	mvh	SP,0x1ffff

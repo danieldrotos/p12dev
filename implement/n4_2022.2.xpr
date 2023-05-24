@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="61" Path="/extra/drdani/prj/proc1516v/implement/n4_2022.2.xpr">
+<Project Version="7" Minor="61" Path="/mhome/staff/drdani/prj/proc1516v/implement/n4_2022.2.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1674eb9463374933aab0455684d79eab"/>
@@ -292,6 +292,13 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
+      <File Path="$PPRDIR/../hwconf.v">
+        <FileInfo SFType="VHeader">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+          <Attr Name="IsVisible" Val="1"/>
+        </FileInfo>
+      </File>
       <File Path="$PPRDIR/n4_top.v">
         <FileInfo>
           <Attr Name="ImportPath" Val="$PPRDIR/n4_top.v"/>
@@ -302,6 +309,12 @@
         </FileInfo>
       </File>
       <File Path="$PPRDIR/../progs2/pmon.asc">
+        <FileInfo SFType="MIF">
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PPRDIR/../progs2/uart2.asc">
         <FileInfo SFType="MIF">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>

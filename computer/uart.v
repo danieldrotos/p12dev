@@ -36,7 +36,8 @@ module uart
    localparam		   CTRL_TX_EN= 1;
 
    wire			   wr= cs & wen;
-
+   wire			   rd= cs & ~wen;
+			   
    // CONTROL register
    reg [WIDTH-1:0]	   control;
    always @(posedge clk)
@@ -154,9 +155,9 @@ module uart
    wire [7:0]	    queue_out;
    wire		    queue_empty;
    wire		    queue_full;
-   wire [6:0]	    queue_raddr;
-   wire [6:0]	    queue_waddr;
-   fifo #(.WIDTH(8), .ADDR_WIDTH(7)) ufifo
+   wire [3:0]	    queue_raddr;
+   wire [3:0]	    queue_waddr;
+   fifo #(.WIDTH(8), .ADDR_WIDTH(4)) ufifo
      (
       .clk(clk),
       .reset(reset),
@@ -171,12 +172,14 @@ module uart
       );
 
    
-    wire [WIDTH-1:0] rstat_value;
+   wire [WIDTH-1:0] rstat_value;
    wire [WIDTH-1:0] tstat_value;
-   assign rstat_value= {/* xx00 0000 */ {1'b0,queue_raddr},
-			/* 00xx 0000 */ {1'b0,queue_waddr},
+   assign rstat_value= {/* x000 0000 */ queue_raddr,
+			/* 0x00 0000 */ queue_waddr,
+			/* 00xx 0000 */ rx_data,
 			/* 0000 xx00 */ queue_out,
-			2'b0,
+			/* 0000 0080 */ rx_fsm,
+			/* 0000 0040 */ 
 			/* 0000 0020 */ queue_full,
 			/* 0000 0010 */ queue_empty,
 			/* 0000 0008 */~queue_empty,
