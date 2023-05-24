@@ -33,15 +33,22 @@ main_cyc:
 	ldl0	r0,2
 	call	pressed
 	NC jmp	nopress2
+	;; press btn[1]: BTND
 	ld	r0,QUEUE
 	st	r0,LED
 	call	send
 nopress2:	
-	;call	check_input
+	ldl0	r0,4
+	call	pressed
+	NC jmp	nopress4
+	;; press btn[2]: BTNU
 	call	check_queue
-	jz	main_cyc	
-	;ld	r0,DR
+	jz	nopress4
 	ld	r0,QUEUE
+	jmp	got_char
+nopress4:	
+	call	check_queue
+	jmp	main_cyc
 got_char:
 	cmp	r0,10
 	jz	echo_it
