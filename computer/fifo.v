@@ -31,7 +31,7 @@ module fifo
    assign empty= rd_addr == wr_addr;
    assign full = rd_addr == waddr1;
 
-
+   /*
    always @(posedge clk)
      begin
 	if (reset)
@@ -39,7 +39,15 @@ module fifo
 	else if (rd & ~empty)
 	  rd_addr<= raddr1;
      end
-
+    */
+   always @(negedge rd, posedge reset)
+     begin
+	if (reset)
+	  rd_addr<= 0;
+	else if (~empty)
+	  rd_addr<= raddr1;
+     end
+   
    always @(posedge clk)
      begin
 	if (reset)

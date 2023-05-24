@@ -12,9 +12,12 @@
 	PORTB	equ	0xff01
 	LED	equ	0xff01
 
-	sw	=	0xff10
-	btn	=	0xff20
+	sw	equ	0xff10
+	btn	equ	0xff20
 
+check_uart	=	0xf008
+read		=	0xf00d
+	
 	org	0
 	ldl0	sp,stack
 
@@ -30,35 +33,46 @@
 start:	
 
 main_cyc:
+	call	check_input
+	NZ ld	r0,DR
+	jnz	got_char
+	jmp	main_cyc
+
+
+	jmp	nopress4
 	ldl0	r0,2
 	call	pressed
 	NC jmp	nopress2
 	;; press btn[1]: BTND
-	ld	r0,QUEUE
-	st	r0,LED
+	call	check_uart
+	NC jmp	nopress2
+	call	read
 	call	send
 nopress2:	
 	ldl0	r0,4
 	call	pressed
 	NC jmp	nopress4
 	;; press btn[2]: BTNU
-	call	check_queue
+	call	check_input
 	jz	nopress4
 	ld	r0,QUEUE
 	jmp	got_char
 nopress4:	
-	call	check_queue
+	call	check_input
+	NZ ld	r0,DR
+	jnz	got_char
 	jmp	main_cyc
+	
 got_char:
 	cmp	r0,10
 	jz	echo_it
 	cmp	r0,13
 	jz	echo_it
 not_eol:
-	mvzl	r2,0x20
-	xor	r2,0xffff
-	sew	r2
-	and	r0,r2		; covert to UPCASE
+	;mvzl	r2,0x20
+	;xor	r2,0xffff
+	;sew	r2
+	;and	r0,r2		; covert to UPCASE
 echo_it:
 	call	send
 	jmp	main_cyc
@@ -86,16 +100,10 @@ send:
 	
 check_input:
 	;push	lr
-	mvzl	r2,RSTAT
-	ld	r4,r2
-	test	r4,1		; Z=0 Received avail
-	;pop	LR
-	ret
-	
-check_queue:
 	ld	r4,RSTAT
 	st	r4,DSP
-	test	r4,8
+	test	r4,1		; Z=0 Received avail
+	;pop	LR
 	ret
 	
 	

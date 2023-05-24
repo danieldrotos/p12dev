@@ -1318,8 +1318,7 @@ check_uart:
 	push	r0
 	ld	r0,UART_RSTAT
 	; Z=1: nochar Z=0: input avail
-	;test	r0,1
-	test	r0,8		; check if queue is not empty
+	test	r0,1		; check if queue is not empty
 	clc
 	Z0 sec
 	pop	r0
@@ -1369,8 +1368,7 @@ check_uart:
 	;; IN: -
 	;; OUT: R0
 read:
-	;ld	r0,UART_DR
-	ld	r0,UART_QUEUE
+	ld	r0,UART_DR
 	ret
 	
 ;; 	push	r1

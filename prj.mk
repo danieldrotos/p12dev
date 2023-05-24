@@ -1,2 +1,2 @@
-PRG		= progs2/atoi
+PRG		= progs2/uart2
 INSTS		= 2000

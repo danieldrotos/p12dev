@@ -37,7 +37,8 @@ module uart
 
    wire			   wr= cs & wen;
    wire			   rd= cs & ~wen;
-			   
+   wire			   rd_data= rd & (addr==REG_QUEUE) | (addr==REG_DR);
+   
    // CONTROL register
    reg [WIDTH-1:0]	   control;
    always @(posedge clk)
@@ -63,7 +64,7 @@ module uart
    // Storage registers
    reg [WIDTH-1:0] regs [3:0];
    wire		   regs_wen;
-   assign regs_wen= cs & wen & addr[3:2]==2'b11;
+   assign regs_wen= wr & addr[3:2]==2'b11;
    
    initial
      begin
@@ -133,7 +134,7 @@ module uart
    reg [1:0]  rx_fsm= FSM_IDLE;
    wire       rx_readout;
    wire       rx_not_empty;
-   assign rx_readout= cs & !wen & ((addr==REG_DR) | (addr==REG_QUEUE)); 
+   assign rx_readout= rd_data; 
    
    always @(posedge clk)
      begin
@@ -155,13 +156,13 @@ module uart
    wire [7:0]	    queue_out;
    wire		    queue_empty;
    wire		    queue_full;
-   wire [3:0]	    queue_raddr;
-   wire [3:0]	    queue_waddr;
-   fifo #(.WIDTH(8), .ADDR_WIDTH(4)) ufifo
+   wire [6:0]	    queue_raddr;
+   wire [6:0]	    queue_waddr;
+   fifo #(.WIDTH(8), .ADDR_WIDTH(7)) ufifo
      (
       .clk(clk),
       .reset(reset),
-      .rd(rd & (addr==REG_QUEUE)),
+      .rd(rd_data),
       .wr(rx_fsm == FSM_QUEUE),
       .din(rx_data),
       .dout(queue_out),
@@ -174,25 +175,24 @@ module uart
    
    wire [WIDTH-1:0] rstat_value;
    wire [WIDTH-1:0] tstat_value;
-   assign rstat_value= {/* x000 0000 */ queue_raddr,
-			/* 0x00 0000 */ queue_waddr,
-			/* 00xx 0000 */ rx_data,
+   assign rstat_value= {/* xx00 0000 */ {1'b0,queue_raddr},
+			/* 00xx 0000 */ {1'b0,queue_waddr},
 			/* 0000 xx00 */ queue_out,
 			/* 0000 0080 */ rx_fsm,
 			/* 0000 0040 */ 
 			/* 0000 0020 */ queue_full,
 			/* 0000 0010 */ queue_empty,
-			/* 0000 0008 */~queue_empty,
+			/* 0000 0008 */ rx_not_empty,
 			/* 0000 0004 */ rx_valid,
 			/* 0000 0002 */ rx_break,
-			/* 0000 0001 */ rx_not_empty
+			/* 0000 0001 */~queue_empty
 			};
    assign tstat_value= {31'd0,
 			!tx_busy
 			};
    
    // Output data
-   assign dout= (addr==REG_DR)?{24'd0,rx_data}:
+   assign dout= (addr==REG_DR)?{24'd0,/*rx_data*/queue_out}:
 		(addr==REG_CTRL)?control:
 		(addr==REG_RSTAT)?rstat_value:
 		(addr==REG_TSTAT)?tstat_value:
