@@ -96,7 +96,8 @@ got_char:
 	ret
 
 	
-echo:	
+echo:
+	push	lr
 	cmp	r0,10
 	jz	echo_it
 	cmp	r0,13
@@ -108,6 +109,7 @@ not_eol:
 	;and	r0,r2		; covert to UPCASE
 echo_it:
 	call	send
+	pop	lr
 	ret
 	
 	
@@ -115,7 +117,12 @@ end:	jmp	start
 
 	
 half_bit_delay:	
-	mvzl	r8,20		; dummy half bit time delay
+	;mvzl	r8,20		; dummy half bit time delay
+	ld	r8,sw
+	btst	r8,255
+	st	r8,PORTD
+	sz	r8
+	Z ret
 fake_cyc:
 	dec	r8
 	jnz	fake_cyc
@@ -141,9 +148,9 @@ send_cyc:
 	jz	send_cyc
 	jnz	tx_send
 tx_first_ready:
-	ld	r4,PORTD
-	add	r4,1
-	st	r4,PORTD
+	;ld	r4,PORTD
+	;add	r4,1
+	;st	r4,PORTD
 tx_send:	
 	st	r0,DR		; put R0 in uart DR
 	ld	r5,PORTC
