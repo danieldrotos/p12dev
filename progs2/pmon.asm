@@ -6,6 +6,7 @@
 	UART_RSTAT	=	0xff42
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
+	UART_QUEUE	=	0xff45
 	GPIO_PORTA	=	0xff00
 	GPIO_PORTI	=	0xff20
 	IO_END		=	0xffff
@@ -511,6 +512,55 @@ m_ret:
 m_err_addr:	db	"Address error"
 m_err_addrv:	db	"Monitor's address"
 m_err_value:	db	"Value error"
+
+	
+;;; SM ADDR VALUE
+cmd_sm:
+	push	lr
+	mvzl	r2,words
+	mvzl	r0,0
+	;ld	r3,r0+,r2	; "m"
+	ld	r4,r2,1		; addr
+	ld	r5,r2,2		; value
+	sz 	r4
+	jz	m_ret
+	
+	mov	r0,r4
+	call	htoi
+	mov	r4,r1
+	C1 jmp	sm_addr_ok
+	mvzl	r0,m_err_addr
+	call	printsnl
+	jmp	sm_ret
+sm_addr_ok:
+	sz	r5
+	jz	sm_ret
+sm_write:
+	mvzl	r3,the_begin
+	cmp	r3,r4
+	HI jmp	sm_addrv_ok
+	mvzl	r3,the_end
+	cmp	r3,r4
+	HI jmp	sm_addrv_nok
+	jmp	sm_addrv_ok
+sm_addrv_nok:	
+	mvzl	r0,m_err_addrv
+	call	printsnl
+	jmp	sm_ret
+sm_addrv_ok:
+	mov	r0,r5
+	call	htoi
+	mov	r5,r1
+	C1 jmp	sm_value_ok
+	mvzl	r0,m_err_value
+	call	printsnl
+	jmp	sm_ret
+sm_value_ok:
+	st	r5,r4
+	;jmp	m_ret
+sm_ret:
+	pop	lr
+	ret
 
 
 ;;; D start end
@@ -1268,7 +1318,7 @@ check_uart:
 	push	r0
 	ld	r0,UART_RSTAT
 	; Z=1: nochar Z=0: input avail
-	test	r0,1
+	test	r0,1		; check if queue is not empty
 	clc
 	Z0 sec
 	pop	r0
@@ -1501,6 +1551,8 @@ sc_buffer:	ds	10
 
 ;;; Command table
 commands:
+	dd	cmd_sm		; Set Memory address value
+	db	"sm"
 	dd	cmd_m		; M(emory) address [value]
 	db	"m"
 	dd	cmd_m		; Mem(ory) address [value]

@@ -1,5 +1,6 @@
 
 xfce4-terminal -T "UART" -e "./tnto 5555" -H &
+
 I="-I if=rom[0xffff]"
 #I=""
 xfce4-terminal -T "cmd1" -e "./tnto 6666" -H &
