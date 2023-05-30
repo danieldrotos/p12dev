@@ -21,23 +21,25 @@ read		=	0xf00d
 	org	0
 	ldl0	sp,stack
 
-	ld	r0,btn
+	ld	r0,btn		; prepare press detect
 	st	r0,last_btn
+	
 	mvzl	r1,0x3		; enable rx, tx
 	mvzl	r2,CTRL
 	st	r1,r2
 	
 	mvzl	r1,'>'		; send prompt
-	mvzl	r2,DR
-	st	r1,r2
+	st	r1,DR
 start:	
 
 main_cyc:
-	call	check_input
-	NZ ld	r0,DR
-	jnz	got_char
-	jmp	main_cyc
-
+	;call	check_input	; call check input
+	ld	r4,RSTAT	; checkin: read RSTAT
+	st	r4,DSP		; display RSTAT
+	test	r4,1		; Z=0 Received avail
+	NZ ld	r0,DR		; avail: read UART DR
+	jnz	got_char	; avail: jump to handle
+	jmp	main_cyc	; main cycle
 
 	jmp	nopress4
 	ldl0	r0,2
@@ -83,25 +85,24 @@ end:	jmp	start
 wait_tx:
 	;push	LR
 	;mvzl	r2,TSTAT
-wait_cyc:
-	ld	r3,TSTAT
-	btst	r3,1
-	jz	wait_cyc
+wait_cyc:			; wait_tx routine
+	ld	r3,TSTAT	; read TSTAT
+	test	r3,1		; check TC bit
+	jz	wait_cyc	; wait tx cycle
 	;pop	LR
 	ret
 
 send:
-	push	LR
-	call	wait_tx
-	mvzl	r2,DR
-	st	r0,r2
+	push	LR		; send routine
+	call	wait_tx		; call wait_tx
+	st	r0,DR		; put R0 in uart DR
 	pop	LR
 	ret
 	
 check_input:
 	;push	lr
-	ld	r4,RSTAT
-	st	r4,DSP
+	ld	r4,RSTAT	; checkin: read RSTAT
+	st	r4,DSP		; display RSTAT
 	test	r4,1		; Z=0 Received avail
 	;pop	LR
 	ret

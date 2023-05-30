@@ -40,13 +40,31 @@ module tm
    reg [3:0]   test_rsel;
    reg [31:0]  btn= 0;
    reg [31:0]  sw= 0;
-   reg 	       rxd= 1;
    wire [31:0] test_out, test_reg;
    wire [31:0] porta, portb, portc, portd;
 
    // 1 utasitas 8 ciklus ideig tart (4 orajel)
    always #1 clk= !clk;
    always #20 ioclk= ~ioclk;
+
+   reg	       ucs= 0;
+   reg	       uwen= 1;
+   reg [3:0]   uaddr= 0;
+   reg [7:0]   udin= 0;
+   wire	       utx;
+   uart sender(.clk(clk),.reset(reset),
+	       .cs(ucs),
+	       .wen(uwen),
+	       .addr(uaddr),
+	       .din(udin),
+	       .RxD(1'b1),
+	       .TxD(utx));
+   initial
+     begin
+	#50 udin=3; uaddr=1; ucs=1; #2 ucs=0;
+	#5000 udin=8'h41; uaddr=0; ucs=1; #2 ucs=0;
+	#15000 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
+     end
    
    comp
      #(
@@ -66,12 +84,12 @@ module tm
       .PORTB(portb),
       .PORTC(portc),
       .PORTD(portd),
-      .RxD(rxd),
       .test_sel(test_sel),
       .test_out(test_out),
       .test_rsel(test_rsel),
       .test_reg(test_reg),
-      .clk10m(ioclk)
+      .clk10m(ioclk),
+      .RxD(utx)
       );
 
    // Test kimenet kivalasztasa

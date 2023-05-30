@@ -31,6 +31,13 @@ module fifo
    assign empty= rd_addr == wr_addr;
    assign full = rd_addr == waddr1;
 
+   integer		    i;
+   initial
+     begin
+	for (i=0;i<2**ADDR_WIDTH;i=i+1)
+	  mem[i]= 0;
+     end
+   
    /*
    always @(posedge clk)
      begin

@@ -37,7 +37,9 @@ module uart
 
    wire			   wr= cs & wen;
    wire			   rd= cs & ~wen;
-   wire			   rd_data= rd & (addr==REG_QUEUE) | (addr==REG_DR);
+   wire			   addr_is_queue= (addr==REG_QUEUE);
+   wire			   addr_is_dr= (addr==REG_DR);
+   wire			   rd_data= rd & (addr_is_queue | addr_is_dr);
    
    // CONTROL register
    reg [WIDTH-1:0]	   control;

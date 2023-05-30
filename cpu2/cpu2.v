@@ -289,8 +289,8 @@ module cpu2
    wire [WIDTH-1:0] addr_phw;
 
    assign addr_phf= pc;
-   assign addr_phe= inst_ld?aof_ldst:pc;
-   assign addr_phm= (inst_ld|inst_st)?aof_ldst:pc;
+   assign addr_phe= (inst_ld&ena)?aof_ldst:pc;
+   assign addr_phm= ((inst_ld|inst_st)&ena)?aof_ldst:pc;
    assign addr_phw= (inst_br&ena)?wb_data:pc;
    assign mbus_aout= phf?addr_phf:
 		     phe?addr_phe:
