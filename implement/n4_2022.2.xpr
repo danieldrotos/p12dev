@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="61" Path="/extra/drdani/prj/proc1516v/implement/n4_2022.2.xpr">
+<Project Version="7" Minor="61" Path="/mhome/staff/drdani/prj/proc1516v/implement/n4_2022.2.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1674eb9463374933aab0455684d79eab"/>

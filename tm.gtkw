@@ -1,18 +1,19 @@
 [*]
-[*] GTKWave Analyzer v3.3.114 (w)1999-2023 BSI
-[*] Tue May 30 09:22:36 2023
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue May 30 13:20:42 2023
 [*]
-[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Tue May 30 09:19:29 2023"
-[dumpfile_size] 30046970
-[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 9175620000000
+[dumpfile] "/mhome/staff/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Tue May 30 13:17:56 2023"
+[dumpfile_size] 37698473
+[savefile] "/mhome/staff/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 0
 [size] 1744 908
 [pos] 145 77
-*-34.044296 9222000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-42.044296 9306000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
+[treeopen] tm.comp.genblk1.cpu.
 [treeopen] tm.comp.io_uart.
 [sst_width] 269
 [signals_width] 283
@@ -157,7 +158,7 @@ tm.comp.genblk1.cpu.regs.r0out[31:0]
 tm.comp.genblk1.cpu.regs.r1out[31:0]
 tm.comp.genblk1.cpu.regs.r2out[31:0]
 tm.comp.genblk1.cpu.regs.r3out[31:0]
-@c00023
+@c00022
 tm.comp.genblk1.cpu.regs.r4out[31:0]
 @28
 (0)tm.comp.genblk1.cpu.regs.r4out[31:0]
@@ -192,13 +193,19 @@ tm.comp.genblk1.cpu.regs.r4out[31:0]
 (29)tm.comp.genblk1.cpu.regs.r4out[31:0]
 (30)tm.comp.genblk1.cpu.regs.r4out[31:0]
 (31)tm.comp.genblk1.cpu.regs.r4out[31:0]
-@1401201
+@1401200
 -group_end
+@23
+tm.comp.genblk1.cpu.regs.r8out[31:0]
 @28
 tm.utx
 tm.comp.io_uart.TxD
 tm.comp.io_uart.utx_wen
+tm.comp.io_uart.urx.next_bit
+tm.comp.io_uart.urx.fsm_state[2:0]
+tm.comp.io_uart.urx.bit_sample
 @22
+tm.comp.io_uart.urx.bit_counter[3:0]
 tm.comp.io_uart.queue_raddr[6:0]
 tm.comp.io_uart.queue_waddr[6:0]
 @28

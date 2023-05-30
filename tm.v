@@ -63,7 +63,10 @@ module tm
      begin
 	#50 udin=3; uaddr=1; ucs=1; #2 ucs=0;
 	#5000 udin=8'h41; uaddr=0; ucs=1; #2 ucs=0;
-	#15000 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
+	#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
+	#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
+	#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;
+	#4370 udin=8'h42; uaddr=0; ucs=1; #2 ucs=0;
      end
    
    comp

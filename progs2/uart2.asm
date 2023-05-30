@@ -6,12 +6,15 @@
 	TSTAT	equ	0xff43
 	CPB	equ	0xff44
 	QUEUE	equ	0xff45
-
+	IRA	equ	0xff46
+	
 	PORTA	equ	0xff00
 	DSP	equ	0xff00
 	PORTB	equ	0xff01
 	LED	equ	0xff01
-
+	PORTC	equ	0xff02
+	PORTD	equ	0xff03
+	
 	sw	equ	0xff10
 	btn	equ	0xff20
 
@@ -19,38 +22,48 @@ check_uart	=	0xf008
 read		=	0xf00d
 	
 	org	0
+	nop
 	ldl0	sp,stack
 
+	ld	r0,0
+	st	r0,PORTA
+	st	r0,PORTB
+	st	r0,PORTC
+	st	r0,PORTD
+	
 	ld	r0,btn		; prepare press detect
 	st	r0,last_btn
+
+	;mvzl	r0,434		; 57600 baud
+	;st	r0,CPB
+	mvzl	r0,0x3		; enable rx, tx
+	st	r0,CTRL
 	
-	mvzl	r1,0x3		; enable rx, tx
-	mvzl	r2,CTRL
-	st	r1,r2
-	
-	mvzl	r1,'>'		; send prompt
-	st	r1,DR
+	mvzl	r0,'>'		; send prompt
+	st	r0,DR
 start:	
 
 main_cyc:
 	;call	check_input	; call check input
 	ld	r4,RSTAT	; checkin: read RSTAT
-	st	r4,DSP		; display RSTAT
+	st	r4,PORTA	; display RSTAT
 	test	r4,1		; Z=0 Received avail
-	NZ ld	r0,DR		; avail: read UART DR
-	jnz	got_char	; avail: jump to handle
-	jmp	main_cyc	; main cycle
+	NZ call	got_char	; avail: jump to handle
+	;jmp	main_cyc	; main cycle
 
-	jmp	nopress4
-	ldl0	r0,2
+	ldl0	r0,2		; check btn[1]
 	call	pressed
-	NC jmp	nopress2
 	;; press btn[1]: BTND
+	C call	0xf000		; enter monitor
+
+	jmp	main_cyc
+
+;;; ;;;
 	call	check_uart
-	NC jmp	nopress2
+	NC jmp	nochar
 	call	read
 	call	send
-nopress2:	
+nochar:	
 	ldl0	r0,4
 	call	pressed
 	NC jmp	nopress4
@@ -64,8 +77,26 @@ nopress4:
 	NZ ld	r0,DR
 	jnz	got_char
 	jmp	main_cyc
+
 	
 got_char:
+	push	lr
+	ld	r0,DR		; avail: read UART DR
+
+	call	half_bit_delay
+	
+	st	r0,IRA		; inc raddr counter in fifo
+
+	ld	r1,PORTB
+	add	r1,1
+	st	r1,PORTB
+
+	call	echo
+	pop	lr
+	ret
+
+	
+echo:	
 	cmp	r0,10
 	jz	echo_it
 	cmp	r0,13
@@ -77,26 +108,48 @@ not_eol:
 	;and	r0,r2		; covert to UPCASE
 echo_it:
 	call	send
-	jmp	main_cyc
+	ret
+	
 	
 end:	jmp	start
 
 	
+half_bit_delay:	
+	mvzl	r8,20		; dummy half bit time delay
+fake_cyc:
+	dec	r8
+	jnz	fake_cyc
+	ret
+
+	
 wait_tx:
-	;push	LR
-	;mvzl	r2,TSTAT
 wait_cyc:			; wait_tx routine
 	ld	r3,TSTAT	; read TSTAT
 	test	r3,1		; check TC bit
-	jz	wait_cyc	; wait tx cycle
-	;pop	LR
+	Z jmp	wait_cyc	; wait tx cycle
 	ret
 
 send:
-	push	LR		; send routine
-	call	wait_tx		; call wait_tx
+	;push	LR		; send routine
+	;call	wait_tx		; call wait_tx
+	ld	r3,TSTAT
+	test	r3,1
+	jnz	tx_first_ready
+send_cyc:
+	ld	r3,TSTAT
+	test	r3,1
+	jz	send_cyc
+	jnz	tx_send
+tx_first_ready:
+	ld	r4,PORTD
+	add	r4,1
+	st	r4,PORTD
+tx_send:	
 	st	r0,DR		; put R0 in uart DR
-	pop	LR
+	ld	r5,PORTC
+	add	r5,1
+	st	r5,PORTC
+	;pop	LR
 	ret
 	
 check_input:

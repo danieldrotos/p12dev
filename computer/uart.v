@@ -23,6 +23,7 @@ module uart
    localparam		   REG_TSTAT	= 4'd3; // Transmit Status
    localparam		   REG_CPB	= 4'd4; // Cycles per bit
    localparam		   REG_QUEUE 	= 4'd5; // Rx fifo read
+   localparam		   REG_INC_RADDR= 4'd6;
 
    // Bits of RX status register
    localparam		   STAT_RXNE= 0;
@@ -36,6 +37,9 @@ module uart
    localparam		   CTRL_TX_EN= 1;
 
    wire			   wr= cs & wen;
+   wire 		   addr_is_ira= (addr==REG_INC_RADDR);
+   wire 		   wr_ira= wr & addr_is_ira;
+   
    wire			   rd= cs & ~wen;
    wire			   addr_is_queue= (addr==REG_QUEUE);
    wire			   addr_is_dr= (addr==REG_DR);
@@ -164,7 +168,7 @@ module uart
      (
       .clk(clk),
       .reset(reset),
-      .rd(rd_data),
+      .rd(/*rd_data*/wr_ira),
       .wr(rx_fsm == FSM_QUEUE),
       .din(rx_data),
       .dout(queue_out),
