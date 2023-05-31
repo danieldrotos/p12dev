@@ -15,14 +15,15 @@ module uart_rx
     parameter STOP_BITS   = 1
     )
    (
-    input wire 			  clk , // Top level system clock input.
-    input wire 			  resetn , // Asynchronous active low reset.
-    input wire 			  uart_rxd , // UART Recieve pin.
-    input wire 			  uart_rx_en , // Recieve enable
-    output wire 		  uart_rx_break, // Did we get a BREAK message?
-    output wire 		  uart_rx_valid, // Valid data recieved and available.
+    input wire			  clk , // Top level system clock input.
+    input wire			  resetn , // Asynchronous active low reset.
+    input wire			  uart_rxd , // UART Recieve pin.
+    input wire			  uart_rx_en , // Recieve enable
+    output wire			  uart_rx_break, // Did we get a BREAK message?
+    output wire			  uart_rx_valid, // Valid data recieved and available.
     output reg [PAYLOAD_BITS-1:0] uart_rx_data, // The recieved data.
-    input [31:0] 		  cycles_per_bit
+    input [31:0]		  cycles_per_bit,
+    output wire [31:0]		  uart_rx_char_count
     );
    
    // --------------------------------------------------------------------------- 
@@ -204,5 +205,15 @@ always @(posedge clk) begin : p_rxd_reg
     end
 end
 
+   reg [31:0] char_count;
 
+   always @(posedge clk)
+     if (!resetn)
+       char_count<= 0;
+     else
+       if ((fsm_state == FSM_START) & next_bit)
+	 char_count<= char_count+1;
+
+   assign uart_rx_char_count= char_count;
+   
 endmodule

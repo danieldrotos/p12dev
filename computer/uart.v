@@ -24,7 +24,8 @@ module uart
    localparam		   REG_CPB	= 4'd4; // Cycles per bit
    localparam		   REG_QUEUE 	= 4'd5; // Rx fifo read
    localparam		   REG_INC_RADDR= 4'd6;
-
+   localparam		   REG_CHAR_COUNT= 4'd7;
+   
    // Bits of RX status register
    localparam		   STAT_RXNE= 0;
    localparam		   STAT_BREAK= 1;
@@ -118,6 +119,7 @@ module uart
    wire rx_break;
    wire rx_valid;
    wire [7:0] rx_data;
+   wire [31:0] rx_char_count;
    assign rx_en= control[CTRL_RX_EN];
 
    uart_rx urx
@@ -129,7 +131,8 @@ module uart
       .uart_rx_break(rx_break),
       .uart_rx_valid(rx_valid),
       .uart_rx_data (rx_data),
-      .cycles_per_bit (cycles_per_bit)
+      .cycles_per_bit (cycles_per_bit),
+      .uart_rx_char_count (rx_char_count)
       );
 
    localparam FSM_IDLE		= 2'b00;
@@ -204,6 +207,7 @@ module uart
 		(addr==REG_TSTAT)?tstat_value:
 		(addr==REG_CPB)?cycles_per_bit:
 		(addr==REG_QUEUE)?{24'b0,queue_out}:
+		(addr==REG_CHAR_COUNT)?rx_char_count:
 		(addr[3:2]==2'b11)?regs[addr[1:0]]:
 		0;
    

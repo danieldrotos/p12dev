@@ -7,6 +7,7 @@
 	CPB	equ	0xff44
 	QUEUE	equ	0xff45
 	IRA	equ	0xff46
+	CHARCNT equ	0xff47
 	
 	PORTA	equ	0xff00
 	DSP	equ	0xff00
@@ -56,6 +57,8 @@ main_cyc:
 	;; press btn[1]: BTND
 	C call	0xf000		; enter monitor
 
+	ld	r9,CHARCNT
+	st	r9,PORTD
 	jmp	main_cyc
 
 ;;; ;;;
@@ -120,7 +123,6 @@ half_bit_delay:
 	;mvzl	r8,20		; dummy half bit time delay
 	ld	r8,sw
 	btst	r8,255
-	st	r8,PORTD
 	sz	r8
 	Z ret
 fake_cyc:

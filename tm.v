@@ -56,7 +56,7 @@ module tm
 	       .cs(ucs),
 	       .wen(uwen),
 	       .addr(uaddr),
-	       .din(udin),
+	       .din({24'b0,udin}),
 	       .RxD(1'b1),
 	       .TxD(utx));
    initial
