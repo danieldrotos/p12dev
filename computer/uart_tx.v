@@ -119,7 +119,8 @@ always @(posedge clk)
      else if(fsm_state == FSM_IDLE && uart_tx_en)
        begin
           data_to_send <= uart_tx_data;
-	  //$write("%s", uart_tx_data);
+	  $write("%s", uart_tx_data);
+	  $fflush();
        end
      else if(fsm_state       == FSM_SEND       && next_bit )
        begin

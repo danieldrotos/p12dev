@@ -61,12 +61,20 @@ module tm
 	       .TxD(utx));
    initial
      begin
-	#50 udin=3; uaddr=1; ucs=1; #2 ucs=0;
-	#5000 udin=8'h41; uaddr=0; ucs=1; #2 ucs=0;
-	#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
-	#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
-	#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;
-	#4370 udin=8'h42; uaddr=0; ucs=1; #2 ucs=0;
+	#500 sw= 2;
+	#100 sw= 0;
+	#1000 udin=8'd3; uaddr=1; ucs=1; #2 ucs=0;
+	#70000 udin=8'd100; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h20 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h31 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
+	//#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
+	//#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
+	//#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;
+	//#4370 udin=8'h42; uaddr=0; ucs=1; #2 ucs=0;
      end
    
    comp

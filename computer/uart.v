@@ -59,11 +59,16 @@ module uart
 
    
    // Parameter registers
-   reg [WIDTH-1:0] cycles_per_bit= 32'd217; // 25MHz -> 115200 Baud
+   reg [WIDTH-1:0] cycles_per_bit;
    always @(posedge clk)
      begin
 	if (reset)
-	  cycles_per_bit<= 32'd217;
+	  cycles_per_bit<=
+`ifdef IVERILOG
+			  32'd40;
+`else
+	32'd217; // 25MHz -> 115200 Baud
+`endif
 	else
 	  if (wr & (addr==REG_CPB))
 	    cycles_per_bit<= din;

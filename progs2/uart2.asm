@@ -24,8 +24,11 @@
 check_uart	=	0xf008
 read		=	0xf00d
 	
-	org	0
+	org	1
 	nop
+	jmp	real_start
+log_ptr:	dd	0
+real_start:	
 	ldl0	sp,stack
 
 	ld	r0,0
@@ -49,9 +52,14 @@ start:
 main_cyc:
 	;call	check_input	; call check input
 	ld	r4,RSTAT	; checkin: read RSTAT
-	st	r4,PORTA	; display RSTAT
+
+	test	r4,0x20		; check if queue is full
+	NZ call	qfull
+	NZ st	r4,PORTA	; display RSTAT, if queue is full
+
 	test	r4,1		; Z=0 Received avail
 	NZ call	got_char	; avail: jump to handle
+	
 	;jmp	main_cyc	; main cycle
 
 	ldl0	r0,2		; check btn[1]
@@ -210,6 +218,23 @@ pressed_vege:
 	pop	lr
 	ret
 
+
+qfull:
+	push	lr
+	ld	r5,log_ptr
+	mvzl	r6,0x8000
+	cmp	r5,r6
+	CS jmp	log_ov
+	st	r4,r5,logs
+	inc	r5
+	st	r5,log_ptr
+log_ov:
+	pop	lr
+	ret
+	
 	
 	ds	100
 stack:	
+
+	org	0x1000
+logs:	

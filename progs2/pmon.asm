@@ -7,6 +7,7 @@
 	UART_TSTAT	=	0xff43
 	UART_CPB	=	0xff44
 	UART_QUEUE	=	0xff45
+	UART_IRA	=	0xff46
 	GPIO_PORTA	=	0xff00
 	GPIO_PORTI	=	0xff20
 	IO_END		=	0xffff
@@ -110,8 +111,8 @@ common_start:
 	;; test
 	
 	;; Setup UART
-	mvzl	r1,217
-	st	r1,UART_CPB
+	;mvzl	r1,217
+	;st	r1,UART_CPB
 	mvzl	r1,3
 	st	r1,UART_CTRL
 
@@ -1369,6 +1370,7 @@ check_uart:
 	;; OUT: R0
 read:
 	ld	r0,UART_DR
+	st	r0,UART_IRA
 	ret
 	
 ;; 	push	r1
