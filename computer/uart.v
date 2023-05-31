@@ -25,7 +25,9 @@ module uart
    localparam		   REG_QUEUE 	= 4'd5; // Rx fifo read
    localparam		   REG_INC_RADDR= 4'd6;
    localparam		   REG_CHAR_COUNT= 4'd7;
-   
+   localparam		   REG_FIFO_WR_COUNT= 4'd8;
+   localparam		   REG_FIFO_FULL_COUNT= 4'd9;
+					  
    // Bits of RX status register
    localparam		   STAT_RXNE= 0;
    localparam		   STAT_BREAK= 1;
@@ -161,6 +163,14 @@ module uart
    assign rx_not_empty= rx_fsm==FSM_GOT;
 
 
+   reg [31:0] fifo_wr_count;
+   always @(posedge clk)
+     if (reset)
+       fifo_wr_count<= 0;
+     else
+       if (rx_fsm==FSM_QUEUE)
+	 fifo_wr_count<= fifo_wr_count+1;
+
    // Receive FIFO
    wire [7:0]	    queue_out;
    wire		    queue_empty;
@@ -180,6 +190,14 @@ module uart
       .raddr(queue_raddr),
       .waddr(queue_waddr)
       );
+
+   reg [31:0] 	    fifo_full_count;
+   always @(posedge clk)
+     if (reset)
+       fifo_full_count<= 0;
+     else
+       if ((rx_fsm==FSM_QUEUE) & queue_full)
+	 fifo_full_count<= fifo_full_count+1;
 
    
    wire [WIDTH-1:0] rstat_value;
@@ -208,6 +226,8 @@ module uart
 		(addr==REG_CPB)?cycles_per_bit:
 		(addr==REG_QUEUE)?{24'b0,queue_out}:
 		(addr==REG_CHAR_COUNT)?rx_char_count:
+		(addr==REG_FIFO_WR_COUNT)?fifo_wr_count:
+		(addr==REG_FIFO_FULL_COUNT)?fifo_full_count:
 		(addr[3:2]==2'b11)?regs[addr[1:0]]:
 		0;
    

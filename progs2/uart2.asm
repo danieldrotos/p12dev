@@ -8,6 +8,8 @@
 	QUEUE	equ	0xff45
 	IRA	equ	0xff46
 	CHARCNT equ	0xff47
+	FIFOCNT equ	0xff48
+	FULLCNT equ	0xff49
 	
 	PORTA	equ	0xff00
 	DSP	equ	0xff00
@@ -57,8 +59,11 @@ main_cyc:
 	;; press btn[1]: BTND
 	C call	0xf000		; enter monitor
 
-	ld	r9,CHARCNT
+	ld	r9,FULLCNT
 	st	r9,PORTD
+	ld	r10,FIFOCNT
+	st	r10,PORTC
+	
 	jmp	main_cyc
 
 ;;; ;;;
@@ -155,9 +160,6 @@ tx_first_ready:
 	;st	r4,PORTD
 tx_send:	
 	st	r0,DR		; put R0 in uart DR
-	ld	r5,PORTC
-	add	r5,1
-	st	r5,PORTC
 	;pop	LR
 	ret
 	

@@ -66,7 +66,7 @@ module fifo
 
    always @(posedge clk)
      begin
-	if (wr)
+	if (wr & ~full)
 	  mem[wr_addr]<= din;
      end
 
