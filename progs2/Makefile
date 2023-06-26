@@ -13,7 +13,8 @@ all: pmon_app \
 	msblink2 \
 	div \
 	ff \
-	game
+	game \
+	bufout
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -39,6 +40,9 @@ div: div.p2h div.asc div.cdb
 ff: ff.p2h ff.asc ff.cdb
 
 game: game.p2h game.asc game.cdb
+
+bufout: bufout.p2h bufout.asc bufout.cdb
+
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 
