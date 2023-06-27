@@ -28,34 +28,88 @@
 	st	r0,obuf_ff
 	st	r0,obuf_lu
 main:
+	mvzl	r0,s1
+	call	bprint
+main_cyc:	
 	call	do_obuf
-	jmp	main
+	jmp	main_cyc
 
-
+s1:	db	"Hello world!\n"
+	
 do_obuf:
-	push	lr
 	push	r0
-	push	r1
-	push	r2
 	ld	r0,TSTAT
 	test	r0,1		; TC bit
-	jz	do_obuf_ret
+	Z pop	r0
+	Z ret
 	;; TC==1
+do_obuf_uart_free:
+	push	r1
+	push	r2
 	ld	r1,obuf_ff
 	ld	r2,obuf_lu
 	cmp	r1,r2
 	jz	do_obuf_ret
 	;; not empty
-	
+do_obuf_buf_nempty:
+	ld	r0,r2,obuf	; got oldest char
+	st	r0,DR
+	inc	r2		; inc lu ptr
+	btst	r2,obuf_mask
+	st	r2,obuf_lu
 do_obuf_ret:
 	pop	r2
 	pop	r1
 	pop	r0
+	ret
+
+bputchar:
+	push	lr
+	push	r1
+	push	r2
+	ld	r1,obuf_ff
+	inc	r1
+	btst	r1,obuf_mask
+bcp_wait:	
+	ld	r2,obuf_lu
+	cmp	r1,r2
+	jnz	bcp_put
+	call	do_obuf
+	jmp	bcp_wait
+bcp_put:
+	ld	r1,obuf_ff
+	st	r0,r1,obuf
+	inc	r1
+	btst	r1,obuf_mask
+	st	r1,obuf_ff
+bcp_ret:
+	pop	r2
+	pop	r1
 	pop	lr
 	ret
 	
+bprint:
+	push	lr
+	push	r1
+	push	r2
+	sz	r0
+	jz	bp_ret
+	mvzl	r2,0
+	mov	r1,r0
+bp_cyc:
+	ld	r0,r1+,r2
+	sz	r0
+	jz	bp_ret
+	call	bputchar
+	jmp	bp_cyc
+bp_ret:
+	pop	r2
+	pop	r1
+	pop	lr
+	ret
 	
 obuf_size =	128
+obuf_mask =	0x7f
 obuf:
 	ds	128
 obuf_ff:
