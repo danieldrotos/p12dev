@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sun Sep 10 13:50:37 2023
+[*] Sun Sep 10 15:21:35 2023
 [*]
 [dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Sun Sep 10 13:43:19 2023"
-[dumpfile_size] 71820682
+[dumpfile_mtime] "Sun Sep 10 15:18:37 2023"
+[dumpfile_size] 73392002
 [savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 70920000000000
+[timestart] 72654460000000
 [size] 1744 908
 [pos] 145 77
-*-38.944172 72543000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-31.429092 72663000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -119,7 +119,13 @@ tm.comp.io_uart.ufifo.w_ptr[3:0]
 tm.comp.io_uart.ufifo.w_en
 tm.comp.io_uart.ufifo.empty
 tm.comp.io_uart.ufifo.full
-@23
+@22
 tm.comp.io_uart.ufifo.r_data[7:0]
+@28
+tm.comp.io_uart.rd
+tm.comp.io_uart.cs
+tm.comp.io_uart.wen
+@29
+tm.comp.io_uart.qfsm
 [pattern_trace] 1
 [pattern_trace] 0

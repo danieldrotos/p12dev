@@ -167,7 +167,22 @@ module uart
      end
    assign rx_not_empty= rx_fsm==FSM_GOT;
 
+   localparam QFSM_IDLE= 1'b0;
+   localparam QFSM_READ= 1'b1;
+   reg	      qfsm= QFSM_IDLE;
 
+   always @(posedge clk)
+     begin
+	if (reset)
+	  qfsm<= QFSM_IDLE;
+	else
+	  case (qfsm)
+	    QFSM_IDLE: qfsm<=  rd_data ? QFSM_READ : QFSM_IDLE;
+	    QFSM_READ: qfsm<= !rd_data ? QFSM_IDLE : QFSM_READ;
+	    default: qfsm<= FSM_IDLE;
+	  endcase
+     end
+   
    reg [31:0] fifo_wr_count;
    always @(posedge clk)
      if (reset)
@@ -182,6 +197,10 @@ module uart
    wire		    queue_full;
    wire [3:0]	    queue_raddr;
    wire [3:0]	    queue_waddr;
+   wire		    queue_wen;
+   
+   assign queue_wen= rx_fsm == FSM_QUEUE;
+   
 /* -----\/----- EXCLUDED -----\/-----
    fifo #(.WIDTH(8), .ADDR_WIDTH(7)) ufifo
      (
@@ -203,7 +222,7 @@ module uart
       .clk(clk),
       .resetn(!reset),
       .rd(rd_data/*wr_ira*/),
-      .wr(rx_fsm == FSM_QUEUE),
+      .wr(queue_wen),
       .w_data(rx_data),
       .empty(queue_empty),
       .full(queue_full),
@@ -211,7 +230,17 @@ module uart
       .r_ptr(queue_raddr),
       .w_ptr(queue_waddr)
       );
-    
+
+   reg [WIDTH-1:0]  queue_bufout;
+
+   always @(posedge clk)
+     if (reset)
+       queue_bufout<= 0;
+     else
+       if (qfsm == QFSM_IDLE)
+	 queue_bufout<= queue_out;
+
+   
    reg [31:0] 	    fifo_full_count;
    always @(posedge clk)
      if (reset)
@@ -240,12 +269,12 @@ module uart
 			};
    
    // Output data
-   assign dout= (addr==REG_DR)?{24'd0,/*rx_data*/queue_out}:
+   assign dout= (addr==REG_DR)?{24'd0,/*rx_data*/queue_bufout}:
 		(addr==REG_CTRL)?control:
 		(addr==REG_RSTAT)?rstat_value:
 		(addr==REG_TSTAT)?tstat_value:
 		(addr==REG_CPB)?cycles_per_bit:
-		(addr==REG_QUEUE)?{24'b0,queue_out}:
+		(addr==REG_QUEUE)?{24'b0,queue_bufout}:
 		(addr==REG_CHAR_COUNT)?rx_char_count:
 		(addr==REG_FIFO_WR_COUNT)?fifo_wr_count:
 		(addr==REG_FIFO_FULL_COUNT)?fifo_full_count:
