@@ -37,15 +37,18 @@
 
 module FIFO #(parameter DWIDTH=8, AWIDTH=4)
 (
-  input wire clk,
-  input wire resetn,
-  input wire rd,
-  input wire wr,
-  input wire [DWIDTH-1:0] w_data,
+ input wire		  clk,
+ input wire		  resetn,
+ input wire		  rd,
+ input wire		  wr,
+ input wire [DWIDTH-1:0]  w_data,
   
-  output wire empty,
-  output wire full,
-  output wire [DWIDTH-1:0] r_data
+ output wire		  empty,
+ output wire		  full,
+ output wire [DWIDTH-1:0] r_data,
+
+ output wire [AWIDTH-1:0] r_ptr,
+ output wire [AWIDTH-1:0] w_ptr
 );
 
 //Internal Signal declarations

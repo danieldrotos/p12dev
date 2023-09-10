@@ -27,6 +27,7 @@ MODS		= defs hwconf \
 		    computer/timer \
 		    computer/simif \
 		    computer/fifo \
+		    computer/arm_fifo \
 		    computer/uart \
 		    computer/uart_rx \
 		    computer/uart_tx \
@@ -56,12 +57,12 @@ utils: #hex2asc
 source:
 	php $(TOOLS)/source.php $(PRG).asc
 
-show: sim
+show: simul
 	gtkwave $(VCD) $(GTKW)
 
-sim: $(VCD)
+simul: $(VCD)
 
-synt: $(VVP)
+synth: $(VVP)
 
 hw: $(VVP)
 

@@ -182,11 +182,12 @@ module uart
    wire		    queue_full;
    wire [6:0]	    queue_raddr;
    wire [6:0]	    queue_waddr;
+/* -----\/----- EXCLUDED -----\/-----
    fifo #(.WIDTH(8), .ADDR_WIDTH(7)) ufifo
      (
       .clk(clk),
       .reset(reset),
-      .rd(/*rd_data*/wr_ira),
+      .rd(/-*rd_data*-/wr_ira),
       .wr(rx_fsm == FSM_QUEUE),
       .din(rx_data),
       .dout(queue_out),
@@ -195,7 +196,22 @@ module uart
       .raddr(queue_raddr),
       .waddr(queue_waddr)
       );
+ -----/\----- EXCLUDED -----/\----- */
 
+   FIFO #(.DWIDTH(8), .AWIDTH(4)) ufifo
+     (
+      .clk(clk),
+      .resetn(!reset),
+      .rd(rd_data/*wr_ira*/),
+      .wr(rx_fsm == FSM_QUEUE),
+      .w_data(rx_data),
+      .empty(queue_empty),
+      .full(queue_full),
+      .r_data(rx_data),
+      .r_ptr(queue_raddr),
+      .w_ptr(queue_waddr)
+      );
+    
    reg [31:0] 	    fifo_full_count;
    always @(posedge clk)
      if (reset)
