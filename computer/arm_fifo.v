@@ -67,7 +67,13 @@ module FIFO #(parameter DWIDTH=8, AWIDTH=4)
   
   
   
-  
+   integer i;
+   initial
+     begin
+	for (i=0;i<2**AWIDTH;i=i+1)
+	  array_reg[i]= 0;
+     end
+   
   
   reg empty_next;
   
@@ -145,10 +151,8 @@ module FIFO #(parameter DWIDTH=8, AWIDTH=4)
 
   assign full = full_reg;
   assign empty = empty_reg;
-  
+
+   assign r_ptr= r_ptr_reg;
+   assign w_ptr= w_ptr_reg;
+   
 endmodule
-
- 
- 
-
-  

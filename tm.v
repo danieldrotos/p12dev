@@ -71,6 +71,7 @@ module tm
 	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
 	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
 	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
 	//#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
 	//#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
 	//#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;

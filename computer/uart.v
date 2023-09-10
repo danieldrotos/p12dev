@@ -180,8 +180,8 @@ module uart
    wire [7:0]	    queue_out;
    wire		    queue_empty;
    wire		    queue_full;
-   wire [6:0]	    queue_raddr;
-   wire [6:0]	    queue_waddr;
+   wire [3:0]	    queue_raddr;
+   wire [3:0]	    queue_waddr;
 /* -----\/----- EXCLUDED -----\/-----
    fifo #(.WIDTH(8), .ADDR_WIDTH(7)) ufifo
      (
@@ -207,7 +207,7 @@ module uart
       .w_data(rx_data),
       .empty(queue_empty),
       .full(queue_full),
-      .r_data(rx_data),
+      .r_data(queue_out),
       .r_ptr(queue_raddr),
       .w_ptr(queue_waddr)
       );
@@ -223,8 +223,8 @@ module uart
    
    wire [WIDTH-1:0] rstat_value;
    wire [WIDTH-1:0] tstat_value;
-   assign rstat_value= {/* xx00 0000 */ {1'b0,queue_raddr},
-			/* 00xx 0000 */ {1'b0,queue_waddr},
+   assign rstat_value= {/* xx00 0000 */ {4'b0,queue_raddr},
+			/* 00xx 0000 */ {4'b0,queue_waddr},
 			/* 0000 xx00 */ queue_out,
 			/* 0000 0080 */ rx_fsm,
 			/* 0000 0040 */ 

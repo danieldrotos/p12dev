@@ -1,19 +1,20 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue May 30 13:20:42 2023
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sun Sep 10 13:50:37 2023
 [*]
-[dumpfile] "/mhome/staff/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Tue May 30 13:17:56 2023"
-[dumpfile_size] 37698473
-[savefile] "/mhome/staff/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 0
+[dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Sun Sep 10 13:43:19 2023"
+[dumpfile_size] 71820682
+[savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 70920000000000
 [size] 1744 908
 [pos] 145 77
-*-42.044296 9306000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-38.944172 72543000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
 [treeopen] tm.comp.genblk1.cpu.
+[treeopen] tm.comp.genblk2.adec.
 [treeopen] tm.comp.io_uart.
 [sst_width] 269
 [signals_width] 283
@@ -107,118 +108,18 @@ tm.comp.genblk1.cpu.mbus_din[31:0]
 -group_end
 @28
 tm.comp.genblk1.cpu.mbus_wen
-@22
-tm.comp.genblk1.cpu.mbus_din[31:0]
-tm.comp.io_uart.addr[3:0]
-tm.comp.io_uart.dout[31:0]
-tm.comp.PORTI[31:0]
-tm.comp.PORTJ[31:0]
-tm.comp.PORTA[31:0]
-@c00022
-tm.comp.PORTB[31:0]
-@28
-(0)tm.comp.PORTB[31:0]
-(1)tm.comp.PORTB[31:0]
-(2)tm.comp.PORTB[31:0]
-(3)tm.comp.PORTB[31:0]
-(4)tm.comp.PORTB[31:0]
-(5)tm.comp.PORTB[31:0]
-(6)tm.comp.PORTB[31:0]
-(7)tm.comp.PORTB[31:0]
-(8)tm.comp.PORTB[31:0]
-(9)tm.comp.PORTB[31:0]
-(10)tm.comp.PORTB[31:0]
-(11)tm.comp.PORTB[31:0]
-(12)tm.comp.PORTB[31:0]
-(13)tm.comp.PORTB[31:0]
-(14)tm.comp.PORTB[31:0]
-(15)tm.comp.PORTB[31:0]
-(16)tm.comp.PORTB[31:0]
-(17)tm.comp.PORTB[31:0]
-(18)tm.comp.PORTB[31:0]
-(19)tm.comp.PORTB[31:0]
-(20)tm.comp.PORTB[31:0]
-(21)tm.comp.PORTB[31:0]
-(22)tm.comp.PORTB[31:0]
-(23)tm.comp.PORTB[31:0]
-(24)tm.comp.PORTB[31:0]
-(25)tm.comp.PORTB[31:0]
-(26)tm.comp.PORTB[31:0]
-(27)tm.comp.PORTB[31:0]
-(28)tm.comp.PORTB[31:0]
-(29)tm.comp.PORTB[31:0]
-(30)tm.comp.PORTB[31:0]
-(31)tm.comp.PORTB[31:0]
-@1401200
--group_end
-@22
-tm.comp.PORTC[31:0]
-tm.comp.PORTD[31:0]
-tm.comp.genblk1.cpu.regs.r0out[31:0]
-tm.comp.genblk1.cpu.regs.r1out[31:0]
-tm.comp.genblk1.cpu.regs.r2out[31:0]
-tm.comp.genblk1.cpu.regs.r3out[31:0]
-@c00022
-tm.comp.genblk1.cpu.regs.r4out[31:0]
-@28
-(0)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(1)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(2)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(3)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(4)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(5)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(6)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(7)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(8)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(9)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(10)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(11)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(12)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(13)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(14)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(15)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(16)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(17)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(18)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(19)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(20)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(21)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(22)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(23)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(24)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(25)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(26)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(27)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(28)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(29)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(30)tm.comp.genblk1.cpu.regs.r4out[31:0]
-(31)tm.comp.genblk1.cpu.regs.r4out[31:0]
-@1401200
--group_end
-@23
-tm.comp.genblk1.cpu.regs.r8out[31:0]
-@28
-tm.utx
-tm.comp.io_uart.TxD
-tm.comp.io_uart.utx_wen
-tm.comp.io_uart.urx.next_bit
-tm.comp.io_uart.urx.fsm_state[2:0]
-tm.comp.io_uart.urx.bit_sample
-@22
-tm.comp.io_uart.urx.bit_counter[3:0]
-tm.comp.io_uart.queue_raddr[6:0]
-tm.comp.io_uart.queue_waddr[6:0]
-@28
-tm.comp.io_uart.queue_empty
-tm.comp.io_uart.ufifo.rd
-tm.comp.io_uart.rd_data
-tm.comp.io_uart.rd
-tm.comp.io_uart.addr_is_queue
-tm.comp.io_uart.addr_is_dr
-tm.comp.io_uart.ufifo.wr
+tm.comp.io_uart.RxD
+tm.comp.io_uart.urx.uart_rx_valid
 @22
 tm.comp.io_uart.queue_out[7:0]
-tm.comp.io_uart.ufifo.rd_addr[6:0]
-tm.comp.io_uart.ufifo.wr_addr[6:0]
+tm.comp.io_uart.ufifo.r_data[7:0]
+tm.comp.io_uart.ufifo.r_ptr[3:0]
+tm.comp.io_uart.ufifo.w_ptr[3:0]
+@28
+tm.comp.io_uart.ufifo.w_en
+tm.comp.io_uart.ufifo.empty
+tm.comp.io_uart.ufifo.full
+@23
+tm.comp.io_uart.ufifo.r_data[7:0]
 [pattern_trace] 1
 [pattern_trace] 0
