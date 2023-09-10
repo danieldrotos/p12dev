@@ -23,6 +23,7 @@
 
 check_uart	=	0xf008
 read		=	0xf00d
+pes		=	0xf012
 	
 	org	1
 	nop
@@ -31,6 +32,9 @@ log_ptr:	dd	0
 real_start:	
 	ldl0	sp,stack
 
+	call	pes
+	db	"Hello World\n"
+	
 	ld	r0,0
 	st	r0,PORTA
 	st	r0,PORTB

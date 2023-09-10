@@ -41,7 +41,8 @@ _f00e:	jmp	putchar
 _f00f:	jmp	prints
 _f010:	jmp	printsnl
 _f011:	jmp	print_vhex
-
+_f012:	jmp	pes
+	
 enter_by_uart:
 	push	r0
 	getf	r0
@@ -1446,6 +1447,33 @@ prints_done:
 	pop	r3
 	pop	r0
 	pop	lr
+	ret
+
+
+	;; Print embedded string, return after
+	;; -----------------------------------
+	;; IN: - 
+	;; OUT: -
+pes_ret_to:	dd	0
+	
+pes:
+	push	lr
+	push	r0
+	push	r1
+	mov	r1,lr
+pes_next:
+	ld	r0,r1
+	inc	r1
+	sz	r0
+	jz	pes_done
+	call	putchar
+	jmp	pes_next
+pes_done:
+	st	r1,pes_ret_to
+	pop	r1
+	pop	r0
+	pop	lr
+	ld	lr,pes_ret_to
 	ret
 
 

@@ -7,6 +7,7 @@ prints	= 0xf00f
 pvhex	= 0xf011
 avail	= 0xf008
 read	= 0xf00d
+pes	= 0xf012
 	
 porta	= 0xff00
 portb	= 0xff01
@@ -27,6 +28,10 @@ ffcnt	= 0xff52
 
 	ldl0	r0,s_clrscr
 	call	prints
+
+	call	pes
+	db	"Hello World!"
+	
 	ldl0	r0,1
 	st	r0,x
 	st	r0,y
@@ -165,6 +170,20 @@ pi_d:
 	jmp	pi_end
 
 pi_no_d:
+	cmp	r0,'c'
+	NE jmp	pi_no_0
+
+	ldl0	r0,s_clrscr
+	call	prints
+
+	ldl0	r0,1
+	st	r0,x
+	st	r0,y
+	call	drawit
+	
+	jmp	pi_end
+	
+pi_no_0:	
 	;call	putchar
 pi_end:	
 	pop	lr
