@@ -3,7 +3,7 @@
 `include "defs.v"
 `include "hwconf.v"
 
-`define PRG "progs2/pmon.asc"
+`define PRG "progs2/counter3.asc"
 
 module bool_top
   (

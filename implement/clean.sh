@@ -5,3 +5,5 @@ rm -rf *.sim
 rm -rf *.ip_user_files
 rm -rf .Xil
 
+rm -rf *~
+
