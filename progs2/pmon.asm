@@ -42,6 +42,9 @@ _f00f:	jmp	prints
 _f010:	jmp	printsnl
 _f011:	jmp	print_vhex
 _f012:	jmp	pes
+_f013:	jmp	printd
+_f014:	jmp	printf
+_f015:	jmp	pesf
 	
 enter_by_uart:
 	push	r0
@@ -114,10 +117,20 @@ common_start:
 	;; Setup UART
 	;mvzl	r1,217
 	;st	r1,UART_CPB
-	mvzl	r1,3
+	ld	r1,UART_CTRL	; check if transmit is enabled
+	test	r1,2
+	jz	tr_is_off
+wait_uart_tr:
+	ld	r1,UART_TSTAT	; if transmit is ongoing
+	test	r1,1		; wait it to finish
+	jz	wait_uart_tr
+tr_is_off:	
+	mvzl	r1,3		; turn on rx and tx
 	st	r1,UART_CTRL
 
 	;; Print welcome message
+	mvzl	r0,LF
+	call	putchar
 	mvzl	r0,msg_start
 	call	printsnl
 	;; Print addr if called from
@@ -1452,7 +1465,7 @@ prints_done:
 
 	;; Print embedded string, return after
 	;; -----------------------------------
-	;; IN: - 
+	;; IN : - 
 	;; OUT: -
 pes_ret_to:	dd	0
 	
@@ -1479,7 +1492,7 @@ pes_done:
 
 	;; Print string and append a NL
 	;; ----------------------------
-	;; IN: R0 address of string
+	;; IN : R0 address of string
 	;; OUT: -
 printsnl:
 	push	lr
@@ -1539,6 +1552,259 @@ print_vhex_ret:
 	pop	r0
 	pop	lr
 	ret
+
+
+	;; Divide Q,R= N/D
+	;; IN:  R0= N, R1= D
+	;; OUT: R2= Q, R3= R
+div:
+	push	lr
+	push	r4
+	
+	sz	r1
+	NZ jmp	div_dok
+	mov	r2,r0		; div by zero
+	mvzl	r3,0
+	jmp	div_ret
+div_dok:
+	mvzl	r2,0		; Q= 0
+	mvzl	r3,0		; R= 0
+	mvh	r4,0x80000000	; m= 1<<31
+	mvl	r4,0x80000000
+div_cyc:
+	sz	r4
+	Z jmp	div_ret
+	shl	r3		; r<<= 1
+	test	r0,r4		; if (n&m)
+	NZ or	r3,1		; r|= 1
+	cmp	r3,r1		; if (r>=d)
+	LO jmp	div_cyc_next
+	sub	r3,r1		;r-= d
+	or	r2,r4		;q|= m
+	jmp	div_cyc_next
+	jmp	div_cyc
+div_cyc_next:
+	shr	r4		; m>>= 1
+	jmp	div_cyc
+div_ret:
+	pop	r4
+	pop	lr
+	ret
+
+
+	;; itoa
+	;; IN:  R0
+	;; OUT: string in itoa_buffer
+itoa:
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r10
+	push	r11
+	push	r12
+
+	mvzl	r12,itoa_buffer	; pointer to output buffer
+	mvzl	r11,itoa_divs	; pointer to dividers
+	mvzl	r10,0		; bool: first non-zero char found
+itoa_cyc:	
+	ld	r1,r11		; get next divider
+	sz	r1		; if 0, then
+	jz	itoa_ret	; finish
+	cmp	r1,1		; last divider?
+	EQ mvzl	r10,1		; always print last char
+	call	div		; R2,R3= R0/R1
+	sz	r2		; is the result zero?
+	jz	itoa_f0
+itoa_fno0:
+	mvzl	r10,1		; non-zero: start to print
+itoa_store:
+	mov	r0,r2		; convert result to ASCII char
+	call	value2hexchar
+	st	r0,r12		; and store it in buffer
+	inc	r12		; inc buf ptr
+	mvzl	r0,0		; put 0 after last char
+	st	r0,r12
+itoa_next:
+	mov	r0,r3		; continue with the reminder
+	inc	r11		; and next divider
+	jmp	itoa_cyc
+itoa_f0:
+	sz	r10		; just zeros so far?
+	jnz	itoa_store	; no, print
+	jmp	itoa_next
+itoa_ret:
+	pop	r12
+	pop	r11
+	pop	r10
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	lr
+	ret
+itoa_buffer:	ds	11
+itoa_divs:
+	dd	1000000000
+	dd	 100000000
+	dd	  10000000
+	dd	   1000000
+	dd	    100000
+	dd	     10000
+	dd	      1000
+	dd	       100
+	dd	        10
+	dd	         1
+	dd	0
+	
+
+	;; Print number in decimal
+	;; In : R0
+	;; Out: -
+printd:
+	push	lr
+	call	itoa
+	mvzl	r0,itoa_buffer
+	call	prints
+	pop	lr
+	ret
+
+
+	;; Format and print string
+	;; In : R0 address of string template (format)
+	;;      R1..R12 parameter values
+printf:
+	push	lr
+
+	st	r1,reg1
+	st	r2,reg2
+	st	r3,reg3
+	st	r4,reg4
+	st	r5,reg5
+	st	r6,reg6
+	st	r7,reg7
+	st	r8,reg8
+	st	r9,reg9
+	st	r10,reg10
+	st	r11,reg11
+	st	r12,reg12
+
+	mov	r2,r0		; pointer to format string
+	mvzl	r1,reg1		; pointer to params
+printf_cyc:
+	ld	r0,r2		; get next char
+	sz	r0		; is it EOS?
+	jz	printf_ret
+
+	cmp	r0,'\\'
+	jnz	printf_notescape
+
+	inc	r2
+	ld	r0,r2
+	sz	r0
+	jz	printf_ret
+
+	cmp	r0,'a'
+	Z mvzl	r0,7
+	Z jmp	printf_print
+	cmp	r0,'b'
+	Z mvzl	r0,8
+	Z jmp	printf_print
+	cmp	r0,'e'
+	Z mvzl	r0,0x1b
+	Z jmp	printf_print
+	cmp	r0,'f'
+	Z mvzl	r0,0xc
+	Z jmp	printf_print
+	cmp	r0,'n'
+	Z mvzl	r0,0xa
+	Z jmp	printf_print
+	cmp	r0,'r'
+	Z mvzl	r0,0xd
+	Z jmp	printf_print
+	cmp	r0,'t'
+	Z mvzl	r0,9
+	Z jmp	printf_print
+	cmp	r0,'v'
+	Z mvzl	r0,0xb
+	Z jmp	printf_print
+	cmp	r0,0x5c
+	Z jmp	printf_print
+	cmp	r0,'0'
+	Z mvzl	r0,0
+	Z jmp	printf_print
+	
+	jmp	printf_print
+	
+printf_notescape:	
+	cmp	r0,'%'		; is it a format char?
+	jnz	printf_print
+
+	inc	r2		; go to format char
+	ld	r0,r2
+	sz	r2		; is it EOS?
+	jz	printf_ret
+
+	cmp	r0,'%'		; % is used to print %
+	jz	printf_print
+
+	cmp	r0,'u'		; u,d print in decimal
+	jz	printf_d
+	cmp	r0,'d'
+	jnz	printf_notd
+printf_d:
+	ld	r0,r1
+	inc	r1
+	call	printd
+	jmp	printf_next
+	
+printf_notd:
+	cmp	r0,'x'
+	jnz	printf_notx
+printf_x:
+	ld	r0,r1
+	inc	r1
+	push	r1
+	mvzl	r1,0
+	call	print_vhex
+	pop	r1
+	jmp	printf_next
+	
+printf_notx:
+	cmp	r0,'s'
+	jnz	printf_nots
+	ld	r0,r1
+	inc	r1
+	call	prints
+	jmp	printf_next
+	
+printf_nots:
+	cmp	r0,'c'
+	jnz	printf_notc
+	ld	r0,r1
+	inc	r1
+	call	putchar
+	jmp	printf_next
+	
+printf_notc:	
+	jmp	printf_next
+printf_print:
+	call	putchar		; print actual char
+printf_next:	
+	inc	r2		; inc string ptr
+	jmp	printf_cyc
+	
+printf_ret:	
+	pop	lr
+	ret
+
+
+pesf:
+	mov	r0,LR
+	call	printf
+	inc	r2
+	mov	PC,r2
 	
 	
 ;;; VARIABLES

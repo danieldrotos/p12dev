@@ -6,6 +6,7 @@ AW		?= 17
 
 all: pmon_app \
 	counter2 \
+	counter3 \
 	uart \
 	uart2 \
 	test \
@@ -18,6 +19,8 @@ all: pmon_app \
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
+
+counter3: counter3.p2h counter3.asc counter3.cdb
 
 uart: uart.p2h uart.asc uart.cdb
 

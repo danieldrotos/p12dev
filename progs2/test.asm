@@ -1,5 +1,33 @@
 	.proc	p2
 
+	org	1
+	mvzl	r13,eof_stack
+	
+	mvl	r0,0xffffffff
+	mvh	r0,0xffffffff
+	call	0xf013
+	mvzl	r0,10
+	call	0xf00e
+
+	mvzl	r0,s
+	mvzl	r1,12345
+	mvl	r2,0xdeadbeef
+	mvh	r2,0xdeadbeef
+	mvzl	r3,s2
+	mvzl	r4,'A'
+	call	0xf014
+
+	mvzl	r1,65535
+	call	0xf015
+	db	"d=%x\n"
+	mvzl	r0,'B'
+	call	0xf00e
+	
+	jmp	0xf000
+	
+s:	db	"dec=%d\nhex=%x\nstr=%s\nchar=%c\n"
+s2:	db	"this is a string"
+	
 	org	0x1000
 
 	mov	r0,r4
@@ -39,3 +67,7 @@ masik:
 	z ldl0	r9,0x8000
 	st	r9,r1
 	jmp	cikl
+
+stack:
+	ds	100
+eof_stack:	
