@@ -102,7 +102,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
      res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-	res_syncer<= ~RESET;
+	res_syncer<= RESET;
      end
    assign res= res_syncer;
    
@@ -189,14 +189,19 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         .in15(addr),
         .out(display_data));
    
-   seg7 #(4) seg7drv
+   wire [7:0] drv_seg;
+   wire [3:0] drv_an;
+   seg7_1x4 #(4) seg7drv
      (
       .clk            (f1MHz),
-      .di             (display_data),
-      .seg            (seg),
-      .an             (an)
+      .reset          (res),
+      .di             (display_data[15:0]),
+      .seg            (drv_seg),
+      .an             (drv_an)
       );
-
+   assign SEG= ~drv_seg;
+   assign AN = ~drv_an;
+   
    wire [23:0] LEDS;   
    assign LEDS= portb[23:0];
    assign LEDG= LEDS[7:0];
