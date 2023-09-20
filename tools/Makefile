@@ -11,3 +11,6 @@ test2.cdb: test2.p2h hex2cdb.php
 
 clean:
 	rm -f *~ *.cdb *.hex *.p2h *.asc *.lst
+
+wclean:
+	del /f *~ *.cdb *.hex *.p2h *.asc *.lst

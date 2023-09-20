@@ -44,7 +44,7 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-all: progs utils sw
+all: progs sw show
 
 progs:
 	$(MAKE) -C examples all
@@ -52,19 +52,17 @@ progs:
 
 sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
-utils: #hex2asc
-
 source:
 	php $(TOOLS)/source.php $(PRG).asc
 
 show: simul
 	gtkwave $(VCD) $(GTKW)
 
-simul: $(VCD)
+sim: $(VCD)
 
 synth: $(VVP)
 
-hw: $(VVP)
+hw: synth
 
 $(VCD): $(VVP)
 	vvp $(VVP)
@@ -104,6 +102,6 @@ clean:
 wclean:
 	$(MAKE) -C examples wclean
 	$(MAKE) -C progs2 wclean
-	$(MAKE) -C tools clean
+	$(MAKE) -C tools wclean
 	del /f $(clean_files)
 

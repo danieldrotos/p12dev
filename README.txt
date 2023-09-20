@@ -12,7 +12,7 @@ megnyithatók a szerkesztendõ fájlok.
 Töltsük ki/módosítsuk a prj.mk fájlt. Paraméterek:
 
 - PRG az assembly forrás fájl neve, az .asm kiteresztés nélkül! A
-  példában a fájl az examples alkönyvtárban van, de tehetjük a csomag
+  példában a fájl egy alkönyvtárban van, de tehetjük a csomag
   könyvtárába is (ahol a prj.mk fájl van), akkor nem kell a névbe
   útvonal. Vagy készíthetünk saját alkönyvtárat.
 
@@ -29,8 +29,8 @@ assembler pszeudó utasításai vannak leírva. A fordításhoz azonban
 _ne_ a pasm-ban leírt módot, hanem az itt szereplõ eljárást használjuk!
 
 
-3. Fordítás, futtatás
----------------------
+3. Fordítás, szimuláció
+-----------------------
 
 A mûveletet parancssorból a
 
@@ -62,10 +62,19 @@ make wclean # windows esetén
 Geany esetén: "Összeállítás" menü "Make egyéni céllal"
 (Shift-Ctrl-F9), majd írjuk be a clean, vagy wclean célt.
 
-A program lefordítása szimuláció nélkül:
+A szoftver és a hardver terv lefordítása szimuláció nélkül:
 
 make compile
 
-Csak a HW lefordítása és szimulációja:
+Csak a hardver lefordítása és szimulációja:
 
 make sim
+
+Csak a hardver lefordítása, szimuláció nélkül:
+
+make hw
+
+Csak a szoftver lefordítása:
+
+make sw
+
