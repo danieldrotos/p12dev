@@ -65,9 +65,9 @@ module uart
 	if (reset)
 	  cycles_per_bit<=
 `ifdef IVERILOG
-			  32'd40;
+			  32'd39;
 `else
-	32'd217; // 25MHz -> 115200 Baud
+	32'd216; // 25MHz -> 115200 Baud
 `endif
 	else
 	  if (wr & (addr==REG_CPB))

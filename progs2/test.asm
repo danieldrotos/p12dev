@@ -1,7 +1,10 @@
 	.proc	p2
 
-	org	1
+	org	0
 	mvzl	r13,eof_stack
+
+	mvzl	r0,1
+	st	r0,0xff51
 	
 	mvl	r0,0xffffffff
 	mvh	r0,0xffffffff

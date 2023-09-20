@@ -1,2 +1,2 @@
-PRG		= progs2/uart2
+PRG		= progs2/test
 INSTS		= 30000
