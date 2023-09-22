@@ -4,7 +4,7 @@
 	D	=	1000
 	org	1
 
-	mvzl	sp,div_stack
+div_begin:	mvzl	sp,div_stack
 	mvl	r0,N
 	mvh	r0,N
 	mvzl	r1,D

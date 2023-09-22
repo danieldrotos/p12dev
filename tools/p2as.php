@@ -18,10 +18,12 @@ $insts= array();
 $conds= array();
 $first_fin= '';
 $src= '';
+$fina= array();
 
 if (isset($argv[0]))
 {
     $fin= '';
+    // process program arguments
     for ($i=1; $i<$argc; $i++)
     {
         if ($argv[$i] == "-o")
@@ -44,10 +46,13 @@ if (isset($argv[0]))
                 echo "Asm file does not exists\n";
                 exit(4);
             }
-            $src.= "\n";
-            $src.= file_get_contents($fin);
+            $fina[]= $fin;
+            //$src.= "\n";
+            //$src.= file_get_contents($fin);
         }
     }
+    // now arguments are processed
+    
     if ($first_fin=='')
     {
         echo "Asm file missing\n";
@@ -728,10 +733,11 @@ else
       exit(9);
     }
     $sym= array(
-      "name" => $name,
-	"value" => $value,
-	"line" => $lnr,
-	"type" => $type
+        'name' => $name,
+        'value'=> $value,
+        'fin'  => $fin,
+        'lnr'  => $lnr,
+        'type' => $type
     );
     $syms[$name]= $sym;
     return $sym;
@@ -874,16 +880,16 @@ else
 	    $params= array();
 	    $params[]= $pv= ord(/*$s[$i]*/$ch);
 	    $mem[$addr]= array(
-	      "icode"=>0,
-		"label"=>$label,
-		"src"=>$orgw."\t$pv",
-		"lnr"=>$lnr,
-		"error"=>$error,
-		"inst"=>$insts[$W],
-		"pattern"=>"n_",
-		"address"=>$addr,
-		"params"=>$params,
-		"cell_type"=>"C"
+            'icode'=>0,
+            'src'=>$orgw."\t$pv",
+            'fin'=>$fin,
+            'lnr'=>$lnr,
+            'error'=>$error,
+            'inst'=>$insts[$W],
+            'pattern'=>"n_",
+            'address'=>$addr,
+            'params'=>$params,
+            'cell_type'=>"C"
 	    );
 	    debug( sprintf("mem[%x] Added char DB $pv",$addr) );
 	    $addr++;
@@ -891,16 +897,16 @@ else
 	  $params= array();
 	  $params[]= 0;
 	  $mem[$addr]= array(
-	    "icode"=>0,
-	      "label"=>$label,
-	      "src"=>$orgw,
-	      "lnr"=>$lnr,
-	      "error"=>$error,
-	      "inst"=>$insts[$W],
-	      "pattern"=>"n_",
-	      "address"=>$addr,
-	      "params"=>$params,
-	      "cell_type"=>"C"
+          'icode'=>0,
+	      'src'=>$orgw,
+          'fin'=>$fin,
+	      'lnr'=>$lnr,
+	      'error'=>$error,
+	      'inst'=>$insts[$W],
+	      'pattern'=>"n_",
+	      'address'=>$addr,
+	      'params'=>$params,
+	      'cell_type'=>"C"
 	  );
 	  debug( sprintf("mem[%x] Added string 0",$addr) );
 	  $addr++;
@@ -915,16 +921,16 @@ else
 	  $params= array();
 	  $params[]= $w;
 	  $mem[$addr]= array(
-	    "icode"=>0,
-	      "label"=>$label,
-	      "src"=>$orgw."\t".$w,
-	      "lnr"=>$lnr,
-	      "error"=>$error,
-	      "inst"=>$insts[$W],
-	      "pattern"=>"n_",
-	      "address"=>$addr,
-	      "params"=>$params,
-	      "cell_type"=>"C"
+          'icode'=>0,
+	      'src'=>$orgw."\t".$w,
+          'fin'=>$fin,
+	      'lnr'=>$lnr,
+	      'error'=>$error,
+	      'inst'=>$insts[$W],
+	      'pattern'=>"n_",
+	      'address'=>$addr,
+	      'params'=>$params,
+	      'cell_type'=>"C"
 	  );
 	  debug( sprintf("mem[%x] Added DB $w",$addr) );
 	  $addr++;
@@ -940,13 +946,13 @@ else
 	$icode= $icode | $inst['icode'];
 	debug("proc_line; INST= ".sprintf("%08x",$icode));
 	$mem[$addr]= array(
-          "icode"=>$icode,
-            "label"=>$label,
-            "src"=>$org,
-	    "lnr"=>$lnr,
-            "error"=>$error,
-	    "inst"=>$inst,
-          "cell_type"=> "C" //"I"
+        'icode'=>$icode,
+        'src'=>$org,
+        'fin'=>$fin,
+	    'lnr'=>$lnr,
+        'error'=>$error,
+	    'inst'=>$inst,
+        'cell_type'=> "C" //"I"
         );
         $o= sprintf("%05x %08x", $addr, $icode);
         debug($o);
@@ -1032,9 +1038,9 @@ else
     }
     $pattern.= "_";
     debug("param pattern=$pattern");
-    $mem[$addr]["pattern"]= $pattern;
-    $mem[$addr]["params"]= $params;
-    $mem[$addr]["address"]= $addr;
+    $mem[$addr]['pattern']= $pattern;
+    $mem[$addr]['params']= $params;
+    $mem[$addr]['address']= $addr;
     debug(sprintf("mem[%x] is ready", $addr));
     $addr++;
     debug(sprintf("new addr=%x", $addr));
@@ -1049,31 +1055,35 @@ else
     
   }
 
-  function param_value($p, $fin, $lnr)
-  {
+
+// Read out symbol value from sym table
+function param_value($p, $fin, $lnr)
+{
     global $syms;
     if (empty($p))
-      return 0;
+        return 0;
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
-      is_numeric($p))
-    return intval($p, 0);
+        is_numeric($p))
+        return intval($p, 0);
     if ($p[0] == "'")
     {
-      $c= substr($p,1,1);
-      $v= ord($c);
-      return $v;
+        $c= substr($p,1,1);
+        $v= ord($c);
+        return $v;
     }
     $s= arri($syms,$p);
     if (!empty($s) && is_array($s))
-      return $s["value"];
+        return $s['value'];
     $error= "{$fin}:{$lnr}: Symbol not found: {$p}";
     debug("Error: ".$error);
     echo $error."\n";
     return 0;
-  }
-  
-  function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
-  {
+}
+
+
+// Part of phase 2: inject symbol values into inst code
+function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
+{
     // Allowed
     /* Array
        (
@@ -1094,111 +1104,111 @@ else
      */
     $c= $icode;
     if (count($allowed_params)==0)
-      return $icode;
-    $icode|= $allowed_params["icode"];
+        return $icode;
+    $icode|= $allowed_params['icode'];
     debug( sprintf("Pattern fixed %08x -> icode= %08x",$c,$icode) );
     foreach ($used_params as $i => $up)
     {
-      $pt= $pattern[$i];
-      if ($pt=="_")
-	break;
-      $pl= $allowed_params["placements"][$i];
-      $pv= param_value($up, $fin, $lnr);
-      debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
-      $c= $icode;
-      if ($pl == "_")
-      {
-	// just skip
-      }
-      else if ($pl == "rd")
-      {
-	$pv&= 0xf;
-	$pv<<= 20;
-	$icode&= 0xff0fffff;
-	$icode|= $pv;
-      }
-      else if ($pl == "rda")
-      {
-	$pv&= 0xf;
-	$icode&= 0xff0fffff;
-	$pv<<= 20;
-	$icode|= $pv;
-      }
-      else if ($pl == "ra")
-      {
-	$pv&= 0xf;
-	$pv<<= 16;
-	$icode&= 0xfff0ffff;
-	$icode|= $pv;
-      }
-      else if ($pl == "rb")
-      {
-	$pv&= 0xf;
-	$pv<<= 8;
-	$icode&= 0xfffff0ff;
-	$icode|= $pv;
-      }
-      else if ($pl == "rb1")
-      {
-	$pv&= 0xf;
-	$pv<<= 12;
-	$icode&= 0xffff0fff;
-	$icode|= $pv;
-      }
-      else if (($pl == "#8") || ($pl == "d8"))
-      {
-        $pv&= 0xff;
-        $icode&= 0xffffff00;
-        $icode|= $pv;
-        if ($pl=="#8")
-	  debug( sprintf("//"."I"."  #8 %08x", $pv) );
-      }
-      else if (($pl == "#16") || ($pl == "d16"))
-      {
-        $pv&= 0xffff;
-        $icode&= 0xffff0000;
-        $icode|= $pv;
-        if ($pl=="#16")
-	  debug( sprintf("//"."I"." #16 %08x", $pv) );
-      }
-      else if ($pl == "#20")
-      {
-        $pv&= 0xfffff;
-        $icode&= 0xfff00000;
-        $icode|= $pv;
-        debug( sprintf("//"."I"." #20 %08x", $pv) );
-      }
-      else if ($pl == "#24")
-      {
-        $pv&= 0xffffff;
-        $icode&= 0xff000000;
-        $icode|= $pv;
-        debug( sprintf("//"."I"." #24 %08x", $pv) );
-      }
-      else if ($pl == "#27")
-      {
-        $pv&= 0x0effffff;
-        $icode&= 0xf8000000;
-        $icode|= $pv;
-        debug( sprintf("//"."I"." #27 %08x", $pv) );
-      }
-      else if (($pl == "#32") || ($pl == "d32"))
-      {
-        $icode= $pv;
-        if ($pl=="#32")
-	  debug( sprintf("//"."I"." #32 %08x", $pv) );
-      }
-      else if ($pl == "h16")
-      {
-	$porg= $pv;
-        $pv>>= 16;
-        $pv&= 0x0000ffff;
-        $icode&= 0xffff0000;
-        $icode|= $pv;
-        debug( sprintf("//"."I"." h16 %08x", $porg) );
-      }
-      
-      debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
+        $pt= $pattern[$i];
+        if ($pt=="_")
+            break;
+        $pl= $allowed_params['placements'][$i];
+        $pv= param_value($up, $fin, $lnr);
+        debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
+        $c= $icode;
+        if ($pl == "_")
+        {
+            // just skip
+        }
+        else if ($pl == "rd")
+        {
+            $pv&= 0xf;
+            $pv<<= 20;
+            $icode&= 0xff0fffff;
+            $icode|= $pv;
+        }
+        else if ($pl == "rda")
+        {
+            $pv&= 0xf;
+            $icode&= 0xff0fffff;
+            $pv<<= 20;
+            $icode|= $pv;
+        }
+        else if ($pl == "ra")
+        {
+            $pv&= 0xf;
+            $pv<<= 16;
+            $icode&= 0xfff0ffff;
+            $icode|= $pv;
+        }
+        else if ($pl == "rb")
+        {
+            $pv&= 0xf;
+            $pv<<= 8;
+            $icode&= 0xfffff0ff;
+            $icode|= $pv;
+        }
+        else if ($pl == "rb1")
+        {
+            $pv&= 0xf;
+            $pv<<= 12;
+            $icode&= 0xffff0fff;
+            $icode|= $pv;
+        }
+        else if (($pl == "#8") || ($pl == "d8"))
+        {
+            $pv&= 0xff;
+            $icode&= 0xffffff00;
+            $icode|= $pv;
+            if ($pl=="#8")
+                debug( sprintf("//"."I"."  #8 %08x", $pv) );
+        }
+        else if (($pl == "#16") || ($pl == "d16"))
+        {
+            $pv&= 0xffff;
+            $icode&= 0xffff0000;
+            $icode|= $pv;
+            if ($pl=="#16")
+                debug( sprintf("//"."I"." #16 %08x", $pv) );
+        }
+        else if ($pl == "#20")
+        {
+            $pv&= 0xfffff;
+            $icode&= 0xfff00000;
+            $icode|= $pv;
+            debug( sprintf("//"."I"." #20 %08x", $pv) );
+        }
+        else if ($pl == "#24")
+        {
+            $pv&= 0xffffff;
+            $icode&= 0xff000000;
+            $icode|= $pv;
+            debug( sprintf("//"."I"." #24 %08x", $pv) );
+        }
+        else if ($pl == "#27")
+        {
+            $pv&= 0x0effffff;
+            $icode&= 0xf8000000;
+            $icode|= $pv;
+            debug( sprintf("//"."I"." #27 %08x", $pv) );
+        }
+        else if (($pl == "#32") || ($pl == "d32"))
+        {
+            $icode= $pv;
+            if ($pl=="#32")
+                debug( sprintf("//"."I"." #32 %08x", $pv) );
+        }
+        else if ($pl == "h16")
+        {
+            $porg= $pv;
+            $pv>>= 16;
+            $pv&= 0x0000ffff;
+            $icode&= 0xffff0000;
+            $icode|= $pv;
+            debug( sprintf("//"."I"." h16 %08x", $porg) );
+        }
+        
+        debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
     return $icode;
   }
@@ -1207,18 +1217,23 @@ else
 // PHASE 1
 ///////////////////////////////////////////////////////////////////////
 
-// Load source file and do PHASE 1
-$lines= preg_split("/\r\n|\n|\r/", $src);
-$nuof_lines= count($lines);
-debug("$nuof_lines lines buffered");
-for ($li= 0; $li < $nuof_lines; $li++)
+// Load source files and do PHASE 1
+foreach ($fina as $fin)
 {
-    $lnr= $li+1;
-    $l= trim($lines[$li]);
-    //$l= preg_replace("/;.*$/", "", $l);
-    debug("\n");
-    debug("line[$lnr]: $l");
-    proc_line($l);
+    debug("\n;; Phase 1 of file $fin\n");
+    $src= file_get_contents($fin);
+    $lines= preg_split("/\r\n|\n|\r/", $src);
+    $nuof_lines= count($lines);
+    debug("$nuof_lines lines buffered");
+    for ($li= 0; $li < $nuof_lines; $li++)
+    {
+        $lnr= $li+1;
+        $l= trim($lines[$li]);
+        //$l= preg_replace("/;.*$/", "", $l);
+        debug("\n");
+        debug("line[$lnr]: $l");
+        proc_line($l);
+    }
 }
 
 debug("\n\n");
@@ -1227,6 +1242,8 @@ debug("\n\n");
 // PAHSE 2
 /////////////////////////////////////////////////////////////////////  
 debug("PHASE 2\n");
+
+// resolve symbols and inject values into inst codes
 foreach ($mem as $a => $m)
 {
     //echo "a=$a, m=".print_r($m,true)."\n";
@@ -1237,24 +1254,24 @@ foreach ($mem as $a => $m)
     //debug(print_r($m,true));
     if (is_array(arri($m,"inst")) &&
         is_array(arri($m,"params")) &&
-        !empty($m["pattern"]))
+        !empty($m['pattern']))
     {
         debug( sprintf("mem[%x] is an instruction: %08x %s",$m['address'],$m['icode'],$m['src']) );
         //echo print_r($m,true);
         $pat= arri($m,"pattern");
-        $ip= arri($m["inst"]["params"],$pat);
-        //debug("Looking $pat in array ".print_r($m["inst"]["params"],true));
+        $ip= arri($m['inst']['params'],$pat);
+        //debug("Looking $pat in array ".print_r($m['inst']['params'],true));
         //debug("ip=".print_r($ip,true));
         if (!is_array($ip))
         {
-            $m['error']= "{$fin}:{$lnr}: Used pattern ($pat) does not match to any allowed";
+            $m['error']= "{$m['fin']}:{$m['lnr']}: Used pattern ($pat) does not match to any allowed";
             debug( "Error: ".$m['error'] );
             echo $m['error']."\n";
         }
         else
         {
             debug("Used pattern matches to an allowed one: $pat");
-            $m['icode']= proc_params($m["icode"], $pat, $ip, $m["params"], $fin, $lnr);
+            $m['icode']= proc_params($m['icode'], $pat, $ip, $m['params'], $m['fin'], $m['lnr']);
         }
     }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
@@ -1262,7 +1279,9 @@ foreach ($mem as $a => $m)
 }
 debug("; PHASE 2 done");
 
-  
+
+// PHASE 2
+// omit symbol table
 $hex= '';
 debug("SYMBOLS");
 //debug ("syms[0]= ${syms[0]}");
@@ -1274,14 +1293,17 @@ if (!empty($syms))
 {
     foreach ($syms as $k => $s)
     {
-        $o= sprintf("//%s %08x", $s['type'], $s["value"])." $k";
+        $o= sprintf("//%s %08x", $s['type'], $s['value'])." $k";
         $hex.= $o."\n";
         debug($o);
+        echo "s[{$k}]=".print_r($s,true)."\n";
     }
 }
 
 debug("\n\n");
 
+// PHASE 2
+// omit code
 $hex.= "//; CODE\n";
 $p= -1;
 foreach ($mem as $a => $m)
@@ -1304,14 +1326,14 @@ foreach ($mem as $a => $m)
     $m['icode']&= 0xffffffff;
     if ($m['icode'] !== false)
     {
-        /*if (isset($m["label"]) && ($m["label"]!==false))
+        /*if (isset($m['label']) && ($m['label']!==false))
           {
-          debug ($o= sprintf("//; %s", $m["label"]["name"]) );
+          debug ($o= sprintf("//; %s", $m['label']['name']) );
           $hex.= $o."\n";
           }*/
-        debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m["src"]) );
+        debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m['src']) );
         $hex.= $o."\n";
-        if ($m["error"] != false)
+        if ($m['error'] != false)
         {
             $o= "; ERROR: ".$m['error'];
             debug($o);
@@ -1328,10 +1350,13 @@ foreach ($mem as $a => $m)
     }*/
     else
         debug(";ph3; what?");
+    echo "a=$a, m=".print_r($m,true)."\n";
 }
 debug( $o= "//E" );
 $hex.= $o."\n";
 
+// PHASE 2
+// write all output to object file
 $obj= fopen($obj_name, "w");
 if ($obj === false)
 {

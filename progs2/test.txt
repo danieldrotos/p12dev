@@ -1,377 +1,3123 @@
-//; PROC P2
-//; SYMBOLS
-//= 0000f000 callin
-//= 0000f001 monitor
-//= 0000f00e putchar
-//= 0000f00f prints
-//= 0000f011 pvhex
-//= 0000f008 avail
-//= 0000f00d read
-//= 0000ff00 porta
-//= 0000ff01 portb
-//= 0000ff01 led
-//= 0000ff10 sw
-//= 0000ff20 btn
-//= 0000ff51 pre
-//= 0000ff50 clock
-//= 0000ff52 ffcnt
-//L 0000000a main_cycle
-//L 0000000d no_press
-//L 0000000f show_counter
-//L 00000016 proc_input
-//L 0000002c pi_no_space
-//L 0000002e pi_w
-//L 0000003d pi_no_w
-//L 0000003f pi_a
-//L 0000004e pi_no_a
-//L 00000050 pi_s
-//L 0000005f pi_no_s
-//L 00000061 pi_d
-//L 00000070 pi_no_d
-//L 00000070 pi_end
-//L 00000072 s_clrch
-//L 0000007a s_up
-//L 0000007e s_down
-//L 00000082 s_left
-//L 00000086 s_right
-//L 0000008a drawit
-//L 00000094 pressed
-//L 000000a6 pressed_igaz
-//L 000000a8 pressed_hamis
-//L 000000a9 pressed_vege
-//L 000000ae div
-//L 000000b5 div_dok
-//L 000000b9 div_cyc
-//L 000000c4 div_cyc_next
-//L 000000c6 div_ret
-//L 000000c9 s_clrscr
-//L 000000d1 last_btn
-//L 000000d2 x
-//L 000000d3 y
-//L 000000d4 down
-//L 000000d5 counter
-//L 0000013a verem
-//; CODE
-01d2013a //C 00001 ldl0	sp,verem
-0700ff20 //C 00002 ld	r0,btn
-060000d1 //C 00003 st	r0,last_btn
-010200c9 //C 00004 ldl0	r0,s_clrscr
-0400f00f //C 00005 call	prints
-01020001 //C 00006 ldl0	r0,1
-060000d2 //C 00007 st	r0,x
-060000d3 //C 00008 st	r0,y
-0400008a //C 00009 call	drawit
-01020002 //C 0000a ldl0	r0,2
-04000094 //C 0000b call	pressed
-3400f000 //C 0000c C call	callin		; BTN1 pressed: back to monitor
-0400f008 //C 0000d call	avail		; check UART
-34000016 //C 0000e C call	proc_input
-070000d5 //C 0000f ld	r0,counter
-01040001 //C 00010 inc	r0
-060000d5 //C 00011 st	r0,counter
-011203e8 //C 00012 ldl0	r1,1000
-040000ae //C 00013 call	div
-0620ff01 //C 00014 st	r2,led
-01f2000a //C 00015 jmp	main_cycle
-0ded0000 //C 00016 push	lr
-0400f00d //C 00017 call	read
-0710ff00 //C 00018 ld	r1,porta
-02180000 //C 00019 shl	r1
-02180000 //C 0001a shl	r1
-02180000 //C 0001b shl	r1
-02180000 //C 0001c shl	r1
-02180000 //C 0001d shl	r1
-02180000 //C 0001e shl	r1
-02180000 //C 0001f shl	r1
-02180000 //C 00020 shl	r1
-001d0000 //C 00021 or	r1,r0
-0610ff00 //C 00022 st	r1,porta
-01080020 //C 00023 cmp	r0,32
-21f2002c //C 00024 NE jmp	pi_no_space
-070000d4 //C 00025 ld	r0,down
-010e0001 //C 00026 xor	r0,1
-060000d4 //C 00027 st	r0,down
-01020082 //C 00028 ldl0	r0,s_left
-0400f00f //C 00029 call	prints
-0400008a //C 0002a call	drawit
-01f20070 //C 0002b jmp	pi_end
-01080077 //C 0002c cmp	r0,'w'
-21f2003d //C 0002d NE jmp	pi_no_w
-070000d3 //C 0002e ld	r0,y		; hatar?
-01080001 //C 0002f cmp	r0,1		; y==1
-11f20070 //C 00030 EQ jmp	pi_end
-070000d4 //C 00031 ld	r0,down
-020b0000 //C 00032 sz	r0
-11020072 //C 00033 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00034 NZ ldl0	r0,s_left
-0400f00f //C 00035 call	prints
-070000d3 //C 00036 ld	r0,y		; y--
-0104ffff //C 00037 dec	r0
-060000d3 //C 00038 st	r0,y
-0102007a //C 00039 ldl0	r0,s_up		; cursor UP
-0400f00f //C 0003a call	prints
-0400008a //C 0003b call	drawit
-01f20070 //C 0003c jmp	pi_end
-01080061 //C 0003d cmp	r0,'a'
-21f2004e //C 0003e NE jmp	pi_no_a
-070000d2 //C 0003f ld	r0,x		; hatar?
-01080001 //C 00040 cmp	r0,1		; x==1
-11f20070 //C 00041 EQ jmp	pi_end
-070000d4 //C 00042 ld	r0,down
-020b0000 //C 00043 sz	r0
-11020072 //C 00044 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00045 NZ ldl0	r0,s_left
-0400f00f //C 00046 call	prints
-070000d2 //C 00047 ld	r0,x		; x--
-0104ffff //C 00048 dec	r0
-060000d2 //C 00049 st	r0,x
-01020082 //C 0004a ldl0	r0,s_left	; cursor LEFT
-0400f00f //C 0004b call	prints
-0400008a //C 0004c call	drawit
-01f20070 //C 0004d jmp	pi_end
-01080073 //C 0004e cmp	r0,'s'
-21f2005f //C 0004f NE jmp	pi_no_s
-070000d3 //C 00050 ld	r0,y		; hatar?
-01080018 //C 00051 cmp	r0,24		; y==24
-11f20070 //C 00052 EQ jmp	pi_end
-070000d4 //C 00053 ld	r0,down
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-020b0000 //C 00054 sz	r0
-11020072 //C 00055 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00056 NZ ldl0	r0,s_left
-0400f00f //C 00057 call	prints
-070000d3 //C 00058 ld	r0,y		; y++
-01040001 //C 00059 inc	r0
-060000d3 //C 0005a st	r0,y
-0102007e //C 0005b ldl0	r0,s_down	; cursor DOWN
-0400f00f //C 0005c call	prints
-0400008a //C 0005d call	drawit
-01f20070 //C 0005e jmp	pi_end
-01080064 //C 0005f cmp	r0,'d'
-21f20070 //C 00060 NE jmp	pi_no_d
-070000d2 //C 00061 ld	r0,x		; hatar?
-0108004f //C 00062 cmp	r0,79		; x==79
-11f20070 //C 00063 EQ jmp	pi_end
-070000d4 //C 00064 ld	r0,down
-020b0000 //C 00065 sz	r0
-11020072 //C 00066 Z ldl0	r0,s_clrch	; clear *
-21020082 //C 00067 NZ ldl0	r0,s_left
-0400f00f //C 00068 call	prints
-070000d2 //C 00069 ld	r0,x		; x++
-01040001 //C 0006a inc	r0
-060000d2 //C 0006b st	r0,x
-01020086 //C 0006c ldl0	r0,s_right	; cursor RIGHT
-0400f00f //C 0006d call	prints
-0400008a //C 0006e call	drawit
-01f20070 //C 0006f jmp	pi_end
-0fed0000 //C 00070 pop	lr
-00f00e00 //C 00071 ret
-0000001b //C 00072 db	27
-0000005b //C 00073 db	91
-00000044 //C 00074 db	68
-00000020 //C 00075 db	32
-0000001b //C 00076 db	27
-0000005b //C 00077 db	91
-00000044 //C 00078 db	68
-00000000 //C 00079 db
-0000001b //C 0007a db	27
-0000005b //C 0007b db	91
-00000041 //C 0007c db	65
-00000000 //C 0007d db
-0000001b //C 0007e db	27
-0000005b //C 0007f db	91
-00000042 //C 00080 db	66
-00000000 //C 00081 db
-0000001b //C 00082 db	27
-0000005b //C 00083 db	91
-00000044 //C 00084 db	68
-00000000 //C 00085 db
-0000001b //C 00086 db	27
-0000005b //C 00087 db	91
-00000043 //C 00088 db	67
-00000000 //C 00089 db
-0ded0000 //C 0008a push	lr
-0d0d0000 //C 0008b push	r0
-070000d4 //C 0008c ld	r0,down
-020b0000 //C 0008d sz	r0
-1102006f //C 0008e Z ldl0	r0,'o'
-2102002a //C 0008f NZ ldl0	r0,'*'
-0400f00e //C 00090 call	putchar
-0f0d0000 //C 00091 pop	r0
-0fed0000 //C 00092 pop	lr
-00f00e00 //C 00093 ret
-0ded0000 //C 00094 push	lr
-0d1d0000 //C 00095 push	r1
-0d2d0000 //C 00096 push	r2
-0d3d0000 //C 00097 push	r3
-071000d1 //C 00098 ld	r1,last_btn
-0720ff20 //C 00099 ld	r2,btn
-001f0000 //C 0009a and	r1,r0
-002f0000 //C 0009b and	r2,r0
-00180200 //C 0009c cmp	r1,r2
-11f200a8 //C 0009d EQ jmp	pressed_hamis
-071000d1 //C 0009e ld	r1,last_btn
-00300000 //C 0009f mov	r3,r0
-02340000 //C 000a0 not	r3
-001f0300 //C 000a1 and	r1,r3
-001d0200 //C 000a2 or	r1,r2
-061000d1 //C 000a3 st	r1,last_btn
-022b0000 //C 000a4 sz	r2
-11f200a8 //C 000a5 Z jmp	pressed_hamis
-020c0000 //C 000a6 sec
-01f200a9 //C 000a7 jmp	pressed_vege
-020d0000 //C 000a8 clc
-0f3d0000 //C 000a9 pop	r3
-0f2d0000 //C 000aa pop	r2
-0f1d0000 //C 000ab pop	r1
-0fed0000 //C 000ac pop	lr
-00f00e00 //C 000ad ret
-0ded0000 //C 000ae push	lr
-0d4d0000 //C 000af push	r4
-021b0000 //C 000b0 sz	r1
-21f200b5 //C 000b1 NZ jmp	div_dok
-00200000 //C 000b2 mov	r2,r0		; div by zero
-01320000 //C 000b3 mvzl	r3,0
-01f200c6 //C 000b4 jmp	div_ret
-01220000 //C 000b5 mvzl	r2,0		; Q= 0
-01320000 //C 000b6 mvzl	r3,0		; R= 0
-01418000 //C 000b7 mvh	r4,0x80000000	; m= 1<<31
-01400000 //C 000b8 mvl	r4,0x80000000
-024b0000 //C 000b9 sz	r4
-11f200c6 //C 000ba Z jmp	div_ret
-02380000 //C 000bb shl	r3		; r<<= 1
-000c0400 //C 000bc test	r0,r4		; if (n&m)
-213d0001 //C 000bd NZ or	r3,1		; r|= 1
-00380100 //C 000be cmp	r3,r1		; if (r>=d)
-41f200c4 //C 000bf LO jmp	div_cyc_next
-00360100 //C 000c0 sub	r3,r1		;r-= d
-002d0400 //C 000c1 or	r2,r4		;q|= m
-01f200c4 //C 000c2 jmp	div_cyc_next
-01f200b9 //C 000c3 jmp	div_cyc
-02490000 //C 000c4 shr	r4		; m>>= 1
-01f200b9 //C 000c5 jmp	div_cyc
-0f4d0000 //C 000c6 pop	r4
-0fed0000 //C 000c7 pop	lr
-00f00e00 //C 000c8 ret
-0000001b //C 000c9 db	27
-0000005b //C 000ca db	91
-00000032 //C 000cb db	50
-0000004a //C 000cc db	74
-0000001b //C 000cd db	27
-0000005b //C 000ce db	91
-00000048 //C 000cf db	72
-41f200c4 //C 000bf LO jmp	div_cyc_next
-00360100 //C 000c0 sub	r3,r1		;r-= d
-002d0400 //C 000c1 or	r2,r4		;q|= m
-01f200c4 //C 000c2 jmp	div_cyc_next
-01f200b9 //C 000c3 jmp	div_cyc
-02490000 //C 000c4 shr	r4		; m>>= 1
-01f200b9 //C 000c5 jmp	div_cyc
-0f4d0000 //C 000c6 pop	r4
-00200000 //C 000b2 mov	r2,r0		; div by zero
-01320000 //C 000b3 mvzl	r3,0
-01f200c6 //C 000b4 jmp	div_ret
-01220000 //C 000b5 mvzl	r2,0		; Q= 0
-01320000 //C 000b6 mvzl	r3,0		; R= 0
-01418000 //C 000b7 mvh	r4,0x80000000	; m= 1<<31
-01400000 //C 000b8 mvl	r4,0x80000000
-024b0000 //C 000b9 sz	r4
-11f200c6 //C 000ba Z jmp	div_ret
-02380000 //C 000bb shl	r3		; r<<= 1
-000c0400 //C 000bc test	r0,r4		; if (n&m)
-//E
+fn_div.asm:6: Used pattern (rnr_) does not match to any allowed
+s[CLOCK_PRE]=Array
+(
+    [name] => CLOCK_PRE
+    [value] => 65360
+    [fin] => test.asm
+    [lnr] => 3
+    [type] => S
+)
+
+s[printf]=Array
+(
+    [name] => printf
+    [value] => 61460
+    [fin] => test.asm
+    [lnr] => 5
+    [type] => =
+)
+
+s[s]=Array
+(
+    [name] => s
+    [value] => 26
+    [fin] => test.asm
+    [lnr] => 35
+    [type] => L
+)
+
+s[s2]=Array
+(
+    [name] => s2
+    [value] => 56
+    [fin] => test.asm
+    [lnr] => 36
+    [type] => L
+)
+
+s[aa]=Array
+(
+    [name] => aa
+    [value] => 4098
+    [fin] => test.asm
+    [lnr] => 42
+    [type] => L
+)
+
+s[leds]=Array
+(
+    [name] => leds
+    [value] => 65281
+    [fin] => test.asm
+    [lnr] => 48
+    [type] => S
+)
+
+s[sw]=Array
+(
+    [name] => sw
+    [value] => 65296
+    [fin] => test.asm
+    [lnr] => 49
+    [type] => S
+)
+
+s[cikl]=Array
+(
+    [name] => cikl
+    [value] => 4115
+    [fin] => test.asm
+    [lnr] => 58
+    [type] => L
+)
+
+s[egyik]=Array
+(
+    [name] => egyik
+    [value] => 4118
+    [fin] => test.asm
+    [lnr] => 63
+    [type] => L
+)
+
+s[masik]=Array
+(
+    [name] => masik
+    [value] => 4124
+    [fin] => test.asm
+    [lnr] => 71
+    [type] => L
+)
+
+s[atoi_end_search]=Array
+(
+    [name] => atoi_end_search
+    [value] => 4135
+    [fin] => fn_atoi.asm
+    [lnr] => 11
+    [type] => L
+)
+
+s[atoi_start]=Array
+(
+    [name] => atoi_start
+    [value] => 4140
+    [fin] => fn_atoi.asm
+    [lnr] => 17
+    [type] => L
+)
+
+s[atoi_cycle]=Array
+(
+    [name] => atoi_cycle
+    [value] => 4145
+    [fin] => fn_atoi.asm
+    [lnr] => 24
+    [type] => L
+)
+
+s[atoi_ready]=Array
+(
+    [name] => atoi_ready
+    [value] => 4154
+    [fin] => fn_atoi.asm
+    [lnr] => 34
+    [type] => L
+)
+
+s[div]=Array
+(
+    [name] => div
+    [value] => 4161
+    [fin] => fn_div.asm
+    [lnr] => 5
+    [type] => L
+)
+
+s[div_dok]=Array
+(
+    [name] => div_dok
+    [value] => 4168
+    [fin] => fn_div.asm
+    [lnr] => 14
+    [type] => L
+)
+
+s[div_cyc]=Array
+(
+    [name] => div_cyc
+    [value] => 4172
+    [fin] => fn_div.asm
+    [lnr] => 19
+    [type] => L
+)
+
+s[div_cyc_next]=Array
+(
+    [name] => div_cyc_next
+    [value] => 4183
+    [fin] => fn_div.asm
+    [lnr] => 31
+    [type] => L
+)
+
+s[div_ret]=Array
+(
+    [name] => div_ret
+    [value] => 4185
+    [fin] => fn_div.asm
+    [lnr] => 34
+    [type] => L
+)
+
+a=0, m=Array
+(
+    [icode] => 30601215
+    [src] => mvzl	r13,0xefff
+    [fin] => test.asm
+    [lnr] => 8
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 13
+            [1] => 0xefff
+        )
+
+    [address] => 0
+)
+
+a=1, m=Array
+(
+    [icode] => 16908289
+    [src] => mvzl	r0,1
+    [fin] => test.asm
+    [lnr] => 10
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 1
+        )
+
+    [address] => 1
+)
+
+a=2, m=Array
+(
+    [icode] => 100728656
+    [src] => st	r0,CLOCK_PRE
+    [fin] => test.asm
+    [lnr] => 11
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [rrr_] => Array
+                        (
+                            [icode] => 134217728
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                    [2] => rb
+                                )
+
+                        )
+
+                    [rrn_] => Array
+                        (
+                            [icode] => 201326592
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                    [2] => #16
+                                )
+
+                        )
+
+                    [rr_] => Array
+                        (
+                            [icode] => 201326592
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                )
+
+                        )
+
+                    [rn_] => Array
+                        (
+                            [icode] => 100663296
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                    [nr_] => Array
+                        (
+                            [icode] => 100663296
+                            [placements] => Array
+                                (
+                                    [0] => #16
+                                    [1] => rd
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => CLOCK_PRE
+        )
+
+    [address] => 2
+)
+
+a=3, m=Array
+(
+    [icode] => 16842751
+    [src] => mvl	r0,0xffffffff
+    [fin] => test.asm
+    [lnr] => 13
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 0xffffffff
+        )
+
+    [address] => 3
+)
+
+a=4, m=Array
+(
+    [icode] => 16908287
+    [src] => mvh	r0,0xffffffff
+    [fin] => test.asm
+    [lnr] => 14
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 65536
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => h16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 0xffffffff
+        )
+
+    [address] => 4
+)
+
+a=5, m=Array
+(
+    [icode] => 67170323
+    [src] => call	0xf013
+    [fin] => test.asm
+    [lnr] => 15
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 67108864
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #20
+                                )
+
+                        )
+
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #24
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => 0xf013
+        )
+
+    [address] => 5
+)
+
+a=6, m=Array
+(
+    [icode] => 16908298
+    [src] => mvzl	r0,10
+    [fin] => test.asm
+    [lnr] => 16
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 10
+        )
+
+    [address] => 6
+)
+
+a=7, m=Array
+(
+    [icode] => 67170318
+    [src] => call	0xf00e
+    [fin] => test.asm
+    [lnr] => 17
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 67108864
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #20
+                                )
+
+                        )
+
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #24
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => 0xf00e
+        )
+
+    [address] => 7
+)
+
+a=8, m=Array
+(
+    [icode] => 16908314
+    [src] => mvzl	r0,s
+    [fin] => test.asm
+    [lnr] => 19
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => s
+        )
+
+    [address] => 8
+)
+
+a=9, m=Array
+(
+    [icode] => 17969209
+    [src] => mvzl	r1,12345
+    [fin] => test.asm
+    [lnr] => 20
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 1
+            [1] => 12345
+        )
+
+    [address] => 9
+)
+
+a=10, m=Array
+(
+    [icode] => 18923247
+    [src] => mvl	r2,0xdeadbeef
+    [fin] => test.asm
+    [lnr] => 21
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 2
+            [1] => 0xdeadbeef
+        )
+
+    [address] => 10
+)
+
+a=11, m=Array
+(
+    [icode] => 18996909
+    [src] => mvh	r2,0xdeadbeef
+    [fin] => test.asm
+    [lnr] => 22
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 65536
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => h16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 2
+            [1] => 0xdeadbeef
+        )
+
+    [address] => 11
+)
+
+a=12, m=Array
+(
+    [icode] => 20054072
+    [src] => mvzl	r3,s2
+    [fin] => test.asm
+    [lnr] => 23
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 3
+            [1] => s2
+        )
+
+    [address] => 12
+)
+
+a=13, m=Array
+(
+    [icode] => 21102657
+    [src] => mvzl	r4,'A'
+    [fin] => test.asm
+    [lnr] => 24
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 4
+            [1] => 'A'
+        )
+
+    [address] => 13
+)
+
+a=14, m=Array
+(
+    [icode] => 67170324
+    [src] => call	printf
+    [fin] => test.asm
+    [lnr] => 25
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 67108864
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #20
+                                )
+
+                        )
+
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #24
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => printf
+        )
+
+    [address] => 14
+)
+
+a=15, m=Array
+(
+    [icode] => 18022399
+    [src] => mvzl	r1,65535
+    [fin] => test.asm
+    [lnr] => 27
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 1
+            [1] => 65535
+        )
+
+    [address] => 15
+)
+
+a=16, m=Array
+(
+    [icode] => 67170325
+    [src] => call	0xf015
+    [fin] => test.asm
+    [lnr] => 28
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 67108864
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #20
+                                )
+
+                        )
+
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #24
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => 0xf015
+        )
+
+    [address] => 16
+)
+
+a=17, m=Array
+(
+    [icode] => 100
+    [src] => db	100
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 17
+    [params] => Array
+        (
+            [0] => 100
+        )
+
+    [cell_type] => C
+)
+
+a=18, m=Array
+(
+    [icode] => 61
+    [src] => db	61
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 18
+    [params] => Array
+        (
+            [0] => 61
+        )
+
+    [cell_type] => C
+)
+
+a=19, m=Array
+(
+    [icode] => 37
+    [src] => db	37
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 19
+    [params] => Array
+        (
+            [0] => 37
+        )
+
+    [cell_type] => C
+)
+
+a=20, m=Array
+(
+    [icode] => 120
+    [src] => db	120
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 20
+    [params] => Array
+        (
+            [0] => 120
+        )
+
+    [cell_type] => C
+)
+
+a=21, m=Array
+(
+    [icode] => 10
+    [src] => db	10
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 21
+    [params] => Array
+        (
+            [0] => 10
+        )
+
+    [cell_type] => C
+)
+
+a=22, m=Array
+(
+    [icode] => 0
+    [src] => db
+    [fin] => test.asm
+    [lnr] => 29
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 22
+    [params] => Array
+        (
+            [0] => 0
+        )
+
+    [cell_type] => C
+)
+
+a=23, m=Array
+(
+    [icode] => 16908354
+    [src] => mvzl	r0,'B'
+    [fin] => test.asm
+    [lnr] => 30
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 131072
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rn_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 'B'
+        )
+
+    [address] => 23
+)
+
+a=24, m=Array
+(
+    [icode] => 67170318
+    [src] => call	0xf00e
+    [fin] => test.asm
+    [lnr] => 31
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 67108864
+            [params] => Array
+                (
+                    [rn_] => Array
+                        (
+                            [icode] => 16777216
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #20
+                                )
+
+                        )
+
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #24
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => 0xf00e
+        )
+
+    [address] => 24
+)
+
+a=25, m=Array
+(
+    [icode] => 32698368
+    [src] => jmp	0xf000
+    [fin] => test.asm
+    [lnr] => 33
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 32636928
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => 0xf000
+        )
+
+    [address] => 25
+)
+
+a=26, m=Array
+(
+    [icode] => 100
+    [src] => db	100
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 26
+    [params] => Array
+        (
+            [0] => 100
+        )
+
+    [cell_type] => C
+)
+
+a=27, m=Array
+(
+    [icode] => 101
+    [src] => db	101
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 27
+    [params] => Array
+        (
+            [0] => 101
+        )
+
+    [cell_type] => C
+)
+
+a=28, m=Array
+(
+    [icode] => 99
+    [src] => db	99
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 28
+    [params] => Array
+        (
+            [0] => 99
+        )
+
+    [cell_type] => C
+)
+
+a=29, m=Array
+(
+    [icode] => 61
+    [src] => db	61
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 29
+    [params] => Array
+        (
+            [0] => 61
+        )
+
+    [cell_type] => C
+)
+
+a=30, m=Array
+(
+    [icode] => 37
+    [src] => db	37
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 30
+    [params] => Array
+        (
+            [0] => 37
+        )
+
+    [cell_type] => C
+)
+
+a=31, m=Array
+(
+    [icode] => 100
+    [src] => db	100
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 31
+    [params] => Array
+        (
+            [0] => 100
+        )
+
+    [cell_type] => C
+)
+
+a=32, m=Array
+(
+    [icode] => 10
+    [src] => db	10
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 32
+    [params] => Array
+        (
+            [0] => 10
+        )
+
+    [cell_type] => C
+)
+
+a=33, m=Array
+(
+    [icode] => 104
+    [src] => db	104
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 33
+    [params] => Array
+        (
+            [0] => 104
+        )
+
+    [cell_type] => C
+)
+
+a=34, m=Array
+(
+    [icode] => 101
+    [src] => db	101
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 34
+    [params] => Array
+        (
+            [0] => 101
+        )
+
+    [cell_type] => C
+)
+
+a=35, m=Array
+(
+    [icode] => 120
+    [src] => db	120
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 35
+    [params] => Array
+        (
+            [0] => 120
+        )
+
+    [cell_type] => C
+)
+
+a=36, m=Array
+(
+    [icode] => 61
+    [src] => db	61
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 36
+    [params] => Array
+        (
+            [0] => 61
+        )
+
+    [cell_type] => C
+)
+
+a=37, m=Array
+(
+    [icode] => 37
+    [src] => db	37
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 37
+    [params] => Array
+        (
+            [0] => 37
+        )
+
+    [cell_type] => C
+)
+
+a=38, m=Array
+(
+    [icode] => 120
+    [src] => db	120
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 38
+    [params] => Array
+        (
+            [0] => 120
+        )
+
+    [cell_type] => C
+)
+
+a=39, m=Array
+(
+    [icode] => 10
+    [src] => db	10
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 39
+    [params] => Array
+        (
+            [0] => 10
+        )
+
+    [cell_type] => C
+)
+
+a=40, m=Array
+(
+    [icode] => 115
+    [src] => db	115
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 40
+    [params] => Array
+        (
+            [0] => 115
+        )
+
+    [cell_type] => C
+)
+
+a=41, m=Array
+(
+    [icode] => 116
+    [src] => db	116
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 41
+    [params] => Array
+        (
+            [0] => 116
+        )
+
+    [cell_type] => C
+)
+
+a=42, m=Array
+(
+    [icode] => 114
+    [src] => db	114
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 42
+    [params] => Array
+        (
+            [0] => 114
+        )
+
+    [cell_type] => C
+)
+
+a=43, m=Array
+(
+    [icode] => 61
+    [src] => db	61
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 43
+    [params] => Array
+        (
+            [0] => 61
+        )
+
+    [cell_type] => C
+)
+
+a=44, m=Array
+(
+    [icode] => 37
+    [src] => db	37
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 44
+    [params] => Array
+        (
+            [0] => 37
+        )
+
+    [cell_type] => C
+)
+
+a=45, m=Array
+(
+    [icode] => 115
+    [src] => db	115
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 45
+    [params] => Array
+        (
+            [0] => 115
+        )
+
+    [cell_type] => C
+)
+
+a=46, m=Array
+(
+    [icode] => 10
+    [src] => db	10
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 46
+    [params] => Array
+        (
+            [0] => 10
+        )
+
+    [cell_type] => C
+)
+
+a=47, m=Array
+(
+    [icode] => 99
+    [src] => db	99
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 47
+    [params] => Array
+        (
+            [0] => 99
+        )
+
+    [cell_type] => C
+)
+
+a=48, m=Array
+(
+    [icode] => 104
+    [src] => db	104
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 48
+    [params] => Array
+        (
+            [0] => 104
+        )
+
+    [cell_type] => C
+)
+
+a=49, m=Array
+(
+    [icode] => 97
+    [src] => db	97
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 49
+    [params] => Array
+        (
+            [0] => 97
+        )
+
+    [cell_type] => C
+)
+
+a=50, m=Array
+(
+    [icode] => 114
+    [src] => db	114
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 50
+    [params] => Array
+        (
+            [0] => 114
+        )
+
+    [cell_type] => C
+)
+
+a=51, m=Array
+(
+    [icode] => 61
+    [src] => db	61
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 51
+    [params] => Array
+        (
+            [0] => 61
+        )
+
+    [cell_type] => C
+)
+
+a=52, m=Array
+(
+    [icode] => 37
+    [src] => db	37
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 52
+    [params] => Array
+        (
+            [0] => 37
+        )
+
+    [cell_type] => C
+)
+
+a=53, m=Array
+(
+    [icode] => 99
+    [src] => db	99
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 53
+    [params] => Array
+        (
+            [0] => 99
+        )
+
+    [cell_type] => C
+)
+
+a=54, m=Array
+(
+    [icode] => 10
+    [src] => db	10
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 54
+    [params] => Array
+        (
+            [0] => 10
+        )
+
+    [cell_type] => C
+)
+
+a=55, m=Array
+(
+    [icode] => 0
+    [src] => db
+    [fin] => test.asm
+    [lnr] => 35
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 55
+    [params] => Array
+        (
+            [0] => 0
+        )
+
+    [cell_type] => C
+)
+
+a=56, m=Array
+(
+    [icode] => 116
+    [src] => db	116
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 56
+    [params] => Array
+        (
+            [0] => 116
+        )
+
+    [cell_type] => C
+)
+
+a=57, m=Array
+(
+    [icode] => 104
+    [src] => db	104
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 57
+    [params] => Array
+        (
+            [0] => 104
+        )
+
+    [cell_type] => C
+)
+
+a=58, m=Array
+(
+    [icode] => 105
+    [src] => db	105
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 58
+    [params] => Array
+        (
+            [0] => 105
+        )
+
+    [cell_type] => C
+)
+
+a=59, m=Array
+(
+    [icode] => 115
+    [src] => db	115
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 59
+    [params] => Array
+        (
+            [0] => 115
+        )
+
+    [cell_type] => C
+)
+
+a=60, m=Array
+(
+    [icode] => 32
+    [src] => db	32
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 60
+    [params] => Array
+        (
+            [0] => 32
+        )
+
+    [cell_type] => C
+)
+
+a=61, m=Array
+(
+    [icode] => 105
+    [src] => db	105
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 61
+    [params] => Array
+        (
+            [0] => 105
+        )
+
+    [cell_type] => C
+)
+
+a=62, m=Array
+(
+    [icode] => 115
+    [src] => db	115
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 62
+    [params] => Array
+        (
+            [0] => 115
+        )
+
+    [cell_type] => C
+)
+
+a=63, m=Array
+(
+    [icode] => 32
+    [src] => db	32
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 63
+    [params] => Array
+        (
+            [0] => 32
+        )
+
+    [cell_type] => C
+)
+
+a=64, m=Array
+(
+    [icode] => 97
+    [src] => db	97
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 64
+    [params] => Array
+        (
+            [0] => 97
+        )
+
+    [cell_type] => C
+)
+
+a=65, m=Array
+(
+    [icode] => 32
+    [src] => db	32
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 65
+    [params] => Array
+        (
+            [0] => 32
+        )
+
+    [cell_type] => C
+)
+
+a=66, m=Array
+(
+    [icode] => 115
+    [src] => db	115
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 66
+    [params] => Array
+        (
+            [0] => 115
+        )
+
+    [cell_type] => C
+)
+
+a=67, m=Array
+(
+    [icode] => 116
+    [src] => db	116
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 67
+    [params] => Array
+        (
+            [0] => 116
+        )
+
+    [cell_type] => C
+)
+
+a=68, m=Array
+(
+    [icode] => 114
+    [src] => db	114
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 68
+    [params] => Array
+        (
+            [0] => 114
+        )
+
+    [cell_type] => C
+)
+
+a=69, m=Array
+(
+    [icode] => 105
+    [src] => db	105
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 69
+    [params] => Array
+        (
+            [0] => 105
+        )
+
+    [cell_type] => C
+)
+
+a=70, m=Array
+(
+    [icode] => 110
+    [src] => db	110
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 70
+    [params] => Array
+        (
+            [0] => 110
+        )
+
+    [cell_type] => C
+)
+
+a=71, m=Array
+(
+    [icode] => 103
+    [src] => db	103
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 71
+    [params] => Array
+        (
+            [0] => 103
+        )
+
+    [cell_type] => C
+)
+
+a=72, m=Array
+(
+    [icode] => 0
+    [src] => db
+    [fin] => test.asm
+    [lnr] => 36
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 72
+    [params] => Array
+        (
+            [0] => 0
+        )
+
+    [cell_type] => C
+)
+
+a=4096, m=Array
+(
+    [icode] => 1024
+    [src] => mov	r0,r4
+    [fin] => test.asm
+    [lnr] => 40
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [rr_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => rb
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => rr_
+    [params] => Array
+        (
+            [0] => 0
+            [1] => 4
+        )
+
+    [address] => 4096
+)
+
+a=4097, m=Array
+(
+    [icode] => 115347458
+    [src] => st	aa,r14
+    [fin] => test.asm
+    [lnr] => 41
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [rrr_] => Array
+                        (
+                            [icode] => 134217728
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                    [2] => rb
+                                )
+
+                        )
+
+                    [rrn_] => Array
+                        (
+                            [icode] => 201326592
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                    [2] => #16
+                                )
+
+                        )
+
+                    [rr_] => Array
+                        (
+                            [icode] => 201326592
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => ra
+                                )
+
+                        )
+
+                    [rn_] => Array
+                        (
+                            [icode] => 100663296
+                            [placements] => Array
+                                (
+                                    [0] => rd
+                                    [1] => #16
+                                )
+
+                        )
+
+                    [nr_] => Array
+                        (
+                            [icode] => 100663296
+                            [placements] => Array
+                                (
+                                    [0] => #16
+                                    [1] => rd
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => nr_
+    [params] => Array
+        (
+            [0] => aa
+            [1] => 14
+        )
+
+    [address] => 4097
+)
+
+a=4098, m=Array
+(
+    [icode] => 32641026
+    [src] => jmp	aa
+    [fin] => test.asm
+    [lnr] => 43
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 32636928
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => #16
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [cell_type] => C
+    [pattern] => n_
+    [params] => Array
+        (
+            [0] => aa
+        )
+
+    [address] => 4098
+)
+
+a=4099, m=Array
+(
+    [icode] => 65
+    [src] => db	65
+    [fin] => test.asm
+    [lnr] => 45
+    [error] => 
+    [inst] => Array
+        (
+            [icode] => 0
+            [params] => Array
+                (
+                    [n_] => Array
+                        (
+                            [icode] => 0
+                            [placements] => Array
+                                (
+                                    [0] => d8
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [pattern] => n_
+    [address] => 4099
+    [params] => Array
+        (
+            [0] => 65
+        )
+
+    [cell_type] => C
+)
+
