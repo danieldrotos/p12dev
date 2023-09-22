@@ -2,86 +2,91 @@
 <?php
 
 $debugging= true;
-  $debugging= false;
-  error_reporting(E_ALL);
-  ini_set("display_errors", "On");
+$debugging= false;
+error_reporting(E_ALL);
+ini_set("display_errors", "On");
 
-  $lnr= 1;
-  $addr= 0;
-  $mem= array();
-  $syms= array();
-  $obj_name= '';
-  $lst_name= '';
-  $lst= false;
-  $proc= "P1";
-  $insts= array();
-  $conds= array();
-  
-  if (isset($argv[0]))
-  {
+$lnr= 1;
+$addr= 0;
+$mem= array();
+$syms= array();
+$obj_name= '';
+$lst_name= '';
+$lst= false;
+$proc= "P1";
+$insts= array();
+$conds= array();
+$first_fin= '';
+$src= '';
+
+if (isset($argv[0]))
+{
     $fin= '';
     for ($i=1; $i<$argc; $i++)
     {
-      if ($argv[$i] == "-o")
-      {
-	$i++;
-	$obj_name= $argv[$i];
-      }
-      else if ($argv[$i] == "-l")
-      {
-	$debugging= true;
-      }
-      else
-      {
-	$_REQUEST['submit']= "";
-	$fin= $argv[$i];
-      }
+        if ($argv[$i] == "-o")
+        {
+            $i++;
+            $obj_name= $argv[$i];
+        }
+        else if ($argv[$i] == "-l")
+        {
+            $debugging= true;
+        }
+        else
+        {
+            $_REQUEST['submit']= "";
+            $fin= $argv[$i];
+            if ($first_fin == '')
+                $first_fin= $fin;
+            if (!file_exists($fin))
+            {
+                echo "Asm file does not exists\n";
+                exit(4);
+            }
+            $src.= "\n";
+            $src.= file_get_contents($fin);
+        }
     }
-    if ($fin=='')
+    if ($first_fin=='')
     {
-      echo "Asm file missing\n";
-      exit(1);
+        echo "Asm file missing\n";
+        exit(1);
     }
-    if (!file_exists($fin))
-    {
-      echo "Asm file does not exists\n";
-      exit(4);
-    }
-    $src= file_get_contents($fin);
     if ($obj_name == '')
     {
-      $p= strrpos($fin, ".");
-      if ($p === false)
-      {
-	echo "Can not convert asm filename to obj filename\n";
-	exit(2);
-      }
-      $obj_name= substr($fin, 0, $p).".hex";
+        $p= strrpos($first_fin, ".");
+        if ($p === false)
+        {
+            echo "Can not convert asm filename to obj filename\n";
+            exit(2);
+        }
+        $obj_name= substr($first_fin, 0, $p).".p2h";
     }
     if ($debugging)
     {
-      $p= strrpos($fin, ".");
-      if ($p === false)
-      {
-	echo "Can not convert asm filename to list filename\n";
-	exit(5);
-      }
-      $lst_name= substr($fin, 0, $p).".lst";
-      $lst= fopen($lst_name, "w");
+        $p= strrpos($first_fin, ".");
+        if ($p === false)
+        {
+            echo "Can not convert asm filename to list filename\n";
+            exit(5);
+        }
+        $lst_name= substr($first_fin, 0, $p).".lst";
+        $lst= fopen($lst_name, "w");
     }
-  }
-  else
-  {
+}
+else
+{
     if ($_REQUEST['submit'] == "Download verilog file")
     {
-      header("Content-Type: application/octet-stream");
-      header('Content-Disposition: attachment; filename="mem.v"');
-      $debugging= false;
+        header("Content-Type: application/octet-stream");
+        header('Content-Disposition: attachment; filename="mem.v"');
+        $debugging= false;
     }
     else
-      echo "<pre>";
+        echo "<pre>";
     $src= $_REQUEST['src'];
-  }
+}
 
 
   

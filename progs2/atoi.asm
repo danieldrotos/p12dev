@@ -9,7 +9,7 @@ print_vhex = 	0xf011
 monitor	= 	0xf001
 	
 	org	1
-	ldl0	sp,stack
+	ldl0	sp,atoi_stack
 	ld	r0,0x16
 	st	r0,PortD
 	
@@ -22,7 +22,7 @@ end_search:
 	jmp	end_search
 go_on:
 	cmp	r0,text
-	EQ jmp	end
+	EQ jmp	atoi_end
 	sub	r0,1
 	st	r0,PortD
 	
@@ -48,11 +48,11 @@ display:
 	mov	r0,r2
 	ldl0	r1,4
 	call	print_vhex
-end:
+atoi_end:
 	call	monitor
-	jmp	end
+	jmp	atoi_end
 
 text:	db	"5671"
 	
 	ds	100
-stack:	
+atoi_stack:	

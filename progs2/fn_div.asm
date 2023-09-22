@@ -1,17 +1,5 @@
 	cpu	p2
 
-	N	=	84273568
-	D	=	1000
-	org	1
-
-	mvzl	sp,div_stack
-	mvl	r0,N
-	mvh	r0,N
-	mvzl	r1,D
-	call	div
-div_end:
-	jmp	div_end
-
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
 div:
@@ -36,8 +24,8 @@ div_cyc:
 	NZ or	r3,1		; r|= 1
 	cmp	r3,r1		; if (r>=d)
 	LO jmp	div_cyc_next
-	sub	r3,r1		;r-= d
-	or	r2,r4		;q|= m
+	sub	r3,r1		; r-= d
+	or	r2,r4		; q|= m
 	jmp	div_cyc_next
 	jmp	div_cyc
 div_cyc_next:
@@ -47,6 +35,3 @@ div_ret:
 	pop	r4
 	pop	lr
 	ret
-
-	ds	256
-div_stack:
