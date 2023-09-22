@@ -1202,59 +1202,30 @@ else
     }
     return $icode;
   }
-  
-  // Load source file and do PHASE 1
-  $lines= preg_split("/\r\n|\n|\r/", $src);
-  /*$lines= array();
-  $at_eol= true;
-  $l= '';
-  $len= strlen($src);
-  for ($i=0; ($i<$len) && (ord($src[$i])!=0); $i++)
-  {
-    $ch= $src[$i];
-    $c= ord($ch);
-    $is_eol= ($c==10)||($c==13);
-    if (!$at_eol && !$is_eol)
-    {
-      $l.= $ch;
-    }
-    if (!$at_eol && $is_eol)
-    {
-      // line end reached
-      $at_eol= true;
-      $lines[]= $l;
-      $l= '';
-    }
-    if ($at_eol && !$is_eol)
-    {
-      $at_eol= false;
-      $l= $ch;
-    }
-    if ($at_eol && $is_eol)
-      ;
-  }*/
-  $nuof_lines= count($lines);
-  debug("$nuof_lines lines buffered");
-  for ($li= 0; $li < $nuof_lines; $li++)
-  {
+
+
+// PHASE 1
+///////////////////////////////////////////////////////////////////////
+
+// Load source file and do PHASE 1
+$lines= preg_split("/\r\n|\n|\r/", $src);
+$nuof_lines= count($lines);
+debug("$nuof_lines lines buffered");
+for ($li= 0; $li < $nuof_lines; $li++)
+{
     $lnr= $li+1;
     $l= trim($lines[$li]);
     //$l= preg_replace("/;.*$/", "", $l);
     debug("\n");
     debug("line[$lnr]: $l");
     proc_line($l);
-  }
+}
 
-  debug("\n\n");
-  /*
-     $abc=10;
-     $s='$abc/2';
-     $r=eval("return $s ;");
-     debug("abc=$abc r=$r\n");
-   */
+debug("\n\n");
 
-  // PAHSE 2
-  
+
+// PAHSE 2
+/////////////////////////////////////////////////////////////////////  
 debug("PHASE 2\n");
 foreach ($mem as $a => $m)
 {
@@ -1292,84 +1263,84 @@ foreach ($mem as $a => $m)
 debug("; PHASE 2 done");
 
   
-  $hex= '';
-  debug("SYMBOLS");
-  //debug ("syms[0]= ${syms[0]}");
-  $o= "//; PROC {$proc}";
-  $hex.= $o."\n";
-  debug($o);
-  $hex.= "//; SYMBOLS\n";
-  if (!empty($syms))
-  {
+$hex= '';
+debug("SYMBOLS");
+//debug ("syms[0]= ${syms[0]}");
+$o= "//; PROC {$proc}";
+$hex.= $o."\n";
+debug($o);
+$hex.= "//; SYMBOLS\n";
+if (!empty($syms))
+{
     foreach ($syms as $k => $s)
     {
-      $o= sprintf("//%s %08x", $s['type'], $s["value"])." $k";
-      $hex.= $o."\n";
-      debug($o);
+        $o= sprintf("//%s %08x", $s['type'], $s["value"])." $k";
+        $hex.= $o."\n";
+        debug($o);
     }
-  }
+}
 
-  debug("\n\n");
+debug("\n\n");
 
-  $hex.= "//; CODE\n";
-  $p= -1;
-  foreach ($mem as $a => $m)
-  {
+$hex.= "//; CODE\n";
+$p= -1;
+foreach ($mem as $a => $m)
+{
     if (!is_array($m))
-      continue;
+        continue;
     $lnr= $m['lnr'];
     //echo print_r($m,true);
     if ($a != $p+1)
     {
-      $p++;
-      while ($p < $a)
-      {
-        //debug( $o= sprintf("%08x ;%05x", 0, $p) );
-        //$hex.= $o."\n";
         $p++;
-      }
+        while ($p < $a)
+        {
+            //debug( $o= sprintf("%08x ;%05x", 0, $p) );
+            //$hex.= $o."\n";
+            $p++;
+        }
     }
     $p= $a;
     $m['icode']&= 0xffffffff;
     if ($m['icode'] !== false)
     {
-      /*if (isset($m["label"]) && ($m["label"]!==false))
-      {
-	debug ($o= sprintf("//; %s", $m["label"]["name"]) );
-	$hex.= $o."\n";
-      }*/
-      debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m["src"]) );
-      $hex.= $o."\n";
-      if ($m["error"] != false)
-      {
-        $o= "; ERROR: ".$m['error'];
-        debug($o);
-	echo $m['error'];
+        /*if (isset($m["label"]) && ($m["label"]!==false))
+          {
+          debug ($o= sprintf("//; %s", $m["label"]["name"]) );
+          $hex.= $o."\n";
+          }*/
+        debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m["src"]) );
         $hex.= $o."\n";
-      }
+        if ($m["error"] != false)
+        {
+            $o= "; ERROR: ".$m['error'];
+            debug($o);
+            echo $m['error'];
+            $hex.= $o."\n";
+        }
     }
     /*else if ($m['error'] !== false)
-    {
+      {
       $o= sprintf("; ERROR: %s in \"%s\"", $m['error'], $m['src']);
       debug($o);
       echo $m['error'];
       $hex.= "; ".$o."\n";
     }*/
     else
-      debug(";ph3; what?");
-  }
-  debug( $o= "//E" );
-  $hex.= $o."\n";
+        debug(";ph3; what?");
+}
+debug( $o= "//E" );
+$hex.= $o."\n";
 
-  $obj= fopen($obj_name, "w");
-  if ($obj === false)
-  {
+$obj= fopen($obj_name, "w");
+if ($obj === false)
+{
     echo "Can not open $obj_name for write\n";
-  }
-  else
-  {
+}
+else
+{
     fwrite($obj, $hex);
     fclose($obj);
-  }
-  
+}
+
 ?>

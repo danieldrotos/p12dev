@@ -1,10 +1,14 @@
 	.proc	p2
 
+CLOCK_PRE	equ	0xff50
+
+printf		=	0xf014
+	
 	org	0
-	mvzl	r13,eof_stack
+	mvzl	r13,0xefff
 
 	mvzl	r0,1
-	st	r0,0xff51
+	st	r0,CLOCK_PRE
 	
 	mvl	r0,0xffffffff
 	mvh	r0,0xffffffff
@@ -18,7 +22,7 @@
 	mvh	r2,0xdeadbeef
 	mvzl	r3,s2
 	mvzl	r4,'A'
-	call	0xf014
+	call	printf
 
 	mvzl	r1,65535
 	call	0xf015
@@ -70,7 +74,3 @@ masik:
 	z ldl0	r9,0x8000
 	st	r9,r1
 	jmp	cikl
-
-stack:
-	ds	100
-eof_stack:	
