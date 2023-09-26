@@ -128,12 +128,13 @@ else
       "HS" => 0x30000000,
       "C1" => 0x30000000,
       "C"  => 0x30000000,
+      "UGE"=> 0x30000000,
       "CC" => 0x40000000,
       "LO" => 0x40000000,
       "C0" => 0x40000000,
       "NC" => 0x40000000,
+      "UL" => 0x40000000,
       "MI" => 0x50000000,
-      "NS" => 0x50000000,
       "SS" => 0x50000000,
       "S1" => 0x50000000,
       "S " => 0x50000000,
@@ -149,14 +150,22 @@ else
       "O"  => 0x70000000,
       "VC" => 0x80000000,
       "OC" => 0x80000000,
+      "V0" => 0x80000000,
+      "O0" => 0x80000000,
       "NV" => 0x80000000,
       "NO" => 0x80000000,
       "HI" => 0x90000000,
+      "UG" => 0x90000000,
       "LS" => 0xa0000000,
+      "ULE"=> 0xa0000000,
       "GE" => 0xb0000000,
+      "SGE"=> 0xb0000000,
       "LT" => 0xc0000000,
+      "ST" => 0xc0000000,
       "GT" => 0xd0000000,
+      "SG" => 0xd0000000,
       "LE" => 0xe0000000
+      "SLE"=> 0xe0000000
   );
 
 
@@ -195,7 +204,7 @@ else
 	"rn_" =>array("icode"=>0x00000000,"placements"=>array("rd","h16"))
       )),
       "CALL"  =>array("icode"=>0x08000000, "params"=>array(
-	"n_"  =>array("icode"=>0x00000000,"placements"=>array("rd","#27"))
+	"n_"  =>array("icode"=>0x00000000,"placements"=>array("#27"))
       )),
       "ADD"    =>array("icode"=>0x07000000|(0<<7), "params"=>array(
 	"rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","ra","rb1")),
@@ -452,7 +461,7 @@ else
       )),
       // 001 ALU 1op
       "ZEB"   =>array("icode"=>0x02000000, "params"=>array(
-	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
+	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
       )),
       "ZEW"   =>array("icode"=>0x02010000, "params"=>array(
 	"r_"  =>array("icode"=>0x00000000,"placements"=>array("rd"))
