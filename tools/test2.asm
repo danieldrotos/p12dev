@@ -102,9 +102,15 @@ itt:	nop
 	push	r2
 	pop	r3
 	nop
+	cmp	r2,'A'
+	cmp	r3,'\n'
+	cmp	r4,'\t'
 	
 	db	'H','e','l','l','o',' ',0
 	dw	1,-1,'a'
 ;	db	"Hello \"World\"!" ;
 	dd	0xdeadbeef
+
+	dd	"ABC"
+	dd	55
 	

@@ -1296,7 +1296,7 @@ if (!empty($syms))
         $o= sprintf("//%s %08x", $s['type'], $s['value'])." $k";
         $hex.= $o."\n";
         debug($o);
-        echo "s[{$k}]=".print_r($s,true)."\n";
+        //echo "s[{$k}]=".print_r($s,true)."\n";
     }
 }
 
@@ -1350,7 +1350,7 @@ foreach ($mem as $a => $m)
     }*/
     else
         debug(";ph3; what?");
-    echo "a=$a, m=".print_r($m,true)."\n";
+    //echo "a=$a, m=".print_r($m,true)."\n";
 }
 debug( $o= "//E" );
 $hex.= $o."\n";
