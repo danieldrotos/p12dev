@@ -99,11 +99,13 @@ clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C tools clean
+	$(MAKE) -C implement clean
 	rm -f $(clean_files)
 
 wclean:
 	$(MAKE) -C examples wclean
 	$(MAKE) -C progs2 wclean
 	$(MAKE) -C tools wclean
+	$(MAKE) -C implement wclean
 	del /f $(clean_files)
 
