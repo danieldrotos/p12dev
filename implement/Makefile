@@ -9,7 +9,7 @@ clean:
 	rm -rf .Xil
 	rm -rf *~
 
-wcelan:
+wclean:
 	del /f /s /q *.cache
 	del /f /s /q *.hw
 	del /f /s /q *.runs
