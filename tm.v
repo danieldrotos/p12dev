@@ -3,7 +3,7 @@
 
 `unconnected_drive pull0
 `ifndef PRG
- `define PRG "counter.asc"
+ `define PRG "progs2/counter3.asc"
 `endif
 
 `ifndef AW
@@ -64,32 +64,16 @@ module tm
 	#500 sw= 2;
 	#100 sw= 0;
 	#1000 udin=8'd3; uaddr=1; ucs=1; #2 ucs=0;
-	#70000 udin=8'd100; uaddr=0; ucs=1; #2 ucs=0;
+	#30000 udin=8'd109; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h20 ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
+	//#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
+	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
+	#22000 udin=8'd103; uaddr=0; ucs=1; #2 ucs=0;
 	#5000 udin=8'h20 ; uaddr=0; ucs=1; #2 ucs=0;
 	#5000 udin=8'h31 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
+	//#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
 	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h42; uaddr=0; ucs=1; #2 ucs=0;
      end
    
    comp
@@ -131,7 +115,7 @@ module tm
    // Gombnyomas szimulalasa
    initial
     begin
-       #5000 btn= 1;
+       #5000 btn= 4;
        #100 btn= 0;
     end
 
@@ -145,8 +129,8 @@ module tm
    
    initial
      begin
-	#100000 btn= 1;
-	#10000 btn= 0;
+	//#100000 btn= 1;
+	//#10000 btn= 0;
      end
    
    // Kimeneti file eloallitasa
