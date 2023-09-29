@@ -58,6 +58,8 @@ source:
 show: simul
 	gtkwave $(VCD) $(GTKW)
 
+simul: $(VCD)
+
 sim: $(VCD)
 
 synth: $(VVP)

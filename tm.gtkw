@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sun Sep 10 15:21:35 2023
+[*] Fri Sep 29 09:38:36 2023
 [*]
-[dumpfile] "/home/drdani/prj/proc1516v/tm.vcd"
-[dumpfile_mtime] "Sun Sep 10 15:18:37 2023"
-[dumpfile_size] 73392002
-[savefile] "/home/drdani/prj/proc1516v/tm.gtkw"
-[timestart] 72654460000000
+[dumpfile] "/extra/drdani/prj/proc1516v/tm.vcd"
+[dumpfile_mtime] "Fri Sep 29 09:36:45 2023"
+[dumpfile_size] 106667599
+[savefile] "/extra/drdani/prj/proc1516v/tm.gtkw"
+[timestart] 0
 [size] 1744 908
 [pos] 145 77
-*-31.429092 72663000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-45.229092 72663000000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -66,66 +66,15 @@ tm.comp.genblk1.cpu.ic[31:0]
 @1401200
 -group_end
 @22
-tm.comp.genblk1.cpu.wb_data[31:0]
-tm.comp.genblk1.cpu.mbus_aout[31:0]
-tm.comp.genblk1.cpu.mbus_dout[31:0]
-@c00022
-tm.comp.genblk1.cpu.mbus_din[31:0]
+tm.comp.PORTA[31:0]
+tm.comp.PORTB[31:0]
+tm.comp.PORTC[31:0]
+tm.comp.PORTD[31:0]
+tm.comp.PORTI[31:0]
+tm.comp.PORTJ[31:0]
 @28
-(0)tm.comp.genblk1.cpu.mbus_din[31:0]
-(1)tm.comp.genblk1.cpu.mbus_din[31:0]
-(2)tm.comp.genblk1.cpu.mbus_din[31:0]
-(3)tm.comp.genblk1.cpu.mbus_din[31:0]
-(4)tm.comp.genblk1.cpu.mbus_din[31:0]
-(5)tm.comp.genblk1.cpu.mbus_din[31:0]
-(6)tm.comp.genblk1.cpu.mbus_din[31:0]
-(7)tm.comp.genblk1.cpu.mbus_din[31:0]
-(8)tm.comp.genblk1.cpu.mbus_din[31:0]
-(9)tm.comp.genblk1.cpu.mbus_din[31:0]
-(10)tm.comp.genblk1.cpu.mbus_din[31:0]
-(11)tm.comp.genblk1.cpu.mbus_din[31:0]
-(12)tm.comp.genblk1.cpu.mbus_din[31:0]
-(13)tm.comp.genblk1.cpu.mbus_din[31:0]
-(14)tm.comp.genblk1.cpu.mbus_din[31:0]
-(15)tm.comp.genblk1.cpu.mbus_din[31:0]
-(16)tm.comp.genblk1.cpu.mbus_din[31:0]
-(17)tm.comp.genblk1.cpu.mbus_din[31:0]
-(18)tm.comp.genblk1.cpu.mbus_din[31:0]
-(19)tm.comp.genblk1.cpu.mbus_din[31:0]
-(20)tm.comp.genblk1.cpu.mbus_din[31:0]
-(21)tm.comp.genblk1.cpu.mbus_din[31:0]
-(22)tm.comp.genblk1.cpu.mbus_din[31:0]
-(23)tm.comp.genblk1.cpu.mbus_din[31:0]
-(24)tm.comp.genblk1.cpu.mbus_din[31:0]
-(25)tm.comp.genblk1.cpu.mbus_din[31:0]
-(26)tm.comp.genblk1.cpu.mbus_din[31:0]
-(27)tm.comp.genblk1.cpu.mbus_din[31:0]
-(28)tm.comp.genblk1.cpu.mbus_din[31:0]
-(29)tm.comp.genblk1.cpu.mbus_din[31:0]
-(30)tm.comp.genblk1.cpu.mbus_din[31:0]
-(31)tm.comp.genblk1.cpu.mbus_din[31:0]
-@1401200
--group_end
-@28
-tm.comp.genblk1.cpu.mbus_wen
-tm.comp.io_uart.RxD
-tm.comp.io_uart.urx.uart_rx_valid
-@22
-tm.comp.io_uart.queue_out[7:0]
-tm.comp.io_uart.ufifo.r_data[7:0]
-tm.comp.io_uart.ufifo.r_ptr[3:0]
-tm.comp.io_uart.ufifo.w_ptr[3:0]
-@28
-tm.comp.io_uart.ufifo.w_en
-tm.comp.io_uart.ufifo.empty
-tm.comp.io_uart.ufifo.full
-@22
-tm.comp.io_uart.ufifo.r_data[7:0]
-@28
-tm.comp.io_uart.rd
-tm.comp.io_uart.cs
-tm.comp.io_uart.wen
+tm.comp.TxD
 @29
-tm.comp.io_uart.qfsm
+tm.comp.RxD
 [pattern_trace] 1
 [pattern_trace] 0
