@@ -3,7 +3,7 @@ TB		= tm
 include prj.mk
 AW		?= 17
 
-TOOLS		= ./tools
+TOOLS		= tools
 
 MODS		= defs hwconf \
 		  computer/decoder \
@@ -47,7 +47,7 @@ GTKW		= $(patsubst %,%.gtkw,$(TB))
 ifeq ($(OS),Windows_NT)
 RM		= del /f /q
 RMR		= del /f /s /q
-ISS		= $(TOOLS)/sim.bat
+ISS		= .\tools\sim.bat
 else
 RM		= rm -f
 RMR		= rm -f -r
