@@ -1,8 +1,6 @@
-start "UART" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /T=1 telnet://localhost:5555
-rem start "p2223 UART0" powershell -noexit -command "./tnto.bat"
-
-start "cmd1" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /T=1 telnet://localhost:6666
-start "cmd2" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /T=1 telnet://localhost:6666
+start "UART" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /W=UART /T=1 telnet://localhost:5555
+start "cmd1" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /W=cmd1 /T=1 telnet://localhost:6666
+start "cmd2" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /W=cmd2 /T=1 telnet://localhost:6666
 
 set arg1=%1
 
