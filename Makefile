@@ -115,10 +115,3 @@ clean:
 	$(MAKE) -C implement clean
 	$(RM) $(clean_files)
 
-wclean:
-	$(MAKE) -C examples wclean
-	$(MAKE) -C progs2 wclean
-	$(MAKE) -C tools wclean
-	$(MAKE) -C implement wclean
-	$(RM) $(clean_files)
-
