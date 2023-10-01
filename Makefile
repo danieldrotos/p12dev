@@ -109,6 +109,7 @@ else
 endif
 
 clean:
+	echo OS=$(OS) RM=$(RM)
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C tools clean
