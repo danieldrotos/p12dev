@@ -44,6 +44,17 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
+ifeq ($(OS),Windows_NT)
+RM		= del /f /q
+RMR		= del /f /s /q
+ISS		= $(TOOLS)/sim.bat
+else
+RM		= rm -f
+RMR		= rm -f -r
+ISS		= $(TOOLS)/sim.sh
+endif
+
+
 all: progs sw show
 
 progs:
@@ -52,6 +63,8 @@ progs:
 
 comp_pmon:
 	$(MAKE) -C progs2 pmon_app
+
+cimp_mon: comp_pmon
 
 comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
@@ -70,6 +83,9 @@ sim: $(VCD)
 synth: $(VVP)
 
 hw: synth
+
+iss: comp_pmon comp_sw
+	$(ISS) $(PRG)
 
 $(VCD): $(VVP)
 	vvp $(VVP)
@@ -99,14 +115,6 @@ clean_files	= *~ $(VCD) $(VVP) \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
 		*.stx \
 		hex2asc source.txt
-
-ifeq ($(OS),Windows_NT)
-	RM=del /f /q
-	RMR=del /f /s /q
-else
-	RM=rm -f
-	RMR=rm -f -r
-endif
 
 clean:
 	echo OS=$(OS) RM=$(RM)

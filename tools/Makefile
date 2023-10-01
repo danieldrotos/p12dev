@@ -10,11 +10,11 @@ test2.cdb: test2.p2h hex2cdb.php
 	php hex2cdb.php $< >$@
 
 ifeq ($(OS),Windows_NT)
-	RM=del /f /q
-	RMR=del /f /s /q
+RM		= del /f /q
+RMR		= del /f /s /q
 else
-	RM=rm -f
-	RMR=rm -f -r
+RM		= rm -f
+RMR		= rm -f -r
 endif
 
 clean:
