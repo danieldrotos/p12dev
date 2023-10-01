@@ -50,7 +50,12 @@ progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
 
-sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_pmon:
+	$(MAKE) -C progs2 pmon_app
+
+comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
+
+sw: comp_pmon comp_sw
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc
@@ -95,17 +100,25 @@ clean_files	= *~ $(VCD) $(VVP) \
 		*.stx \
 		hex2asc source.txt
 
+ifeq ($(OS),Windows_NT)
+	RM=del /f /q
+	RMR=del /f /s /q
+else
+	RM=rm -f
+	RMR=rm -f -r
+endif
+
 clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C tools clean
 	$(MAKE) -C implement clean
-	rm -f $(clean_files)
+	$(RM) $(clean_files)
 
 wclean:
 	$(MAKE) -C examples wclean
 	$(MAKE) -C progs2 wclean
 	$(MAKE) -C tools wclean
 	$(MAKE) -C implement wclean
-	del /f $(clean_files)
+	$(RM) $(clean_files)
 

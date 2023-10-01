@@ -13,7 +13,8 @@ module uart_tx
     parameter PAYLOAD_BITS= 8,
     //
     // Number of stop bits indicating the end of a packet.
-    parameter STOP_BITS   = 1
+    parameter STOP_BITS   = 1,
+    parameter SIM_PRINT   = 1
     )
    (
     input wire 			  clk , // Top level system clock input.
@@ -119,8 +120,11 @@ always @(posedge clk)
      else if(fsm_state == FSM_IDLE && uart_tx_en)
        begin
           data_to_send <= uart_tx_data;
-	  $write("%s", uart_tx_data);
-	  $fflush();
+	  if (SIM_PRINT==1)
+	    begin
+	       $write("%s", uart_tx_data);
+	       $fflush();
+	    end
        end
      else if(fsm_state       == FSM_SEND       && next_bit )
        begin
