@@ -74,4 +74,5 @@ else
 endif
 
 clean:
+	echo RM=$(RM)
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst
