@@ -110,10 +110,6 @@ common_start:
 	mvzl	r0,0
 	setf	r0
 	
-	;; test
-	
-	;; test
-	
 	;; Setup UART
 	;mvzl	r1,217
 	;st	r1,UART_CPB
@@ -183,13 +179,7 @@ main:
 	C0 jmp	no_line
 	;; line is ready
 line_ready:
-	;mvzl	r0,0x80
-	;setf	r0
 	call	proc_line
-	;mvzl	r0,0x40
-	;setf	r0
-	;mvzl	r0,0
-	;setf	r0
 	call	setup_line
 no_line:	
 no_input:	
