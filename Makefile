@@ -26,7 +26,6 @@ MODS		= defs hwconf \
 		    computer/gpio_in \
 		    computer/timer \
 		    computer/simif \
-		    computer/fifo \
 		    computer/arm_fifo \
 		    computer/uart \
 		    computer/uart_rx \
