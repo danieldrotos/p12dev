@@ -1890,7 +1890,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 	db	"lr [val]          Get/set R14\n"
 	db	"pc [val]          Get/set R15\n"
 	db	"f [val]           Get/set flags\n"
-	db	"h,?               Help\n"
+	db	"h[elp],?          Help\n"
 	dd	0
 
 	

@@ -56,6 +56,8 @@ endif
 
 all: progs sw show
 
+compile: sw hw
+
 progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
