@@ -1072,6 +1072,7 @@ function param_value($p, $fin, $lnr)
     if (empty($p))
         return 0;
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
+        preg_match("/^0[bB][01]+/",$p) ||
         is_numeric($p))
         return intval($p, 0);
     if ($p[0] == "'")

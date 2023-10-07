@@ -8,7 +8,9 @@ aaa:
 	ret
 	
 str:	db	"_;_a\"b\"_c\n_"
-
+	db	0b11110000
+	dd	0B01010101
+	
 	;; egy
 a:	;ketto
 c:	mov	r1,r2		;zz
