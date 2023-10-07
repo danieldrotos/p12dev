@@ -73,5 +73,4 @@ RMR		= rm -f -r
 endif
 
 clean:
-	echo OS=$(OS) RM=$(RM)
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst

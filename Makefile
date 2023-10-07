@@ -123,4 +123,4 @@ clean:
 	$(MAKE) -C tools clean
 	$(MAKE) -C implement clean
 	$(RM) $(clean_files)
-
+	$(RM) computer/*~ cpu1/*~ cpu2/*~
