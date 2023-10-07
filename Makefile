@@ -118,7 +118,6 @@ clean_files	= *~ $(VCD) $(VVP) \
 		hex2asc source.txt
 
 clean:
-	echo OS=$(OS) RM=$(RM)
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C tools clean
