@@ -1,2 +1,2 @@
 PRG		= progs2/counter3
-INSTS		= 30000
+INSTS		= 25000

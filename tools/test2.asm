@@ -1,6 +1,9 @@
 	.proc	P2
 
 	nop
+	.db	-1
+	.dw	-2
+	.dd	-3
 	
 aaa:	
 	sec
@@ -8,7 +11,29 @@ aaa:
 	ret
 	
 str:	db	"_;_a\"b\"_c\n_"
+	db	0b11110000
+	dd	0B01010101
+	dd	0b11111111111111111111111111111111
+	db	-55
+	dw	-55
+	dd	-55
 
+	segment	a
+	nop
+	ends
+
+	.segment .text.b,noload
+	nop
+	.ends
+
+	.section _c_ss,abs
+	nop
+	.ends
+
+	section _.a_.d,noload,abs
+	nop
+	ends
+	
 	;; egy
 a:	;ketto
 c:	mov	r1,r2		;zz

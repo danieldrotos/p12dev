@@ -1,6 +1,7 @@
 module uart
   #(
-    parameter WIDTH=32
+    parameter WIDTH=32,
+    parameter SIM_PRINT=1
     )
    (
     input wire		   clk,
@@ -110,7 +111,8 @@ module uart
 		   & (addr==REG_DR);
    wire tx_busy;
    
-   uart_tx utx
+   uart_tx #(.SIM_PRINT(SIM_PRINT))
+   utx
      (
       .clk (clk),
       .resetn (!reset),

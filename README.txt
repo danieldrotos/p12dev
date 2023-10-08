@@ -56,8 +56,7 @@ folytathatjuk a munkát.
 
 A fordítás és a szimuláció eredményének letörlése:
 
-make clean  # linux esetén
-make wclean # windows esetén
+make clean
 
 Geany esetén: "Összeállítás" menü "Make egyéni céllal"
 (Shift-Ctrl-F9), majd írjuk be a clean, vagy wclean célt.

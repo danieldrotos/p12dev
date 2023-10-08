@@ -58,8 +58,13 @@ bufout: bufout.p2h bufout.asc bufout.cdb
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@
 
-clean:
-	rm -f *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc
+ifeq ($(OS),Windows_NT)
+RM		= del /f /q
+RMR		= del /f /s /q
+else
+RM		= rm -f
+RMR		= rm -f -r
+endif
 
-wclean:
-	del /f *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc
+clean:
+	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc

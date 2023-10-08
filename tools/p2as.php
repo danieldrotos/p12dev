@@ -15,6 +15,8 @@ $obj_name= '';
 $lst_name= '';
 $lst= false;
 $proc= "P1";
+$segs= array();
+$segment= false;
 $insts= array();
 $conds= array();
 $first_fin= '';
@@ -171,7 +173,7 @@ $conds2= array(
     "NV" => 0x80000000,
     "NO" => 0x80000000,
     "HI" => 0x90000000,
-    "UG" => 0x90000000,
+    "UGT"=> 0x90000000,
     "LS" => 0xa0000000,
     "ULE"=> 0xa0000000,
     "GE" => 0xb0000000,
@@ -581,6 +583,16 @@ function devdeb($x)
         fwrite($ddf, $x);
 }
 
+function startof($str, $word)
+{
+    $p= strpos($str, $word);
+    if ($p === false)
+        return false;
+    if ($p != 0)
+        return false;
+    return true;
+}
+
   /**
    * parse_string parses a string and returns an array of the parsed elements.
    * This is an all-or-none function, and will return NULL if it cannot completely
@@ -777,6 +789,7 @@ function proc_line($l)
 {
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
+    global $segs, $segment;
     $org= $l;
     $icode= 0;
     $label= false;
@@ -815,7 +828,8 @@ function proc_line($l)
         
         else if (($W == ".PROC") || 
                  ($W == "PROC") ||
-                 ($W == "CPU"))
+                 ($W == "CPU") ||
+                 ($W == ".CPU"))
         {
             $w= strtok(" \t");
             if (($w!==false) && ($w[0]==';'))
@@ -850,7 +864,7 @@ function proc_line($l)
             return;
         }
       
-        else if (($W == "=") || ($W == "EQU"))
+        else if (($W == "=") || ($W == "EQU") || ($W == ".EQU"))
         {
             if ($prew == '')
             {
@@ -870,7 +884,7 @@ function proc_line($l)
             return;
         }
         
-        else if ($W == "ORG")
+        else if (($W == "ORG") || ($W == ".ORG"))
         {
             $w= strtok(" \t");
             if (($w!==false) && ($w[0]==';'))
@@ -881,7 +895,8 @@ function proc_line($l)
             return;
         }
         
-        else if ($W == "DS")
+        else if (($W == "DS") || ($W == ".DS") ||
+                 ($W == ".SPACE") || ($W == ".SKIP"))
         {
             $w= strtok(" \t,");
             if (($w!==false) && ($w[0]==';'))
@@ -893,8 +908,14 @@ function proc_line($l)
             return;
         }
         
-        else if (preg_match('/^D[BWD]$/', $W))
+        else if (preg_match('/^D[BWD]$/', $W) ||
+                 preg_match('/^\.D[BWD]$/', $W))
         {
+            if ($w[0] == ".")
+            {
+                $w= substr($w, 1);
+                $W= strtoupper($w);
+            }
             $orgw= $w;
             $pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
             debug("Param part of line: '$pl'");
@@ -965,9 +986,64 @@ function proc_line($l)
                 debug( sprintf("mem[%x] Added DB $w",$addr) );
                 $addr++;
                 $w= trim(strtok(" \t,"));
-                if (($w!==false) && ($w!='') && ($w[0]==';'))
+                if (($w!==false) && ($w!="") && ($w[0]==';'))
                     return;
             }
+            return;
+        }
+
+        else if (($W == "SECTION") || ($W == ".SECTION") ||
+                 startof($W, "SEG") || startof($W, ".SEG"))
+        {
+            $w= trim(strtok(" \t,"));
+            if (($w === false) ||
+                (($w!==false) && ($w!="") && ($w[0]==';') ||
+                 ($w!==false) && ($w=="")
+                )
+            )
+            {
+                $error= "{$fin}:{$lnr}: Section name is missing";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(9);
+                return;
+            }
+            $pnr= 1;
+            while (($w !== false) && ($w!=""))
+            {
+                $W= strtoupper($w);
+                if ($pnr == 1)
+                {
+                    $segment= array(
+                        "name"=>$w,
+                        "id"=> "S".bin2hex(random_bytes(6)),
+                        "start"=>$addr,
+                        "noload"=>false,
+                        "abs"=>false
+                    );
+                }
+                else if ($W == "NOLOAD")
+                {
+                    $segment["noload"]= true;
+                }
+                else if ($W == "ABS")
+                {
+                    $segment["abs"]= true;
+                }
+                $w= strtok(" \t,");
+                if (($w!==false) && ($w!="") && ($w[0]==';'))
+                    break;
+                $pnr++;
+            }
+            $segs[]= $segment;
+            debug("Segment started: {$segment['name']},{$segment['id']}");
+            return;
+        }
+
+        else if (($W == "ENDS") || ($W == ".ENDS"))
+        {
+            debug("Finish segment: {$segment['name']},{$segment['id']}");
+            $segment= false;
             return;
         }
         
@@ -1093,6 +1169,7 @@ function param_value($p, $fin, $lnr)
     if (empty($p))
         return 0;
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
+        preg_match("/^0[bB][01]+/",$p) ||
         is_numeric($p))
         return intval($p, 0);
     if ($p[0] == "'")
@@ -1273,6 +1350,15 @@ debug("\n\n");
 /////////////////////////////////////////////////////////////////////  
 debug("PHASE 2\n");
 
+// List segments
+debug("Segments\n");
+foreach ($segs as $seg)
+{
+    debug("Segment: {$seg['name']},{$seg['id']},{$seg['noload']},{$seg['abs']};\n");
+    devdeb("Segment: ".print_r($seg,true));
+}
+
+
 // resolve symbols and inject values into inst codes
 foreach ($mem as $a => $m)
 {
@@ -1326,7 +1412,7 @@ if (!empty($syms))
         $o= sprintf("//%s %08x", $s['type'], $s['value'])." $k";
         $hex.= $o."\n";
         debug($o);
-        //echo "s[{$k}]=".print_r($s,true)."\n";
+        devdeb("s[{$k}]=".print_r($s,true)."\n");
     }
 }
 

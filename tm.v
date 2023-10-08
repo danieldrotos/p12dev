@@ -3,7 +3,7 @@
 
 `unconnected_drive pull0
 `ifndef PRG
- `define PRG "counter.asc"
+ `define PRG "progs2/counter3.asc"
 `endif
 
 `ifndef AW
@@ -43,55 +43,56 @@ module tm
    wire [31:0] test_out, test_reg;
    wire [31:0] porta, portb, portc, portd;
 
-   // 1 utasitas 8 ciklus ideig tart (4 orajel)
+   // 1 instruction takes 8 ticks (4 clock period)
    always #1 clk= !clk;
    always #20 ioclk= ~ioclk;
 
+   /* UART connected to computer RxD */
    reg	       ucs= 0;
    reg	       uwen= 1;
    reg [3:0]   uaddr= 0;
    reg [7:0]   udin= 0;
    wire	       utx;
-   uart sender(.clk(clk),.reset(reset),
-	       .cs(ucs),
-	       .wen(uwen),
-	       .addr(uaddr),
-	       .din({24'b0,udin}),
-	       .RxD(1'b1),
-	       .TxD(utx));
+   uart #(.SIM_PRINT(0))
+   sender(.clk(clk),.reset(reset),
+	  .cs(ucs),
+	  .wen(uwen),
+	  .addr(uaddr),
+	  .din({24'b0,udin}),
+	  .RxD(1'b1),
+	  .TxD(utx));
+
+   /* Send one character on UART to computer */
+   task send;
+      input [7:0] char;
+      begin
+	 udin=char;
+	 uaddr=0;
+	 ucs=1;
+	 #2 ucs=0;
+      end
+   endtask // send
+
+    // Setup UART
    initial
      begin
-	#500 sw= 2;
-	#100 sw= 0;
 	#1000 udin=8'd3; uaddr=1; ucs=1; #2 ucs=0;
-	#70000 udin=8'd100; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h20 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h31 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'h30 ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'hd  ; uaddr=0; ucs=1; #2 ucs=0;
-	#5000 udin=8'ha  ; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h62; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h49; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h70; uaddr=0; ucs=1; #2 ucs=0;
-	//#4370 udin=8'h42; uaddr=0; ucs=1; #2 ucs=0;
      end
-   
+
+   // Send test signals to computer via UART   
+   initial
+     begin
+	#30000 send(8'd109); // Send "m 0" command
+	#5000  send(8'h20);
+	#5000  send(8'h30);
+	#5000  send(8'ha);
+	#22000 send(8'd103); // wait answer, then send "g 1" command
+	#5000  send(8'h20);
+	#5000  send(8'h31);
+	#5000  send(8'ha);
+     end
+
+   // Computer under test   
    comp
      #(
        .WIDTH(32),
@@ -118,39 +119,38 @@ module tm
       .RxD(utx)
       );
 
-   // Test kimenet kivalasztasa
-   // RESET jel eloallitasa
+   // Select signals for computer test outputs
    initial
      begin
 	test_sel= 4'd3;
 	test_rsel= 4'd12;
+     end
+
+   // Generate RESET at start
+   initial
+     begin
 	reset= 1;
 	#10 reset= 0;
      end
 
-   // Gombnyomas szimulalasa
-   initial
-    begin
-       #5000 btn= 1;
-       #100 btn= 0;
-    end
-
-   /*
+   // Simulate button presses (and releases)
    initial
      begin
-	#99000 rxd= 0;
-	#2000 rxd= 1;
-     end
-   */
-   
-   initial
-     begin
-	#100000 btn= 1;
+	#5000 btn= 4;
+	#100 btn= 0;
+	#100000 btn= 2;
 	#10000 btn= 0;
      end
+
+   // Simulate switch ON/OFF
+   initial
+     begin
+	#500 sw= 2;
+	#100 sw= 0;
+     end
    
-   // Kimeneti file eloallitasa
-   // Leallitas INSTS szamu utasitas utan
+   // Produce output DUMP file
+   // Stop after simulating INSTS cpu instructions
    initial
      begin
 	$dumpfile("tm.vcd");

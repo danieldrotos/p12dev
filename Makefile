@@ -3,7 +3,7 @@ TB		= tm
 include prj.mk
 AW		?= 17
 
-TOOLS		= ./tools
+TOOLS		= tools
 
 MODS		= defs hwconf \
 		  computer/decoder \
@@ -26,7 +26,6 @@ MODS		= defs hwconf \
 		    computer/gpio_in \
 		    computer/timer \
 		    computer/simif \
-		    computer/fifo \
 		    computer/arm_fifo \
 		    computer/uart \
 		    computer/uart_rx \
@@ -44,13 +43,33 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
+ifeq ($(OS),Windows_NT)
+RM		= del /f /q
+RMR		= del /f /s /q
+ISS		= .\tools\sim.bat
+else
+RM		= rm -f
+RMR		= rm -f -r
+ISS		= $(TOOLS)/sim.sh
+endif
+
+
 all: progs sw show
+
+compile: sw hw
 
 progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
 
-sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_pmon:
+	$(MAKE) -C progs2 pmon_app
+
+cimp_mon: comp_pmon
+
+comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
+
+sw: comp_pmon comp_sw
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc
@@ -58,11 +77,16 @@ source:
 show: simul
 	gtkwave $(VCD) $(GTKW)
 
+simul: $(VCD)
+
 sim: $(VCD)
 
 synth: $(VVP)
 
 hw: synth
+
+iss: comp_pmon comp_sw
+	$(ISS) $(PRG)
 
 $(VCD): $(VVP)
 	vvp $(VVP)
@@ -97,11 +121,6 @@ clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C tools clean
-	rm -f $(clean_files)
-
-wclean:
-	$(MAKE) -C examples wclean
-	$(MAKE) -C progs2 wclean
-	$(MAKE) -C tools wclean
-	del /f $(clean_files)
-
+	$(MAKE) -C implement clean
+	$(RM) $(clean_files)
+	$(RM) computer/*~ cpu1/*~ cpu2/*~

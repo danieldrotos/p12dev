@@ -1,12 +1,18 @@
 all:
 
-clean:
-	rm -rf *.cache
-	rm -rf *.hw
-	rm -rf *.runs
-	rm -rf *.sim
-	rm -rf *.ip_user_files
-	rm -rf .Xil
-	rm -rf *~
+ifeq ($(OS),Windows_NT)
+RM		= del /f /q
+RMR		= del /f /s /q
+else
+RM		= rm -f
+RMR		= rm -f -r
+endif
 
-wcelan:
+clean:
+	$(RMR) *.cache
+	$(RMR) *.hw
+	$(RMR) *.runs
+	$(RMR) *.sim
+	$(RMR) *.ip_user_files
+	$(RMR) .Xil
+	$(RM) *~
