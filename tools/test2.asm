@@ -76,7 +76,7 @@ cim:
 cimke:
 	nop
 
-	st	r3,r4,r5
+	st	r3,r4
 	st	r6,+r7,r8
 	st	r9,-r10,r11
 	st	r12,r13+,r14

@@ -1,8 +1,9 @@
 #!/usr/bin/php
 <?php
 
-$debugging= true;
 $debugging= false;
+$DevDeb= false;
+$ddf= false;
 error_reporting(E_ALL);
 ini_set("display_errors", "On");
 
@@ -34,6 +35,10 @@ if (isset($argv[0]))
         else if ($argv[$i] == "-l")
         {
             $debugging= true;
+        }
+        else if ($argv[$i] == "-dd")
+        {
+            $DevDeb= true;
         }
         else
         {
@@ -79,6 +84,17 @@ if (isset($argv[0]))
         $lst_name= substr($first_fin, 0, $p).".lst";
         $lst= fopen($lst_name, "w");
     }
+    if ($DevDeb)
+    {
+        $p= strrpos($first_fin, ".");
+        if ($p === false)
+        {
+            echo "Can not convert asm filename to devdeb filename\n";
+            exit(6);
+        }
+        $ddf_name= substr($first_fin, 0, $p).".log";
+        $ddf= fopen($ddf_name, "w");
+    }
 }
 else
 {
@@ -95,78 +111,78 @@ else
 
 
   
-  $conds1= array(
+$conds1= array(
     "ALL" => 0,
-      "AL" => 0,
-      "S0" => 0x10000000,
-      "S1" => 0x30000000,
-      "C0" => 0x50000000,
-      "C1" => 0x70000000,
-      "Z0" => 0x90000000,
-      "Z1" => 0xb0000000,
-      "O0" => 0xd0000000,
-      "O1" => 0xf0000000,
-
-      "Z"  => 0xb0000000,
-      "NZ" => 0x90000000
-  );
-
-
-  $conds2= array(
     "AL" => 0,
-      "EQ" => 0x10000000,
-      "ZS" => 0x10000000,
-      "Z1" => 0x10000000,
-      "Z"  => 0x10000000,
-      "F"  => 0x10000000,
-      "NE" => 0x20000000,
-      "ZC" => 0x20000000,
-      "Z0" => 0x20000000,
-      "NZ" => 0x20000000,
-      "T"  => 0x20000000,
-      "CS" => 0x30000000,
-      "HS" => 0x30000000,
-      "C1" => 0x30000000,
-      "C"  => 0x30000000,
-      "UGE"=> 0x30000000,
-      "CC" => 0x40000000,
-      "LO" => 0x40000000,
-      "C0" => 0x40000000,
-      "NC" => 0x40000000,
-      "UL" => 0x40000000,
-      "MI" => 0x50000000,
-      "SS" => 0x50000000,
-      "S1" => 0x50000000,
-      "S " => 0x50000000,
-      "PL" => 0x60000000,
-      "NS" => 0x60000000,
-      "SC" => 0x60000000,
-      "S0" => 0x60000000,
-      "VS" => 0x70000000,
-      "OS" => 0x70000000,
-      "V1" => 0x70000000,
-      "O1" => 0x70000000,
-      "V"  => 0x70000000,
-      "O"  => 0x70000000,
-      "VC" => 0x80000000,
-      "OC" => 0x80000000,
-      "V0" => 0x80000000,
-      "O0" => 0x80000000,
-      "NV" => 0x80000000,
-      "NO" => 0x80000000,
-      "HI" => 0x90000000,
-      "UG" => 0x90000000,
-      "LS" => 0xa0000000,
-      "ULE"=> 0xa0000000,
-      "GE" => 0xb0000000,
-      "SGE"=> 0xb0000000,
-      "LT" => 0xc0000000,
-      "ST" => 0xc0000000,
-      "GT" => 0xd0000000,
-      "SG" => 0xd0000000,
-      "LE" => 0xe0000000
-      "SLE"=> 0xe0000000
-  );
+    "S0" => 0x10000000,
+    "S1" => 0x30000000,
+    "C0" => 0x50000000,
+    "C1" => 0x70000000,
+    "Z0" => 0x90000000,
+    "Z1" => 0xb0000000,
+    "O0" => 0xd0000000,
+    "O1" => 0xf0000000,
+    
+    "Z"  => 0xb0000000,
+    "NZ" => 0x90000000
+);
+
+
+$conds2= array(
+    "AL" => 0,
+    "EQ" => 0x10000000,
+    "ZS" => 0x10000000,
+    "Z1" => 0x10000000,
+    "Z"  => 0x10000000,
+    "F"  => 0x10000000,
+    "NE" => 0x20000000,
+    "ZC" => 0x20000000,
+    "Z0" => 0x20000000,
+    "NZ" => 0x20000000,
+    "T"  => 0x20000000,
+    "CS" => 0x30000000,
+    "HS" => 0x30000000,
+    "C1" => 0x30000000,
+    "C"  => 0x30000000,
+    "UGE"=> 0x30000000,
+    "CC" => 0x40000000,
+    "LO" => 0x40000000,
+    "C0" => 0x40000000,
+    "NC" => 0x40000000,
+    "UL" => 0x40000000,
+    "MI" => 0x50000000,
+    "SS" => 0x50000000,
+    "S1" => 0x50000000,
+    "S " => 0x50000000,
+    "PL" => 0x60000000,
+    "NS" => 0x60000000,
+    "SC" => 0x60000000,
+    "S0" => 0x60000000,
+    "VS" => 0x70000000,
+    "OS" => 0x70000000,
+    "V1" => 0x70000000,
+    "O1" => 0x70000000,
+    "V"  => 0x70000000,
+    "O"  => 0x70000000,
+    "VC" => 0x80000000,
+    "OC" => 0x80000000,
+    "V0" => 0x80000000,
+    "O0" => 0x80000000,
+    "NV" => 0x80000000,
+    "NO" => 0x80000000,
+    "HI" => 0x90000000,
+    "UG" => 0x90000000,
+    "LS" => 0xa0000000,
+    "ULE"=> 0xa0000000,
+    "GE" => 0xb0000000,
+    "SGE"=> 0xb0000000,
+    "LT" => 0xc0000000,
+    "SLT"=> 0xc0000000,
+    "GT" => 0xd0000000,
+    "SGT"=> 0xd0000000,
+    "LE" => 0xe0000000,
+    "SLE"=> 0xe0000000
+);
 
 
   $insts1= array(
@@ -538,34 +554,32 @@ else
       )),
   );
 
-  $conds= $conds1;
-  $insts= $insts1;
+$conds= $conds1;
+$insts= $insts1;
   
-  function arri($a, $idx)
-  {
-    if (empty($a))
-      return '';
-    if (!is_array($a))
-      return '';
-    if (!isset($a[$idx]))
-      return '';
+function arri($a, $idx)
+{
+    if (empty($a))         return '';
+    if (!is_array($a))     return '';
+    if (!isset($a[$idx]))  return '';
     return $a[$idx];
-  }
+}
 
   
 
-  function debug($x)
-  {
+function debug($x)
+{
     global $debugging, $lst;
-    
-    if ($debugging === true)
-    {
-      if ($lst !== false)
-      {
-	fwrite($lst, ";; $x\n");
-      }
-    }
-  }
+    if ($debugging === true && $lst !== false)
+        fwrite($lst, ";; $x\n");
+}
+
+function devdeb($x)
+{
+    global $DevDeb, $ddf;
+    if ($DevDeb && $ddf !== false)
+        fwrite($ddf, $x);
+}
 
   /**
    * parse_string parses a string and returns an array of the parsed elements.
@@ -608,76 +622,76 @@ else
     } // while
   }
 
-  function my_parse_string($s)
-  {
+function my_parse_string($s)
+{
     $r= array();
     $i= 0;
     if (strlen($s)==0) return $r;
     if ($s[0]=='"') $i= 1;
     for (;($i<strlen($s)) && (ord($s[$i])!=0) && ($s[$i]!="\"");$i++)
     {
-      $ch= $s[$i];
-      $c= ord($ch);
-      //echo "s[{$i}]={$c} {$ch}\n";
-      if ($ch=="\\")
-      {
-	$i++;
-	$ch= $s[$i];
-	$c= ord($ch);
-	//echo "s[{$i}]={$c} {$ch}\n";
-	if ($c==0) break;
-	if ($ch=="\"") $r[]= "\"";
-	if ($ch=="a") $r[]= chr(7);
-	if ($ch=="b") $r[]= chr(8);
-	if ($ch=="e") $r[]= chr(0x1b);
-	if ($ch=="f") $r[]= chr(0xc);
-	if ($ch=="n") $r[]= chr(0xa);
-	if ($ch=="r") $r[]= chr(0xd);
-	if ($ch=="0") $r[]= chr(0);
-	if ($ch=="t") $r[]= "\t";
-	if ($ch=="v") $r[]= "\v";
-	if ($ch=="\\") $r[]= "\\";
-	if ($ch=="\'") $r[]= "\'";
-	if ($ch=="?") $r[]= "?";
-      }
-      else
-	$r[]= $ch;
+        $ch= $s[$i];
+        $c= ord($ch);
+        //echo "s[{$i}]={$c} {$ch}\n";
+        if ($ch=="\\")
+        {
+            $i++;
+            $ch= $s[$i];
+            $c= ord($ch);
+            //echo "s[{$i}]={$c} {$ch}\n";
+            if ($c==0) break;
+            if ($ch=="\"") $r[]= "\"";
+            if ($ch=="a") $r[]= chr(7);
+            if ($ch=="b") $r[]= chr(8);
+            if ($ch=="e") $r[]= chr(0x1b);
+            if ($ch=="f") $r[]= chr(0xc);
+            if ($ch=="n") $r[]= chr(0xa);
+            if ($ch=="r") $r[]= chr(0xd);
+            if ($ch=="0") $r[]= chr(0);
+            if ($ch=="t") $r[]= "\t";
+            if ($ch=="v") $r[]= "\v";
+            if ($ch=="\\") $r[]= "\\";
+            if ($ch=="\'") $r[]= "\'";
+            if ($ch=="?") $r[]= "?";
+        }
+        else
+            $r[]= $ch;
     }
     return $r;
-  }
+}
   
-  function is_cond($W)
-  {
+function is_cond($W)
+{
     global $conds, $proc;
     debug("is_cond($W); ".count($conds)." $proc");
     if (!isset($conds[$W]))
-      return false;
+        return false;
     $cond= $conds[$W];
     return $cond;
-  }
+}
 
-  function is_inst($W)
-  {
+function is_inst($W)
+{
     global $insts;
     debug("is_inst($W);");
     if (!isset($insts[$W]))
     {
-      //debug(";is_inst($W); not inst");
-      return false;
+        //debug(";is_inst($W); not inst");
+        return false;
     }
     $inst= $insts[$W];
     return $inst;
-  }
+}
 
-  function is_label($w)
-  {
+function is_label($w)
+{
     if ($w[strlen($w)-1] == ":")
-      return substr($w, 0, strlen($w)-1);
+        return substr($w, 0, strlen($w)-1);
     return false;
-  }
-  
-  function is_reg($w)
-  {
+}
+
+function is_reg($w)
+{
     $W= strtoupper($w);
     debug("Check if $w/$W is a reg?");
     $W= preg_replace('/[+*-]/', "", $W);
@@ -690,56 +704,56 @@ else
     { $r= 13; debug("sp=13"); }
     else if (preg_match("/^R[0-9][0-9]*/", $W))
     {
-      $w= substr($W, 1);
-      $r= intval($w,0);
-      debug("Match as a reg: w=$w r=$r");
-      return($r);
+        $w= substr($W, 1);
+        $r= intval($w,0);
+        debug("Match as a reg: w=$w r=$r");
+        return($r);
     }
     else
-      return false;
+        return false;
     return $r;
-  }
+}
 
-  function is_w($W)
-  {
+function is_w($W)
+{
     if (empty($W))
-      return false;
+        return false;
     if (preg_match('/^[+]/',$W) ||
-      preg_match('/^[*]/',$W) ||
-      preg_match('/^[-]/',$W) ||
-      preg_match('/[+]$/',$W) ||
-      preg_match('/[-]$/',$W))
-    return true;
-  }
+        preg_match('/^[*]/',$W) ||
+        preg_match('/^[-]/',$W) ||
+        preg_match('/[+]$/',$W) ||
+        preg_match('/[-]$/',$W))
+        return true;
+}
 
-  function is_u($W)
-  {
+function is_u($W)
+{
     if (empty($W))
-      return false;
+        return false;
     if (preg_match('/^[+]/',$W) ||
-      preg_match('/[+]$/',$W))
-    return true;
-  }
+        preg_match('/[+]$/',$W))
+        return true;
+}
 
-  function is_p($W)
-  {
+function is_p($W)
+{
     if (empty($W))
-      return false;
+        return false;
     if (preg_match('/^[+]/',$W) ||
-      preg_match('/^[-]/',$W))
-    return true;
-  }
-  
-  function mk_symbol($name, $value, $type= "S")
-  {
+        preg_match('/^[-]/',$W))
+        return true;
+}
+
+function mk_symbol($name, $value, $type= "S")
+{
     global $syms, $fin, $lnr;
     $s= arri($syms, $name);
     if (is_array($s))
     {
-      $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
-      debug("Error: ".$error);
-      echo $error."\n";
-      exit(9);
+        $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
+        debug("Error: ".$error);
+        echo $error."\n";
+        exit(9);
     }
     $sym= array(
         'name' => $name,
@@ -750,10 +764,17 @@ else
     );
     $syms[$name]= $sym;
     return $sym;
-  }
+}
 
-  function proc_line($l)
-  {
+
+
+/*
+ * Phase 1, process input line
+ ***************************************************************************
+ */
+
+function proc_line($l)
+{
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
     $org= $l;
@@ -762,11 +783,11 @@ else
     $cond= false;
     if (($w= strtok($l, " \t")) === false)
     {
-      debug("proc_line; no words found in line $lnr");
-      return;
+        debug("proc_line; no words found in line $lnr");
+        return;
     }
     if (($w!==false) && ($w[0]==';'))
-      return;
+        return;
     $prew= "";
     $par_sep= " \t,[]():";
     $inst= false;
@@ -774,220 +795,220 @@ else
     $ok= false;
     while ($w !== false)
     {
-      $W= strtoupper($w);
-      debug("proc_line; w=$w");
+        $W= strtoupper($w);
+        debug("proc_line; w=$w");
+        
+        if (($n= is_label($w)) !== false)
+        {
+            $xaddr= sprintf("%x", $addr);
+            debug("proc_line; found label=$n at addr=$xaddr");
+            $label= mk_symbol($n, $addr, "L");
+            $ok= true;
+        }
+        
+        else if (($cond= is_cond($W)) !== false)
+        {
+            debug("proc_line; COND= ".sprintf("%08x",$cond));
+            $icode= $icode | $cond;
+            debug("proc_line; ICODE= ".sprintf("%08x",$icode));
+        }
+        
+        else if (($W == ".PROC") || 
+                 ($W == "PROC") ||
+                 ($W == "CPU"))
+        {
+            $w= strtok(" \t");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            $W= strtoupper($w);
+            $p1= strpos("P1", $W);
+            $p2= strpos("P2", $W);
+            if (($p1===false) && ($p2===false))
+            {
+                $error= "{$fin}:{$lnr}: Unknown processor type";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(10);
+            }
+            if ($p1!==false)
+            {
+                $conds= $conds1;
+                $insts= $insts1;
+                $proc= "P1";
+                debug("Use Processor p1516");
+            }
+            if ($p2!==false)
+            {
+                $conds= $conds2;
+                $insts= $insts2;
+                $proc= "P2";
+                debug("Use Processor p2223");
+            }
+            $ok= true;
+            //debug("Size of insts= ".count($insts));
+            //debug("Size of conds= ".count($conds));
+            return;
+        }
       
-      if (($n= is_label($w)) !== false)
-      {
-	$xaddr= sprintf("%x", $addr);
-	debug("proc_line; found label=$n at addr=$xaddr");
-        $label= mk_symbol($n, $addr, "L");
-        $ok= true;
-      }
-      
-      else if (($cond= is_cond($W)) !== false)
-      {
-        debug("proc_line; COND= ".sprintf("%08x",$cond));
-        $icode= $icode | $cond;
-        debug("proc_line; ICODE= ".sprintf("%08x",$icode));
-      }
-
-      else if (($W == ".PROC") || 
-	($W == "PROC") ||
-	($W == "CPU"))
-      {
-	$w= strtok(" \t");
-	if (($w!==false) && ($w[0]==';'))
-	  return;
-	$W= strtoupper($w);
-	$p1= strpos("P1", $W);
-	$p2= strpos("P2", $W);
-	if (($p1===false) && ($p2===false))
-	{
-	  $error= "{$fin}:{$lnr}: Unknown processor type";
-	  debug("Error: ".$error);
-	  echo $error."\n";
-	  exit(10);
-	}
-	if ($p1!==false)
-	{
-	  $conds= $conds1;
-	  $insts= $insts1;
-	  $proc= "P1";
-	  debug("Use Processor p1516");
-	}
-	if ($p2!==false)
-	{
-	  $conds= $conds2;
-	  $insts= $insts2;
-	  $proc= "P2";
-	  debug("Use Processor p2223");
-	}
-	$ok= true;
-	//debug("Size of insts= ".count($insts));
-	//debug("Size of conds= ".count($conds));
-	return;
-      }
-      
-      else if (($W == "=") || ($W == "EQU"))
-      {
-	if ($prew == '')
-	{
-	  $error= "{$fin}:{$lnr}: Label missing for assignment";
-	  debug("Error: ".$error);
-	  echo $error."\n";
-	  exit(7);
-	}
-	$w= strtok(" \t");
-	if (($w!==false) && ($w[0]==';'))
-	  return;
-	$val= intval($w,0);
-	debug("proc_line; EQU w=$w val=$val");
-	mk_symbol($prew, $val, ($W=="=")?"=":"S");
-	debug("proc_line; SYMBOL $prew=$val");
-	$ok= true;
-	return;
-      }
-
-      else if ($W == "ORG")
-      {
-        $w= strtok(" \t");
-	if (($w!==false) && ($w[0]==';'))
-	  return;
-        $addr= intval($w,0);
-        debug(sprintf("proc_line; addr=%x",$addr));
-        $ok= true;
-	return;
-      }
-
-      else if ($W == "DS")
-      {
-	$w= strtok(" \t,");
-	if (($w!==false) && ($w[0]==';'))
-	  return;
-	$x= 0 + intval($w,0);
-	$addr+= $x;
-	debug(sprintf("proc_line; addr=%x",$addr));
-	$ok= true;
-	return;
-      }
-      
-      else if (preg_match('/^D[BWD]$/', $W))
-      {
-	$orgw= $w;
-	$pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
-	debug("Param part of line: '$pl'");
-	if (!empty($pl) && ($pl[0]=="\""))
-	{
-	  debug("Parsing string...");
-	  $a= my_parse_string($pl);
-	  //$s= $a[0];
-	  //debug("Parsed string: \"{$s}\"");
-	  //for ($i= 0; $i<strlen($s); $i++)
-	  foreach ($a as $i=>$ch)
-	  {
-	    $params= array();
-	    $params[]= $pv= ord(/*$s[$i]*/$ch);
-	    $mem[$addr]= array(
-            'icode'=>0,
-            'src'=>$orgw."\t$pv",
-            'fin'=>$fin,
-            'lnr'=>$lnr,
-            'error'=>$error,
-            'inst'=>$insts[$W],
-            'pattern'=>"n_",
-            'address'=>$addr,
-            'params'=>$params,
-            'cell_type'=>"C"
-	    );
-	    debug( sprintf("mem[%x] Added char DB $pv",$addr) );
-	    $addr++;
-	  }
-	  $params= array();
-	  $params[]= 0;
-	  $mem[$addr]= array(
-          'icode'=>0,
-	      'src'=>$orgw,
-          'fin'=>$fin,
-	      'lnr'=>$lnr,
-	      'error'=>$error,
-	      'inst'=>$insts[$W],
-	      'pattern'=>"n_",
-	      'address'=>$addr,
-	      'params'=>$params,
-	      'cell_type'=>"C"
-	  );
-	  debug( sprintf("mem[%x] Added string 0",$addr) );
-	  $addr++;
-	  return ;
-	}
-        $w= trim(strtok(" \t,"));
-	if (($w!==false) && ($w[0]==';'))
-	  return;
-	while (($w !== false) && ($w!=""))
-	{
-	  debug("Process param of DB: \"$w\"");
-	  $params= array();
-	  $params[]= $w;
-	  $mem[$addr]= array(
-          'icode'=>0,
-	      'src'=>$orgw."\t".$w,
-          'fin'=>$fin,
-	      'lnr'=>$lnr,
-	      'error'=>$error,
-	      'inst'=>$insts[$W],
-	      'pattern'=>"n_",
-	      'address'=>$addr,
-	      'params'=>$params,
-	      'cell_type'=>"C"
-	  );
-	  debug( sprintf("mem[%x] Added DB $w",$addr) );
-	  $addr++;
-	  $w= trim(strtok(" \t,"));
-	  if (($w!==false) && ($w!='') && ($w[0]==';'))
-	    return;
-	}
-	return;
-      }
-      
-      else if (($inst= is_inst($W)) !== false)
-      {
-	$icode= $icode | $inst['icode'];
-	debug("proc_line; INST= ".sprintf("%08x",$icode));
-	$mem[$addr]= array(
-        'icode'=>$icode,
-        'src'=>$org,
-        'fin'=>$fin,
-	    'lnr'=>$lnr,
-        'error'=>$error,
-	    'inst'=>$inst,
-        'cell_type'=> "C" //"I"
-        );
-        $o= sprintf("%05x %08x", $addr, $icode);
-        debug($o);
-	debug("");
-	$ok= true;
-	break;
-      }
-
-      $prew= $w;
-      $w= strtok($par_sep);
-      if (($w!==false) && ($w[0]==';'))
-	return;
+        else if (($W == "=") || ($W == "EQU"))
+        {
+            if ($prew == '')
+            {
+                $error= "{$fin}:{$lnr}: Label missing for assignment";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(7);
+            }
+            $w= strtok(" \t");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            $val= intval($w,0);
+            debug("proc_line; EQU w=$w val=$val");
+            mk_symbol($prew, $val, ($W=="=")?"=":"S");
+            debug("proc_line; SYMBOL $prew=$val");
+            $ok= true;
+            return;
+        }
+        
+        else if ($W == "ORG")
+        {
+            $w= strtok(" \t");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            $addr= intval($w,0);
+            debug(sprintf("proc_line; addr=%x",$addr));
+            $ok= true;
+            return;
+        }
+        
+        else if ($W == "DS")
+        {
+            $w= strtok(" \t,");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            $x= 0 + intval($w,0);
+            $addr+= $x;
+            debug(sprintf("proc_line; addr=%x",$addr));
+            $ok= true;
+            return;
+        }
+        
+        else if (preg_match('/^D[BWD]$/', $W))
+        {
+            $orgw= $w;
+            $pl= preg_replace("/^.*[dD][bBwWdD][ \t]+/", "", $l);
+            debug("Param part of line: '$pl'");
+            if (!empty($pl) && ($pl[0]=="\""))
+            {
+                debug("Parsing string...");
+                $a= my_parse_string($pl);
+                //$s= $a[0];
+                //debug("Parsed string: \"{$s}\"");
+                //for ($i= 0; $i<strlen($s); $i++)
+                foreach ($a as $i=>$ch)
+                {
+                    $params= array();
+                    $params[]= $pv= ord(/*$s[$i]*/$ch);
+                    $mem[$addr]= array(
+                        'icode'=>0,
+                        'src'=>$orgw."\t$pv",
+                        'fin'=>$fin,
+                        'lnr'=>$lnr,
+                        'error'=>$error,
+                        'inst'=>$insts[$W],
+                        'pattern'=>"n_",
+                        'address'=>$addr,
+                        'params'=>$params,
+                        'cell_type'=>"C"
+                    );
+                    debug( sprintf("mem[%x] Added char DB $pv",$addr) );
+                    $addr++;
+                }
+                $params= array();
+                $params[]= 0;
+                $mem[$addr]= array(
+                    'icode'=>0,
+                    'src'=>$orgw,
+                    'fin'=>$fin,
+                    'lnr'=>$lnr,
+                    'error'=>$error,
+                    'inst'=>$insts[$W],
+                    'pattern'=>"n_",
+                    'address'=>$addr,
+                    'params'=>$params,
+                    'cell_type'=>"C"
+                );
+                debug( sprintf("mem[%x] Added string 0",$addr) );
+                $addr++;
+                return ;
+            }
+            $w= trim(strtok(" \t,"));
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            while (($w !== false) && ($w!=""))
+            {
+                debug("Process param of DB: \"$w\"");
+                $params= array();
+                $params[]= $w;
+                $mem[$addr]= array(
+                    'icode'=>0,
+                    'src'=>$orgw."\t".$w,
+                    'fin'=>$fin,
+                    'lnr'=>$lnr,
+                    'error'=>$error,
+                    'inst'=>$insts[$W],
+                    'pattern'=>"n_",
+                    'address'=>$addr,
+                    'params'=>$params,
+                    'cell_type'=>"C"
+                );
+                debug( sprintf("mem[%x] Added DB $w",$addr) );
+                $addr++;
+                $w= trim(strtok(" \t,"));
+                if (($w!==false) && ($w!='') && ($w[0]==';'))
+                    return;
+            }
+            return;
+        }
+        
+        else if (($inst= is_inst($W)) !== false)
+        {
+            $icode= $icode | $inst['icode'];
+            debug("proc_line; INST= ".sprintf("%08x",$icode));
+            $mem[$addr]= array(
+                'icode'=>$icode,
+                'src'=>$org,
+                'fin'=>$fin,
+                'lnr'=>$lnr,
+                'error'=>$error,
+                'inst'=>$inst,
+                'cell_type'=> "C" //"I"
+            );
+            $o= sprintf("%05x %08x", $addr, $icode);
+            debug($o);
+            debug("");
+            $ok= true;
+            break;
+        }
+        
+        $prew= $w;
+        $w= strtok($par_sep);
+        if (($w!==false) && ($w[0]==';'))
+            return;
     }
     debug(sprintf("first word precessed, addr=%x",$addr));
     if (($prew != '') && ($ok === false))
     {
-      $error= "{$fin}:{$lnr}: Unknown instruction";
-      debug("Error: ".$error);
-      echo $error."\n";
-      exit(8);
-      return;
+        $error= "{$fin}:{$lnr}: Unknown instruction ($w)";
+        debug("Error: ".$error);
+        echo $error."\n";
+        exit(8);
+        return;
     }
     if ($inst === false)
     {
-      debug("Instructionless line");
-      return;
+        debug("Instructionless line");
+        return;
     }
     // continue with parameters
     debug("Continue with params");
@@ -996,54 +1017,54 @@ else
     $now= false;
     if (($w!==false) && ($w[0]==';'))
     {
-      //debug("Is return ok here?");
-      //return;
-      // emulate no params
-      $w= false;
-      $now= true;
+        //debug("Is return ok here?");
+        //return;
+        // emulate no params
+        $w= false;
+        $now= true;
     }
     $pattern= "";
     $params= array();
     while ($w !== false)
     {
-      $W= strtoupper($w);
-      debug("Parameter word: $w $W");
-      $r= is_reg($W);
-      debug("is_reg? r=$r");
-      if ($r !== false)
-      {
-	$pattern.= "r";
-	$params[]= $r;
-	if (is_w($W))
-	{
-	  $mem[$addr]['icode']|= 0x01000000;
-	  debug( sprintf("Set W bit: %08x",$mem[$addr]['icode']) );
-	}
-	if (is_u($W))
-	{
-	  $mem[$addr]['icode']|= 0x00008000;
-	  debug( sprintf("Set U bit: %08x",$mem[$addr]['icode']) );
-	}
-	if (is_p($W))
-	{
-	  $mem[$addr]['icode']|= 0x00004000;
-	  debug( sprintf("Set P bit: %08x",$mem[$addr]['icode']) );
-	}
-	debug("Parameter value: $r");
-      }
-      else
-      {
-	$pattern.= "n";
-	$params[]= $w;
-	debug("Parameter value: $w");
-      }
-      $prew= $w;
-      if ($now)
-	$w= false;
-      else
-	$w= strtok($par_sep);
-      if (($w!==false) && ($w[0]==';'))
-	break;
+        $W= strtoupper($w);
+        debug("Parameter word: $w $W");
+        $r= is_reg($W);
+        debug("is_reg? r=$r");
+        if ($r !== false)
+        {
+            $pattern.= "r";
+            $params[]= $r;
+            if (is_w($W))
+            {
+                $mem[$addr]['icode']|= 0x01000000;
+                debug( sprintf("Set W bit: %08x",$mem[$addr]['icode']) );
+            }
+            if (is_u($W))
+            {
+                $mem[$addr]['icode']|= 0x00008000;
+                debug( sprintf("Set U bit: %08x",$mem[$addr]['icode']) );
+            }
+            if (is_p($W))
+            {
+                $mem[$addr]['icode']|= 0x00004000;
+                debug( sprintf("Set P bit: %08x",$mem[$addr]['icode']) );
+            }
+            debug("Parameter value: $r");
+        }
+        else
+        {
+            $pattern.= "n";
+            $params[]= $w;
+            debug("Parameter value: $w");
+        }
+        $prew= $w;
+        if ($now)
+            $w= false;
+        else
+            $w= strtok($par_sep);
+        if (($w!==false) && ($w[0]==';'))
+            break;
     }
     $pattern.= "_";
     debug("param pattern=$pattern");
@@ -1056,13 +1077,13 @@ else
 
     if (!$ok)
     {
-      $error= "{$fin}:{$lnr}: Unrecognizable token $w";
-      debug("Error: ".$error);
-      echo $error."\n";
-      exit(6);
+        $error= "{$fin}:{$lnr}: Unrecognizable token $w";
+        debug("Error: ".$error);
+        echo $error."\n";
+        exit(6);
     }
     
-  }
+}
 
 
 // Read out symbol value from sym table
@@ -1359,7 +1380,7 @@ foreach ($mem as $a => $m)
     }*/
     else
         debug(";ph3; what?");
-    //echo "a=$a, m=".print_r($m,true)."\n";
+    devdeb("a=$a, m=".print_r($m,true)."\n");
 }
 debug( $o= "//E" );
 $hex.= $o."\n";
