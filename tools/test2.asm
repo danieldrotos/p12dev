@@ -1,5 +1,10 @@
 	.proc	P2
 
+	.segment start
+label_in_seg:
+	ld	r0,label_in_seg
+	.ends
+	
 	nop
 	.db	-1
 	.dw	-2
@@ -22,11 +27,15 @@ str:	db	"_;_a\"b\"_c\n_"
 	sym_in_a = 12
 label_in_a:
 	nop
+	jmp	aaa
+	ld	r0,str
+	jmp	label_in_a
 	ends
 
 	.segment .text.b,noload
 label_in_b:
 	nop
+	jmp	label_in_a
 	.ends
 
 	.section _c_ss,abs
