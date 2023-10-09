@@ -26,6 +26,7 @@ str:	db	"_;_a\"b\"_c\n_"
 	segment	a
 	sym_in_a = 12
 label_in_a:
+	.global	label_in_a
 	nop
 	jmp	aaa
 	ld	r0,str
@@ -35,7 +36,7 @@ label_in_a:
 	.segment .text.b,noload
 label_in_b:
 	nop
-	;jmp	label_in_a
+	jmp	label_in_a
 	.ends
 
 	.section _c_ss,abs

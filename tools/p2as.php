@@ -887,6 +887,44 @@ function proc_line($l)
             $ok= true;
             return;
         }
+
+        else if (($W == ".GLOBAL") || ($W == ".EXPORT") ||
+                 ($W == "GLOBAL") || ($W == "EXPORT"))
+        {
+            $w= strtok(" \t");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            if ($w=='')
+            {
+                $error= "{$fin}:{$lnr}: Symbol missing to be exported ($w)";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(10);
+            }
+            $sl= arri($syms, arri($segment,'id').$w);
+            $sg= arri($syms, $w);
+            if (!is_array($sl) && !is_array($sg))
+            {
+                $error= "{$fin}:{$lnr}: Symbol unknown to be exported ($w)";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(11);
+            }
+            if (is_array($sg) && !is_array($sl))
+                ; // alreay global
+            if (is_array($sg) && is_array($sl))
+            {
+                $error= "{$fin}:{$lnr}: Redefinition of global symbol ($w)";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(12);
+            }
+            $sl['segid']= false;
+            unset($syms[arri($segment,'id').$w]);
+            unset($syms[$w]);
+            $syms[$w]= $sl;
+            return;
+        }
         
         else if (($W == "ORG") || ($W == ".ORG"))
         {
