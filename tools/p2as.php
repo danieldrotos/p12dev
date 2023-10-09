@@ -1040,7 +1040,7 @@ function proc_line($l)
                     break;
                 $pnr++;
             }
-            $segs[]= $segment;
+            $segs[$segment['id']]= $segment;
             debug("Segment started: {$segment['name']},{$segment['id']}");
             return;
         }
@@ -1358,14 +1358,16 @@ debug("PHASE 2\n");
 
 // List segments
 debug("Segments\n");
-foreach ($segs as $seg)
+foreach ($segs as $skey => $seg)
 {
-    debug("Segment: {$seg['name']},{$seg['id']},{$seg['noload']},{$seg['abs']};\n");
+    debug("Segment[{$skey}]: {$seg['name']},{$seg['id']},{$seg['noload']},{$seg['abs']};\n");
     devdeb("Segment: ".print_r($seg,true));
 }
 
 
 // resolve symbols and inject values into inst codes
+/////////////////////////////////////////////////////////////////////////////
+
 foreach ($mem as $a => $m)
 {
     //echo "a=$a, m=".print_r($m,true)."\n";
@@ -1378,8 +1380,14 @@ foreach ($mem as $a => $m)
         is_array(arri($m,"params")) &&
         !empty($m['pattern']))
     {
-      debug( sprintf("mem[%x] is an instruction: %08x %s (%s)",$m['address'],$m['icode'],$m['src'],$m['segid']) );
-      
+        debug( sprintf("mem[%x] is an instruction: %08x %s",$m['address'],$m['icode'],$m['src']) );
+        $iseg= false;
+        if (arri($m,'segid')!='')
+        {
+            $iseg= $segs[$m['segid']];
+            //debug("Seg of {$m['segid']} is ".print_r($iseg,true));
+        }
+        debug( "Inst is in segment: {$m['segid']} = ".arri($iseg,'name') );
         //echo print_r($m,true);
         $pat= arri($m,"pattern");
         $ip= arri($m['inst']['params'],$pat);
