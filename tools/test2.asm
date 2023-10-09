@@ -35,7 +35,7 @@ label_in_a:
 	.segment .text.b,noload
 label_in_b:
 	nop
-	jmp	label_in_a
+	;jmp	label_in_a
 	.ends
 
 	.section _c_ss,abs

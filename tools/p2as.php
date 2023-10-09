@@ -759,7 +759,8 @@ function is_p($W)
 function mk_symbol($name, $value, $type= "S")
 {
     global $syms, $fin, $lnr, $segment;
-    $s= arri($syms, $name);
+    $skey= arri($segment,'id').$name;
+    $s= arri($syms, /*$name*/$skey);
     if (is_array($s))
     {
         $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
@@ -776,7 +777,8 @@ function mk_symbol($name, $value, $type= "S")
         'type'  => $type,
         'segid' => arri($segment, 'id')
     );
-    $syms[$name]= $sym;
+    $syms[/*$name*/$skey]= $sym;
+    debug("Symbol {$name} created at {$skey}");
     return $sym;
 }
 
@@ -1171,7 +1173,7 @@ function proc_line($l)
 // Read out symbol value from sym table
 function param_value($p, $fin, $lnr)
 {
-    global $syms, $segs;
+    global $syms, $segs, $segment;
     if (empty($p))
         return 0;
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
@@ -1184,10 +1186,14 @@ function param_value($p, $fin, $lnr)
         $v= ord($c);
         return $v;
     }
-    $s= arri($syms,$p);
+    $skey= arri($segment,'id').$p;
+    $s= arri($syms, /*$p*/$skey);
     if (!empty($s) && is_array($s))
         return $s['value'];
-    $error= "{$fin}:{$lnr}: Symbol not found: {$p}";
+    $s= arri($syms, $p);
+    if (!empty($s) && is_array($s))
+        return $s['value'];
+    $error= "{$fin}:{$lnr}: Symbol not found: {$p} as {$skey}";
     debug("Error: ".$error);
     echo $error."\n";
     return 0;
@@ -1373,6 +1379,7 @@ foreach ($mem as $a => $m)
     //echo "a=$a, m=".print_r($m,true)."\n";
     if (!is_array($m))
         continue;
+    $segment= arri($segs, $m['segid']);
     //debug( print_r($m,true) );
     $lnr= $m['lnr'];
     //debug(print_r($m,true));
@@ -1441,6 +1448,7 @@ foreach ($mem as $a => $m)
 {
     if (!is_array($m))
         continue;
+    $segment= arri($segs, $m['segid']);
     $lnr= $m['lnr'];
     //echo print_r($m,true);
     if ($a != $p+1)
