@@ -758,7 +758,7 @@ function is_p($W)
 
 function mk_symbol($name, $value, $type= "S")
 {
-    global $syms, $fin, $lnr;
+    global $syms, $fin, $lnr, $segment;
     $s= arri($syms, $name);
     if (is_array($s))
     {
@@ -768,11 +768,13 @@ function mk_symbol($name, $value, $type= "S")
         exit(9);
     }
     $sym= array(
-        'name' => $name,
-        'value'=> $value,
-        'fin'  => $fin,
-        'lnr'  => $lnr,
-        'type' => $type
+        'name'  => $name,
+        'value' => $value,
+        'global'=> false,
+        'fin'   => $fin,
+        'lnr'   => $lnr,
+        'type'  => $type,
+        'segid' => arri($segment, 'id')
     );
     $syms[$name]= $sym;
     return $sym;

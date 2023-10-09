@@ -19,10 +19,13 @@ str:	db	"_;_a\"b\"_c\n_"
 	dd	-55
 
 	segment	a
+	sym_in_a = 12
+label_in_a:
 	nop
 	ends
 
 	.segment .text.b,noload
+label_in_b:
 	nop
 	.ends
 
