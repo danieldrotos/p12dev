@@ -768,8 +768,8 @@ l_proc:
 	call	putchar
 l_back_to_0:	
 	;; back to state0
-	mvzl	r0,'.'
-	call	putchar
+	;mvzl	r0,'.'
+	;call	putchar
 	mvzl	r10,0
 	mvzl	r8,0
 	mvzl	r6,'?'
