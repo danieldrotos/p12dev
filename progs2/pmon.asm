@@ -628,6 +628,7 @@ cmd_l:
 	mvzl	r10,0		; state (nr of words)
 	mvzl	r8,0		; value
 	mvzl	r6,'?'		; Record type
+	mvzl	r12,0		; Checksum
 l_cyc:
 	call	check_uart
 	C0 jmp	l_cyc
@@ -762,8 +763,10 @@ l_bad:
 l_proc:
 	cmp	r6,'C'		; is it a C or I record?
 	z st	r8,r9		; then store
+	z add	r12,r8		; and add to checksum
 	cmp	r6,'I'
 	z st	r8,r9
+	z add	r12,r8
 	mov	r0,r6		; echo record type
 	call	putchar
 l_back_to_0:	
@@ -775,6 +778,12 @@ l_back_to_0:
 	mvzl	r6,'?'
 	jmp	l_cyc
 l_ret:
+	mvzl	r0,LF
+	call	putchar
+	;; print out checksum
+	mov	r0,r12
+	mvzl	r1,4
+	call	print_vhex
 	mvzl	r0,LF
 	call	putchar
 	pop	lr

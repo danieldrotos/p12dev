@@ -1482,6 +1482,7 @@ debug("\n\n");
 // omit code
 $hex.= "//; CODE\n";
 $p= -1;
+$checksum= 0;
 foreach ($mem as $a => $m)
 {
     if (!is_array($m))
@@ -1517,6 +1518,12 @@ foreach ($mem as $a => $m)
             echo $m['error'];
             $hex.= $o."\n";
         }
+        else if (($m['cell_type']=='C') ||
+                 ($m['cell_type']=='I'))
+        {
+            $checksum+= $m['icode'];
+            $checksum&= 0xffffffff;
+        }   
     }
     /*else if ($m['error'] !== false)
       {
@@ -1529,6 +1536,8 @@ foreach ($mem as $a => $m)
         debug(";ph3; what?");
     devdeb("a=$a, m=".print_r($m,true)."\n");
 }
+debug( $o= sprintf("//H %08x", $checksum) );
+$hex.= $o."\n";
 debug( $o= "//E" );
 $hex.= $o."\n";
 
