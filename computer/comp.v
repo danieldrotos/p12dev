@@ -114,7 +114,9 @@ module comp //(clk, reset, test_sel, test_out);
 	   .cs_io(cs_io),
 	   .cs_simif(cs_simif)
 	   );
-	2: addrdec2 adec
+	2: addrdec2
+	  #( .AW(WIDTH), .LOMEM_SIZE(LOMEM_SIZE), .HIMEM_SIZE(HIMEM_SIZE) )
+	adec
 	  (
 	   .addr(bus_address),
 	   .cs_mem(cs_mem),
@@ -131,11 +133,6 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_uart= cs_io[4];
    assign cs_clock= cs_io[5];
 
-   assign addr_1st64k= ~|bus_address[31:16];
-   assign addr_pmon= addr_1st64k & (bus_address[15:12]==4'hf);
-   assign cs_lomem= cs_mem & (bus_address < LOMEM_SIZE) & ~addr_pmon;
-   assign cs_pmon = cs_mem & addr_pmon;
-   assign cs_himem= cs_mem & ~addr_1st64k & (bus_address < 32'h10000 + HIMEM_SIZE);
    
    memory_1in_1out
      #(

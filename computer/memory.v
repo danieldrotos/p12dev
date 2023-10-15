@@ -34,7 +34,7 @@ module memory_1in_1out //(clk, din, wen, wa, ra, dout/*, rb, db*/);
 	     $display("Init memory with %s", string);
 	     $display("Mem addr width %d", ADDR_SIZE);
 	     $readmemh(string, mem_array);
-	     for (i=0;i<20;i=i+1)
+	     for (i=0;i<5;i=i+1)
 	       $display("Mem[%x]=%x",i,mem_array[i]);
 	  end
 	//dout= 0;	
