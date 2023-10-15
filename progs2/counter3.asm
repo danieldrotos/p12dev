@@ -16,6 +16,16 @@ pesf		=	0xf015
 	mvzl	r13,eof_stack
 	mvzl	r10,0
 
+	.segment try_himem
+	mvl	r0,0x10000
+	mvh	r0,0x10000
+	mvzl	r2,0
+cyc:
+	st	r2,r2+,r0
+	cmp	r2,100
+	jnz	cyc
+	.ends
+	
 cyc:
 	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button

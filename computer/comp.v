@@ -3,6 +3,8 @@ module comp //(clk, reset, test_sel, test_out);
     parameter WIDTH= 32,
     parameter PROGRAM= "",
     parameter MEM_ADDR_SIZE= 12,
+    parameter LOMEM_SIZE= 65536,
+    parameter HIMEM_SIZE= 65536,
     parameter CPU_TYPE= 2,
     parameter COMP_TYPE= 1
     )
@@ -92,6 +94,7 @@ module comp //(clk, reset, test_sel, test_out);
       endcase // case (CPU_TYPE)
    endgenerate
 
+                                         //   v1         v2 
    wire 		    cs_mem;      // 0x0fff     0x1ffff
    wire 		    cs_portabcd; // 0xf000     0xff00
    wire 		    cs_portj;    // 0xd000     0xff10
@@ -127,6 +130,12 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_timer= cs_io[3];
    assign cs_uart= cs_io[4];
    assign cs_clock= cs_io[5];
+
+   assign addr_1st64k= ~|bus_address[31:16];
+   assign addr_pmon= addr_1st64k & (bus_address[15:12]==4'hf);
+   assign cs_lomem= cs_mem & (bus_address < LOMEM_SIZE) & ~addr_pmon;
+   assign cs_pmon = cs_mem & addr_pmon;
+   assign cs_himem= cs_mem & ~addr_1st64k & (bus_address < 32'h10000 + HIMEM_SIZE);
    
    memory_1in_1out
      #(
