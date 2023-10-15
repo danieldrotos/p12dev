@@ -2,6 +2,7 @@ module comp //(clk, reset, test_sel, test_out);
   #(
     parameter WIDTH= 32,
     parameter PROGRAM= "",
+    parameter PMON_CONTENT= "",
     parameter MEM_ADDR_SIZE= 12,
     parameter LOMEM_SIZE= 65536,
     parameter HIMEM_SIZE= 65536,
@@ -105,6 +106,10 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_simif;    // 0xffff     0xffff
    wire [15:0] 		    cs_io;
 
+   wire			    cs_lomem;
+   wire			    cs_pmon;
+   wire			    cs_himem;
+   
    generate
       case (COMP_TYPE)
 	1: addrdec1 adec
@@ -121,7 +126,10 @@ module comp //(clk, reset, test_sel, test_out);
 	   .addr(bus_address),
 	   .cs_mem(cs_mem),
 	   .cs_io(cs_io),
-	   .cs_simif(cs_simif)
+	   .cs_simif(cs_simif),
+	   .cs_lomem(cs_lomem),
+	   .cs_pmon(cs_pmon),
+	   .cs_himem(cs_himem)
 	   );
       endcase // case (COMP_TYPE)
    endgenerate
@@ -133,7 +141,7 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_uart= cs_io[4];
    assign cs_clock= cs_io[5];
 
-   
+   /*
    memory_1in_1out
      #(
        .WIDTH(WIDTH),
@@ -149,7 +157,28 @@ module comp //(clk, reset, test_sel, test_out);
       .ra(bus_address[MEM_ADDR_SIZE-1:0]),
       .dout(bus_mem_code_out)//,
       );
-
+    */
+   mems
+     #(
+       .AW(17),
+       .WIDTH(WIDTH),
+       .LOMEM_SIZE(LOMEM_SIZE),
+       .HIMEM_SIZE(HIMEM_SIZE),
+       .LOMEM_CONTENT(PROGRAM),
+       .PMON_CONTENT(PMON_CONTENT)
+       )
+   mem
+     (
+      .clk(clk),
+      .cs_lomem(cs_lomem),
+      .cs_pmon(cs_pmon),
+      .cs_himem(cs_himem),
+      .din(bus_data_out),
+      .wen(bus_wen),
+      .addr(bus_address[MEM_ADDR_SIZE-1:0]),
+      .dout(bus_mem_code_out)//,
+      );
+   
    timer #(.WIDTH(32)) tmr1
      (
       .clk(clk),

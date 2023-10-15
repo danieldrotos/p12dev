@@ -28,13 +28,16 @@ uart2: uart2.p2h uart2.asc uart2.cdb
 
 regsave: regsave.p2h regsave.asc regsave.cdb
 
-pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc
+pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc pmon_chip.asc
 #	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
 
 msblink2: msblink2.p2h msblink2.asc msblink2.cdb
 
 pmon.cc: pmon.p2h
 	php $(TOOLS)/hex2c.php $< >$@
+
+pmon_chip.asc: pmon.p2h
+	php $(TOOLS)/hex2asc.php -m 17 -c 0xf000 -cs 4096 $< >$@
 
 test: test.p2h test.asc test.cdb
 

@@ -99,7 +99,8 @@ module tm
        .MEM_ADDR_SIZE(`AW),
        .PROGRAM( `PRG ),
        .CPU_TYPE(`CPU_TYPE),
-       .COMP_TYPE(`COMP_TYPE)
+       .COMP_TYPE(`COMP_TYPE),
+       .PMON_CONTENT("./progs2/pmon_chip.asc")
        )
    comp
      (

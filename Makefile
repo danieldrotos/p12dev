@@ -11,6 +11,7 @@ MODS		= defs hwconf \
 		    computer/addrdec1 \
 		    computer/addrdec2 \
 		    computer/memory \
+		    computer/mems \
 		    cpu1/cpu1 \
 		      cpu1/regm \
 		      cpu1/adder \
