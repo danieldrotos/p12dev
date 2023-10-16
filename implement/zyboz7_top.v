@@ -130,9 +130,12 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
    comp
      #(
        .PROGRAM        ( `PRG ),
+       .PMON_CONTENT   ( "./progs2/pmon_chip.asc" ),
        .CPU_TYPE       ( `CPU_TYPE ),
        .COMP_TYPE      ( `COMP_TYPE ),
-       .MEM_ADDR_SIZE  ( /*`AW*/ 16 )
+       .MEM_ADDR_SIZE  ( /*`AW*/ 16 ),
+       .LOMEM_SIZE     ( 32768 ),
+       .HIMEM_SIZE     ( 0 )
        )
    computer
      (
