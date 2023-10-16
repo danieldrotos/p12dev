@@ -160,7 +160,7 @@ module comp //(clk, reset, test_sel, test_out);
     */
    mems
      #(
-       .AW(17),
+       //.AW(17),
        .WIDTH(WIDTH),
        .LOMEM_SIZE(LOMEM_SIZE),
        .HIMEM_SIZE(HIMEM_SIZE),
@@ -175,7 +175,7 @@ module comp //(clk, reset, test_sel, test_out);
       .cs_himem(cs_himem),
       .din(bus_data_out),
       .wen(bus_wen),
-      .addr(bus_address[MEM_ADDR_SIZE-1:0]),
+      .addr(bus_address),
       .dout(bus_mem_code_out)//,
       );
    

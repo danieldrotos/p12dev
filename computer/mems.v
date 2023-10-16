@@ -4,7 +4,7 @@
 
 module mems
   #(
-    parameter AW= 17, // address width in bits
+    //parameter AW= 17, // address width in bits
     parameter WIDTH = 32, // cell size in bits
     parameter LOMEM_SIZE= 65536, // in words
     parameter HIMEM_SIZE= 65536, // in words
@@ -15,7 +15,7 @@ module mems
     input wire		    clk,
     input wire [WIDTH-1:0]  din,
     input wire		    wen,
-    input wire [AW-1:0]	    addr,
+    input wire [31:0]	    addr,
     input wire		    cs_lomem,
     input wire		    cs_pmon,
     input wire		    cs_himem,

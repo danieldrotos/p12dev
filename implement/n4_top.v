@@ -165,10 +165,13 @@ assign JDa[4]= f1Hz;
    assign portj= {16'd0, switches};
    comp
      #(
+       .PMON_CONTENT   ( "./progs2/pmon_chip.asc" ),
        .PROGRAM        ( `PRG ),
        .CPU_TYPE       ( `CPU_TYPE ),
        .COMP_TYPE      ( `COMP_TYPE ),
-       .MEM_ADDR_SIZE  ( `AW )
+       .MEM_ADDR_SIZE  ( `AW ),
+       .LOMEM_SIZE     ( 65536 ),
+       .HIMEM_SIZE     ( 65536 )
        )
    computer
      (

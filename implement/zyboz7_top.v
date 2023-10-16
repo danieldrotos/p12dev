@@ -135,7 +135,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
        .COMP_TYPE      ( `COMP_TYPE ),
        .MEM_ADDR_SIZE  ( /*`AW*/ 16 ),
        .LOMEM_SIZE     ( 32768 ),
-       .HIMEM_SIZE     ( 0 )
+       .HIMEM_SIZE     ( 16384 )
        )
    computer
      (

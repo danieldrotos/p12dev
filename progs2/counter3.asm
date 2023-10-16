@@ -15,7 +15,9 @@ pesf		=	0xf015
 
 	mvzl	r13,eof_stack
 	mvzl	r10,0
-
+	ld	r1,btn
+	st	r1,last_btn
+	
 	.segment try_himem
 	mvl	r0,0x10000
 	mvh	r0,0x10000
@@ -30,7 +32,9 @@ cyc:
 	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
 	call	pressed
-	C1 jmp	callin
+	C1 call	callin
+	C1 ld	r1,btn
+	C1 st	r1,last_btn
 	st	r10,PORTA
 	mov	r1,r10
 	mov	r2,r10
