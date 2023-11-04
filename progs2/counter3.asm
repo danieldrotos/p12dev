@@ -11,14 +11,22 @@ printd		=	0xf013
 printf		=	0xf014
 pesf		=	0xf015
 	
+dummy		=	12
+	
 	org	1
-
+	jmp	start
+	db	dummy
+start:	
 	mvzl	r13,eof_stack
 	mvzl	r10,0
 	ld	r1,btn
 	st	r1,last_btn
+	jmp	try_himem
 	
 	.segment try_himem
+	dummy	=	33
+try_himem:
+	.export	try_himem
 	mvl	r0,0x10000
 	mvh	r0,0x10000
 	mvzl	r2,0
@@ -26,8 +34,12 @@ cyc:
 	st	r2,r2+,r0
 	cmp	r2,100
 	jnz	cyc
+	jmp	exit
+	db	dummy
+exit:
 	.ends
-	
+
+	db	dummy
 cyc:
 	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
