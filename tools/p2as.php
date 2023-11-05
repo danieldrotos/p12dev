@@ -1059,12 +1059,25 @@ function proc_line($l)
                 $W= strtoupper($w);
                 if ($pnr == 1)
                 {
+                    foreach ($segs as $i => $s)
+                    {
+                        if ($s['name']==$w)
+                        {
+                            $error= "{$fin}:{$lnr}: Segment already exists ({$w}, defined at {$s['fin']}:{$s['lnr']})";
+                            debug("Error: ".$error);
+                            echo $error."\n";
+                            exit(11);
+                            return;
+                        }
+                    }
                     $segment= array(
                         "name"=>$w,
                         "id"=> "S".bin2hex(random_bytes(6)),
                         "start"=>$addr,
                         "noload"=>false,
-                        "abs"=>false
+                        "abs"=>false,
+                        "fin"=>$fin,
+                        "lnr"=>$lnr
                     );
                 }
                 else if ($W == "NOLOAD")
@@ -1074,6 +1087,14 @@ function proc_line($l)
                 else if ($W == "ABS")
                 {
                     $segment["abs"]= true;
+                }
+                else
+                {
+                    $error= "{$fin}:{$lnr}: Unknown segment option ({$w})";
+                    debug("Error: ".$error);
+                    echo $error."\n";
+                    exit(10);
+                    return;
                 }
                 $w= strtok(" \t,");
                 if (($w!==false) && ($w!="") && ($w[0]==';'))
