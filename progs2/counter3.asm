@@ -40,6 +40,8 @@ exit:
 	.ends
 
 	db	dummy
+
+	.seg	main
 cyc:
 	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
@@ -55,7 +57,11 @@ cyc:
 	add	r10,1
 	jmp	cyc
 
-
+	.ends			; main
+	
+;	.seg	try_himem
+;	.ends
+	
 	;; Check button press
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN
