@@ -2,6 +2,7 @@
 
 uart_check	=	0xf008
 uart_read	=	0xf00d
+putchar		=	0xf00e
 	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
@@ -49,6 +50,7 @@ tu_fgets:
 	
 	call	uart_check	; if there is no char
 	NC jmp	ler_ret		; return with false
+ler_got_char:	
 	call	uart_read	; read one char
 	cmp	r0,13		; check CR and LF
 	jz	ler_true	; both accepted as ENTER
@@ -66,9 +68,22 @@ ler_nobs:
 	cmp	r0,128		; skip graphic chars
 	UGE jmp	ler_false
 	;; process accpeted char
-	ld	r1,le_buf_addr
+	ld	r1,le_buf_len
 	ld	r2,le_ptr
+	mov	r3,r2
+	inc	r3
+	cmp	r3,r1
+	UGE jmp	ler_noroom
+	ld	r1,le_buf_addr
+	st	r0,r1,r2
+	call	putchar
+	mvzl	r0,0
+	st	r0,r1,r3
+	st	r3,le_ptr
+	jmp	ler_false
 	
+ler_noroom:
+	jmp	ler_false
 ler_false:
 	clc
 	jmp	ler_ret

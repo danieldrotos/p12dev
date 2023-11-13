@@ -18,10 +18,10 @@ ffcnt	= 0xff52
 	
 	ldl0	sp,verem
 
-	call	print_hack
-	db	"a\n"
-vege:
-	jmp	vege
+;	call	print_hack
+;	db	"a\n"
+;vege:
+;	jmp	vege
 	
 	ldl0	r0,25000
 	st	r0,pre
