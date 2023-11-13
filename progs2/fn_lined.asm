@@ -3,6 +3,7 @@
 uart_check	=	0xf008
 uart_read	=	0xf00d
 putchar		=	0xf00e
+pes		=	0xf012
 	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
@@ -58,8 +59,24 @@ ler_got_char:
 	jz	ler_true
 	;; not ENTER
 	cmp	r0,8		; is it backspace?
-	jnz	ler_nobs
-	;; process Backspace
+	jz	ler_bs
+	cmp	r0,0x7f
+	jz	ler_del
+	jmp	ler_nobs
+	
+ler_bs:
+ler_del:	
+	;; process Backspace/DEL
+	ld	r2,le_ptr	; already emtpy?
+	sz	r2
+	jz	ler_false
+	dec	r2		; ptr= pre-1
+	st	r2,le_ptr
+	ld	r1,le_buf_addr	; buf[ptr]=0
+	mvzl	r0,0
+	st	r0,r1,r2
+	call	pes
+	db	"\e[1D \e[1D"
 	jmp	ler_false
 	
 ler_nobs:	
