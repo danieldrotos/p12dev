@@ -62,11 +62,12 @@ compile: sw hw
 progs:
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
+	$(MAKE) -C pmon all
 
 comp_pmon:
-	$(MAKE) -C progs2 pmon_app
+	$(MAKE) -C pmon all
 
-cimp_mon: comp_pmon
+comp_mon: comp_pmon
 
 comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
@@ -107,8 +108,8 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .p2h.asc:
-	$(MAKE) -C progs2 pmon.p2h
-	php $(TOOLS)/hex2asc.php -m $(AW) progs2/pmon.p2h $< >$@
+	$(MAKE) -C pmon pmon.p2h
+	php $(TOOLS)/hex2asc.php -m $(AW) pmon/pmon.p2h $< >$@
 
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@
@@ -121,6 +122,7 @@ clean_files	= *~ $(VCD) $(VVP) \
 clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
+	$(MAKE) -C pmon clean
 	$(MAKE) -C tools clean
 	$(MAKE) -C implement clean
 	$(RM) $(clean_files)

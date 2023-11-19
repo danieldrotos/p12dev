@@ -1,11 +1,11 @@
 PRJ		= ..
 TOOLS		= $(PRJ)/tools
+PMON		= $(PRJ)/pmon
 
 include $(PRJ)/prj.mk
 AW		?= 17
 
-all: pmon_app \
-	counter2 \
+all: counter2 \
 	counter3 \
 	uart \
 	uart2 \
@@ -16,8 +16,7 @@ all: pmon_app \
 	ff \
 	game \
 	bufout \
-	letest \
-	dtoitest
+	letest
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -31,18 +30,6 @@ uart2: uart2.p2h uart2.asc uart2.cdb
 regsave: regsave.p2h regsave.asc regsave.cdb
 
 msblink2: msblink2.p2h msblink2.asc msblink2.cdb
-
-pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc pmon_chip.asc
-#	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
-
-pmon.p2h: pmon.asm fn_dtoi.asm fn_isdigit.asm eof_pmon.asm
-	php $(TOOLS)/p2as.php -l -o $@ $^
-
-pmon.cc: pmon.p2h
-	php $(TOOLS)/hex2c.php $< >$@
-
-pmon_chip.asc: pmon.p2h
-	php $(TOOLS)/hex2asc.php -m 17 -c 0xf000 -cs 4096 $< >$@
 
 test: test.p2h test.asc test.cdb
 
@@ -59,18 +46,13 @@ letest: letest.p2h letest.asc letest.cdb
 letest.p2h: le_test.asm fn_lined.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
-dtoitest: dtoitest.p2h dtoitest.asc dtoitest.cdb
-
-dtoitest.p2h: dtoi_test.asm fn_dtoi.asm
-	php $(TOOLS)/p2as.php -l -o $@ $^
-
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 
 .asm.p2h:
 	php $(TOOLS)/p2as.php -l -o $@ $<
 
 .p2h.asc:
-	php $(TOOLS)/hex2asc.php -m $(AW) pmon.p2h $< >$@
+	php $(TOOLS)/hex2asc.php -m $(AW) $(PMON)/pmon.p2h $< >$@
 
 .p2h.cdb:
 	php $(TOOLS)/hex2cdb.php $< >$@

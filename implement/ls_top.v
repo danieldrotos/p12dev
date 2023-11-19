@@ -130,7 +130,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
    assign portj= {24'd0, switches};
    comp
      #(
-       .PMON_CONTENT   ( "./progs2/pmon_chip.asc" ),
+       .PMON_CONTENT   ( "./pmon/pmon_chip.asc" ),
        .PROGRAM        ( `PRG ),
        .CPU_TYPE       ( `CPU_TYPE ),
        .COMP_TYPE      ( `COMP_TYPE ),
