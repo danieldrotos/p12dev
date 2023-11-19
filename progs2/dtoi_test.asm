@@ -6,8 +6,7 @@
 
 	mvzl	r0,str
 	call	dtoi
-	mov	r1,r0
-	mov	r2,r0
+	mov	r2,r1
 	call	pesf
 	db	"val=%d %x\n"
 end:
