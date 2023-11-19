@@ -15,7 +15,9 @@ all: pmon_app \
 	div \
 	ff \
 	game \
-	bufout
+	bufout \
+	letest \
+	dtoitest
 
 
 counter2: counter2.p2h counter2.asc counter2.cdb
@@ -49,6 +51,15 @@ game: game.p2h game.asc game.cdb
 
 bufout: bufout.p2h bufout.asc bufout.cdb
 
+letest: letest.p2h letest.asc letest.cdb
+
+letest.p2h: le_test.asm fn_lined.asm
+	php $(TOOLS)/p2as.php -l -o $@ $^
+
+dtoitest: dtoitest.p2h dtoitest.asc dtoitest.cdb
+
+dtoitest.p2h: dtoi_test.asm fn_dtoi.asm
+	php $(TOOLS)/p2as.php -l -o $@ $^
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
 

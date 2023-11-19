@@ -41,8 +41,11 @@ exit:
 	jmp	real_start
 	.ends
 
-	.seg	try_himem
-cyc_belso:
+
+	db	dummy
+
+	.seg	main
+
 cyc:
 	db	cyc
 	.ends
@@ -66,7 +69,11 @@ real_start:
 	add	r10,1
 	jmp	cyc
 
-
+	.ends			; main
+	
+;	.seg	try_himem
+;	.ends
+	
 	;; Check button press
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN
