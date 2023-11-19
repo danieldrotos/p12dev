@@ -37,10 +37,21 @@ cyc:
 	jmp	exit
 	db	dummy
 exit:
+;cyc:
+	jmp	real_start
 	.ends
 
-	db	dummy
+	.seg	try_himem
+cyc_belso:
 cyc:
+	db	cyc
+	.ends
+	
+	jmp	cyc
+	db	dummy
+	;db	cyc_belso
+cyc:
+real_start:	
 	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
 	call	pressed
