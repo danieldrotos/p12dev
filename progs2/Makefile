@@ -5,7 +5,8 @@ PMON		= $(PRJ)/pmon
 include $(PRJ)/prj.mk
 AW		?= 17
 
-all: counter2 \
+all: pmonitor \
+	counter2 \
 	counter3 \
 	uart \
 	uart2 \
@@ -18,6 +19,8 @@ all: counter2 \
 	bufout \
 	letest
 
+pmonitor:
+	$(MAKE) -C $(PMON) pmon.p2h
 
 counter2: counter2.p2h counter2.asc counter2.cdb
 

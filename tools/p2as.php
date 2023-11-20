@@ -1107,8 +1107,9 @@ function proc_line($l)
         }
 
         else if (($W == "ENDS") || ($W == ".ENDS"))
-        {
-            debug("Finish segment: {$segment['name']},{$segment['id']}");
+      {
+	    if ($segment!==false)
+              debug("Finish segment: {$segment['name']},{$segment['id']}");
             $segment= false;
             return;
         }
