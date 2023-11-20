@@ -4,4 +4,4 @@ start "cmd2" "%ProgramFiles(x86)%\teraterm\ttermpro.exe" /W=cmd2 /T=1 telnet://l
 
 set arg1=%1
 
-ucsim_p1516 -t2 -Z6666 -S uart=0,port=5555 -I if=rom[0xffff] -g -e "uart0_check_often=1" progs2/pmon %arg1%
+ucsim_p1516 -t2 -Z6666 -S uart=0,port=5555 -I if=rom[0xffff] -g -e "uart0_check_often=1" pmon/pmon %arg1%

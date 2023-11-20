@@ -10,6 +10,6 @@ else
 fi
 
 I="-I if=rom[0xffff]"
-$SIM -t2 -Z6666 -S uart=0,port=5555 $I -g -e "uart0_check_often=1" progs2/pmon $1
+$SIM -t2 -Z6666 -S uart=0,port=5555 $I -g -e "uart0_check_often=1" pmon/pmon $1
 
 
