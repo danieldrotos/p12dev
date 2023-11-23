@@ -1,8 +1,12 @@
 	cpu	p2
 
+	.seg	fn_div
+	
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
 div:
+	.global	div
+	
 	push	lr
 	push	r4
 	
@@ -35,3 +39,6 @@ div_ret:
 	pop	r4
 	pop	lr
 	ret
+
+	.ends
+	

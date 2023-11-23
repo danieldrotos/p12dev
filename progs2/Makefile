@@ -47,7 +47,7 @@ bufout: bufout.p2h bufout.asc bufout.cdb
 
 letest: letest.p2h letest.asc letest.cdb
 
-letest.p2h: le_test.asm $(LIB)/fn_lined.asm
+letest.p2h: le_test.asm $(LIB)/fn_lined.asm $(LIB)/fn_pmon.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc

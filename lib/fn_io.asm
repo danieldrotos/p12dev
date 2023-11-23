@@ -40,3 +40,50 @@ CLOCK.BCNT15	=	0xff5f
 
 	.ends
 	
+	.seg	regs_of_gpio
+
+GPIO.PORTA	=	0xff00	; 7seg (selectable)
+GPIO.PORTB	=	0xff01	; led
+GPIO.PORTC	=	0xff02
+GPIO.PORTD	=	0xff03
+
+GPIOA.ODR	=	0xff00
+GPIOB.ODR	=	0xff01
+GPIOC.ODR	=	0xff02
+GPIOD.ODR	=	0xff03
+
+GPIO.7SEG	=	0xff00	; GPIOA.ODR
+GPIO.LED	=	0xff01	; GPIOB.ODR
+	
+GPIO.PORTI	=	0xff20	; btn
+GPIO.PORTJ	=	0xff10	; sw
+
+GPIOI.IDR	=	0xff20	; GPIO.PORTI
+GPIOJ.IDR	=	0xff10	; GPIO.PORTJ
+
+GPIO.BTN	=	0xff20	; GPIOI.IDR
+GPIO.SW		=	0xff10	; GPIOJ.IDR
+	
+	.global	GPIO.PORTA
+	.global	GPIO.PORTB
+	.global	GPIO.PORTC
+	.global	GPIO.PORTD
+
+	.global	GPIOA.ODR
+	.global	GPIOB.ODR
+	.global	GPIOC.ODR
+	.global	GPIOD.ODR
+
+	.global	GPIO.7SEG
+	.global	GPIO.LED
+	
+	.global	GPIO.PORTI
+	.global	GPIO.PORTJ
+
+	.global	GPIOI.IDR
+	.global	GPIOJ.IDR
+
+	.global	GPIO.SW
+	.global GPIO.BTN
+	
+	.ends

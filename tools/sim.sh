@@ -1,7 +1,7 @@
 
-xfce4-terminal -T "UART" -e "./tools/tnto 5555" -H &
-xfce4-terminal -T "cmd1" -e "./tools/tnto 6666" -H &
-xfce4-terminal -T "cmd2" -e "./tools/tnto 6666" -H &
+xfce4-terminal -T "UART" -e "./tools/tnto 5555" &
+xfce4-terminal -T "cmd1" -e "./tools/tnto 6666" &
+xfce4-terminal -T "cmd2" -e "./tools/tnto 6666" &
 
 if [ -d $HOME/prj/ucsim ]; then
     SIM=$HOME/prj/ucsim/main/p1516.src/ucsim_p1516

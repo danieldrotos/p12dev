@@ -49,10 +49,10 @@ tu_fgets:
 	push	r2
 	push	r3
 	
-	call	check_uart	; if there is no char
+	call	_check_uart	; if there is no char
 	NC jmp	ler_ret		; return with false
 ler_got_char:	
-	call	read		; read one char
+	call	_read		; read one char
 	cmp	r0,13		; check CR and LF
 	jz	ler_true	; both accepted as ENTER
 	cmp	r0,10
@@ -75,7 +75,7 @@ ler_del:
 	ld	r1,le_buf_addr	; buf[ptr]=0
 	mvzl	r0,0
 	st	r0,r1,r2
-	call	pes
+	call	_pes
 	db	"\e[1D \e[1D"
 	jmp	ler_false
 	
@@ -93,7 +93,7 @@ ler_nobs:
 	UGE jmp	ler_noroom
 	ld	r1,le_buf_addr
 	st	r0,r1,r2
-	call	putchar
+	call	_putchar
 	mvzl	r0,0
 	st	r0,r1,r3
 	st	r3,le_ptr
