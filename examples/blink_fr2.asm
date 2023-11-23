@@ -59,6 +59,9 @@ blink_ret:
 	pop	lr
 	ret
 
+cmd_quit:
+	.db	"quit"
+	
 user_input:
 	push	lr
 	call	le_read
@@ -66,6 +69,10 @@ user_input:
 process_input:	
 	mvzl	r0,10		; echo ENTER
 	call	putchar
+	mvzl	r0,buffer	; check for word "quit"
+	mvzl	r1,cmd_quit
+	call	_strieq
+	C call	monitor
 	mvzl	r0,buffer	; convert entered decimal number
 	call	_dtoi		; to integer value
 	cmp	r1,1		; check low limit
@@ -92,7 +99,7 @@ ui_ret:
 prompt:
 	push	lr
 	call	_pes
-	.db	"Enter fr in Hz: "
+	.db	"Enter fr in Hz (quit to monitor): "
 	pop	lr
 	ret
 	

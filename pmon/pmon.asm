@@ -1141,10 +1141,11 @@ strchr_ret:
 	;;     R3==true case sensitive
 	;;     R3==false case insensitive
 	;; OUT: Flag.C=1 equal
+	;;      R1 address of EOS in second string
 str_cmp_eq:
 	push	lr		; Save used registers
 	push	r0		; and input parameters
-	push	r1
+	;push	r1
 	push	r2
 	push	r4
 	push	r5
@@ -1185,11 +1186,17 @@ streq_yes:
 	sec			; True result
 	
 streq_ret:
+	ld	r6,r1		; forward R1 to EOS
+	sz	r6
+	jz	streq_ret_ret
+	inc	r1
+	jmp	streq_ret
+streq_ret_ret:	
 	pop	r6
 	pop	r5
 	pop	r4
 	pop	r2
-	pop	r1
+	;pop	r1
 	pop	r0
 	pop	lr
 	ret
@@ -1200,10 +1207,12 @@ streq_ret:
 	;; OUT Flag.C==1 if equals
 streq:
 	push	lr
+	push	r1
 	push	r3
 	mvzl	r3,1
 	call	str_cmp_eq
 	pop	r3
+	pop	r1
 	pop	lr
 	ret
 
@@ -1213,10 +1222,12 @@ streq:
 	;; OUT Flag.C==1 if equals
 strieq:
 	push	lr
+	push	r1
 	push	r3
 	mvzl	r3,0
 	call	str_cmp_eq
 	pop	r3
+	pop	r1
 	pop	lr
 	ret
 
