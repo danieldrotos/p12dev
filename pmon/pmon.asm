@@ -1485,8 +1485,7 @@ pes_done:
 	pop	r1
 	pop	r0
 	pop	lr
-	ld	lr,pes_ret_to
-	ret
+	ld	pc,pes_ret_to
 
 
 	;; Print string and append a NL
@@ -1673,9 +1672,12 @@ printd:
 	;; Format and print string
 	;; In : R0 address of string template (format)
 	;;      R1..R12 parameter values
+	;; Out: R2 pointer to end of string (address of zero byte)
 printf:
 	push	lr
-
+	push	r0
+	push	r1
+	
 	st	r1,reg1
 	st	r2,reg2
 	st	r3,reg3
@@ -1794,16 +1796,22 @@ printf_next:
 	inc	r2		; inc string ptr
 	jmp	printf_cyc
 	
-printf_ret:	
+printf_ret:
+	pop	r1
+	pop	r0
 	pop	lr
 	ret
 
 
 pesf:
+	push	r0
+	push	r2
 	mov	r0,LR
 	call	printf
-	inc	r2
-	mov	PC,r2
+	st	r2,reg2
+	pop	r2
+	pop	r0
+	ld	PC,reg2
 	
 	
 ;;; VARIABLES

@@ -1,5 +1,6 @@
 PRJ		= ..
 TOOLS		= $(PRJ)/tools
+LIB		= $(PRJ)/lib
 
 include $(PRJ)/prj.mk
 AW		?= 17
@@ -19,7 +20,8 @@ all: \
 	light22 \
 	poll \
 	poll2 \
-	shift_digit
+	shift_digit \
+	blink_fr2
 
 
 simif_print: simif_print.p2h simif_print.asc simif_print.cdb
@@ -51,6 +53,15 @@ light22: light22.p2h light22.asc light22.cdb
 poll: poll.p2h poll.asc poll.cdb
 
 poll2: poll2.p2h poll2.asc poll2.cdb
+
+
+blink_fr2: blink_fr2.p2h blink_fr2.cdb
+
+blink_fr2.p2h: blink_fr2.asm \
+		$(LIB)/fn_pmon.asm \
+		$(LIB)/fn_io.asm \
+		$(LIB)/fn_lined.asm
+	php $(TOOLS)/p2as.php -l -o $@ $^
 
 
 .SUFFIXES: .p2h .asm .asc .cdb

@@ -1,9 +1,9 @@
 	.proc	p2
 
-uart_check	=	0xf008
-uart_read	=	0xf00d
-putchar		=	0xf00e
-pes		=	0xf012
+;uart_check	=	0xf008
+;uart_read	=	0xf00d
+;putchar	=	0xf00e
+;pes		=	0xf012
 	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
@@ -49,10 +49,10 @@ tu_fgets:
 	push	r2
 	push	r3
 	
-	call	uart_check	; if there is no char
+	call	check_uart	; if there is no char
 	NC jmp	ler_ret		; return with false
 ler_got_char:	
-	call	uart_read	; read one char
+	call	read		; read one char
 	cmp	r0,13		; check CR and LF
 	jz	ler_true	; both accepted as ENTER
 	cmp	r0,10
