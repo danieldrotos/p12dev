@@ -783,6 +783,33 @@ function mk_symbol($name, $value, $type= "S")
 }
 
 
+function make_it_global($w)
+{
+    global $syms, $segment, $lnr, $fin, $error;
+    $sl= arri($syms, arri($segment,'id').$w);
+    $sg= arri($syms, $w);
+    if (!is_array($sl) && !is_array($sg))
+    {
+        $error= "{$fin}:{$lnr}: Symbol unknown to be exported ($w)";
+        debug("Error: ".$error);
+        echo $error."\n";
+        exit(11);
+    }
+    if (is_array($sg) && !is_array($sl))
+        ; // alreay global
+    if (is_array($sg) && is_array($sl))
+    {
+        $error= "{$fin}:{$lnr}: Redefinition of global symbol ($w)";
+        debug("Error: ".$error);
+        echo $error."\n";
+        exit(12);
+    }
+    $sl['segid']= false;
+    unset($syms[arri($segment,'id').$w]);
+    unset($syms[$w]);
+    $syms[$w]= $sl;
+}
+
 
 /*
  * Phase 1, process input line
@@ -901,6 +928,7 @@ function proc_line($l)
                 echo $error."\n";
                 exit(10);
             }
+            /*
             $sl= arri($syms, arri($segment,'id').$w);
             $sg= arri($syms, $w);
             if (!is_array($sl) && !is_array($sg))
@@ -923,6 +951,8 @@ function proc_line($l)
             unset($syms[arri($segment,'id').$w]);
             unset($syms[$w]);
             $syms[$w]= $sl;
+            */
+            make_it_global($w);
             return;
         }
         

@@ -1,5 +1,8 @@
 	.proc	p2
 
+a::	122
+		
+	
 	.seg	regs_of_clock
 	
 CLOCK.CLOCK	=	0xff50
