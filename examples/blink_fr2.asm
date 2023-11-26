@@ -22,6 +22,7 @@ main:
 cycle:
 	call	blink		; handle clock events
 	call	user_input	; handle user input
+	call	btn_press	; handle press on BTN[1]
 	jmp	cycle
 
 	;; variable
@@ -100,6 +101,14 @@ prompt:
 	push	lr
 	call	_pes
 	.db	"Enter fr in Hz (quit to monitor): "
+	pop	lr
+	ret
+
+btn_press:
+	push	lr
+	mvzl	r0,2		; mask of BTN[1]
+	call	pressed
+	C call	monitor
 	pop	lr
 	ret
 	
