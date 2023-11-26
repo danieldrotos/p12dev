@@ -4,9 +4,7 @@
 	
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
-div:
-	.global	div
-	
+div::
 	push	lr
 	push	r4
 	

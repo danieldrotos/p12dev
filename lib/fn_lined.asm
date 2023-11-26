@@ -8,10 +8,8 @@
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
 	;; OUT: -
-le_init:
-le_setbuf:	
-	.global	le_init
-	.global	le_setbuf
+le_init::
+le_setbuf::
 	push	lr
 	st	r0,le_buf_addr	; store buffer info
 	st	r1,le_buf_len	; in local vars
@@ -21,8 +19,7 @@ le_setbuf:
 
 	;; IN: -
 	;; OUT: -
-le_start:
-	.global	le_start
+le_start::
 	push	lr
 	push	r1
 	push	r2
@@ -39,10 +36,8 @@ le_start:
 
 	;; IN: -
 	;; OUT: F.C: 1=done (Enter pressed)
-le_read:
-tu_fgets:	
-	.global	le_read
-	.global	tu_fgets
+le_read::
+tu_fgets::
 	push	lr
 	push	r0
 	push	r1

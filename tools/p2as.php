@@ -697,8 +697,22 @@ function is_inst($W)
 
 function is_label($w)
 {
-    if ($w[strlen($w)-1] == ":")
-        return substr($w, 0, strlen($w)-1);
+    global $commas;
+    $commas= 0;
+    $w= trim($w);
+    $l= strlen($w);
+    if ($l<2)
+        return false;
+    if ($w[$l-1] == ":")
+    {
+        while ($w[$l-1] == ":")
+        {
+            $commas++;
+            $w= substr($w, 0, -1);
+            $l= strlen($w);
+        }
+        return $w;
+    }
     return false;
 }
 
@@ -796,7 +810,10 @@ function make_it_global($w)
         exit(11);
     }
     if (is_array($sg) && !is_array($sl))
-        ; // alreay global
+    {
+        debug("symbol $w is already exported");
+        return; // alreay global
+    }
     if (is_array($sg) && is_array($sl))
     {
         $error= "{$fin}:{$lnr}: Redefinition of global symbol ($w)";
@@ -809,7 +826,7 @@ function make_it_global($w)
     unset($syms[arri($segment,'id').$w]);
     unset($syms[$w]);
     $syms[$w]= $sl;
-    debug("sl=".print_r($sl,true));
+    //debug("sl=".print_r($sl,true));
 }
 
 
@@ -822,7 +839,7 @@ function proc_line($l)
 {
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
-    global $segs, $segment;
+    global $segs, $segment, $commas;
     $org= $l;
     $icode= 0;
     $label= false;
@@ -849,6 +866,10 @@ function proc_line($l)
             $xaddr= sprintf("%x", $addr);
             debug("proc_line; found label=$n at addr=$xaddr");
             $label= mk_symbol($n, $addr, "L");
+            if ($commas > 1)
+                make_it_global($n);
+            else
+                debug("$n still be local");
             $ok= true;
         }
         
