@@ -804,10 +804,12 @@ function make_it_global($w)
         echo $error."\n";
         exit(12);
     }
+    debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
     unset($syms[arri($segment,'id').$w]);
     unset($syms[$w]);
     $syms[$w]= $sl;
+    debug("sl=".print_r($sl,true));
 }
 
 
@@ -895,7 +897,8 @@ function proc_line($l)
             return;
         }
       
-        else if (($W == "=") || ($W == "EQU") || ($W == ".EQU"))
+        else if (($W == "==") || ($W == "=") ||
+                 ($W == "EQU") || ($W == ".EQU"))
         {
             if ($prew == '')
             {
@@ -908,8 +911,12 @@ function proc_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             $val= intval($w,0);
-            debug("proc_line; EQU w=$w val=$val");
-            mk_symbol($prew, $val, ($W=="=")?"=":"S");
+            debug("proc_line; EQU W=$W w=$w val=$val");
+            mk_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
+            if ($W=="==")
+                make_it_global($prew);
+            else
+                debug("$prew still be local (W=$W)");
             debug("proc_line; SYMBOL $prew=$val");
             $ok= true;
             return;
@@ -928,30 +935,6 @@ function proc_line($l)
                 echo $error."\n";
                 exit(10);
             }
-            /*
-            $sl= arri($syms, arri($segment,'id').$w);
-            $sg= arri($syms, $w);
-            if (!is_array($sl) && !is_array($sg))
-            {
-                $error= "{$fin}:{$lnr}: Symbol unknown to be exported ($w)";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(11);
-            }
-            if (is_array($sg) && !is_array($sl))
-                ; // alreay global
-            if (is_array($sg) && is_array($sl))
-            {
-                $error= "{$fin}:{$lnr}: Redefinition of global symbol ($w)";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(12);
-            }
-            $sl['segid']= false;
-            unset($syms[arri($segment,'id').$w]);
-            unset($syms[$w]);
-            $syms[$w]= $sl;
-            */
             make_it_global($w);
             return;
         }
