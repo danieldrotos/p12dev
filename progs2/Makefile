@@ -18,7 +18,8 @@ all: pmonitor \
 	ff \
 	game \
 	bufout \
-	letest
+	letest \
+	rndtest
 
 pmonitor:
 	$(MAKE) -C $(PMON) pmon.p2h
@@ -48,6 +49,14 @@ bufout: bufout.p2h bufout.asc bufout.cdb
 letest: letest.p2h letest.asc letest.cdb
 
 letest.p2h: le_test.asm $(LIB)/fn_lined.asm $(LIB)/fn_pmon.asm
+	php $(TOOLS)/p2as.php -l -o $@ $^
+
+rndtest: rndtest.p2h rndtest.asc rndtest.cdb
+
+rndtest.p2h: rnd_test.asm \
+		$(LIB)/fn_div.asm \
+		$(LIB)/fn_rand.asm \
+		$(LIB)/fn_pmon.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
 .SUFFIXES: .p2h .asm .asc .cdb .cc
