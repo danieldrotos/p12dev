@@ -81,6 +81,7 @@ process_input:
 	mvzl	r1,cmd_quit
 	call	_strieq		; case insensitive compare
 	C call	monitor		; if eq, go out to monitor
+	C jmp	ui_done		; normal exit when continued
 	;; it was not QUIT command,
 	;; suppose it is a decimal number
 	mvzl	r0,buffer	; convert entered decimal number

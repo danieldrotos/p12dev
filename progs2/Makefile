@@ -4,7 +4,7 @@ PMON		= $(PRJ)/pmon
 LIB		= $(PRJ)/lib
 
 include $(PRJ)/prj.mk
-AW		?= 17
+AW		?= 16
 
 all: pmonitor \
 	counter2 \

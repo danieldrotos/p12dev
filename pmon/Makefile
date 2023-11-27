@@ -2,7 +2,7 @@ PRJ		= ..
 TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
-AW		?= 17
+AW		?= 16
 
 all: pmon_app dtoitest
 

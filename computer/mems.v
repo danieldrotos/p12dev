@@ -52,7 +52,7 @@ module mems
       .clk(clk),
       .din(din),
       .wen(wen),
-      .addr(addr[11:0]),
+      .addr(addr),
       .cs(cs_pmon),
       .dout(dout_pmon)
       );

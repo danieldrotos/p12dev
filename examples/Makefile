@@ -3,7 +3,7 @@ TOOLS		= $(PRJ)/tools
 LIB		= $(PRJ)/lib
 
 include $(PRJ)/prj.mk
-AW		?= 17
+AW		?= 16
 
 all: \
 	simif_print \
