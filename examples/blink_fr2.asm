@@ -123,6 +123,9 @@ btn_press:
 	mvzl	r0,2		; mask of BTN[1]
 	call	pressed		; if pressed
 	C call	monitor		; then go out to monitor
+	mvzl	r0,1		; mask of SW[0]
+	call	switched
+	C call	monitor
 	pop	lr
 	ret
 
