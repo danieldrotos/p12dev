@@ -14,6 +14,7 @@ div::
 	mvzl	r3,0
 	jmp	div_ret
 div_dok:
+div_dummy:
 	mvzl	r2,0		; Q= 0
 	mvzl	r3,0		; R= 0
 	mvh	r4,0x80000000	; m= 1<<31

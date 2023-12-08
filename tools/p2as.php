@@ -866,6 +866,7 @@ function proc_line($l)
             $xaddr= sprintf("%x", $addr);
             debug("proc_line; found label=$n at addr=$xaddr");
             $label= mk_symbol($n, $addr, "L");
+            
             if ($commas > 1)
                 make_it_global($n);
             else
@@ -1018,6 +1019,7 @@ function proc_line($l)
                         'params'=>$params,
                         'cell_type'=>"C",
                         'reloc'=>array(),
+                        'labels'=>array(),
 			'segid'=>arri($segment,'id')
                     );
                     debug( sprintf("mem[%x] Added char DB $pv",$addr) );
@@ -1037,6 +1039,7 @@ function proc_line($l)
                     'params'=>$params,
                     'cell_type'=>"C",
                     'reloc'=>array(),
+                    'labels'=>array(),
 		    'segid'=>arri($segment,'id')
                 );
                 debug( sprintf("mem[%x] Added string 0",$addr) );
@@ -1063,6 +1066,7 @@ function proc_line($l)
                     'params'=>$params,
                     'cell_type'=>"C",
                     'reloc'=>array(),
+                    'labels'=>array(),
 		    'segid'=>arri($segment,'id')
                 );
                 debug( sprintf("mem[%x] Added DB $w",$addr) );
@@ -1164,6 +1168,7 @@ function proc_line($l)
                 'inst'=>$inst,
                 'cell_type'=> "C", //"I"
                 'reloc'=>array(),
+                'labels'=>array(),
 		'segid'=>arri($segment,'id')  
             );
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
@@ -1299,7 +1304,7 @@ function param_value($p, $fin, $lnr)
 
 
 // Part of phase 2: inject symbol values into inst code
-function proc_params(&$m/*, $pattern*//*, $allowed_params*//*, $used_params*//*, $fin*//*, $lnr*/)
+function proc_params(&$m)
 {
     // Allowed
     /* Array
@@ -1547,7 +1552,7 @@ foreach ($mem as $a => $m)
         else
         {
             debug("Used pattern matches to an allowed one: $pat");
-            $m['icode']= proc_params($m/*$m['icode'],*/ /*$pat,*/ /*$ip,*/ /*$m['params']*//*, $m['fin'], $m['lnr']*/);
+            $m['icode']= proc_params($m);
         }
     }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
@@ -1623,6 +1628,14 @@ foreach ($mem as $a => $m)
         {
             $checksum+= $m['icode'];
             $checksum&= 0xffffffff;
+            foreach ($m['reloc'] as $r)
+            {
+                debug( $o= sprintf("//R %05x %s '%s' '%x'", $a,
+                                   $r['mode'],
+                                   $r['used_parameter'],
+                                   $r['value']) );
+                $hex.= $o."\n";
+            }
         }   
     }
     /*else if ($m['error'] !== false)
