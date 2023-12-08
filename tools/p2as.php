@@ -1434,18 +1434,32 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
 foreach ($fina as $fin)
 {
     debug("\n;; Phase 1 of file $fin\n");
-    $src= file_get_contents($fin);
-    $lines= preg_split("/\r\n|\n|\r/", $src);
-    $nuof_lines= count($lines);
-    debug("$nuof_lines lines buffered");
-    for ($li= 0; $li < $nuof_lines; $li++)
+    $fext= pathinfo($fin, PATHINFO_EXTENSION);
+    if ($fext=="s" || $fext=="asm")
     {
-        $lnr= $li+1;
-        $l= trim($lines[$li]);
-        //$l= preg_replace("/;.*$/", "", $l);
-        debug("\n");
-        debug("line[$lnr]: $l");
-        proc_line($l);
+        // Assembly source
+        $src= file_get_contents($fin);
+        $lines= preg_split("/\r\n|\n|\r/", $src);
+        $nuof_lines= count($lines);
+        debug("$nuof_lines lines buffered");
+        for ($li= 0; $li < $nuof_lines; $li++)
+        {
+            $lnr= $li+1;
+            $l= trim($lines[$li]);
+            //$l= preg_replace("/;.*$/", "", $l);
+            debug("\n");
+            debug("line[$lnr]: $l");
+            proc_line($l);
+        }
+    }
+    else if ($fext=="p2h")
+    {
+        // Object file
+    }
+    else
+    {
+        echo "Unknown file type ($fin)";
+        exit(10);
     }
 }
 
