@@ -1299,7 +1299,7 @@ function param_value($p, $fin, $lnr)
 
 
 // Part of phase 2: inject symbol values into inst code
-function proc_params(&$m, $icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
+function proc_params(&$m/*, $pattern*//*, $allowed_params*//*, $used_params*//*, $fin*//*, $lnr*/)
 {
     // Allowed
     /* Array
@@ -1319,6 +1319,10 @@ function proc_params(&$m, $icode, $pattern, $allowed_params, $used_params, $fin,
        [1] => port
        )
      */
+    $icode= $m['icode'];
+    $pattern= arri($m, 'pattern');
+    $allowed_params= arri($m['inst']['params'],$pattern);
+    $used_params= $m['params'];
     $c= $icode;
     if (count($allowed_params)==0)
         return $icode;
@@ -1330,7 +1334,7 @@ function proc_params(&$m, $icode, $pattern, $allowed_params, $used_params, $fin,
         if ($pt=="_")
             break;
         $pl= $allowed_params['placements'][$i];
-        $pv= param_value($up, $fin, $lnr);
+        $pv= param_value($up, $m['fin'], $m['lnr']);
         debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
         $c= $icode;
         if ($pl == "_")
@@ -1543,7 +1547,7 @@ foreach ($mem as $a => $m)
         else
         {
             debug("Used pattern matches to an allowed one: $pat");
-            $m['icode']= proc_params($m, $m['icode'], $pat, $ip, $m['params'], $m['fin'], $m['lnr']);
+            $m['icode']= proc_params($m/*$m['icode'],*/ /*$pat,*/ /*$ip,*/ /*$m['params']*//*, $m['fin'], $m['lnr']*/);
         }
     }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
