@@ -1017,6 +1017,7 @@ function proc_line($l)
                         'address'=>$addr,
                         'params'=>$params,
                         'cell_type'=>"C",
+                        'reloc'=>array(),
 			'segid'=>arri($segment,'id')
                     );
                     debug( sprintf("mem[%x] Added char DB $pv",$addr) );
@@ -1035,6 +1036,7 @@ function proc_line($l)
                     'address'=>$addr,
                     'params'=>$params,
                     'cell_type'=>"C",
+                    'reloc'=>array(),
 		    'segid'=>arri($segment,'id')
                 );
                 debug( sprintf("mem[%x] Added string 0",$addr) );
@@ -1060,6 +1062,7 @@ function proc_line($l)
                     'address'=>$addr,
                     'params'=>$params,
                     'cell_type'=>"C",
+                    'reloc'=>array(),
 		    'segid'=>arri($segment,'id')
                 );
                 debug( sprintf("mem[%x] Added DB $w",$addr) );
@@ -1160,6 +1163,7 @@ function proc_line($l)
                 'error'=>$error,
                 'inst'=>$inst,
                 'cell_type'=> "C", //"I"
+                'reloc'=>array(),
 		'segid'=>arri($segment,'id')  
             );
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
@@ -1295,7 +1299,7 @@ function param_value($p, $fin, $lnr)
 
 
 // Part of phase 2: inject symbol values into inst code
-function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
+function proc_params(&$m, $icode, $pattern, $allowed_params, $used_params, $fin, $lnr)
 {
     // Allowed
     /* Array
@@ -1375,6 +1379,9 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode|= $pv;
             if ($pl=="#8")
                 debug( sprintf("//"."I"."  #8 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if (($pl == "#16") || ($pl == "d16"))
         {
@@ -1383,6 +1390,9 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode|= $pv;
             if ($pl=="#16")
                 debug( sprintf("//"."I"." #16 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if ($pl == "#20")
         {
@@ -1390,6 +1400,9 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode&= 0xfff00000;
             $icode|= $pv;
             debug( sprintf("//"."I"." #20 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if ($pl == "#24")
         {
@@ -1397,6 +1410,9 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode&= 0xff000000;
             $icode|= $pv;
             debug( sprintf("//"."I"." #24 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if ($pl == "#27")
         {
@@ -1404,12 +1420,18 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode&= 0xf8000000;
             $icode|= $pv;
             debug( sprintf("//"."I"." #27 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if (($pl == "#32") || ($pl == "d32"))
         {
             $icode= $pv;
             if ($pl=="#32")
                 debug( sprintf("//"."I"." #32 %08x", $pv) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         else if ($pl == "h16")
         {
@@ -1419,8 +1441,12 @@ function proc_params($icode, $pattern, $allowed_params, $used_params, $fin, $lnr
             $icode&= 0xffff0000;
             $icode|= $pv;
             debug( sprintf("//"."I"." h16 %08x", $porg) );
+            $m['reloc'][]= array('used_parameter'=>$up,
+                                 'mode'=>$pl,
+                                 'value'=>$pv);
         }
         
+        debug( "Param placing, memory: ".print_r($m,true) );
         debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
     return $icode;
@@ -1517,7 +1543,7 @@ foreach ($mem as $a => $m)
         else
         {
             debug("Used pattern matches to an allowed one: $pat");
-            $m['icode']= proc_params($m['icode'], $pat, $ip, $m['params'], $m['fin'], $m['lnr']);
+            $m['icode']= proc_params($m, $m['icode'], $pat, $ip, $m['params'], $m['fin'], $m['lnr']);
         }
     }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
