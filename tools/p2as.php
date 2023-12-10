@@ -567,7 +567,6 @@ function arri($a, $idx)
     return $a[$idx];
 }
 
-  
 
 function debug($x)
 {
@@ -830,6 +829,26 @@ function make_it_global($w)
 }
 
 
+function mk_mem($addr, $icode=0, $error= false)
+{
+    global $mem, $fin, $lnr, $segment;
+    $m= arri($mem, $addr);
+    if ($m !== '')
+        return;
+    $mem[$addr]= array();
+    $m= &$mem[$addr];
+    $m['error']= $error;
+    $m['icode']= $icode;
+    $m['fin']= $fin;
+    $m['lnr']= $lnr;
+    $m['address']= $addr;
+    $m['cell_type']= "C";
+    $m['reloc']= array();
+    $m['labels']= array();
+    $m['segid']= arri($segment,'id');
+}
+
+
 /*
  * Phase 1, process input line
  ***************************************************************************
@@ -865,8 +884,8 @@ function proc_line($l)
         {
             $xaddr= sprintf("%x", $addr);
             debug("proc_line; found label=$n at addr=$xaddr");
+            mk_mem($addr);
             $label= mk_symbol($n, $addr, "L");
-            
             if ($commas > 1)
                 make_it_global($n);
             else
@@ -979,6 +998,8 @@ function proc_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             $x= 0 + intval($w,0);
+            mk_mem($addr);
+            $mem[$addr]['src']= $org;
             $addr+= $x;
             debug(sprintf("proc_line; addr=%x",$addr));
             $ok= true;
@@ -1007,8 +1028,8 @@ function proc_line($l)
                 {
                     $params= array();
                     $params[]= $pv= ord(/*$s[$i]*/$ch);
-                    $mem[$addr]= array(
-                      'icode'=>0,
+                    /*$mem[$addr]= array(
+                        'icode'=>0,
                         'src'=>$orgw."\t$pv",
                         'fin'=>$fin,
                         'lnr'=>$lnr,
@@ -1020,15 +1041,21 @@ function proc_line($l)
                         'cell_type'=>"C",
                         'reloc'=>array(),
                         'labels'=>array(),
-			'segid'=>arri($segment,'id')
-                    );
+                        'segid'=>arri($segment,'id')
+                        );*/
+                    mk_mem($addr);
+                    $mem[$addr]['src']= $orgw."\t$pv";
+                    //$mem[$addr]['error']= $error;
+                    $mem[$addr]['inst']= $insts[$W];
+                    $mem[$addr]['pattern']= "n_";
+                    $mem[$addr]['params']= $params;
                     debug( sprintf("mem[%x] Added char DB $pv",$addr) );
                     $addr++;
                 }
                 $params= array();
                 $params[]= 0;
-                $mem[$addr]= array(
-                  'icode'=>0,
+                /*$mem[$addr]= array(
+                    'icode'=>0,
                     'src'=>$orgw,
                     'fin'=>$fin,
                     'lnr'=>$lnr,
@@ -1040,8 +1067,13 @@ function proc_line($l)
                     'cell_type'=>"C",
                     'reloc'=>array(),
                     'labels'=>array(),
-		    'segid'=>arri($segment,'id')
-                );
+                    'segid'=>arri($segment,'id')
+                    );*/
+                mk_mem($addr);
+                $mem[$addr]['src']= $orgw;
+                $mem[$addr]['inst']= $insts[$W];
+                $mem[$addr]['pattern']= "n_";
+                $mem[$addr]['params']= $params;
                 debug( sprintf("mem[%x] Added string 0",$addr) );
                 $addr++;
                 return ;
@@ -1054,8 +1086,8 @@ function proc_line($l)
                 debug("Process param of DB: \"$w\"");
                 $params= array();
                 $params[]= $w;
-                $mem[$addr]= array(
-                  'icode'=>0,
+                /*$mem[$addr]= array(
+                    'icode'=>0,
                     'src'=>$orgw."\t".$w,
                     'fin'=>$fin,
                     'lnr'=>$lnr,
@@ -1067,8 +1099,13 @@ function proc_line($l)
                     'cell_type'=>"C",
                     'reloc'=>array(),
                     'labels'=>array(),
-		    'segid'=>arri($segment,'id')
-                );
+                    'segid'=>arri($segment,'id')
+                    );*/
+                mk_mem($addr);
+                $mem[$addr]['src']= $orgw."\t".$w;
+                $mem[$addr]['inst']= $insts[$W];
+                $mem[$addr]['pattern']= "n_";
+                $mem[$addr]['params']= $params;
                 debug( sprintf("mem[%x] Added DB $w",$addr) );
                 $addr++;
                 $w= trim(strtok(" \t,"));
@@ -1159,8 +1196,8 @@ function proc_line($l)
         {
             $icode= $icode | $inst['icode'];
             debug("proc_line; INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
-            $mem[$addr]= array(
-              'icode'=>$icode,
+            /*$mem[$addr]= array(
+                'icode'=>$icode,
                 'src'=>$org,
                 'fin'=>$fin,
                 'lnr'=>$lnr,
@@ -1169,8 +1206,11 @@ function proc_line($l)
                 'cell_type'=> "C", //"I"
                 'reloc'=>array(),
                 'labels'=>array(),
-		'segid'=>arri($segment,'id')  
-            );
+                'segid'=>arri($segment,'id')  
+                );*/
+            mk_mem($addr, $icode);
+            $mem[$addr]['src']= $org;
+            $mem[$addr]['inst']= $inst;
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
             debug($o);
             debug("");
@@ -1257,7 +1297,7 @@ function proc_line($l)
     debug("param pattern=$pattern");
     $mem[$addr]['pattern']= $pattern;
     $mem[$addr]['params']= $params;
-    $mem[$addr]['address']= $addr;
+    //$mem[$addr]['address']= $addr;
     debug(sprintf("mem[%x] is ready", $addr));
     $addr++;
     debug(sprintf("new addr=%x", $addr));
@@ -1578,6 +1618,16 @@ if (!empty($syms))
         $hex.= $o."\n";
         debug($o);
         devdeb("s[{$k}]=".print_r($s,true)."\n");
+        if ($s['type'] == 'L')
+        {
+            if (isset($mem[$s['value']]))
+            {
+                //debug("Adding label {$s['name']} to mem[{$s['value']}]\n");
+                $mem[$s['value']]['labels'][]= $s;
+            }
+            else
+                debug("Mem at {$s['value']} not found for symbol {$s['name']}");
+        }
     }
 }
 
@@ -1588,11 +1638,32 @@ debug("\n\n");
 $hex.= "//; CODE\n";
 $p= -1;
 $checksum= 0;
+$prev_segment_id= '';
+debug( $o= sprintf("//P -") );
+$hex.= $o."\n";
 foreach ($mem as $a => $m)
 {
     if (!is_array($m))
         continue;
     $segment= arri($segs, $m['segid']);
+    if ($segment == '')
+    {
+        if ($prev_segment_id!='')
+        {
+            debug( $o= sprintf("//P -") );
+            $hex.= $o."\n";
+            $prev_segment_id= '';
+        }
+    }
+    else
+    {
+        if ($segment['id'] != $prev_segment_id)
+        {
+            debug( $o= sprintf("//P %s %s", $segment['id'], $segment['name']) );
+            $hex.= $o."\n";
+            $prev_segment_id= $segment['id'];
+        }
+    }
     $lnr= $m['lnr'];
     //echo print_r($m,true);
     if ($a != $p+1)
@@ -1634,6 +1705,15 @@ foreach ($mem as $a => $m)
                                    $r['mode'],
                                    $r['used_parameter'],
                                    $r['value']) );
+                $hex.= $o."\n";
+            }
+            foreach ($m['labels'] as $s)
+            {
+                //debug(print_r($s,true));
+                if ($s['segid']!='')
+                    debug( $o= sprintf("//N %s %s", $s['name'], $s['segid']) );
+                else
+                    debug( $o= sprintf("//G %s", $s['name']) );
                 $hex.= $o."\n";
             }
         }   

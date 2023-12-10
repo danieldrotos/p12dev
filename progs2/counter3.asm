@@ -78,6 +78,7 @@ real_start:
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN
 	;; Output: C=0 if not pressed, C=1 if pressed
+	
 last_btn:	ds	1
 	
 pressed:
@@ -111,7 +112,7 @@ pressed_vege:
 	pop	r1
 	pop	lr
 	ret
-
+	
 
 	ds	100
 eof_stack:	
