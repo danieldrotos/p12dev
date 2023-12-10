@@ -1550,17 +1550,9 @@ debug("\n\n");
 /////////////////////////////////////////////////////////////////////  
 debug("PHASE 2\n");
 
-// List segments
-debug("Segments\n");
-foreach ($segs as $skey => $seg)
-{
-    debug("Segment[{$skey}]: {$seg['name']},{$seg['id']},{$seg['noload']},{$seg['abs']};\n");
-    devdeb("Segment: ".print_r($seg,true));
-}
-
 
 // resolve symbols and inject values into inst codes
-/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 
 foreach ($mem as $a => $m)
 {
@@ -1607,13 +1599,29 @@ debug("; PHASE 2 done");
 
 
 // PHASE 2
-// omit symbol table
+// Generate output file
 $hex= '';
-debug("SYMBOLS");
-//debug ("syms[0]= ${syms[0]}");
 $o= "//; PROC {$proc}";
 $hex.= $o."\n";
 debug($o);
+
+
+// List segments
+debug("; Segments");
+$hex.= "\n";
+$hex.= "//; SEGMENTS\n";
+foreach ($segs as $skey => $seg)
+{
+    debug( $o= sprintf("//T {$skey} {$seg['id']} {$seg['name']} noload={$seg['noload']} abs={$seg['abs']}") );
+    devdeb("Segment: ".print_r($seg,true));
+    $hex.= $o."\n";
+}
+
+
+// omit symbol table
+debug("SYMBOLS");
+//debug ("syms[0]= ${syms[0]}");
+$hex.= "\n";
 $hex.= "//; SYMBOLS\n";
 if (!empty($syms))
 {
@@ -1640,6 +1648,7 @@ debug("\n\n");
 
 // PHASE 2
 // omit code
+$hex.= "\n";
 $hex.= "//; CODE\n";
 $p= -1;
 $checksum= 0;
