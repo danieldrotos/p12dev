@@ -1612,7 +1612,7 @@ $hex.= "\n";
 $hex.= "//; SEGMENTS\n";
 foreach ($segs as $skey => $seg)
 {
-    debug( $o= sprintf("//T {$skey} {$seg['id']} {$seg['name']} noload={$seg['noload']} abs={$seg['abs']}") );
+    debug( $o= sprintf("//T %s %s noload=%d abs=%d", $seg['id'], $seg['name'], $seg['noload']?1:0, $seg['abs']?1:0) );
     devdeb("Segment: ".print_r($seg,true));
     $hex.= $o."\n";
 }
