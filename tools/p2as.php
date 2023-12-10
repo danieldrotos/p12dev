@@ -1601,7 +1601,7 @@ debug("; PHASE 2 done");
 // PHASE 2
 // Generate output file
 $hex= '';
-$o= "//; PROC {$proc}";
+$o= "//U {$proc}";
 $hex.= $o."\n";
 debug($o);
 
