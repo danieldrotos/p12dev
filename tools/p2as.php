@@ -834,7 +834,11 @@ function mk_mem($addr, $icode=0, $error= false)
     global $mem, $fin, $lnr, $segment;
     $m= arri($mem, $addr);
     if ($m !== '')
+    {
+        if ($mem[$addr]['icode']==0)
+            $mem[$addr]['icode']= $icode;
         return;
+    }
     $mem[$addr]= array();
     $m= &$mem[$addr];
     $m['error']= $error;
@@ -1211,6 +1215,7 @@ function proc_line($l)
             mk_mem($addr, $icode);
             $mem[$addr]['src']= $org;
             $mem[$addr]['inst']= $inst;
+            //$mem[$addr]['icode']= $icode;
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
             debug($o);
             debug("");
