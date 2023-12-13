@@ -1374,6 +1374,12 @@ function is_const($p, &$value)
         $value= intval($p, 0);
         return true;
     }
+    if ($p[0] == "'")
+    {
+        $c= substr($p,1,1);
+        $value= ord($c);
+        return true;
+    }
     return false;
 }
 
@@ -1393,12 +1399,14 @@ function param_value($p, $fin, $lnr)
     */
     if (is_const($p, $v))
         return $v;
+    /*
     if ($p[0] == "'")
     {
         $c= substr($p,1,1);
         $v= ord($c);
         return $v;
     }
+    */
     $skey= arri($segment,'id').$p;
     $s= arri($syms, /*$p*/$skey);
     if (!empty($s) && is_array($s))
