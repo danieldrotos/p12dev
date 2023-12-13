@@ -1290,53 +1290,91 @@ function proc_p2h_line($l)
     if ($W1 == "//U")
     {
         // Processor type
+        //U P1|P2
     }
 
     else if ($W1 == "//T")
     {
-        // Segmend definition
+        // Segment definition
+        //T idstring name noload=0|1 abs=0|1
     }
 
     else if ($W1 == "//S")
     {
         // Symbol defined with .EQU
+        //S hexvalue name
     }
 
     else if ($W1 == "//=")
     {
+        // Symbol defined with = and ==
+        //= hexvalue name
     }
 
     else if ($W1 == "//L")
     {
+        // Symbol defined as label
+        //L hexvalue name
     }
 
     else if ($W1 == "//P")
     {
+        // Begin/End of a code segment
+        //P -
+        //P id name
     }
 
     else if ($W1 == "//G")
     {
+        // Global label definition of prev code record
+        //G name
     }
 
     else if ($W1 == "//N")
     {
+        // Local label definition of prev code record
+        //N name segmentid
     }
 
     else if ($W1 == "//R")
     {
+        // Reloation info about prev code record
+        //R hexaddress mode 'symbol' 'value'
     }
 
     else if ($W1 == "//H")
     {
+        // Check sum record
+        //H hexvalue
     }
 
     else if ($W2 == "//C")
     {
+        // Code record
+        // icode //C address source code
+        // 02490000 //C 00016 shr	r4		; m>>= 1
+        // 0      7 9 11
+        //              13  17
+        //                    19
     }
              
     else if ($W1 == "//E")
     {
+        // End of the file
     }
+}
+
+
+function is_const($p, &$value)
+{
+    if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
+        preg_match("/^0[bB][01]+/",$p) ||
+        is_numeric($p))
+    {
+        $value= intval($p, 0);
+        return true;
+    }
+    return false;
 }
 
 
@@ -1346,10 +1384,15 @@ function param_value($p, $fin, $lnr)
     global $syms, $segs, $segment;
     if (empty($p))
         return 0;
+    $v= 0;
+    /*
     if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
         preg_match("/^0[bB][01]+/",$p) ||
         is_numeric($p))
         return intval($p, 0);
+    */
+    if (is_const($p, $v))
+        return $v;
     if ($p[0] == "'")
     {
         $c= substr($p,1,1);
@@ -1751,7 +1794,10 @@ foreach ($mem as $a => $m)
             $checksum&= 0xffffffff;
             foreach ($m['reloc'] as $r)
             {
-                debug( $o= sprintf("//R %05x %s '%s' '%x'", $a,
+                $v= 0;
+                if (is_const($r["used_parameter"], $v))
+                    continue;
+                debug( $o= sprintf("//R %05x %s %s %08x", $a,
                                    $r['mode'],
                                    $r['used_parameter'],
                                    $r['value']) );

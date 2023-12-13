@@ -11,7 +11,7 @@ div::
 	sz	r1
 	NZ jmp	div_dok
 	mov	r2,r0		; div by zero
-	mvzl	r3,0
+	mvzl	r3,0x0
 	jmp	div_ret
 div_dok:
 div_dummy:
