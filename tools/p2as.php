@@ -2021,7 +2021,7 @@ foreach ($mem as $a => $m)
         }
     }
     $p= $a;
-    $m['icode']&= 0xffffffff;
+    $m['icode']&= (int)0xffffffff;
     if ($m['icode'] !== false)
     {
         /*if (isset($m['label']) && ($m['label']!==false))
@@ -2042,7 +2042,7 @@ foreach ($mem as $a => $m)
                  ($m['cell_type']=='I'))
         {
             $checksum+= $m['icode'];
-            $checksum&= 0xffffffff;
+            $checksum&= (int)0xffffffff;
             if ($m['skip'] != 0)
             {
                 debug( $o= sprintf("//+ %08x", $m['skip']) );
