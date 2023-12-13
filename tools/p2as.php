@@ -1342,6 +1342,12 @@ function proc_p2h_line($l)
         //R hexaddress mode 'symbol' 'value'
     }
 
+    else if ($W1 == "//I")
+    {
+        // Immediate info
+        //I mode hexvalue
+    }
+    
     else if ($W1 == "//H")
     {
         // Check sum record
@@ -1383,6 +1389,103 @@ function is_const($p, &$value)
     return false;
 }
 
+
+function place_param(&$icode, $mode, $value)
+{
+    $pl= $mode;
+    $pv= $value;
+    if ($pl == "_")
+    {
+        // just skip
+    }
+    else if ($pl == "rd")
+    {
+        $pv&= 0xf;
+        $pv<<= 20;
+        $icode&= 0xff0fffff;
+        $icode|= $pv;
+    }
+    else if ($pl == "rda")
+    {
+        $pv&= 0xf;
+        $icode&= 0xff0fffff;
+        $pv<<= 20;
+        $icode|= $pv;
+    }
+    else if ($pl == "ra")
+    {
+        $pv&= 0xf;
+        $pv<<= 16;
+        $icode&= 0xfff0ffff;
+        $icode|= $pv;
+    }
+    else if ($pl == "rb")
+    {
+        $pv&= 0xf;
+        $pv<<= 8;
+        $icode&= 0xfffff0ff;
+        $icode|= $pv;
+    }
+    else if ($pl == "rb1")
+    {
+        $pv&= 0xf;
+        $pv<<= 12;
+        $icode&= 0xffff0fff;
+        $icode|= $pv;
+    }
+    else if (($pl == "#8") || ($pl == "d8"))
+    {
+        $pv&= 0xff;
+        $icode&= 0xffffff00;
+        $icode|= $pv;
+        if ($pl=="#8")
+            debug( sprintf("//"."I"."  #8 %08x", $pv) );
+    }
+    else if (($pl == "#16") || ($pl == "d16"))
+    {
+        $pv&= 0xffff;
+        $icode&= 0xffff0000;
+        $icode|= $pv;
+        if ($pl=="#16")
+            debug( sprintf("//"."I"." #16 %08x", $pv) );
+    }
+    else if ($pl == "#20")
+    {
+        $pv&= 0xfffff;
+        $icode&= 0xfff00000;
+        $icode|= $pv;
+        debug( sprintf("//"."I"." #20 %08x", $pv) );
+    }
+    else if ($pl == "#24")
+    {
+        $pv&= 0xffffff;
+        $icode&= 0xff000000;
+        $icode|= $pv;
+        debug( sprintf("//"."I"." #24 %08x", $pv) );
+    }
+    else if ($pl == "#27")
+    {
+        $pv&= 0x0effffff;
+        $icode&= 0xf8000000;
+        $icode|= $pv;
+        debug( sprintf("//"."I"." #27 %08x", $pv) );
+    }
+    else if (($pl == "#32") || ($pl == "d32"))
+    {
+        $icode= $pv;
+        if ($pl=="#32")
+            debug( sprintf("//"."I"." #32 %08x", $pv) );
+    }
+    else if ($pl == "h16")
+    {
+        $porg= $pv;
+        $pv>>= 16;
+        $pv&= 0x0000ffff;
+        $icode&= 0xffff0000;
+        $icode|= $pv;
+        debug( sprintf("//"."I"." h16 %08x", $porg) );
+    }
+}
 
 // Read out symbol value from sym table
 function param_value($p, $fin, $lnr)
@@ -1460,118 +1563,20 @@ function proc_params(&$m)
         $pv= param_value($up, $m['fin'], $m['lnr']);
         debug("Param placing: {$pt}: {$up}={$pv} as {$pl}");
         $c= $icode;
-        if ($pl == "_")
-        {
-            // just skip
-        }
-        else if ($pl == "rd")
-        {
-            $pv&= 0xf;
-            $pv<<= 20;
-            $icode&= 0xff0fffff;
-            $icode|= $pv;
-        }
-        else if ($pl == "rda")
-        {
-            $pv&= 0xf;
-            $icode&= 0xff0fffff;
-            $pv<<= 20;
-            $icode|= $pv;
-        }
-        else if ($pl == "ra")
-        {
-            $pv&= 0xf;
-            $pv<<= 16;
-            $icode&= 0xfff0ffff;
-            $icode|= $pv;
-        }
-        else if ($pl == "rb")
-        {
-            $pv&= 0xf;
-            $pv<<= 8;
-            $icode&= 0xfffff0ff;
-            $icode|= $pv;
-        }
-        else if ($pl == "rb1")
-        {
-            $pv&= 0xf;
-            $pv<<= 12;
-            $icode&= 0xffff0fff;
-            $icode|= $pv;
-        }
-        else if (($pl == "#8") || ($pl == "d8"))
-        {
-            $pv&= 0xff;
-            $icode&= 0xffffff00;
-            $icode|= $pv;
-            if ($pl=="#8")
-                debug( sprintf("//"."I"."  #8 %08x", $pv) );
+        place_param($icode, $pl, $pv);
+        if (($pl=='#8') ||
+            ($pl=='#16') ||
+            ($pl=='#20') ||
+            ($pl=='#24') ||
+            ($pl=='#27') ||
+            ($pl=='#32') ||
+            ($pl=='d8') ||
+            ($pl=='d16') ||
+            ($pl=='d32') ||
+            ($pl=='h16'))
             $m['reloc'][]= array('used_parameter'=>$up,
                                  'mode'=>$pl,
                                  'value'=>$pv);
-        }
-        else if (($pl == "#16") || ($pl == "d16"))
-        {
-            $pv&= 0xffff;
-            $icode&= 0xffff0000;
-            $icode|= $pv;
-            if ($pl=="#16")
-                debug( sprintf("//"."I"." #16 %08x", $pv) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
-        else if ($pl == "#20")
-        {
-            $pv&= 0xfffff;
-            $icode&= 0xfff00000;
-            $icode|= $pv;
-            debug( sprintf("//"."I"." #20 %08x", $pv) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
-        else if ($pl == "#24")
-        {
-            $pv&= 0xffffff;
-            $icode&= 0xff000000;
-            $icode|= $pv;
-            debug( sprintf("//"."I"." #24 %08x", $pv) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
-        else if ($pl == "#27")
-        {
-            $pv&= 0x0effffff;
-            $icode&= 0xf8000000;
-            $icode|= $pv;
-            debug( sprintf("//"."I"." #27 %08x", $pv) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
-        else if (($pl == "#32") || ($pl == "d32"))
-        {
-            $icode= $pv;
-            if ($pl=="#32")
-                debug( sprintf("//"."I"." #32 %08x", $pv) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
-        else if ($pl == "h16")
-        {
-            $porg= $pv;
-            $pv>>= 16;
-            $pv&= 0x0000ffff;
-            $icode&= 0xffff0000;
-            $icode|= $pv;
-            debug( sprintf("//"."I"." h16 %08x", $porg) );
-            $m['reloc'][]= array('used_parameter'=>$up,
-                                 'mode'=>$pl,
-                                 'value'=>$pv);
-        }
         
         debug( "Param placing, memory: ".print_r($m,true) );
         debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
