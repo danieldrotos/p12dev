@@ -50,7 +50,7 @@ if (isset($argv[0]))
                 $first_fin= $fin;
             if (!file_exists($fin))
             {
-                echo "Asm file does not exists\n";
+                echo "Input file ($fin) does not exists\n";
                 exit(4);
             }
             $fina[]= $fin;
@@ -559,6 +559,7 @@ $conds2= array(
 $conds= $conds1;
 $insts= $insts1;
   
+
 function arri($a, $idx)
 {
     if (empty($a))         return '';
@@ -582,6 +583,7 @@ function devdeb($x)
         fwrite($ddf, $x);
 }
 
+
 function startof($str, $word)
 {
     $p= strpos($str, $word);
@@ -592,46 +594,47 @@ function startof($str, $word)
     return true;
 }
 
-  /**
-   * parse_string parses a string and returns an array of the parsed elements.
-   * This is an all-or-none function, and will return NULL if it cannot completely
-   * parse the string.
-   * @param string $string The OID to parse.
-   * @return array|NULL A list of OID elements, or null if error parsing.
-   */
-  function parse_string($string)
-  {
+
+/**
+ * parse_string parses a string and returns an array of the parsed elements.
+ * This is an all-or-none function, and will return NULL if it cannot completely
+ * parse the string.
+ * @param string $string The OID to parse.
+ * @return array|NULL A list of OID elements, or null if error parsing.
+ */
+function parse_string($string)
+{
     $result = array();
     while (true)
     {
-      $matches = array();
-      //$match_count = preg_match('/^(?:((?:[^\\\\\\. "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\. ])|$)/', $string, $matches);
-      $match_count = preg_match('/^(?:((?:[^\\\\\\, "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\, ])|$)/', $string, $matches);
-      if (null !== $match_count && $match_count > 0)
-      {
-        // [1] = unquoted, [2] = quoted
-        $value = strlen($matches[1]) > 0 ? $matches[1] : $matches[2];
-	
-        $result[] = stripcslashes($value);
-	
-        // Are we expecting any more parts?
-        if (strlen($matches[3]) > 0)
+        $matches = array();
+        //$match_count = preg_match('/^(?:((?:[^\\\\\\. "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\. ])|$)/', $string, $matches);
+        $match_count = preg_match('/^(?:((?:[^\\\\\\, "]|(?:\\\\.))+)|(?:"((?:[^\\\\"]|(?:\\\\.))+)"))((?:[\\, ])|$)/', $string, $matches);
+        if (null !== $match_count && $match_count > 0)
         {
-          // I do this (vs keeping track of offset) to use ^ in regex
-          $string = substr($string, strlen($matches[0]));
+            // [1] = unquoted, [2] = quoted
+            $value = strlen($matches[1]) > 0 ? $matches[1] : $matches[2];
+            
+            $result[] = stripcslashes($value);
+            
+            // Are we expecting any more parts?
+            if (strlen($matches[3]) > 0)
+            {
+                // I do this (vs keeping track of offset) to use ^ in regex
+                $string = substr($string, strlen($matches[0]));
+            }
+            else
+            {
+                return $result;
+            }
         }
         else
         {
-          return $result;
+            // All or nothing
+            return null;
         }
-      }
-      else
-      {
-        // All or nothing
-        return null;
-      }
     } // while
-  }
+}
 
 function my_parse_string($s)
 {
@@ -671,6 +674,7 @@ function my_parse_string($s)
     return $r;
 }
   
+
 function is_cond($W)
 {
     global $conds, $proc;
@@ -749,6 +753,7 @@ function is_w($W)
         preg_match('/[+]$/',$W) ||
         preg_match('/[-]$/',$W))
         return true;
+    return false;
 }
 
 function is_u($W)
@@ -758,6 +763,7 @@ function is_u($W)
     if (preg_match('/^[+]/',$W) ||
         preg_match('/[+]$/',$W))
         return true;
+    return false;
 }
 
 function is_p($W)
@@ -767,7 +773,9 @@ function is_p($W)
     if (preg_match('/^[+]/',$W) ||
         preg_match('/^[-]/',$W))
         return true;
+    return false;
 }
+
 
 function mk_symbol($name, $value, $type= "S")
 {
@@ -850,15 +858,16 @@ function mk_mem($addr, $icode=0, $error= false)
     $m['reloc']= array();
     $m['labels']= array();
     $m['segid']= arri($segment,'id');
+    $m['src']= '';
 }
 
 
 /*
- * Phase 1, process input line
+ * Phase 1, process asm input line
  ***************************************************************************
  */
 
-function proc_line($l)
+function proc_asm_line($l)
 {
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
@@ -869,7 +878,7 @@ function proc_line($l)
     $cond= false;
     if (($w= strtok($l, " \t")) === false)
     {
-        debug("proc_line; no words found in line $lnr");
+        debug("proc_asm_line; no words found in line $lnr");
         return;
     }
     if (($w!==false) && ($w[0]==';'))
@@ -882,12 +891,12 @@ function proc_line($l)
     while ($w !== false)
     {
         $W= strtoupper($w);
-        debug("proc_line; w=$w");
+        debug("proc_asm_line; w=$w");
         
         if (($n= is_label($w)) !== false)
         {
             $xaddr= sprintf("%x", $addr);
-            debug("proc_line; found label=$n at addr=$xaddr");
+            debug("proc_asm_line; found label=$n at addr=$xaddr");
             mk_mem($addr);
             $label= mk_symbol($n, $addr, "L");
             if ($commas > 1)
@@ -899,9 +908,9 @@ function proc_line($l)
         
         else if (($cond= is_cond($W)) !== false)
         {
-            debug("proc_line; COND= ".sprintf("%08x",$cond));
+            debug("proc_asm_line; COND= ".sprintf("%08x",$cond));
             $icode= $icode | $cond;
-            debug("proc_line; ICODE= ".sprintf("%08x",$icode));
+            debug("proc_asm_line; ICODE= ".sprintf("%08x",$icode));
         }
         
         else if (($W == ".PROC") || 
@@ -956,13 +965,13 @@ function proc_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             $val= intval($w,0);
-            debug("proc_line; EQU W=$W w=$w val=$val");
+            debug("proc_asm_line; EQU W=$W w=$w val=$val");
             mk_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             if ($W=="==")
                 make_it_global($prew);
             else
                 debug("$prew still be local (W=$W)");
-            debug("proc_line; SYMBOL $prew=$val");
+            debug("proc_asm_line; SYMBOL $prew=$val");
             $ok= true;
             return;
         }
@@ -990,7 +999,7 @@ function proc_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             $addr= intval($w,0);
-            debug(sprintf("proc_line; addr=%x",$addr));
+            debug(sprintf("proc_asm_line; addr=%x",$addr));
             $ok= true;
             return;
         }
@@ -1005,7 +1014,7 @@ function proc_line($l)
             mk_mem($addr);
             $mem[$addr]['src']= $org;
             $addr+= $x;
-            debug(sprintf("proc_line; addr=%x",$addr));
+            debug(sprintf("proc_asm_line; addr=%x",$addr));
             $ok= true;
             return;
         }
@@ -1025,31 +1034,12 @@ function proc_line($l)
             {
                 debug("Parsing string...");
                 $a= my_parse_string($pl);
-                //$s= $a[0];
-                //debug("Parsed string: \"{$s}\"");
-                //for ($i= 0; $i<strlen($s); $i++)
                 foreach ($a as $i=>$ch)
                 {
                     $params= array();
-                    $params[]= $pv= ord(/*$s[$i]*/$ch);
-                    /*$mem[$addr]= array(
-                        'icode'=>0,
-                        'src'=>$orgw."\t$pv",
-                        'fin'=>$fin,
-                        'lnr'=>$lnr,
-                        'error'=>$error,
-                        'inst'=>$insts[$W],
-                        'pattern'=>"n_",
-                        'address'=>$addr,
-                        'params'=>$params,
-                        'cell_type'=>"C",
-                        'reloc'=>array(),
-                        'labels'=>array(),
-                        'segid'=>arri($segment,'id')
-                        );*/
+                    $params[]= $pv= ord($ch);
                     mk_mem($addr);
                     $mem[$addr]['src']= $orgw."\t$pv";
-                    //$mem[$addr]['error']= $error;
                     $mem[$addr]['inst']= $insts[$W];
                     $mem[$addr]['pattern']= "n_";
                     $mem[$addr]['params']= $params;
@@ -1058,21 +1048,6 @@ function proc_line($l)
                 }
                 $params= array();
                 $params[]= 0;
-                /*$mem[$addr]= array(
-                    'icode'=>0,
-                    'src'=>$orgw,
-                    'fin'=>$fin,
-                    'lnr'=>$lnr,
-                    'error'=>$error,
-                    'inst'=>$insts[$W],
-                    'pattern'=>"n_",
-                    'address'=>$addr,
-                    'params'=>$params,
-                    'cell_type'=>"C",
-                    'reloc'=>array(),
-                    'labels'=>array(),
-                    'segid'=>arri($segment,'id')
-                    );*/
                 mk_mem($addr);
                 $mem[$addr]['src']= $orgw;
                 $mem[$addr]['inst']= $insts[$W];
@@ -1090,21 +1065,6 @@ function proc_line($l)
                 debug("Process param of DB: \"$w\"");
                 $params= array();
                 $params[]= $w;
-                /*$mem[$addr]= array(
-                    'icode'=>0,
-                    'src'=>$orgw."\t".$w,
-                    'fin'=>$fin,
-                    'lnr'=>$lnr,
-                    'error'=>$error,
-                    'inst'=>$insts[$W],
-                    'pattern'=>"n_",
-                    'address'=>$addr,
-                    'params'=>$params,
-                    'cell_type'=>"C",
-                    'reloc'=>array(),
-                    'labels'=>array(),
-                    'segid'=>arri($segment,'id')
-                    );*/
                 mk_mem($addr);
                 $mem[$addr]['src']= $orgw."\t".$w;
                 $mem[$addr]['inst']= $insts[$W];
@@ -1199,23 +1159,10 @@ function proc_line($l)
         else if (($inst= is_inst($W)) !== false)
         {
             $icode= $icode | $inst['icode'];
-            debug("proc_line; INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
-            /*$mem[$addr]= array(
-                'icode'=>$icode,
-                'src'=>$org,
-                'fin'=>$fin,
-                'lnr'=>$lnr,
-                'error'=>$error,
-                'inst'=>$inst,
-                'cell_type'=> "C", //"I"
-                'reloc'=>array(),
-                'labels'=>array(),
-                'segid'=>arri($segment,'id')  
-                );*/
+            debug("proc_asm_line; INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
             mk_mem($addr, $icode);
             $mem[$addr]['src']= $org;
             $mem[$addr]['inst']= $inst;
-            //$mem[$addr]['icode']= $icode;
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
             debug($o);
             debug("");
@@ -1249,9 +1196,6 @@ function proc_line($l)
     $now= false;
     if (($w!==false) && ($w[0]==';'))
     {
-        //debug("Is return ok here?");
-        //return;
-        // emulate no params
         $w= false;
         $now= true;
     }
@@ -1302,7 +1246,6 @@ function proc_line($l)
     debug("param pattern=$pattern");
     $mem[$addr]['pattern']= $pattern;
     $mem[$addr]['params']= $params;
-    //$mem[$addr]['address']= $addr;
     debug(sprintf("mem[%x] is ready", $addr));
     $addr++;
     debug(sprintf("new addr=%x", $addr));
@@ -1315,6 +1258,85 @@ function proc_line($l)
         exit(6);
     }
     
+}
+
+
+/*
+ * Phase 1, process p2h input line
+ ***************************************************************************
+ */
+
+function proc_p2h_line($l)
+{
+    global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
+    global $conds1, $conds2, $insts1, $insts2, $proc;
+    global $segs, $segment, $commas;
+    $org= $l;
+    $icode= 0;
+    $label= false;
+    $cond= false;
+    if (($w1= strtok($l, " \t")) === false)
+    {
+        debug("proc_p2h_line; no words found in line $lnr");
+        return;
+    }
+    if (($w1!==false) && ($w1[0]==';'))
+        return;
+    $w2= strtok(" \t");
+    $W1= strtoupper($w1);
+    $W2= strtoupper($w2);
+    debug("proc_p2h_line; w1=$w1 w2=$w2");
+    
+    if ($W1 == "//U")
+    {
+        // Processor type
+    }
+
+    else if ($W1 == "//T")
+    {
+        // Segmend definition
+    }
+
+    else if ($W1 == "//S")
+    {
+        // Symbol defined with .EQU
+    }
+
+    else if ($W1 == "//=")
+    {
+    }
+
+    else if ($W1 == "//L")
+    {
+    }
+
+    else if ($W1 == "//P")
+    {
+    }
+
+    else if ($W1 == "//G")
+    {
+    }
+
+    else if ($W1 == "//N")
+    {
+    }
+
+    else if ($W1 == "//R")
+    {
+    }
+
+    else if ($W1 == "//H")
+    {
+    }
+
+    else if ($W2 == "//C")
+    {
+    }
+             
+    else if ($W1 == "//E")
+    {
+    }
 }
 
 
@@ -1513,11 +1535,11 @@ function proc_params(&$m)
 // Load source files and do PHASE 1
 foreach ($fina as $fin)
 {
-    debug("\n;; Phase 1 of file $fin\n");
     $fext= pathinfo($fin, PATHINFO_EXTENSION);
     if ($fext=="s" || $fext=="asm")
     {
         // Assembly source
+        debug("\n;; Phase 1 of file $fin [ASM]\n");
         $src= file_get_contents($fin);
         $lines= preg_split("/\r\n|\n|\r/", $src);
         $nuof_lines= count($lines);
@@ -1529,12 +1551,26 @@ foreach ($fina as $fin)
             //$l= preg_replace("/;.*$/", "", $l);
             debug("\n");
             debug("line[$lnr]: $l");
-            proc_line($l);
+            proc_asm_line($l);
         }
     }
     else if ($fext=="p2h")
     {
         // Object file
+        debug("\n;; Phase 1 of file $fin [P2H]\n");
+        $src= file_get_contents($fin);
+        $lines= preg_split("/\r\n|\n|\r/", $src);
+        $nuof_lines= count($lines);
+        debug("$nuof_lines lines buffered");
+        for ($li= 0; $li < $nuof_lines; $li++)
+        {
+            $lnr= $li+1;
+            $l= trim($lines[$li]);
+            //$l= preg_replace("/;.*$/", "", $l);
+            debug("\n");
+            debug("line[$lnr]: $l");
+            proc_p2h_line($l);
+        }
     }
     else
     {
