@@ -804,6 +804,23 @@ function mk_symbol($name, $value, $type= "S")
 }
 
 
+function set_symbol($name, $value)
+{
+    global $syms, $fin, $lnr, $segment;
+    $skey= $name;
+    $s= arri($syms, $skey);
+    if (!is_array($s))
+    {
+        $error= "{$fin}:{$lnr}: Set value of unknown symbol {$name}";
+        debug("Error: $error");
+        echo $error."\n";
+        exit(9);
+    }
+    $s['value']= $value;
+    $s['fin']= $fin;
+    $s['lnr']= $lnr;
+}
+
 function make_it_global($w)
 {
     global $syms, $segment, $lnr, $fin, $error;
@@ -1267,9 +1284,11 @@ function proc_asm_line($l)
  ***************************************************************************
  */
 
+$last_code_at= false;
+
 function proc_p2h_line($l)
 {
-    global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
+    global $fin, $conds, $insts, $mem, $syms, $lnr, $addr, $last_code_at;
     global $conds1, $conds2, $insts1, $insts2, $proc;
     global $segs, $segment, $commas;
     $org= $l;
@@ -1286,7 +1305,11 @@ function proc_p2h_line($l)
     $w2= strtok(" \t");
     $W1= strtoupper($w1);
     $W2= strtoupper($w2);
-    debug("proc_p2h_line; w1=$w1 w2=$w2");
+    debug("proc_p2h_line; w1=$w1 w2=$w2 last_code_at=$last_code_at");
+    if ($last_code_at !== false)
+        $last= $mem[$last_code_at];
+    else
+        $last= false;
     
     if ($W1 == "//U")
     {
@@ -1304,18 +1327,30 @@ function proc_p2h_line($l)
     {
         // Symbol defined with .EQU
         //S hexvalue name
+        $w3= strtok(" \t");
+        $v= intval($w2, 16);
+        debug(sprintf("Def symbol from p2h: {$w3} .equ %08x",$v));
+        mk_symbol($w3, $v, '=');
     }
 
     else if ($W1 == "//=")
     {
         // Symbol defined with = and ==
         //= hexvalue name
+        $w3= strtok(" \t");
+        $v= intval($w2, 16);
+        debug(sprintf("Def symbol from p2h: {$w3}=%08x",$v));
+        mk_symbol($w3, $v, '=');
     }
 
     else if ($W1 == "//L")
     {
         // Symbol defined as label
         //L hexvalue name
+        $w3= strtok(" \t");
+        //$v= intval($w2, 16);
+        debug(sprintf("Def label from p2h: $w3"));
+        mk_symbol($w3, 0, 'L');
     }
 
     else if ($W1 == "//P")
@@ -1335,11 +1370,20 @@ function proc_p2h_line($l)
     {
         // Local label definition of prev code record
         //N name segmentid
+        debug("LAST: ".print_r($last,true));
+        if (!is_array($last))
+        {
+            $error= "{$fin}:{$lnr}: //N record ({$w2}) without prev //C";
+            debug("Error: $error");
+            echo $error."\n";
+            exit(10);
+        }
+        set_symbol($w2, $last_code_at);
     }
 
     else if ($W1 == "//R")
     {
-        // Reloation info about prev code record
+        // Relocation info about prev code record
         //R hexaddress mode symbol value
     }
 
@@ -1363,12 +1407,19 @@ function proc_p2h_line($l)
         // 0      7 9 11
         //              13  17
         //                    19
+        $w3= strtok(" \t");
+        $v= intval($w1, 16);
+        mk_mem($addr, $v);
+        $mem[$addr]['src']= substr($org, 19);
+        $last_code_at= $addr++;
+        debug(sprintf("Last //C record at %08x\n", $last_code_at));
     }
              
     else if ($W1 == "//E")
     {
         // End of the file
     }
+
 }
 
 
@@ -1618,6 +1669,8 @@ foreach ($fina as $fin)
     {
         // Object file
         debug("\n;; Phase 1 of file $fin [P2H]\n");
+        debug(sprintf("Start read of $fin at address %05x\n", $addr));
+        $last_code_at= false;
         $src= file_get_contents($fin);
         $lines= preg_split("/\r\n|\n|\r/", $src);
         $nuof_lines= count($lines);
@@ -1735,7 +1788,7 @@ if (!empty($syms))
                 $mem[$s['value']]['labels'][]= $s;
             }
             else
-                debug("Mem at {$s['value']} not found for symbol {$s['name']}");
+                debug(sprintf("Mem at %08x not found for symbol {$s['name']}",$s['value']));
         }
     }
 }
