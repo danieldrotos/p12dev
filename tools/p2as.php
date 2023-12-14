@@ -1321,6 +1321,39 @@ function proc_p2h_line($l)
     {
         // Segment definition
         //T idstring name noload=0|1 abs=0|1
+        $name= strtok(" \t");
+        $w= strtok(" \t");
+        $noload= 0;
+        $abs= 0;
+        while ($w!='')
+        {
+            $s= explode("=", $w);
+            if (count($s)==2)
+            {
+                if ($s[0]=="noload")
+                    $noload= $s[1];
+                if ($s[0]=="abs")
+                    $abs= $s[1];
+            }
+            $w= strtok(" \t");
+        }        
+        $seg= array(
+            "name"=>$name,
+            "id"=>$w2,
+            "start"=>$addr,
+            "noload"=>$noload!=0,
+            "abs"=>$abs!=0,
+            "fin"=>$fin,
+            "lnr"=>$lnr
+        );
+        if (($s= arri($segs, $w2))!='')
+        {
+            $error= "Segment $name from $fin redefines {$s['id']}";
+            echo $error."\n";
+            exit(10);
+        }
+        $segs[$seg["id"]]= $seg;
+        debug("Segment defined: {$seg['name']},{$seg['id']}");
     }
 
     else if ($W1 == "//S")
