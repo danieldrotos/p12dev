@@ -859,6 +859,7 @@ function mk_mem($addr, $icode=0, $error= false)
     $m['labels']= array();
     $m['segid']= arri($segment,'id');
     $m['src']= '';
+    $m['immediate']= array();
 }
 
 
@@ -1339,13 +1340,13 @@ function proc_p2h_line($l)
     else if ($W1 == "//R")
     {
         // Reloation info about prev code record
-        //R hexaddress mode 'symbol' 'value'
+        //R hexaddress mode symbol value
     }
 
     else if ($W1 == "//I")
     {
         // Immediate info
-        //I mode hexvalue
+        //I hexaddress mode hexvalue
     }
     
     else if ($W1 == "//H")
@@ -1439,7 +1440,7 @@ function place_param(&$icode, $mode, $value)
         $icode&= 0xffffff00;
         $icode|= $pv;
         if ($pl=="#8")
-            debug( sprintf("//"."I"."  #8 %08x", $pv) );
+            debug( sprintf("//I #8 %08x", $pv) );
     }
     else if (($pl == "#16") || ($pl == "d16"))
     {
@@ -1447,34 +1448,34 @@ function place_param(&$icode, $mode, $value)
         $icode&= 0xffff0000;
         $icode|= $pv;
         if ($pl=="#16")
-            debug( sprintf("//"."I"." #16 %08x", $pv) );
+            debug( sprintf("//I #16 %08x", $pv) );
     }
     else if ($pl == "#20")
     {
         $pv&= 0xfffff;
         $icode&= 0xfff00000;
         $icode|= $pv;
-        debug( sprintf("//"."I"." #20 %08x", $pv) );
+        debug( sprintf("//I #20 %08x", $pv) );
     }
     else if ($pl == "#24")
     {
         $pv&= 0xffffff;
         $icode&= 0xff000000;
         $icode|= $pv;
-        debug( sprintf("//"."I"." #24 %08x", $pv) );
+        debug( sprintf("//I #24 %08x", $pv) );
     }
     else if ($pl == "#27")
     {
         $pv&= 0x0effffff;
         $icode&= 0xf8000000;
         $icode|= $pv;
-        debug( sprintf("//"."I"." #27 %08x", $pv) );
+        debug( sprintf("//I #27 %08x", $pv) );
     }
     else if (($pl == "#32") || ($pl == "d32"))
     {
         $icode= $pv;
         if ($pl=="#32")
-            debug( sprintf("//"."I"." #32 %08x", $pv) );
+            debug( sprintf("//I #32 %08x", $pv) );
     }
     else if ($pl == "h16")
     {
@@ -1483,7 +1484,7 @@ function place_param(&$icode, $mode, $value)
         $pv&= 0x0000ffff;
         $icode&= 0xffff0000;
         $icode|= $pv;
-        debug( sprintf("//"."I"." h16 %08x", $porg) );
+        debug( sprintf("//I h16 %08x", $porg) );
     }
 }
 
@@ -1574,10 +1575,13 @@ function proc_params(&$m)
             ($pl=='d16') ||
             ($pl=='d32') ||
             ($pl=='h16'))
+        {
             $m['reloc'][]= array('used_parameter'=>$up,
                                  'mode'=>$pl,
                                  'value'=>$pv);
-        
+            $m['immediate']= array('mode'=>$pl,
+                                   'value'=>$pv);
+        }
         debug( "Param placing, memory: ".print_r($m,true) );
         debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
@@ -1814,6 +1818,13 @@ foreach ($mem as $a => $m)
                                    $r['mode'],
                                    $r['used_parameter'],
                                    $r['value']) );
+                $hex.= $o."\n";
+            }
+            if (count($m['immediate'])>0)
+            {
+                debug( $o= sprintf("//I %05x %s %08x", $a,
+                                   $m['immediate']['mode'],
+                                   $m['immediate']['value']) );
                 $hex.= $o."\n";
             }
             foreach ($m['labels'] as $s)
