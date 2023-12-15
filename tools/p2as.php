@@ -780,6 +780,18 @@ function is_p($W)
 function mk_symbol($name, $value, $type= "S")
 {
     global $syms, $fin, $lnr, $segment;
+    $segid= arri($segment,'id');
+    debug("Checking symbol name $name against segid $segid");
+    if (($segid!='') && (strlen($segid)==13) && (strlen($name)>13))
+    {
+        $np= substr($name,0,13);
+        if (strpos($name, $np)==0)
+        {
+            debug("Making symbol with segmented name $name");
+            $name= substr($name, 13);
+            debug("Name stripped to $name");
+        }
+    }
     $skey= arri($segment,'id').$name;
     $s= arri($syms, /*$name*/$skey);
     if (is_array($s))
@@ -816,6 +828,7 @@ function set_symbol($name, $value, $segid= false)
         echo $error."\n";
         exit(9);
     }
+    $s= &$syms[$skey];
     $s['value']= $value;
     $s['fin']= $fin;
     $s['lnr']= $lnr;
@@ -1386,7 +1399,26 @@ function proc_p2h_line($l)
         $w3= strtok(" \t");
         //$v= intval($w2, 16);
         debug(sprintf("Def label from p2h: $w3"));
-        mk_symbol($w3, 0, 'L');
+        $name= $w3;
+        $np= '';
+        if (strlen($name)>13)
+        {
+            $np= substr($name,0,13);
+            debug("Check if imported label $name is local (np=$np)");
+            if (arri($segs, $np)!='')
+            {
+                debug("Making symbol with segmented name $name");
+                $name= substr($name, 13);
+                debug("Name stripped to $name");
+            }
+        }
+        mk_symbol($name, 0, 'L');
+        if ($np!='')
+        {
+            debug("Converting label $name to local of $np");
+            $syms[$w3]['segid']= $np;
+        }
+        debug("Imported label:".print_r($syms[$w3],true));
     }
 
     else if ($W1 == "//P")
@@ -1415,6 +1447,15 @@ function proc_p2h_line($l)
     {
         // Global label definition of prev code record
         //G name
+        if (!is_array($last))
+        {
+            $error= "{$fin}:{$lnr}: //G record ({$w2}) without prev //C";
+            debug("Error: $error");
+            echo $error."\n";
+            exit(10);
+        }
+        debug("Symbol $w2 definition place in $fin in global area val=$last_code_at");
+        set_symbol($w2, $last_code_at, arri($segment,'id'));
     }
 
     else if ($W1 == "//N")
@@ -1751,7 +1792,7 @@ debug("\n\n");
 // PAHSE 2
 /////////////////////////////////////////////////////////////////////  
 debug("PHASE 2\n");
-
+debug("SYMBOL_TABLE:".print_r($syms,true));
 
 // resolve symbols and inject values into inst codes
 /////////////////////////////////////////////////////////////////////
