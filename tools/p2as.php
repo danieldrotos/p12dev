@@ -1391,6 +1391,21 @@ function proc_p2h_line($l)
         // Begin/End of a code segment
         //P -
         //P id name
+        $w3= strtok(" \t");
+        if ($w2 == "-")
+            $segment= false;
+        else
+        {
+            $segment= arri($segs, $w2);
+            if ($segment == '')
+            {
+                $error= "{$fin}:{$lnr}: No referred segment {$w3}/{$w2} found.";
+                debug("Error: $error");
+                debug("SEGMENTS:".print_r($segs));
+                echo $error."\n";
+                exit(10);
+            }
+        }
     }
 
     else if ($W1 == "//G")
@@ -1411,7 +1426,8 @@ function proc_p2h_line($l)
             echo $error."\n";
             exit(10);
         }
-        set_symbol($w2, $last_code_at);
+        $w3= strtok(" \n");
+        set_symbol($w3.$w2, $last_code_at);
     }
 
     else if ($W1 == "//R")
@@ -1708,6 +1724,7 @@ foreach ($fina as $fin)
         $lines= preg_split("/\r\n|\n|\r/", $src);
         $nuof_lines= count($lines);
         debug("$nuof_lines lines buffered");
+        $segment= false;
         for ($li= 0; $li < $nuof_lines; $li++)
         {
             $lnr= $li+1;
