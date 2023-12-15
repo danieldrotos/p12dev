@@ -804,7 +804,7 @@ function mk_symbol($name, $value, $type= "S")
 }
 
 
-function set_symbol($name, $value)
+function set_symbol($name, $value, $segid= false)
 {
     global $syms, $fin, $lnr, $segment;
     $skey= $name;
@@ -819,6 +819,9 @@ function set_symbol($name, $value)
     $s['value']= $value;
     $s['fin']= $fin;
     $s['lnr']= $lnr;
+    if ($segid !== false)
+        $s['segid']= $segid;
+    debug("Set symbol[$skey]=".print_r($s,true));
 }
 
 function make_it_global($w)
@@ -1418,7 +1421,6 @@ function proc_p2h_line($l)
     {
         // Local label definition of prev code record
         //N name segmentid
-        debug("LAST: ".print_r($last,true));
         if (!is_array($last))
         {
             $error= "{$fin}:{$lnr}: //N record ({$w2}) without prev //C";
@@ -1427,7 +1429,8 @@ function proc_p2h_line($l)
             exit(10);
         }
         $w3= strtok(" \n");
-        set_symbol($w3.$w2, $last_code_at);
+        debug("Symbol $w2 definition place in $fin in seg $w3 val=$last_code_at");
+        set_symbol($w3.$w2, $last_code_at, $w3);
     }
 
     else if ($W1 == "//R")
