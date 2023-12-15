@@ -1482,6 +1482,11 @@ function proc_p2h_line($l)
     {
         // Immediate info
         //I hexaddress mode hexvalue
+        $mode= strtok(" \t");
+        $v= 0 + intval(strtok(" \t"), 16);
+        $last= last_ok("//I without perv //C");
+        $mem[$last_code_at]['immediate']= array('mode'=>$mode,
+                                                'value'=>$v);
     }
 
     else if ($W1 == "//+")
