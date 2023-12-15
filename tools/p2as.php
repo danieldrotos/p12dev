@@ -883,6 +883,7 @@ function mk_mem($addr, $icode=0, $error= false)
     $m['segid']= arri($segment,'id');
     $m['src']= '';
     $m['immediate']= array();
+    $m['skip']= 0;
 }
 
 
@@ -1037,6 +1038,7 @@ function proc_asm_line($l)
             $x= 0 + intval($w,0);
             mk_mem($addr);
             $mem[$addr]['src']= $org;
+            $mem[$addr]['skip']= $x;
             $addr+= $x;
             debug(sprintf("proc_asm_line; addr=%x",$addr));
             $ok= true;
@@ -1292,6 +1294,25 @@ function proc_asm_line($l)
 
 $last_code_at= false;
 
+function last_ok($error)
+{
+    global $last_code_at, $fin, $lnr, $mem;
+    $ok= true;
+    $last= false;
+    if ($last_code_at === false)
+        $ok= false;
+    else if (($last= arri($mem, $last_code_at)) == '')
+        $ok= false;
+    if (!$ok)
+    {
+        $error= "{$fin}:{$lnr}: $error";
+        debug("Error: $error");
+        echo $error."\n";
+        exit(10);
+    }
+    return $last;
+}
+
 function proc_p2h_line($l)
 {
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr, $last_code_at;
@@ -1312,10 +1333,10 @@ function proc_p2h_line($l)
     $W1= strtoupper($w1);
     $W2= strtoupper($w2);
     debug("proc_p2h_line; w1=$w1 w2=$w2 last_code_at=$last_code_at");
-    if ($last_code_at !== false)
+    /*if ($last_code_at !== false)
         $last= $mem[$last_code_at];
     else
-        $last= false;
+    $last= false;*/
     
     if ($W1 == "//U")
     {
@@ -1409,6 +1430,8 @@ function proc_p2h_line($l)
     {
         // Global label definition of prev code record
         //G name
+        last_ok("//G record ({$w2}) without prev //C");
+        /*
         if (!is_array($last))
         {
             $error= "{$fin}:{$lnr}: //G record ({$w2}) without prev //C";
@@ -1416,6 +1439,7 @@ function proc_p2h_line($l)
             echo $error."\n";
             exit(10);
         }
+        */
         debug("Symbol $w2 definition place in $fin in global area val=$last_code_at");
         set_symbol($w2, $last_code_at, arri($segment,'id'));
     }
@@ -1424,6 +1448,8 @@ function proc_p2h_line($l)
     {
         // Local label definition of prev code record
         //N name segmentid
+        $last= last_ok("//N record ({$w2}) without prev //C");
+        /*
         if (!is_array($last))
         {
             $error= "{$fin}:{$lnr}: //N record ({$w2}) without prev //C";
@@ -1431,6 +1457,7 @@ function proc_p2h_line($l)
             echo $error."\n";
             exit(10);
         }
+        */
         $w3= strtok(" \n");
         debug("Symbol $w2 definition place in $fin in seg $w3 val=$last_code_at");
         set_symbol($w3.$w2, $last_code_at, $w3);
@@ -1440,12 +1467,34 @@ function proc_p2h_line($l)
     {
         // Relocation info about prev code record
         //R hexaddress mode symbol value
+        $a= 0 + intval($w2, 16);
+        $mode= strtok(" \n");
+        $sym= strtok(" \n");
+        $v= 0 + intval(strtok(" \t"), 16);
+        $r= array("used_parameter"=> $sym,
+                  "mode"=> $mode,
+                  "value"=> $v);
+        $last= last_ok("//R record without prev //C");
+        $mem[$last_code_at]['reloc'][]= $r;
     }
 
     else if ($W1 == "//I")
     {
         // Immediate info
         //I hexaddress mode hexvalue
+    }
+
+    else if ($W1 == "//+")
+    {
+        // Skip defined by .ds
+        //+ hexvalue
+        $v= 0 + intval($w2, 16);
+        if ($v > 0)
+        {
+            $v--;
+            if ($v > 0)
+                $addr+= $v;
+        }
     }
     
     else if ($W1 == "//H")
@@ -1692,7 +1741,32 @@ function proc_params(&$m)
         debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
     return $icode;
-  }
+}
+
+
+function proc_relocs(&$m)
+{
+    /*
+    [reloc] => Array
+        (
+            [0] => Array
+                (
+                    [used_parameter] => div_dok
+                    [mode] => #16
+                    [value] => 7
+                )
+
+        )
+     */
+    foreach ($m['reloc'] as $r)
+    {
+        $sym= $r['used_parameter'];
+        $mode= $r['mode'];
+        $v= param_value($sym, $m['fin'], $m['lnr']);
+        place_param($m['icode'], $mode, $v);
+        debug(sprintf("Addr=%x replace {$sym}=%x", $m['address'], $v));
+    }
+}
 
 
 // PHASE 1
@@ -1797,7 +1871,12 @@ foreach ($mem as $a => $m)
             $m['icode']= proc_params($m);
         }
     }
+    else if (is_array(arri($m, 'reloc')))
+    {
+        proc_relocs($m);
+    }
     debug( sprintf("Code of mem[%04x] is ready: %08x\n\n",$a,$m['icode']) );
+    debug("MEM[$a]=".print_r($m,true));
     $mem[$a]= $m;
 }
 debug("; PHASE 2 done");
@@ -1921,6 +2000,11 @@ foreach ($mem as $a => $m)
         {
             $checksum+= $m['icode'];
             $checksum&= 0xffffffff;
+            if ($m['skip'] != 0)
+            {
+                debug( $o= sprintf("//+ %08x", $m['skip']) );
+                $hex.= $o."\n";
+            }
             foreach ($m['reloc'] as $r)
             {
                 $v= 0;

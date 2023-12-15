@@ -42,5 +42,8 @@ div_ret:
 	pop	lr
 	ret
 
+	.ds	2
+	.dd	0x55aa
+	
 	.ends
 	
