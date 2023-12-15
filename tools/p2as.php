@@ -780,18 +780,6 @@ function is_p($W)
 function mk_symbol($name, $value, $type= "S")
 {
     global $syms, $fin, $lnr, $segment;
-    $segid= arri($segment,'id');
-    debug("Checking symbol name $name against segid $segid");
-    if (($segid!='') && (strlen($segid)==13) && (strlen($name)>13))
-    {
-        $np= substr($name,0,13);
-        if (strpos($name, $np)==0)
-        {
-            debug("Making symbol with segmented name $name");
-            $name= substr($name, 13);
-            debug("Name stripped to $name");
-        }
-    }
     $skey= arri($segment,'id').$name;
     $s= arri($syms, /*$name*/$skey);
     if (is_array($s))
@@ -808,7 +796,8 @@ function mk_symbol($name, $value, $type= "S")
         'fin'   => $fin,
         'lnr'   => $lnr,
         'type'  => $type,
-        'segid' => arri($segment, 'id')
+        'segid' => arri($segment, 'id'),
+        'defined'=> true
     );
     $syms[/*$name*/$skey]= $sym;
     debug("Symbol {$name} created at {$skey}");
@@ -834,6 +823,7 @@ function set_symbol($name, $value, $segid= false)
     $s['lnr']= $lnr;
     if ($segid !== false)
         $s['segid']= $segid;
+    $s['defined']= true;       
     debug("Set symbol[$skey]=".print_r($s,true));
 }
 
@@ -1372,53 +1362,25 @@ function proc_p2h_line($l)
         debug("Segment defined: {$seg['name']},{$seg['id']}");
     }
 
-    else if ($W1 == "//S")
+    else if (($W1 == "//L") || ($W1 == "//=") || ($W1 == "//S"))
     {
-        // Symbol defined with .EQU
-        //S hexvalue name
-        $w3= strtok(" \t");
-        $v= intval($w2, 16);
-        debug(sprintf("Def symbol from p2h: {$w3} .equ %08x",$v));
-        mk_symbol($w3, $v, '=');
-    }
-
-    else if ($W1 == "//=")
-    {
-        // Symbol defined with = and ==
-        //= hexvalue name
-        $w3= strtok(" \t");
-        $v= intval($w2, 16);
-        debug(sprintf("Def symbol from p2h: {$w3}=%08x",$v));
-        mk_symbol($w3, $v, '=');
-    }
-
-    else if ($W1 == "//L")
-    {
-        // Symbol defined as label
-        //L hexvalue name
-        $w3= strtok(" \t");
-        //$v= intval($w2, 16);
-        debug(sprintf("Def label from p2h: $w3"));
-        $name= $w3;
-        $np= '';
-        if (strlen($name)>13)
+        // Symbol or label
+        //L key name value [segid]
+        $type= $W1[2];
+        $key= $w2;
+        $name= strtok(" \t");
+        $value= strtok(" \t");
+        $segid= strtok(" \t");
+        debug(sprintf("Def $type from p2h: key=$key name=$name value=$value segid=$segid"));
+        mk_symbol($segid.$name, $value, $type);
+        if ($segid != '')
         {
-            $np= substr($name,0,13);
-            debug("Check if imported label $name is local (np=$np)");
-            if (arri($segs, $np)!='')
-            {
-                debug("Making symbol with segmented name $name");
-                $name= substr($name, 13);
-                debug("Name stripped to $name");
-            }
+            debug("Converting label $name to local of $segid");
+            $syms[$key]['segid']= $segid;
         }
-        mk_symbol($name, 0, 'L');
-        if ($np!='')
-        {
-            debug("Converting label $name to local of $np");
-            $syms[$w3]['segid']= $np;
-        }
-        debug("Imported label:".print_r($syms[$w3],true));
+        if ($type == "L")
+            $syms[$key]['defined']= false;
+        debug("Imported '$type':".print_r($syms[$key],true));
     }
 
     else if ($W1 == "//P")
@@ -1726,7 +1688,7 @@ function proc_params(&$m)
             $m['immediate']= array('mode'=>$pl,
                                    'value'=>$pv);
         }
-        debug( "Param placing, memory: ".print_r($m,true) );
+        //debug( "Param placing, memory: ".print_r($m,true) );
         debug( sprintf("Param placed %08x -> icode= %08x",$c,$icode) );
     }
     return $icode;
@@ -1870,7 +1832,10 @@ if (!empty($syms))
 {
     foreach ($syms as $k => $s)
     {
-        $o= sprintf("//%s %08x", $s['type'], $s['value'])." $k";
+        //L key name value [segid]
+        $o= sprintf("//%s %s %s %08x", $s['type'], $k, $s['name'], $s['value']);
+        if (($segid= arri($s, 'segid')) != '')
+            $o.= " {$segid}";
         $hex.= $o."\n";
         debug($o);
         devdeb("s[{$k}]=".print_r($s,true)."\n");
