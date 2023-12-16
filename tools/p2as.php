@@ -802,11 +802,23 @@ function mk_symbol($name, $value, $type= "S")
         'lnr'   => $lnr,
         'type'  => $type,
         'segid' => arri($segment, 'id'),
-        'defined'=> true
+        'defined'=> true,
+        'extern'=> false,
     );
     $syms[/*$name*/$skey]= $sym;
     debug("Symbol {$name} created at {$skey}");
     return $sym;
+}
+
+
+function mk_symbol_exist($name, $type)
+{
+    global $syms;
+    $s= arri($syms, $name);
+    if ($s == '')
+    {
+        mk_symbol($name, 0, $type);
+    }
 }
 
 
@@ -1020,6 +1032,24 @@ function proc_asm_line($l)
                 exit(10);
             }
             make_it_global($w);
+            return;
+        }
+
+        else if (($W == ".EXTERN") || ($W == "EXTERN"))
+        {
+            $w= strtok(" \t");
+            if (($w!==false) && ($w[0]==';'))
+                return;
+            if ($w=='')
+            {
+                $error= "{$fin}:{$lnr}: Symbol missing to be exported ($w)";
+                debug("Error: ".$error);
+                echo $error."\n";
+                exit(10);
+            }
+            mk_symbol_exist($w, "X");
+            make_it_global($w);
+            $syms[$w]['extern']= true;
             return;
         }
         
