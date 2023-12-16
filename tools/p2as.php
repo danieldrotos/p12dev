@@ -22,6 +22,7 @@ $conds= array();
 $first_fin= '';
 $src= '';
 $fina= array();
+$conly= false;
 
 if (isset($argv[0]))
 {
@@ -41,6 +42,10 @@ if (isset($argv[0]))
         else if ($argv[$i] == "-dd")
         {
             $DevDeb= true;
+        }
+        else if ($argv[$i] == "-c")
+        {
+            $conly= true;
         }
         else
         {
@@ -73,7 +78,7 @@ if (isset($argv[0]))
             echo "Can not convert asm filename to obj filename\n";
             exit(2);
         }
-        $obj_name= substr($first_fin, 0, $p).".p2h";
+        $obj_name= substr($first_fin, 0, $p).($conly?".p2o":".p2h");
     }
     if ($debugging)
     {

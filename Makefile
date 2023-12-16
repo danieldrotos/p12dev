@@ -102,17 +102,8 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
-.SUFFIXES: .asm .v .asc .cdb .p2h
+include $(PRJ)/common.mk
 
-.asm.p2h:
-	php $(TOOLS)/p2as.php -l -o $@ $<
-
-.p2h.asc:
-	$(MAKE) -C pmon pmon.p2h
-	php $(TOOLS)/hex2asc.php -m $(AW) pmon/pmon.p2h $< >$@
-
-.p2h.cdb:
-	php $(TOOLS)/hex2cdb.php $< >$@
 
 clean_files	= *~ $(VCD) $(VVP) \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
