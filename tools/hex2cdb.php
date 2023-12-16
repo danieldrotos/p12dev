@@ -35,26 +35,18 @@
     $f2= strtok(" \t");
     if ($f2 == "CODE")
       exit(0);
-    if ($f2 == "SYMBOLS")
+    if ($f1=="//L")
     {
-      $in= true;
-      continue;
-    }
-    if ($in)
-    {
-      //echo "IN\n";
+      //L key name value [segid]
       $f3= strtok(" \t");
+      $f4= strtok(" \t");
       //echo " fields= f1=$f1 f2=$f2 f3=$f3\n";
-      $type= substr($f1, 2);
+      $type= $f1[2];
       //echo " type=$type\n";
-      if ($type == ";") continue;
-      if ($type == "=") continue;
-      $a= hexdec($f2);
+      $a= hexdec($f4);
       $s= $f3;
       echo 'F:G$'.$s.'$0$0(),C,0,0,0,0,0'."\n";
-      echo 'L:G$'.$s.'$0$0:';
-      printf("%x", $a);
-      echo "\n";
+      printf('L:G$'.$s.'$0$0:%x'."\n", $a);
     }
     $lnr++;
   }
