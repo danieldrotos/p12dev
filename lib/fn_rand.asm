@@ -54,6 +54,7 @@ c3:	shl	r1
 	;; Calculate next value converted to range 0..R0
 	;; Input : R0 max value
 	;; Output: R1 next random value in 0..R0 range
+	.extern	div
 rand_max::
 	push	lr
 	push	r0

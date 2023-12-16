@@ -59,24 +59,7 @@ rndtest.p2h: rnd_test.asm \
 		$(LIB)/fn_pmon.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
-.SUFFIXES: .p2h .asm .asc .cdb .cc
-
-.asm.p2h:
-	php $(TOOLS)/p2as.php -l -o $@ $<
-
-.p2h.asc:
-	php $(TOOLS)/hex2asc.php -m $(AW) $(PMON)/pmon.p2h $< >$@
-
-.p2h.cdb:
-	php $(TOOLS)/hex2cdb.php $< >$@
-
-ifeq ($(OS),Windows_NT)
-RM		= del /f /q
-RMR		= del /f /s /q
-else
-RM		= rm -f
-RMR		= rm -f -r
-endif
+include $(PRJ)/common.mk
 
 clean:
-	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc
+	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

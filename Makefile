@@ -1,3 +1,5 @@
+PRJ		= .
+
 TB		= tm
 
 include prj.mk
@@ -44,22 +46,12 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-ifeq ($(OS),Windows_NT)
-RM		= del /f /q
-RMR		= del /f /s /q
-ISS		= .\tools\sim.bat
-else
-RM		= rm -f
-RMR		= rm -f -r
-ISS		= $(TOOLS)/sim.sh
-endif
-
-
 all: progs sw show
 
 compile: sw hw
 
 progs:
+	$(MAKE) -C lib all
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
 	$(MAKE) -C pmon all
@@ -116,5 +108,6 @@ clean:
 	$(MAKE) -C pmon clean
 	$(MAKE) -C tools clean
 	$(MAKE) -C implement clean
+	$(MAKE) -C lib clean
 	$(RM) $(clean_files)
 	$(RM) computer/*~ cpu1/*~ cpu2/*~

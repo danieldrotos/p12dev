@@ -797,7 +797,6 @@ function mk_symbol($name, $value, $type= "S")
     $sym= array(
         'name'  => $name,
         'value' => $value,
-        'global'=> false,
         'fin'   => $fin,
         'lnr'   => $lnr,
         'type'  => $type,
@@ -818,6 +817,7 @@ function mk_symbol_exist($name, $type)
     if ($s == '')
     {
         mk_symbol($name, 0, $type);
+        $syms[$name]['defined']= false;
     }
 }
 
@@ -1047,9 +1047,12 @@ function proc_asm_line($l)
                 echo $error."\n";
                 exit(10);
             }
+            debug("Make symbol $w exist...");
+            $seg= $segment;
+            $segment= false;
             mk_symbol_exist($w, "X");
-            make_it_global($w);
             $syms[$w]['extern']= true;
+            $segment= $seg;
             return;
         }
         
