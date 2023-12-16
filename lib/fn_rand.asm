@@ -4,6 +4,7 @@
 	;; Implementation of 32 bit xorshift algorithm by George Marsaglia
 	;; https://www.jstatsoft.org/article/view/v008i14
 	;; DOI: 10.18637/jss.v008.i14
+	.extern	rand
 	
 	.seg	fn_rand
 seed:	.db	2127401289
@@ -12,6 +13,7 @@ seed:	.db	2127401289
 	;; Input : R0 seed
 	;; Output: -
 srand::
+	.extern	srand
 	st	r0,seed
 	ret
 
