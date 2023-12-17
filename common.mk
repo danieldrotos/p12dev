@@ -2,9 +2,11 @@
 ifeq ($(OS),Windows_NT)
 RM		= del /f /q
 RMR		= del /f /s /q
+ISS		= $(TOOLS)/sim.bat
 else
 RM		= rm -f
 RMR		= rm -f -r
+ISS		= $(TOOLS)/sim.sh
 endif
 
 .SUFFIXES: .asm .v .asc .cdb .p2h .p2o

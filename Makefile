@@ -48,6 +48,9 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
+include $(PRJ)/common.mk
+
+
 all: progs sw show
 
 compile: sw hw
@@ -96,7 +99,6 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
-include $(PRJ)/common.mk
 
 
 clean_files	= *~ $(VCD) $(VVP) \
