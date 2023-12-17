@@ -1,4 +1,6 @@
 PRJ		= .
+PMON		= $(PRJ)/pmon
+LIB		= $(PRJ)/lib
 
 TB		= tm
 
