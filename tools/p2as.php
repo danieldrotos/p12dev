@@ -588,6 +588,15 @@ function devdeb($x)
         fwrite($ddf, $x);
 }
 
+function ddie($error_msg, $exit_code= 1)
+{
+    global $error, $fin, $lnr;
+    $error= "{$fin}:{$lnr}: {$error_msg}";
+    debug("Error: $error");
+    echo $error."\n";
+    exit($exit_code);
+}
+
 
 function startof($str, $word)
 {
@@ -782,6 +791,22 @@ function is_p($W)
 }
 
 
+function new_symbol($name, $value, $type)
+{
+    global $fin, $lnr;
+    return array(
+        'name'  => $name,
+        'value' => $value,
+        'fin'   => $fin,
+        'lnr'   => $lnr,
+        'type'  => $type,
+        'segid' => '',
+        'defined'=> true,
+        'extern'=> false,
+    );
+}
+
+
 function mk_symbol($name, $value, $type= "S")
 {
     global $syms, $fin, $lnr, $segment;
@@ -789,24 +814,23 @@ function mk_symbol($name, $value, $type= "S")
     $s= arri($syms, /*$name*/$skey);
     if (is_array($s))
     {
-        $error= "{$fin}:{$lnr}: Redefinition of symbol $name";
-        debug("Error: ".$error);
-        echo $error."\n";
-        exit(9);
+        ddie("Redefinition of symbol $name", 9);
     }
-    $sym= array(
-        'name'  => $name,
-        'value' => $value,
-        'fin'   => $fin,
-        'lnr'   => $lnr,
-        'type'  => $type,
-        'segid' => arri($segment, 'id'),
-        'defined'=> true,
-        'extern'=> false,
-    );
-    $syms[/*$name*/$skey]= $sym;
+    $sym= new_symbol($name, $value, $type);
+    $sym['segid']= arri($segment, 'id');
+    $syms[$skey]= $sym;
     debug("Symbol {$name} created at {$skey}");
     return $sym;
+}
+
+
+function symbol_to_table(&$sym, $skey)
+{
+    global $syms, $fin, $lnr;
+    $s= arri($syms, $skey);
+    if (is_array($s))
+        ddie("Symbol {$sym['name']} already recorded");
+    $syms[$skey]= $sym;    
 }
 
 
@@ -816,7 +840,8 @@ function mk_symbol_exist($name, $type)
     $s= arri($syms, $name);
     if ($s == '')
     {
-        mk_symbol($name, 0, $type);
+        $s= new_symbol($name, 0, $type);
+        symbol_to_table($s, $name);
         $syms[$name]['defined']= false;
     }
 }
@@ -828,12 +853,7 @@ function set_symbol($name, $value, $segid= false)
     $skey= $name;
     $s= arri($syms, $skey);
     if (!is_array($s))
-    {
-        $error= "{$fin}:{$lnr}: Set value of unknown symbol {$name}";
-        debug("Error: $error");
-        echo $error."\n";
-        exit(9);
-    }
+        ddie("Set value of unknown symbol {$name}");
     $s= &$syms[$skey];
     $s['value']= $value;
     $s['fin']= $fin;
@@ -844,36 +864,60 @@ function set_symbol($name, $value, $segid= false)
     debug("Set symbol[$skey]=".print_r($s,true));
 }
 
-function make_it_global($w)
+function make_sym_global($w)
 {
     global $syms, $segment, $lnr, $fin, $error;
     $sl= arri($syms, arri($segment,'id').$w);
     $sg= arri($syms, $w);
     if (!is_array($sl) && !is_array($sg))
-    {
-        $error= "{$fin}:{$lnr}: Symbol unknown to be exported ($w)";
-        debug("Error: ".$error);
-        echo $error."\n";
-        exit(11);
-    }
+        ddie("Symbol unknown to be exported ($w)");
     if (is_array($sg) && !is_array($sl))
     {
         debug("symbol $w is already exported");
         return; // alreay global
     }
     if (is_array($sg) && is_array($sl))
-    {
-        $error= "{$fin}:{$lnr}: Redefinition of global symbol ($w)";
-        debug("Error: ".$error);
-        echo $error."\n";
-        exit(12);
-    }
+        ddie("Redefinition of global symbol ($w)");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
     unset($syms[arri($segment,'id').$w]);
     unset($syms[$w]);
     $syms[$w]= $sl;
     //debug("sl=".print_r($sl,true));
+}
+
+
+function find_local($name)
+{
+    global $syms;
+    foreach ($syms as $s)
+    {
+        if (($s['name'] == $name) && ($s['segid'] != ''))
+            return true;
+    }
+    return false;
+}
+
+
+function find_global($name)
+{
+    global $syms;
+    $s= arri($syms, $name);
+    if (($s != '') &&
+        (($s['segid'] == '') || ($s['segid'] === false)))
+        return true;
+    return false;
+}
+
+
+function find_extern($name)
+{
+    global $syms;
+    $s= arri($syms, $name);
+    if (($s != '') &&
+        ($s['extern'] == true))
+        return true;
+    return false;
 }
 
 
@@ -940,11 +984,18 @@ function proc_asm_line($l)
             $xaddr= sprintf("%x", $addr);
             debug("proc_asm_line; found label=$n at addr=$xaddr");
             mk_mem($addr);
-            $label= mk_symbol($n, $addr, "L");
             if ($commas > 1)
-                make_it_global($n);
+            {
+                $label= mk_symbol($n, $addr, "L");
+                make_sym_global($n);
+            }
             else
+            {
+                if (find_extern($n))
+                    ddie("Extern symbol $n reused localy");
+                $label= mk_symbol($n, $addr, "L");
                 debug("$n still be local");
+            }
             $ok= true;
         }
         
@@ -967,12 +1018,7 @@ function proc_asm_line($l)
             $p1= strpos("P1", $W);
             $p2= strpos("P2", $W);
             if (($p1===false) && ($p2===false))
-            {
-                $error= "{$fin}:{$lnr}: Unknown processor type";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(10);
-            }
+                ddie("Unknown processor type");
             if ($p1!==false)
             {
                 $conds= $conds1;
@@ -988,8 +1034,6 @@ function proc_asm_line($l)
                 debug("Use Processor p2223");
             }
             $ok= true;
-            //debug("Size of insts= ".count($insts));
-            //debug("Size of conds= ".count($conds));
             return;
         }
       
@@ -997,12 +1041,7 @@ function proc_asm_line($l)
                  ($W == "EQU") || ($W == ".EQU"))
         {
             if ($prew == '')
-            {
-                $error= "{$fin}:{$lnr}: Label missing for assignment";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(7);
-            }
+                ddie("Label missing for assignment");
             $w= strtok(" \t");
             if (($w!==false) && ($w[0]==';'))
                 return;
@@ -1010,7 +1049,7 @@ function proc_asm_line($l)
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
             mk_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             if ($W=="==")
-                make_it_global($prew);
+                make_sym_global($prew);
             else
                 debug("$prew still be local (W=$W)");
             debug("proc_asm_line; SYMBOL $prew=$val");
@@ -1025,13 +1064,8 @@ function proc_asm_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             if ($w=='')
-            {
-                $error= "{$fin}:{$lnr}: Symbol missing to be exported ($w)";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(10);
-            }
-            make_it_global($w);
+                ddie("Symbol missing to be exported ($w)");
+            make_sym_global($w);
             return;
         }
 
@@ -1041,12 +1075,9 @@ function proc_asm_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             if ($w=='')
-            {
-                $error= "{$fin}:{$lnr}: Symbol missing to be exported ($w)";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(10);
-            }
+                ddie("Symbol missing to be exported ($w)");
+            if (find_local($w))
+                ddie("Local symbol $w can not be extern");
             debug("Make symbol $w exist...");
             $seg= $segment;
             $segment= false;
@@ -1152,13 +1183,7 @@ function proc_asm_line($l)
                  ($w!==false) && ($w=="")
                 )
             )
-            {
-                $error= "{$fin}:{$lnr}: Section name is missing";
-                debug("Error: ".$error);
-                echo $error."\n";
-                exit(9);
-                return;
-            }
+                ddie("Section name is missing");
             $pnr= 1;
             while (($w !== false) && ($w!=""))
             {
@@ -1168,13 +1193,7 @@ function proc_asm_line($l)
                     foreach ($segs as $i => $s)
                     {
                         if ($s['name']==$w)
-                        {
-                            $error= "{$fin}:{$lnr}: Segment already exists ({$w}, defined at {$s['fin']}:{$s['lnr']})";
-                            debug("Error: ".$error);
-                            echo $error."\n";
-                            exit(11);
-                            return;
-                        }
+                            ddie("Segment already exists ({$w}, defined at {$s['fin']}:{$s['lnr']})");
                     }
                     $segment= array(
                         "name"=>$w,
@@ -1195,13 +1214,7 @@ function proc_asm_line($l)
                     $segment["abs"]= true;
                 }
                 else
-                {
-                    $error= "{$fin}:{$lnr}: Unknown segment option ({$w})";
-                    debug("Error: ".$error);
-                    echo $error."\n";
-                    exit(10);
-                    return;
-                }
+                    ddie("Unknown segment option ({$w})");
                 $w= strtok(" \t,");
                 if (($w!==false) && ($w!="") && ($w[0]==';'))
                     break;
@@ -1241,13 +1254,7 @@ function proc_asm_line($l)
     }
     debug(sprintf("first word precessed, addr=%x",$addr));
     if (($prew != '') && ($ok === false))
-    {
-        $error= "{$fin}:{$lnr}: Unknown instruction ($w)";
-        debug("Error: ".$error);
-        echo $error."\n";
-        exit(8);
-        return;
-    }
+        ddie("Unknown instruction ($w)");
     if ($inst === false)
     {
         debug("Instructionless line");
@@ -1315,12 +1322,7 @@ function proc_asm_line($l)
     debug(sprintf("new addr=%x", $addr));
 
     if (!$ok)
-    {
-        $error= "{$fin}:{$lnr}: Unrecognizable token $w";
-        debug("Error: ".$error);
-        echo $error."\n";
-        exit(6);
-    }
+        ddie("Unrecognizable token $w");
     
 }
 
@@ -1342,12 +1344,7 @@ function last_ok($error)
     else if (($last= arri($mem, $last_code_at)) == '')
         $ok= false;
     if (!$ok)
-    {
-        $error= "{$fin}:{$lnr}: $error";
-        debug("Error: $error");
-        echo $error."\n";
-        exit(10);
-    }
+        ddie($error);
     return $last;
 }
 
@@ -1371,10 +1368,6 @@ function proc_p2h_line($l)
     $W1= strtoupper($w1);
     $W2= strtoupper($w2);
     debug("proc_p2h_line; w1=$w1 w2=$w2 last_code_at=$last_code_at");
-    /*if ($last_code_at !== false)
-        $last= $mem[$last_code_at];
-    else
-    $last= false;*/
     
     if ($W1 == "//U")
     {
@@ -1412,11 +1405,7 @@ function proc_p2h_line($l)
             "lnr"=>$lnr
         );
         if (($s= arri($segs, $w2))!='')
-        {
-            $error= "Segment $name from $fin redefines {$s['id']}";
-            echo $error."\n";
-            exit(10);
-        }
+            ddie("Segment $name from $fin redefines {$s['id']}");
         $segs[$seg["id"]]= $seg;
         debug("Segment defined: {$seg['name']},{$seg['id']}");
     }
@@ -1431,6 +1420,8 @@ function proc_p2h_line($l)
         $value= strtok(" \t");
         $segid= strtok(" \t");
         debug(sprintf("Def $type from p2h: key=$key name=$name value=$value segid=$segid"));
+        if (($segid != '') && find_extern($name))
+            ddie("Extern symbol $name redefined as local");
         mk_symbol($segid.$name, $value, $type);
         if ($segid != '')
         {
@@ -1455,11 +1446,8 @@ function proc_p2h_line($l)
             $segment= arri($segs, $w2);
             if ($segment == '')
             {
-                $error= "{$fin}:{$lnr}: No referred segment {$w3}/{$w2} found.";
-                debug("Error: $error");
                 debug("SEGMENTS:".print_r($segs));
-                echo $error."\n";
-                exit(10);
+                ddie("No referred segment {$w3}/{$w2} found.");
             }
         }
     }
@@ -1469,15 +1457,6 @@ function proc_p2h_line($l)
         // Global label definition of prev code record
         //G name
         last_ok("//G record ({$w2}) without prev //C");
-        /*
-        if (!is_array($last))
-        {
-            $error= "{$fin}:{$lnr}: //G record ({$w2}) without prev //C";
-            debug("Error: $error");
-            echo $error."\n";
-            exit(10);
-        }
-        */
         debug("Symbol $w2 definition place in $fin in global area val=$last_code_at");
         set_symbol($w2, $last_code_at, arri($segment,'id'));
     }
@@ -1487,17 +1466,10 @@ function proc_p2h_line($l)
         // Local label definition of prev code record
         //N name segmentid
         $last= last_ok("//N record ({$w2}) without prev //C");
-        /*
-        if (!is_array($last))
-        {
-            $error= "{$fin}:{$lnr}: //N record ({$w2}) without prev //C";
-            debug("Error: $error");
-            echo $error."\n";
-            exit(10);
-        }
-        */
         $w3= strtok(" \n");
         debug("Symbol $w2 definition place in $fin in seg $w3 val=$last_code_at");
+        if (find_extern($w2))
+            ddie("Extern symbol $w can not be local");
         set_symbol($w3.$w2, $last_code_at, $w3);
     }
 
@@ -1693,22 +1665,8 @@ function param_value($p, $fin, $lnr)
     if (empty($p))
         return 0;
     $v= 0;
-    /*
-    if (preg_match("/^0[xX][0-9a-fA-F]+/",$p) ||
-        preg_match("/^0[bB][01]+/",$p) ||
-        is_numeric($p))
-        return intval($p, 0);
-    */
     if (is_const($p, $v))
         return $v;
-    /*
-    if ($p[0] == "'")
-    {
-        $c= substr($p,1,1);
-        $v= ord($c);
-        return $v;
-    }
-    */
     $skey= arri($segment,'id').$p;
     $s= arri($syms, /*$p*/$skey);
     if (!empty($s) && is_array($s))
@@ -1716,9 +1674,7 @@ function param_value($p, $fin, $lnr)
     $s= arri($syms, $p);
     if (!empty($s) && is_array($s))
         return $s['value'];
-    $error= "{$fin}:{$lnr}: Symbol not found: {$p} as {$skey}";
-    debug("Error: ".$error);
-    echo $error."\n";
+    ddie("Symbol not found: {$p} as {$skey}");
     return 0;
 }
 
@@ -2077,13 +2033,6 @@ foreach ($mem as $a => $m)
             }
         }   
     }
-    /*else if ($m['error'] !== false)
-      {
-      $o= sprintf("; ERROR: %s in \"%s\"", $m['error'], $m['src']);
-      debug($o);
-      echo $m['error'];
-      $hex.= "; ".$o."\n";
-    }*/
     else
         debug(";ph3; what?");
     devdeb("a=$a, m=".print_r($m,true)."\n");

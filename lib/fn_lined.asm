@@ -1,9 +1,9 @@
 	.proc	p2
 
-;uart_check	=	0xf008
-;uart_read	=	0xf00d
-;putchar	=	0xf00e
-;pes		=	0xf012
+	.extern	_check_uart
+	.extern	_read
+	.extern	_pes
+	.extern	_putchar
 	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
