@@ -861,7 +861,10 @@ function set_symbol($name, $value, $segid= false)
     $s['fin']= $fin;
     $s['lnr']= $lnr;
     if ($segid !== false)
+    {
+        debug("Set segid=$segid by set_symbol $name");
         $s['segid']= $segid;
+    }
     $s['defined']= true;       
     debug("Set symbol[$skey]=".print_r($s,true));
 }
@@ -1460,7 +1463,7 @@ function proc_p2h_line($l)
         //G name
         last_ok("//G record ({$w2}) without prev //C");
         debug("Symbol $w2 definition place in $fin in global area val=$last_code_at");
-        set_symbol($w2, $last_code_at, arri($segment,'id'));
+        set_symbol($w2, $last_code_at/*, arri($segment,'id')*/);
     }
 
     else if ($W1 == "//N")

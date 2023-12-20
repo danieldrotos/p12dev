@@ -16,8 +16,10 @@ test2.asc: test2.p2h hex2asc.php
 test2.cdb: test2.p2h hex2cdb.php
 	php hex2cdb.php $< >$@
 
-test3: test3.asm $(LIB)/fn_div.p2o
-	php p2as.php -l -dd $^
+test3: test3.lst
+
+test3.lst: p2as.php test3.asm $(LIB)/fn_div.p2o
+	php p2as.php -l -dd test3.asm $(LIB)/fn_div.p2o
 
 clean:
 	$(RM) *~ *.cdb *.hex *.p2h *.asc *.lst
