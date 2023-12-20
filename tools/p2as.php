@@ -881,7 +881,7 @@ function make_sym_global($w)
         debug("symbol $w is already exported");
         return; // alreay global
     }
-    if (is_array($sg) && is_array($sl))
+    if (is_array($sg) && is_array($sl) && !$sg['extern'])
         ddie("Redefinition of global symbol ($w)");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;

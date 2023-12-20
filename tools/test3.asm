@@ -10,7 +10,12 @@ main_cycle:
 	mvzl	r1,15
 	call	div
 	jmp	main_cycle
-
+	.db	text
+	
 	.ds	99
 stack:	.ds	1
 	
+	.extern	text
+	.seg	tseg
+text	==	11
+	.ends
