@@ -4,6 +4,7 @@
 
 test_global_symbol	==	1
 test_local_symbol	=	2
+;text	==	33
 	
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
