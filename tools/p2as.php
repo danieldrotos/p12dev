@@ -588,9 +588,11 @@ function devdeb($x)
         fwrite($ddf, $x);
 }
 
-function ddie($error_msg, $exit_code= 1)
+function ddie($error_msg, $exit_code= 1, $f= false, $l= false)
 {
     global $error, $fin, $lnr;
+    if ($f === false) $f= $fin;
+    if ($l === false) $l= $lnr;
     $error= "{$fin}:{$lnr}: {$error_msg}";
     debug("Error: $error");
     echo $error."\n";
@@ -1661,7 +1663,7 @@ function place_param(&$icode, $mode, $value)
 // Read out symbol value from sym table
 function param_value($p, $fin, $lnr)
 {
-    global $syms, $segs, $segment;
+    global $syms, $segs, $segment, $conly;
     if (empty($p))
         return 0;
     $v= 0;
@@ -1669,11 +1671,22 @@ function param_value($p, $fin, $lnr)
         return $v;
     $skey= arri($segment,'id').$p;
     $s= arri($syms, /*$p*/$skey);
+    if (empty($s) || !is_array($s))
+        $s= arri($syms, $p);
     if (!empty($s) && is_array($s))
+    {
+        if (!$conly)
+        {
+            if (!$s['defined'])
+                ddie("Undefined symbol: {$p}", 1, $fin, $lnr);
+        }
+        else
+        {
+            if (!$s['defined'] && !$s['extern'])
+                ddie("Undefined symbol {$p} is not extern", 1, $fin, $lnr);
+        }
         return $s['value'];
-    $s= arri($syms, $p);
-    if (!empty($s) && is_array($s))
-        return $s['value'];
+    }
     ddie("Symbol not found: {$p} as {$skey}");
     return 0;
 }
@@ -1793,7 +1806,7 @@ foreach ($fina as $fin)
             proc_asm_line($l);
         }
     }
-    else if ($fext=="p2h")
+    else if (($fext=="p2h") || ($fext == "p2o"))
     {
         // Object file
         debug("\n;; Phase 1 of file $fin [P2H]\n");
