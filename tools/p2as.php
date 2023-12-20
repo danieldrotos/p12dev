@@ -23,6 +23,7 @@ $first_fin= '';
 $src= '';
 $fina= array();
 $conly= false;
+$out_type= "exe"; // "obj" // "lib"
 
 if (isset($argv[0]))
 {
@@ -102,6 +103,14 @@ if (isset($argv[0]))
         }
         $ddf_name= substr($first_fin, 0, $p).".log";
         $ddf= fopen($ddf_name, "w");
+    }
+    $fext= pathinfo($obj_name, PATHINFO_EXTENSION);
+    if ($conly)
+    {
+        if ($fext == "p2o")
+            $out_type= "obj";
+        else if ($fext == "p2l")
+            $out_type= "lib";
     }
 }
 else
@@ -2046,7 +2055,7 @@ foreach ($mem as $a => $m)
                                    $r['value']) );
                 $hex.= $o."\n";
             }
-            if (count($m['immediate'])>0)
+            if (($out_type=="obj") && (count($m['immediate'])>0))
             {
                 debug( $o= sprintf("//I %05x %s %08x", $a,
                                    $m['immediate']['mode'],
