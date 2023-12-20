@@ -4,9 +4,11 @@ PMON		= $(PRJ)/pmon
 LIB		= $(PRJ)/lib
 
 include $(PRJ)/prj.mk
+include $(PRJ)/common.mk
 AW		?= 16
 
-all: pmonitor \
+
+all: pmonitor lib \
 	counter2 \
 	counter3 \
 	uart \
@@ -21,8 +23,13 @@ all: pmonitor \
 	letest \
 	rndtest
 
+
 pmonitor:
 	$(MAKE) -C $(PMON) pmon.p2h
+
+lib:
+	$(MAKE) -C $(LIB) all
+
 
 counter2: counter2.p2h counter2.asc counter2.cdb
 
@@ -54,12 +61,11 @@ letest.p2h: le_test.asm $(LIB)/fn_lined.asm $(LIB)/fn_pmon.asm
 rndtest: rndtest.p2h rndtest.asc rndtest.cdb
 
 rndtest.p2h: rnd_test.asm \
-		$(LIB)/fn_div.asm \
-		$(LIB)/fn_rand.asm \
-		$(LIB)/fn_pmon.asm
+		$(LIB)/fn_div.p2o \
+		$(LIB)/fn_rand.p2o \
+		$(LIB)/fn_pmon.p2o
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
-include $(PRJ)/common.mk
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

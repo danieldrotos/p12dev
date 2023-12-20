@@ -4,15 +4,20 @@ PMON		= $(PRJ)/pmon
 LIB		= .
 
 include $(PRJ)/prj.mk
+include $(PRJ)/common.mk
 AW		?= 16
 
-all: fn_div.p2o \
-	fn_io.p2o \
-	fn_lined.p2o \
-	fn_pmon.p2o \
-	fn_rand.p2o
+OBJECTS		= \
+		fn_div.p2o \
+		fn_io.p2o \
+		fn_lined.p2o \
+		fn_pmon.p2o \
+		fn_rand.p2o
 
-include $(PRJ)/common.mk
+all: lib
+
+lib: plib.asm $(OBJECTS)
+	php $(TOOLS)/p2as.php -l -dd -o plib.p2l $^
 
 clean:
 	$(RM) *.hex *.p2h *.p2o *.cdb *.lst *.log *~

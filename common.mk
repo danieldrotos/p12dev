@@ -9,7 +9,7 @@ RMR		= rm -f -r
 ISS		= $(TOOLS)/sim.sh
 endif
 
-.SUFFIXES: .asm .v .asc .cdb .p2h .p2o
+.SUFFIXES: .asm .v .asc .cdb .p2h .p2o .p2l
 
 
 .asm.p2o:

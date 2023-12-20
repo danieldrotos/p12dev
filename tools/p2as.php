@@ -90,6 +90,7 @@ if (isset($argv[0]))
         }
         $lst_name= substr($first_fin, 0, $p).".lst";
         $lst= fopen($lst_name, "w");
+        echo "lst=$lst_name";
     }
     if ($DevDeb)
     {
@@ -1423,14 +1424,16 @@ function proc_p2h_line($l)
         $key= $w2;
         $name= strtok(" \t");
         $value= strtok(" \t");
+        $v= 0;
+        $val= 0+intval($value, 16);
         $segid= strtok(" \t");
-        debug(sprintf("Def $type from p2h: key=$key name=$name value=$value segid=$segid"));
+        debug(sprintf("Def $type from p2h: key=$key name=$name value=$value val=$val segid=$segid"));
         if (($segid != '') && find_extern($name))
             ddie("Extern symbol $name redefined as local");
         $s= arri($syms, $key);
         if (!is_array($s))
         {
-            mk_symbol($segid.$name, $value, $type);
+            mk_symbol($segid.$name, $val, $type);
             if ($type == "L")
                 $syms[$key]['defined']= false;
         }
@@ -1939,6 +1942,7 @@ if (!empty($syms))
     {
         //L key name value [segid]
         $o= sprintf("//%s %s %s %08x", $s['type'], $k, $s['name'], $s['value']);
+        debug("OMITTED SYMBOL=".print_r($s,true));
         if (($segid= arri($s, 'segid')) != '')
             $o.= " {$segid}";
         $hex.= $o."\n";

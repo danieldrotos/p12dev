@@ -2,6 +2,7 @@ PRJ		= ..
 TOOLS		= $(PRJ)/tools
 
 include $(PRJ)/prj.mk
+include $(PRJ)/common.mk
 AW		?= 16
 
 all: pmon_app dtoitest
@@ -22,9 +23,6 @@ dtoitest: dtoitest.p2h dtoitest.asc dtoitest.cdb
 
 dtoitest.p2h: dtoi_test.asm fn_isdigit.asm fn_dtoi.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
-
-
-include $(PRJ)/common.mk
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc
