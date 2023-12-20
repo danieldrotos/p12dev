@@ -1427,14 +1427,25 @@ function proc_p2h_line($l)
         debug(sprintf("Def $type from p2h: key=$key name=$name value=$value segid=$segid"));
         if (($segid != '') && find_extern($name))
             ddie("Extern symbol $name redefined as local");
-        mk_symbol($segid.$name, $value, $type);
+        $s= arri($syms, $key);
+        if (!is_array($s))
+        {
+            mk_symbol($segid.$name, $value, $type);
+            if ($type == "L")
+                $syms[$key]['defined']= false;
+        }
+        else
+        {
+            if ($s['type']=="X")
+                $syms[$key]['type']= $type;
+            else
+                ddie("Redefinition of $name", 1);
+        }
         if ($segid != '')
         {
             debug("Converting label $name to local of $segid");
             $syms[$key]['segid']= $segid;
         }
-        if ($type == "L")
-            $syms[$key]['defined']= false;
         debug("Imported '$type':".print_r($syms[$key],true));
     }
 

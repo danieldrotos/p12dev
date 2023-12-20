@@ -1,7 +1,8 @@
 	.proc	p2
 
 	org	1
-
+	.extern	div
+	
 	mvzl	sp,stack
 	
 main_cycle:
