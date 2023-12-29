@@ -1,7 +1,4 @@
 PRJ		= ..
-TOOLS		= .
-LIB		= $(PRJ)/lib
-PMON		= $(PRJ)/pmon
 
 include $(PRJ)/common.mk
 

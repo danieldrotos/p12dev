@@ -1,10 +1,7 @@
 PRJ		= ..
-TOOLS		= $(PRJ)/tools
-PMON		= $(PRJ)/pmon
-LIB		= .
 
-include $(PRJ)/prj.mk
 include $(PRJ)/common.mk
+
 AW		?= 16
 
 OBJECTS		= \

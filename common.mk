@@ -1,4 +1,8 @@
 
+TOOLS		= $(PRJ)/tools
+LIB		= $(PRJ)/lib
+PMON		= $(PRJ)/pmon
+
 ifeq ($(OS),Windows_NT)
 RM		= del /f /q
 RMR		= del /f /s /q

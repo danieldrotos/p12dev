@@ -1,6 +1,6 @@
 PRJ		= ..
-TOOLS		= $(PRJ)/tools
-LIB		= $(PRJ)/lib
+
+include	$(PRJ)/common.mk
 
 include $(PRJ)/prj.mk
 AW		?= 16
@@ -65,25 +65,6 @@ blink_fr2.p2h: blink_fr2.asm \
 		$(LIB)/fn_pressed.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
-
-.SUFFIXES: .p2h .asm .asc .cdb
-
-.asm.p2h:
-	php $(TOOLS)/p2as.php -l -o $@ $<
-
-.p2h.asc:
-	php $(TOOLS)/hex2asc.php -m $(AW) $< >$@
-
-.p2h.cdb:
-	php $(TOOLS)/hex2cdb.php $< >$@
-
-ifeq ($(OS),Windows_NT)
-RM		= del /f /q
-RMR		= del /f /s /q
-else
-RM		= rm -f
-RMR		= rm -f -r
-endif
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst

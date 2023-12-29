@@ -1,8 +1,7 @@
 PRJ		= ..
-TOOLS		= $(PRJ)/tools
 
-include $(PRJ)/prj.mk
 include $(PRJ)/common.mk
+
 AW		?= 16
 
 all: pmon_app dtoitest
