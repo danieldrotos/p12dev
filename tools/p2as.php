@@ -958,10 +958,12 @@ function mk_mem($addr, $icode=0, $error= false)
     $m['cell_type']= "C";
     $m['reloc']= array();
     $m['labels']= array();
+    $m['tags']= array();
     $m['segid']= arri($segment,'id');
     $m['src']= '';
     $m['immediate']= array();
     $m['skip']= 0;
+    $m['params']= array();
 }
 
 
@@ -1004,6 +1006,7 @@ function proc_asm_line($l)
             if ($commas > 1)
             {
                 $label= mk_symbol($n, $addr, "L");
+                $mem[$addr]['tags'][$n]= $n;
                 make_sym_global($n);
             }
             else
@@ -1011,6 +1014,7 @@ function proc_asm_line($l)
                 if (find_extern($n))
                     ddie("Extern symbol $n reused localy");
                 $label= mk_symbol($n, $addr, "L");
+                $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
             }
             $ok= true;
@@ -1497,6 +1501,7 @@ function proc_p2h_line($l)
         last_ok("//G record ({$w2}) without prev //C");
         debug("Symbol $w2 definition place in $fin in global area val=$last_code_at");
         set_symbol($w2, $last_code_at/*, arri($segment,'id')*/);
+        $mem[$last_code_at]['tags'][$w2]= $w2;
     }
 
     else if ($W1 == "//N")
@@ -1509,6 +1514,7 @@ function proc_p2h_line($l)
         if (find_extern($w2))
             ddie("Extern symbol $w can not be local");
         set_symbol($w3.$w2, $last_code_at, $w3);
+        $mem[$last_code_at]['tags'][$w2]= $w2;
     }
 
     else if ($W1 == "//R")
@@ -1886,6 +1892,35 @@ if (!$conly)
 {
     foreach ($mem as $m)
     {
+        $segid= $m['segid'];
+        if (arri($m, 'params')=='') continue;
+        //debug("Check refs from MEM[{$m['address']}]=".print_r($m,true));
+        $p= $m['params'];
+        //debug("params=".print_r($p,true));
+        foreach ($p as $name)
+        {
+            if ($name == '') continue;
+            //debug("Checking=".print_r($name,true));
+            $v= 0;
+            if (!is_const($name, $v))
+            {
+                $s= arri($syms, $segid.$name);
+                if (is_array($s))
+                {
+                    if (($s['segid'] == '') &&
+                        ($s['owner'] != '') &&
+                        ($s['owner'] != $segid))
+                    {
+                        debug("Label $name of seg={$s['owner']} refed from $segid");
+                        $seg= arri($segs, $s['owner']);
+                        if ($seg == '')
+                            ddie("Referenced segment {$s['owner']} not found",
+                                 1, $m['fin'], $m['lnr']);
+                        $seg['refed']= true;
+                    }
+                }
+            }
+        }
     }
 }
 
