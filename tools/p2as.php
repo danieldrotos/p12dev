@@ -1882,9 +1882,9 @@ debug("\n\n");
 /////////////////////////////////////////////////////////////////////
 
 // Mark all segments as unrefed, or refed if conly
-foreach ($segs as &$s)
+foreach ($segs as $k => $s)
 {
-    $s['refed']= $conly;
+    $segs[$k]['refed']= $conly;
 }
 
 // Check all references and mark refed segments
@@ -1911,7 +1911,7 @@ if (!$conly)
                         ($s['owner'] != '') &&
                         ($s['owner'] != $segid))
                     {
-                        debug("Label $name of seg={$s['owner']} refed from $segid");
+                        debug("Label $name of seg={$s['owner']} {$s['name']} refed from '{$segid}'");
                         $seg= arri($segs, $s['owner']);
                         if ($seg == '')
                             ddie("Referenced segment {$s['owner']} not found",
@@ -1927,9 +1927,9 @@ if (!$conly)
 unset($s);
 foreach ($segs as $se)
 {
-    debug("SEG=".print_r($se,true));
+    //debug("SEG=".print_r($se,true));
     if (!$se['refed'])
-        debug("Unreferenced segment: {$se['id']}");
+        debug("Unreferenced segment: {$se['id']} {$se['name']}");
 }
 
 
