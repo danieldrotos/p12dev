@@ -20,3 +20,6 @@ stack:	.ds	1
 text	==	11
 	.ends
 	
+	.seg	notneeded
+	nop
+	.ends

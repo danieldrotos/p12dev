@@ -1882,7 +1882,7 @@ debug("\n\n");
 /////////////////////////////////////////////////////////////////////
 
 // Mark all segments as unrefed, or refed if conly
-foreach ($segs as $s)
+foreach ($segs as &$s)
 {
     $s['refed']= $conly;
 }
@@ -1916,12 +1916,20 @@ if (!$conly)
                         if ($seg == '')
                             ddie("Referenced segment {$s['owner']} not found",
                                  1, $m['fin'], $m['lnr']);
-                        $seg['refed']= true;
+                        $segs[$s['owner']]['refed']= true;
                     }
                 }
             }
         }
     }
+}
+
+unset($s);
+foreach ($segs as $se)
+{
+    debug("SEG=".print_r($se,true));
+    if (!$se['refed'])
+        debug("Unreferenced segment: {$se['id']}");
 }
 
 
