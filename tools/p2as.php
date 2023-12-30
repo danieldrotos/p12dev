@@ -1872,6 +1872,23 @@ foreach ($fina as $fin)
 
 debug("\n\n");
 
+// PRE-PHASE 2
+/////////////////////////////////////////////////////////////////////
+
+// Mark all segments as unrefed, or refed if conly
+foreach ($segs as $s)
+{
+    $s['refed']= $conly;
+}
+
+// Check all references and mark refed segments
+if (!$conly)
+{
+    foreach ($mem as $m)
+    {
+    }
+}
+
 
 // PAHSE 2
 /////////////////////////////////////////////////////////////////////  
@@ -1982,8 +1999,9 @@ if (!empty($syms))
         {
             if (isset($mem[$s['value']]))
             {
-                //debug("Adding label {$s['name']} to mem[{$s['value']}]\n");
+                debug("Adding label {$s['name']} to mem[{$s['value']}]\n");
                 $mem[$s['value']]['labels'][]= $s;
+                debug("MEM[{$s['value']}]=".print_r($mem[$s['value']],true));
             }
             else
                 debug(sprintf("Mem at %08x not found for symbol {$s['name']}",$s['value']));

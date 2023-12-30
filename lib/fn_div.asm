@@ -9,6 +9,7 @@ test_local_symbol	=	2
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
 div::
+divabs::
 	push	lr
 	push	r4
 	
