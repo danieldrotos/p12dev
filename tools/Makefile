@@ -25,4 +25,4 @@ test3.p2h: p2as.php test3.asm $(TEST3_LIBS_FN)
 	php p2as.php -l -dd test3.asm $(TEST3_LIBS_FN)
 
 clean:
-	$(RM) *~ *.cdb *.hex *.p2h *.asc *.lst
+	$(RM) *~ *.cdb *.hex *.p2h *.asc *.lst *.log

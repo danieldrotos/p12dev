@@ -813,6 +813,7 @@ function new_symbol($name, $value, $type)
         'lnr'   => $lnr,
         'type'  => $type,
         'segid' => '',
+        'owner' => '',
         'defined'=> true,
         'extern'=> false,
     );
@@ -830,6 +831,7 @@ function mk_symbol($name, $value, $type= "S")
     }
     $sym= new_symbol($name, $value, $type);
     $sym['segid']= arri($segment, 'id');
+    $sym['owner']= arri($segment, 'id');
     $syms[$skey]= $sym;
     debug("Symbol {$name} created at {$skey}");
     return $sym;
