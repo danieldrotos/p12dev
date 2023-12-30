@@ -807,11 +807,11 @@ function new_symbol($name, $value, $type)
 {
     global $fin, $lnr;
     return array(
+        'type'  => $type,
         'name'  => $name,
         'value' => $value,
         'fin'   => $fin,
         'lnr'   => $lnr,
-        'type'  => $type,
         'segid' => '',
         'owner' => '',
         'defined'=> true,
@@ -1430,14 +1430,21 @@ function proc_p2h_line($l)
     else if (($W1 == "//L") || ($W1 == "//=") || ($W1 == "//S"))
     {
         // Symbol or label
-        //L key name value [segid]
+        //L key name value owner segid
         $type= $W1[2];
         $key= $w2;
         $name= strtok(" \t");
         $value= strtok(" \t");
         $v= 0;
         $val= 0+intval($value, 16);
+        $owner= strtok(" \t");
         $segid= strtok(" \t");
+        if (($segid == "-") || ($segid == "_"))
+            $segid= '';
+        if (($owner == "-") || ($owner == "_"))
+            $owner= '';
+        if ($owner == "s")
+            $owner= $segid;
         debug(sprintf("Def $type from p2h: key=$key name=$name value=$value val=$val segid=$segid"));
         if (($segid != '') && find_extern($name))
             ddie("Extern symbol $name redefined as local");
@@ -1460,6 +1467,7 @@ function proc_p2h_line($l)
             debug("Converting label $name to local of $segid");
             $syms[$key]['segid']= $segid;
         }
+        $syms[$key]['owner']= $owner;
         debug("Imported '$type':".print_r($syms[$key],true));
     }
 
@@ -1951,11 +1959,22 @@ if (!empty($syms))
 {
     foreach ($syms as $k => $s)
     {
-        //L key name value [segid]
-        $o= sprintf("//%s %s %s %08x", $s['type'], $k, $s['name'], $s['value']);
-        debug("OMITTED SYMBOL=".print_r($s,true));
+        //L key name value owner [segid]
+        debug("OMITING SYMBOL=".print_r($s,true));
+        $o= sprintf("//%s %s %s %08x ", $s['type'], $k, $s['name'], $s['value']);
+        if ($s['owner'] == '')
+            $o.= "-";
+        else
+        {
+            if ($s['segid'] != '')
+                $o.= "s";
+            else
+                $o.= $s['owner'];
+        }
         if (($segid= arri($s, 'segid')) != '')
             $o.= " {$segid}";
+        else
+            $o.= " _";
         $hex.= $o."\n";
         debug($o);
         devdeb("s[{$k}]=".print_r($s,true)."\n");
