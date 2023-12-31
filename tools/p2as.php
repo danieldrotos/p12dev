@@ -15,6 +15,7 @@ $obj_name= '';
 $lst_name= '';
 $lst= false;
 $proc= "P1";
+$proc_set= false;
 $segs= array();
 $segment= false;
 $insts= array();
@@ -23,6 +24,7 @@ $first_fin= '';
 $src= '';
 $fina= array();
 $conly= false;
+$keep= false;
 $out_type= "exe"; // "obj" // "lib"
 
 if (isset($argv[0]))
@@ -48,6 +50,10 @@ if (isset($argv[0]))
         {
             $conly= true;
         }
+        else if ($argv[$i] == "-k")
+        {
+            $keep= true;
+        }
         else
         {
             $_REQUEST['submit']= "";
@@ -56,7 +62,7 @@ if (isset($argv[0]))
                 $first_fin= $fin;
             if (!file_exists($fin))
             {
-                echo "Input file ($fin) does not exists\n";
+                echo "Error: Input file ($fin) does not exists\n";
                 exit(4);
             }
             $fina[]= $fin;
@@ -68,7 +74,7 @@ if (isset($argv[0]))
     
     if ($first_fin=='')
     {
-        echo "Asm file missing\n";
+        echo "Error: No source file specified\n";
         exit(1);
     }
     if ($obj_name == '')
@@ -76,7 +82,7 @@ if (isset($argv[0]))
         $p= strrpos($first_fin, ".");
         if ($p === false)
         {
-            echo "Can not convert asm filename to obj filename\n";
+            echo "Error: Can not convert source filename to obj filename\n";
             exit(2);
         }
         $obj_name= substr($first_fin, 0, $p).($conly?".p2o":".p2h");
@@ -86,19 +92,18 @@ if (isset($argv[0]))
         $p= strrpos($first_fin, ".");
         if ($p === false)
         {
-            echo "Can not convert asm filename to list filename\n";
+            echo "Error: Can not convert source filename to list filename\n";
             exit(5);
         }
         $lst_name= substr($first_fin, 0, $p).".lst";
         $lst= fopen($lst_name, "w");
-        echo "lst=$lst_name";
     }
     if ($DevDeb)
     {
         $p= strrpos($first_fin, ".");
         if ($p === false)
         {
-            echo "Can not convert asm filename to devdeb filename\n";
+            echo "Error: Can not convert source filename to devdeb filename\n";
             exit(6);
         }
         $ddf_name= substr($first_fin, 0, $p).".log";
@@ -1902,34 +1907,35 @@ if (!$conly)
             if ($name == '') continue;
             //debug("Checking=".print_r($name,true));
             $v= 0;
-            if (!is_const($name, $v))
+            if (is_const($name, $v)) continue;
+            if (($s= arri($syms, $segid.$name)) == '') continue;
+            if (($s['segid'] == '') &&
+                ($s['owner'] != '') &&
+                ($s['owner'] != $segid))
             {
-                $s= arri($syms, $segid.$name);
-                if (is_array($s))
-                {
-                    if (($s['segid'] == '') &&
-                        ($s['owner'] != '') &&
-                        ($s['owner'] != $segid))
-                    {
-                        debug("Label $name of seg={$s['owner']} {$s['name']} refed from '{$segid}'");
-                        $seg= arri($segs, $s['owner']);
-                        if ($seg == '')
-                            ddie("Referenced segment {$s['owner']} not found",
-                                 1, $m['fin'], $m['lnr']);
-                        $segs[$s['owner']]['refed']= true;
-                    }
-                }
+                debug("Symbol '{$name}' of seg={$s['owner']} {$s['name']} ref by '{$segid}'");
+                if (($seg= arri($segs, $s['owner'])) == '')
+                    ddie("Referenced segment {$s['owner']} not found",
+                         1, $m['fin'], $m['lnr']);
+                $segs[$s['owner']]['refed']= true;
             }
         }
     }
 }
 
-unset($s);
+$unrefed= false;
 foreach ($segs as $se)
 {
     //debug("SEG=".print_r($se,true));
     if (!$se['refed'])
+    {
         debug("Unreferenced segment: {$se['id']} {$se['name']}");
+        $unrefed= true;
+    }
+}
+
+if ($unrefed && !$conly && !$keep)
+{
 }
 
 
