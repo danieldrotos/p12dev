@@ -943,6 +943,29 @@ function find_extern($name)
 }
 
 
+function skey_of($name, $inseg)
+{
+    global $syms;
+    if ($inseg == '')
+    {
+        // global space: global only
+        $s= arri($syms, $name);
+        if ($s != '') return $name;
+    }
+    else
+    {
+        // local space
+        // look local sym first
+        $s= arri($syms, $inseg.$name);
+        if ($s != '') return $inseg.$name;
+        // fallback to global
+        $s= arri($syms, $name);
+        if ($s != '') return $name;
+    }
+    return '';
+}
+
+
 function mk_mem($addr, $icode=0, $error= false)
 {
     global $mem, $fin, $lnr, $segment;
@@ -1553,6 +1576,10 @@ function proc_p2h_line($l)
         // Skip defined by .ds
         //+ hexvalue
         $v= 0 + intval($w2, 16);
+        mk_mem($addr, 0);
+        $mem[$addr]['skip']= $v;
+        $last_code_at= $addr;
+        debug(sprintf("Skip //+ record at %08x by %x\n", $addr, $v));
         if ($v > 0)
         {
             $v--;
@@ -1923,19 +1950,55 @@ if (!$conly)
     }
 }
 
-$unrefed= false;
+$unrefed= 0;
 foreach ($segs as $se)
 {
     //debug("SEG=".print_r($se,true));
     if (!$se['refed'])
     {
         debug("Unreferenced segment: {$se['id']} {$se['name']}");
-        $unrefed= true;
+        $unrefed++;
     }
 }
 
 if ($unrefed && !$conly && !$keep)
 {
+    debug("DROPPING $unrefed unrefed segment(s)");
+    $da= array_key_first($mem);
+    debug(sprintf("First used address= %08x\n", $da));
+    $newmem= array();
+    foreach ($mem as $m)
+    {
+        if (($m['segid'] == '') ||
+            ($segs[$m['segid']]['refed']))
+        {
+            debug("Copy {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+            if ($da != $m['address'])
+            {
+                debug("Re-location needed tags=".print_r($m['tags'],true));
+                foreach ($m['tags'] as $t)
+                {
+                    $skey= skey_of($t, $m['segid']);
+                    if ($skey != '')
+                    {
+                        debug("Sym $t has key ".print_r($skey,true));
+                        $s= $syms[$skey];
+                        debug("Re-locate skey=$skey '{$s['name']}' from {$s['value']} to $da");
+                        //$syms[$skey]['value']= $da;
+                    }
+                    else
+                        debug("Warning: No sym for $t");
+                }
+            }
+            $m['address']= $da;
+            $newmem[$da]= $m;
+            $da++;
+            if ($m['skip'])
+                $da+= $m['skip']-1;
+        }
+        else
+            debug("Skip {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+    }
 }
 
 

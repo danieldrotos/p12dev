@@ -1,5 +1,8 @@
 	.proc	P2
 
+	.org	1
+	nop
+	
 	.segment start
 label_in_seg:
 	ld	r0,label_in_seg
