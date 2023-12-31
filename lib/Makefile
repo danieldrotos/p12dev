@@ -14,7 +14,7 @@ OBJECTS		= \
 all: lib
 
 lib: plib.asm $(OBJECTS)
-	php $(TOOLS)/p2as.php -l -dd -o plib.p2l $^
+	php $(TOOLS)/p2as.php -c -l -dd -o plib.p2l $^
 
 clean:
 	$(RM) *.hex *.p2h *.p2o *.p2l *.cdb *.lst *.log *~

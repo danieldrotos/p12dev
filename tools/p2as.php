@@ -1999,6 +1999,34 @@ if ($unrefed && !$conly && !$keep)
         else
             debug("Skip {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
     }
+    //debug("MEM_WITH_SKIPPED_SEGS=".print_r($newmem,true));
+    $corg= count($mem);
+    $cnew= count($newmem);
+    $lorg= array_key_last($mem);
+    $lnew= array_key_last($newmem);
+    debug("Mem size change $corg -> $cnew");
+    debug("Mem addr change $lorg -> $lnew");
+    // Delete all symbols of unrefed segments
+    debug("Deleting symbols of unrefed segments");
+    $sorg= count($syms);
+    foreach ($syms as $k => $s)
+    {
+        if ($s['owner'] == '') continue;
+        $seg= $segs[$s['owner']];
+        if ($seg['refed']) continue;
+        debug("Deleting symbol {$s['name']} from {$s['owner']} at key=$k");
+        unset($syms[$k]);
+    }
+    $snew= count($syms);
+    debug("Symbol count reduced from $sorg to $snew");
+    // Delete unrefed segments
+    debug("Deleting unrefed segments");
+    foreach ($segs as $k => $s)
+    {
+        if ($s['refed']) continue;
+        unset($segs[$k]);
+    }
+    $mem= $newmem;
 }
 
 
