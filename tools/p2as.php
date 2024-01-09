@@ -1514,17 +1514,22 @@ function proc_p2h_line($l)
         $s= arri($syms, $key);
         if (!is_array($s))
         {
-            mk_symbol($segid.$name, $val, $type);
+            debug("Importing sym by making it $name");
+            mk_symbol(/*$segid.*/$name, $val, $type);
             if ($type == "L")
                 $syms[$key]['defined']= false;
         }
         else
         {
+            debug("Importing sym by updating it $name");
             if ($s['type']=="X")
                 $syms[$key]['type']= $type;
             else
                 ddie("Redefinition of $name", 1);
         }
+        $syms[$key]['type']= $type;
+        $syms[$key]['name']= $name;
+        $syms[$key]['extern']= arri($syms[$key], 'extern');
         if ($type == "=")
         {
             $syms[$key]['defined']= true;
