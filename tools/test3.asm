@@ -2,11 +2,14 @@
 
 	org	1
 	.extern	div
+	.extern	rand
+	.extern	rand_max
 	
 	mvzl	sp,stack
 	
 main_cycle:
-	mvzl	r0,100
+	call	rand
+	mov	r0,r1
 	mvzl	r1,15
 	call	div
 	jmp	main_cycle

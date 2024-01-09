@@ -1395,6 +1395,7 @@ function proc_asm_line($l)
     debug("param pattern=$pattern");
     $mem[$addr]['pattern']= $pattern;
     $mem[$addr]['params']= $params;
+    debug("Added params=\n".print_r($params,true)."\nto inst at $addr");
     debug(sprintf("mem[%x] is ready", $addr));
     $addr++;
     debug(sprintf("new addr=%x", $addr));
@@ -1944,6 +1945,9 @@ foreach ($fina as $fin)
 
 debug("\n\n");
 
+debug("SYMBOL_TABLE BEFORE PHASE2\n".print_r($syms,true));
+debug("MEM_TABLE BEFORE PHASE2\n".print_r($mem,true));
+
 // PRE-PHASE 2
 /////////////////////////////////////////////////////////////////////
 
@@ -1959,17 +1963,28 @@ if (!$conly)
     foreach ($mem as $m)
     {
         $segid= $m['segid'];
-        if (arri($m, 'params')=='') continue;
+        //if (arri($m, 'params')=='') continue;
+        $pa= array();
+        if (arri($m, 'reloc')!='')
+            foreach($m['reloc'] as $x)
+            {
+                $n= arri($x,'used_parameter');
+                if ($n!='') $pa[]= $n;
+            }
+        if (arri($m,'params')!='')
+            foreach($m['params'] as $n)
+                if ($n!='') $pa[]= $n;
         debug("Check refs from MEM[{$m['address']}]=".print_r($m,true));
-        $p= $m['params'];
-        //debug("params=".print_r($p,true));
-        foreach ($p as $name)
+        foreach ($pa as $name)
         {
             if ($name == '') {debug("-noname");continue;}
             debug("Checking=".print_r($name,true));
             $v= 0;
             if (is_const($name, $v)) {debug("-$v is const");continue;}
-            if (($s= arri($syms, $segid.$name)) == '') {debug("-no symbol {$segid}.{$name}");continue;}
+            $skey= skey_of($name, $segid);
+            //if (($s= arri($syms, $segid.$name)) == '') {debug("-no symbol {$segid}.{$name}");continue;}
+            if ($skey == '') {debug("-nosymbol {$segid}.{$name}");continue;}
+            $s= arri($syms, $skey);
             if (($s['segid'] == '') &&
                 ($s['owner'] != '') &&
                 ($s['owner'] != $segid))
@@ -2266,10 +2281,11 @@ foreach ($mem as $a => $m)
                 $v= 0;
                 if (is_const($r["used_parameter"], $v))
                     continue;
+                $v= param_value($r['used_parameter'], $m['fin'], $m['lnr']);
                 debug( $o= sprintf("//R %05x %s %s %08x", $a,
                                    $r['mode'],
                                    $r['used_parameter'],
-                                   $r['value']) );
+                                   /*$r['value']*/$v) );
                 $hex.= $o."\n";
             }
             if (($out_type=="obj") && (count($m['immediate'])>0))
