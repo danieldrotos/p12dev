@@ -1523,6 +1523,11 @@ function proc_p2h_line($l)
             else
                 ddie("Redefinition of $name", 1);
         }
+        if ($type == "=")
+        {
+            $syms[$key]['defined']= true;
+            $syms[$key]['value']= $val;
+        }
         if ($segid != '')
         {
             debug("Converting label $name to local of $segid");
@@ -1955,16 +1960,16 @@ if (!$conly)
     {
         $segid= $m['segid'];
         if (arri($m, 'params')=='') continue;
-        //debug("Check refs from MEM[{$m['address']}]=".print_r($m,true));
+        debug("Check refs from MEM[{$m['address']}]=".print_r($m,true));
         $p= $m['params'];
         //debug("params=".print_r($p,true));
         foreach ($p as $name)
         {
-            if ($name == '') continue;
-            //debug("Checking=".print_r($name,true));
+            if ($name == '') {debug("-noname");continue;}
+            debug("Checking=".print_r($name,true));
             $v= 0;
-            if (is_const($name, $v)) continue;
-            if (($s= arri($syms, $segid.$name)) == '') continue;
+            if (is_const($name, $v)) {debug("-$v is const");continue;}
+            if (($s= arri($syms, $segid.$name)) == '') {debug("-no symbol {$segid}.{$name}");continue;}
             if (($s['segid'] == '') &&
                 ($s['owner'] != '') &&
                 ($s['owner'] != $segid))
@@ -1973,8 +1978,12 @@ if (!$conly)
                 if (($seg= arri($segs, $s['owner'])) == '')
                     ddie("Referenced segment {$s['owner']} not found",
                          1, $m['fin'], $m['lnr']);
+                debug("Segment {$s['owner']} {$segs[$s['owner']]['name']} is refed");
                 $segs[$s['owner']]['refed']= true;
+                debug(print_r($segs[$s['owner']],true));
             }
+            else
+                debug("- s[segid]={$s['segid']} s[owner]={$s['owner']}");
         }
     }
 }

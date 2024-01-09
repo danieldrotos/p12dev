@@ -1,7 +1,10 @@
 	.proc	p2
 
-	org	1
-
+	.org	1
+	.extern	rand
+	.extern	rand_max
+	.extern	pesf
+	
 	mvzl	r2,10
 cyc:
 	call	rand
