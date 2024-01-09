@@ -19,10 +19,15 @@ test2.cdb: test2.p2h hex2cdb.php
 TEST3_LIBS	= fn_div fn_rand fn_pmon
 TEST3_LIBS_FN	= $(addprefix $(LIB)/,$(addsuffix .p2o,$(TEST3_LIBS)))
 
-test3: test3.p2h
+STDLIB		= $(LIB)/plib.p2l
 
-test3.p2h: p2as.php test3.asm $(TEST3_LIBS_FN)
-	php p2as.php -l -dd test3.asm $(TEST3_LIBS_FN)
+test3: test3_byo.p2h test3_byl.p2h
+
+test3_byo.p2h: p2as.php test3.asm $(TEST3_LIBS_FN)
+	php p2as.php -l -dd -o test3_byo.p2h test3.asm $(TEST3_LIBS_FN)
+
+test3_byl.p2h: p2as.php test3.asm $(STDLIB)
+	php p2as.php -l -dd -o test3_byl.ph test3.asm $(STDLIB)
 
 clean:
 	$(RM) *~ *.cdb *.hex *.p2h *.asc *.lst *.log

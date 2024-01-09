@@ -89,24 +89,24 @@ if (isset($argv[0]))
     }
     if ($debugging)
     {
-        $p= strrpos($first_fin, ".");
+        $p= strrpos($obj_name, ".");
         if ($p === false)
         {
             echo "Error: Can not convert source filename to list filename\n";
             exit(5);
         }
-        $lst_name= substr($first_fin, 0, $p).".lst";
+        $lst_name= substr($obj_name, 0, $p).".lst";
         $lst= fopen($lst_name, "w");
     }
     if ($DevDeb)
     {
-        $p= strrpos($first_fin, ".");
+        $p= strrpos($obj_name, ".");
         if ($p === false)
         {
             echo "Error: Can not convert source filename to devdeb filename\n";
             exit(6);
         }
-        $ddf_name= substr($first_fin, 0, $p).".log";
+        $ddf_name= substr($obj_name, 0, $p).".log";
         $ddf= fopen($ddf_name, "w");
     }
     $fext= pathinfo($obj_name, PATHINFO_EXTENSION);
@@ -966,6 +966,7 @@ function find_extern($name)
     global $syms;
     $s= arri($syms, $name);
     if (($s != '') &&
+        (arri($s,'extern')!='') &&
         ($s['extern'] == true))
         return true;
     return false;
@@ -1915,7 +1916,7 @@ foreach ($fina as $fin)
             proc_asm_line($l);
         }
     }
-    else if (($fext=="p2h") || ($fext == "p2o"))
+    else if (($fext=="p2h") || ($fext == "p2o") || ($fext == "p2l"))
     {
         // Object file
         debug("\n;; Phase 1 of file $fin [P2H]\n");
