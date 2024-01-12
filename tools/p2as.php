@@ -24,7 +24,7 @@ $first_fin= '';
 $src= '';
 $fina= array();
 $conly= false;
-$keep= false;
+$keep= true;//false;
 $out_type= "exe"; // "obj" // "lib"
 
 if (isset($argv[0]))
