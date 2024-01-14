@@ -219,8 +219,8 @@ assign JDa[4]= f1Hz;
         .in7(ctr),
         .in8(test_out),
         .in9(test_reg),
-        .in10(porti),
-        .in11(portj),
+        .in10(0),
+        .in11(0),
         .in12(irqs),
         .in13(mdi),
         .in14(mdo),
@@ -231,6 +231,8 @@ assign JDa[4]= f1Hz;
      (
       .clk            (f1MHz),
       .di             (display_data),
+      .pixels	      ({portd,portc}),
+      .direct         (display_select==10),
       .seg            (seg),
       .an             (an)
       );

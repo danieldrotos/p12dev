@@ -1,7 +1,9 @@
 module seg7
   (
-   input wire 	     clk,
+   input wire	     clk,
    input wire [31:0] di,
+   input wire [63:0] pixels,
+   input wire	     direct,
    output wire [7:0] seg,
    output wire [7:0] an
    );
@@ -12,7 +14,9 @@ module seg7
    reg [2:0] 	     cnt;
    reg [PRE:0] 	     pre_cnt;
    wire [3:0] 	     digit;
-   
+   wire [7:0]	     nd_seg;
+   wire [7:0]	     d_seg;
+	     
    initial
      begin
 	cnt<= 0;
@@ -58,7 +62,7 @@ module seg7
    parameter F      = 8'b0010_0000;
    parameter G      = 8'b0100_0000;
    
-   assign seg = ~(
+   assign nd_seg = ~(
 		  (digit[3:0] == 4'h0) ? A|B|C|D|E|F :
 		  (digit[3:0] == 4'h1) ? B|C :
 		  (digit[3:0] == 4'h2) ? A|B|G|E|D :
@@ -80,5 +84,19 @@ module seg7
 		  (digit[3:0] == 4'hf) ? A|F|G|E :
 		  8'b0000_0000
 		  );
+
+   assign d_seg= ~(
+		   (cnt==3'd0)?pixels[63:56]:
+		   (cnt==3'd1)?pixels[55:48]:
+		   (cnt==3'd2)?pixels[47:40]:
+		   (cnt==3'd3)?pixels[39:32]:
+		   (cnt==3'd4)?pixels[31:24]:
+		   (cnt==3'd5)?pixels[23:16]:
+		   (cnt==3'd6)?pixels[15: 8]:
+		   (cnt==3'd7)?pixels[ 7: 0]:
+		   8'b0000_0000
+		   );
+		   
+   assign seg= direct ? d_seg : nd_seg;
    
 endmodule // seg7

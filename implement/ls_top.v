@@ -184,8 +184,8 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         .in7(ctr),
         .in8(test_out),
         .in9(test_reg),
-        .in10(porti),
-        .in11(portj),
+        .in10(0),
+        .in11(0),
         .in12(irqs),
         .in13(mdi),
         .in14(mdo),
@@ -199,6 +199,8 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       .clk            (f1MHz),
       .reset          (res),
       .di             (display_data[15:0]),
+      .pixels         (portc),
+      .direct         (display_select==10),
       .seg            (drv_seg),
       .an             (drv_an)
       );
