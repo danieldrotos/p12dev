@@ -35,8 +35,8 @@ dtoi_false:
 dtoi_ret:
 	pop	r3
 	pop	r2
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	.ends
 	

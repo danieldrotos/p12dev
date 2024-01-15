@@ -42,8 +42,8 @@ fr2pt:
 	ld	r1,frequ
 	call	div
 	st	r2,ptime
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Blink LED when timer expires
@@ -62,8 +62,8 @@ do_blink:
 	ld	r0,ptime	; use calculated period time
 	st	r0,CLOCK.BCNT2	; restart back counter
 blink_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Check for user input and handle it
@@ -104,8 +104,8 @@ ui_done:
 	call	prompt		; print prompt
 	call	le_start	; restart input reader
 ui_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Print prompt
@@ -113,8 +113,8 @@ prompt:
 	push	lr
 	call	_pes
 	.db	"Enter fr in Hz (quit to monitor): "
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Check for button press and handle it
@@ -126,8 +126,8 @@ btn_press:
 	mvzl	r0,1		; mask of SW[0]
 	call	switched
 	C call	monitor
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; STACK

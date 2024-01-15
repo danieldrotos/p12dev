@@ -50,8 +50,8 @@ c3:	shl	r1
 	
 	pop	r2
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	;; Calculate next value converted to range 0..R0
 	;; Input : R0 max value
@@ -73,8 +73,8 @@ rand_max::
 	pop	r3
 	pop	r2
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	.ends
 	

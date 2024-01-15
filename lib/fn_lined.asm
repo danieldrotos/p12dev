@@ -14,8 +14,8 @@ le_setbuf::
 	st	r0,le_buf_addr	; store buffer info
 	st	r1,le_buf_len	; in local vars
 	call	le_start	; set buffer empty
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	;; IN: -
 	;; OUT: -
@@ -31,8 +31,8 @@ le_start::
 	st	r2,r1
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	;; IN: -
 	;; OUT: F.C: 1=done (Enter pressed)
@@ -107,8 +107,8 @@ ler_ret:
 	pop	r2
 	pop	r1
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 le_buf_len:
 	db	0

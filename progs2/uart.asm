@@ -39,14 +39,14 @@ wait_cyc:
 	ld	r3,r2
 	btst	r3,1
 	jz	wait_cyc
-	pop	LR
-	ret
+	pop	PC
+;	ret
 
 send:
 	push	LR
 	call	wait_tx
 	mvzl	r2,DR
 	st	r0,r2
-	pop	LR
-	ret
+	pop	PC
+;	ret
 	

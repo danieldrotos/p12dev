@@ -112,8 +112,8 @@ got_char:
 	st	r1,PORTB
 
 	call	echo
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 echo:
@@ -129,8 +129,8 @@ not_eol:
 	;and	r0,r2		; covert to UPCASE
 echo_it:
 	call	send
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	
 end:	jmp	start
@@ -219,8 +219,8 @@ pressed_vege:
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 qfull:
@@ -233,8 +233,8 @@ qfull:
 	inc	r5
 	st	r5,log_ptr
 log_ov:
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	
 	ds	100

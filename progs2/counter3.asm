@@ -110,8 +110,8 @@ pressed_vege:
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 
 	ds	100

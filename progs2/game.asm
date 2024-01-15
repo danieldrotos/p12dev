@@ -186,8 +186,8 @@ pi_no_d:
 pi_no_0:	
 	;call	putchar
 pi_end:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 s_clrch: db	"\e[D \e[D"
 s_up:	db	"\e[A"
 s_down:	db	"\e[B"
@@ -203,8 +203,8 @@ drawit:
 	NZ ldl0	r0,'*'
 	call	putchar
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	;; Check button press
 	;; ----------------------------------------------------------------
@@ -239,8 +239,8 @@ pressed_vege:
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Unsigned integer division
@@ -278,8 +278,8 @@ div_cyc_next:
 	jmp	div_cyc
 div_ret:
 	pop	r4
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Varialbles

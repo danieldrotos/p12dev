@@ -30,8 +30,8 @@ cikl:	ld	r4,r1		; adat beolvasasa
 	ldl0	r1,eredmeny	; az eredmeny tarolasi helye
 	st	r4,r1		; az eredmeny tarolasa
 
-	pop	lr		; visszateresi cim betoltese
-	ret
+	pop	pc		; visszateresi cim betoltese
+;	ret
 
 eredmeny:
 	ds	1		; hely az eredmenynek

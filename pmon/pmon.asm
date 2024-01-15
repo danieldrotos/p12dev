@@ -164,8 +164,8 @@ setup_line:
 	;; print prompt
 	mvzl	r0,prompt
 	call	prints
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; MAIN cycle
@@ -244,8 +244,8 @@ got_eol:
 	Z0 clc
 	Z1 sec
 proc_input_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Process content of line buffer
@@ -293,8 +293,8 @@ cmd_not_found:
 proc_line_ret:	
 	mvzl	r1,1		; at_eol= 1
 	st	r1,at_eol
-	pop	lr
-	ret
+	pop	pc
+;	ret
 sdummy1:	db	"Got:"
 snotfound:	db	"Unknown command"
 	
@@ -307,8 +307,8 @@ is_delimiter:
 	push	lr
 	mvzl	r1,delimiters
 	call	strchr
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Tokenize line
@@ -356,8 +356,8 @@ tok_ret:
 	st	r1,r6+,r4
 	jmp	tok_ret
 tok_end:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Look up command table
@@ -447,8 +447,8 @@ find_cmd_ret:
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 ;;; M ADDR [VALUE]
 cmd_m:
@@ -512,8 +512,8 @@ m_read:
 	mvzl	r0,LF
 	call	putchar
 m_ret:
-	pop	lr
-	ret
+	pop	pc
+;	ret
 m_err_addr:	db	"Address error"
 m_err_addrv:	db	"Monitor's address"
 m_err_value:	db	"Value error"
@@ -564,8 +564,8 @@ sm_value_ok:
 	st	r5,r4
 	;jmp	m_ret
 sm_ret:
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 ;;; D start end
@@ -612,8 +612,8 @@ d_bad:
 	mvzl	r0,d_err_bad
 	call	printsnl
 d_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 d_err_bad:	db	"Wrong end address"
 
 	
@@ -786,8 +786,8 @@ l_ret:
 	call	print_vhex
 	mvzl	r0,LF
 	call	putchar
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 ;;; G [ADDRESS]
@@ -848,8 +848,8 @@ g_err:
 	mvzl	r0,g_err_addr
 	call	printsnl
 g_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 g_err_addr:	db	"No address"
 d_msg_run:	db	"Run "
 	
@@ -872,8 +872,8 @@ h_print:
 	call	putchar
 	jmp	h_cyc
 h_eof:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; In: R0 reg number
@@ -934,8 +934,8 @@ prn_1015:
 	call	putchar
 prn_ret:	
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	;; In: R0 reg number 0..16
 print_reg_value:
@@ -949,8 +949,8 @@ print_reg_value:
 	call	print_vhex
 prv_ret:
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Print register name and value and NL
@@ -969,8 +969,8 @@ print_reg_name_value:
 	call	putchar
 	pop	r0
 	pop	r10
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	;; IN: R0 flag name char
 	;;     R1 flag values
@@ -985,8 +985,8 @@ print_flag:
 	call	putchar
 	mov	r0,r3
 	call	putchar
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 ;;; R(eg)
 cmd_r:
@@ -1035,8 +1035,8 @@ r_flags:
 	mvzl	r2,1
 	mvzl	r3,LF
 	call	print_flag
-	pop	lr
-	ret
+	pop	pc
+;	ret
 msg_r_called:		db	"Monitor called from: "
 msg_r_notcalled:	db	"Monitor not called by user\n"
 
@@ -1074,8 +1074,8 @@ rx_val_ok:
 rx_print:
 	call	print_reg_name_value
 rx_ret:	
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 ;;; SP [value]
@@ -1198,8 +1198,8 @@ streq_ret_ret:
 	pop	r2
 	;pop	r1
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 
 	;; Compare strings case sensitive way
@@ -1213,8 +1213,8 @@ streq:
 	call	str_cmp_eq
 	pop	r3
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Compare strings case insensitive way
@@ -1228,8 +1228,8 @@ strieq:
 	call	str_cmp_eq
 	pop	r3
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Convert one hex char to value
@@ -1281,8 +1281,8 @@ value2hexchar:
 	push	lr
 	call	value2Hexchar
 	or	r0,0x20
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Convert string to number (hexadecimal)
@@ -1328,8 +1328,8 @@ htoi_eos:
 htoi_ret:	
 	pop	r3
 	pop	r2
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 	
 ;;; SERIAL IO
@@ -1469,8 +1469,8 @@ prints_done:
 	pop	r4
 	pop	r3
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Print embedded string, return after
@@ -1510,8 +1510,8 @@ printsnl:
 	mvzl	r0,LF
 	call	putchar
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Print a value in hex format
@@ -1559,8 +1559,8 @@ print_vhex_ret:
 	pop	r2
 	pop	r1
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Divide Q,R= N/D
@@ -1597,8 +1597,8 @@ div_cyc_next:
 	jmp	div_cyc
 div_ret:
 	pop	r4
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; itoa
@@ -1651,8 +1651,8 @@ itoa_ret:
 	pop	r2
 	pop	r1
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 itoa_buffer:	ds	11
 itoa_divs:
 	dd	1000000000
@@ -1676,8 +1676,8 @@ printd:
 	call	itoa
 	mvzl	r0,itoa_buffer
 	call	prints
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 	;; Format and print string
@@ -1810,8 +1810,8 @@ printf_next:
 printf_ret:
 	pop	r1
 	pop	r0
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 
 pesf:

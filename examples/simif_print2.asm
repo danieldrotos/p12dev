@@ -16,13 +16,13 @@ vege:	jmp	vege
 
 	org	0x20
 putchar:
-	push	r14
+	push	lr
 	mvzl	r10,simif
 	mvzl	r12,'p'
 	st	r12,r10
 	st	r0,r10
-	pop	r14
-	ret
+	pop	pc
+;	ret
 
 	org	0x30
 	;; print 0 terminated string at R1
@@ -36,8 +36,8 @@ print_cikl:
 	add	r1,1
 	jmp	print_cikl
 print_exit:
-	pop	lr
-	ret
+	pop	pc
+;	ret
 	
 Hello:	db	"Hello World!\n"
 	

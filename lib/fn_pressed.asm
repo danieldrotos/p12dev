@@ -19,8 +19,8 @@ pressed::
 	push	lr
 	clc
 	call	pos_edge
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	;; Check pos edge on a switch
 	;; Input : R0= bit mask of examined SW
@@ -30,8 +30,8 @@ switched::
 	push	lr
 	sec
 	call	pos_edge
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	
 	;; Check button/sw press
@@ -98,8 +98,8 @@ pressed_end:
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	.ends
 	

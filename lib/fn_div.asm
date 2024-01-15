@@ -41,8 +41,8 @@ div_cyc_next:
 	jmp	div_cyc
 div_ret:
 	pop	r4
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 	.ds	2
 	.dd	0x55aa

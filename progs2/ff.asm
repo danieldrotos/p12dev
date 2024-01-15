@@ -79,8 +79,8 @@ ff_leptetes:
 	Z shl	r0
 	st	r0,led
 nem_leptet:
-	pop	lr
-	ret
+	pop	pc
+;	ret
 
 ; R0: address of string 
 print:
