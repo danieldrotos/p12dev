@@ -195,6 +195,17 @@ module cpu2
    assign inst_call_idx= inst_call & ic[24];
    assign res_call= /*ic[24]*/inst_call_idx?aof_call_idx:aof_call_abs;
 
+   // Extented instructions
+   wire [WIDTH-1:0]	       res_ext_gpb;
+   getb_putb #(.WIDTH(WIDTH)) mod_ext_gpb
+     (
+      .opd(opd),
+      .opa(opa),
+      .opb(opb),
+      .ic(ic),
+      .res(res_ext_gpb)
+      );
+   
    // Select data for write back
    assign wb_data= inst_alu?res_alu:
 		   inst_call?res_call:
