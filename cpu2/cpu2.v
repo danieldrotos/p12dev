@@ -110,7 +110,7 @@ module cpu2
 
    wire 		       inst_param= ic[24];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
-   wire [3:0] 		       ra= ic[19:16];
+   wire [3:0] 		       ra= (inst_ext_gpb) ? ic[3:0] : ic[19:16];
    wire [3:0] 		       rb= ic[11:8];
    wire [3:0] 		       rd= ic[23:20];
    wire [15:0] 		       im16= ic[15:0];
@@ -122,19 +122,23 @@ module cpu2
    wire 		       w= ic[24] & !inst_ext;
    
    // decode instructions
-   wire 		       inst_st_ext= inst_ext & (ext_code==4'd0) & ~ic[24];
    wire 		       inst_ld_i= inst==7;
-   wire 		       inst_ld_ext= inst_ext & (ext_code==4'd0) & ic[24];
+   wire 		       inst_st_ext= inst_ext_mem & ~ic[24];
+   wire 		       inst_ld_ext= inst_ext_mem & ic[24];
+   wire			       inst_getb_ext= inst_ext_gpb & ~ic[24];
+   wire			       inst_putb_ext= inst_ext_gpb & ic[24];
    wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
    wire 		       inst_mem;
    wire 		       inst_ext_mem;
+   wire			       inst_ext_gpb;
    wire 		       inst_br;
    wire 		       inst_wb;
    assign inst_ld= inst_ld_r | inst_ld_i | inst_ld_ext;
    assign inst_st= inst_st_r | inst_st_i | inst_st_ext;
-   assign inst_ext_mem= inst_ld_ext | inst_st_ext;
+   assign inst_ext_mem= inst_ext & (ext_code==4'd0);
+   assign inst_ext_gpb= inst_ext & (ext_code==4'd1);
    assign inst_mem= inst_st | inst_ld;
    assign inst_alu= inst_alu1 | inst_alu2;
    assign inst_br= inst_call | ((inst_alu | inst_ld) & (rd==4'd15));
