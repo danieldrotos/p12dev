@@ -574,6 +574,11 @@ $conds2= array(
 	  // EXT 011L
 	  "rn_" =>array("icode"=>0x07000000,"placements"=>array("rd","#16"))
       )),
+    // EXT 011P
+    "GETB" =>array("icode"=>0x06010000, "params"=>array(
+        "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
+        "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    ))
   );
 
 $conds= $conds1;
@@ -1720,6 +1725,20 @@ function place_param(&$icode, $mode, $value)
         $pv<<= 12;
         $icode&= 0xffff0fff;
         $icode|= $pv;
+    }
+    else if ($pl == "ri0")
+    {
+        $pv&= 0xf;
+        $pv<<= 0;
+        $icode&= 0xfffffff0;
+        $icode|= $pv;
+    }
+    else if ($pl == "#2")
+    {
+        $pv&= 0x03;
+        $icode&= 0xfffffffc;
+        $icode|= $pv;
+        debug( sprintf("//I #2 %08x", $pv) );
     }
     else if (($pl == "#8") || ($pl == "d8"))
     {

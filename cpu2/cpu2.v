@@ -125,8 +125,8 @@ module cpu2
    wire 		       inst_ld_i= inst==7;
    wire 		       inst_st_ext= inst_ext_mem & ~ic[24];
    wire 		       inst_ld_ext= inst_ext_mem & ic[24];
-   wire			       inst_getb_ext= inst_ext_gpb & ~ic[24];
-   wire			       inst_putb_ext= inst_ext_gpb & ic[24];
+   wire			       inst_ext_getb= inst_ext_gpb & ~ic[24];
+   wire			       inst_ext_putb= inst_ext_gpb & ic[24];
    wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
@@ -196,20 +196,20 @@ module cpu2
    assign res_call= /*ic[24]*/inst_call_idx?aof_call_idx:aof_call_abs;
 
    // Extented instructions
-   wire [WIDTH-1:0]	       res_ext_gpb;
-   getb_putb #(.WIDTH(WIDTH)) mod_ext_gpb
+   wire [WIDTH-1:0]	       res_ext_getb;
+   getb #(.WIDTH(WIDTH)) mod_ext_getb
      (
       .opd(opd),
-      .opa(opa),
       .opb(opb),
-      .ic(ic),
-      .res(res_ext_gpb)
+      .byte_idx(ic[15] ? ic[1:0] : opa[1:0]),
+      .res(res_ext_getb)
       );
    
    // Select data for write back
-   assign wb_data= inst_alu?res_alu:
-		   inst_call?res_call:
-		   inst_ld?mr_data:
+   assign wb_data= inst_alu      ? res_alu:
+		   inst_call     ? res_call:
+		   inst_ld       ? mr_data:
+		   inst_ext_getb ? res_ext_getb:
 		   inst_st?0:
 		   0;
    assign wb_address= inst_call?4'd15:
