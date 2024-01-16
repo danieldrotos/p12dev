@@ -6,6 +6,26 @@ putchar		=	0xf00e
 pesf		=	0xf015
 	
 	.org	1
+
+TST	=	0x12345678
+
+	mvl	r0,TST
+	mvh	r0,TST
+	mvzl	r1,0xa5
+	putb	r0,r1,0
+	mvl	r0,TST
+	mvh	r0,TST
+	mvzl	r1,0xa5
+	putb	r0,r1,1
+	mvl	r0,TST
+	mvh	r0,TST
+	mvzl	r1,0xa5
+	putb	r0,r1,2
+	mvl	r0,TST
+	mvh	r0,TST
+	mvzl	r1,0xa5
+	putb	r0,r1,3
+	
 	mvzl	r0,s2
 	call	print
 	mvzl	r0,s1

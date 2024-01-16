@@ -578,6 +578,11 @@ $conds2= array(
     "GETB" =>array("icode"=>0x06010000, "params"=>array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
         "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    )),
+    // EXT 011P
+    "PUTB" =>array("icode"=>0x07010000, "params"=>array(
+        "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
+        "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
     ))
   );
 
