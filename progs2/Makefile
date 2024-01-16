@@ -18,7 +18,8 @@ all: pmonitor lib \
 	game \
 	bufout \
 	letest \
-	rndtest
+	rndtest \
+	strtest
 
 
 pmonitor:
@@ -49,6 +50,8 @@ ff: ff.p2h ff.asc ff.cdb
 game: game.p2h game.asc game.cdb
 
 bufout: bufout.p2h bufout.asc bufout.cdb
+
+strtest: strtest.p2h strtest.asc strtest.cdb
 
 letest: letest.p2h letest.asc letest.cdb
 
