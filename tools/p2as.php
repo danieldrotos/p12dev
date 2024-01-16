@@ -1263,6 +1263,64 @@ function proc_asm_line($l)
             return;
         }
 
+        else if (($W == "DP") || ($W == ".DP"))
+        {
+            $pl= preg_replace("/^.*[dD][pP][ \t]+/", "", $l);
+            debug("Param part of line: '$pl'");
+            if (!empty($pl) && ($pl[0]=="\""))
+            {
+                debug("Parsing pstring...");
+                $a= my_parse_string($pl);
+                $bidx= 0;
+                $dw= 0;
+                foreach ($a as $i=>$ch)
+                {
+                    $pv= ord($ch);
+                    $pv2= $pv << ($bidx * 8);
+                    $dw|= $pv2;
+                    debug( sprintf("PChar=$ch, pv=%02x pv2=%08x dw=%08x", $pv, $pv2, $dw) );
+                    if ((++$bidx) == 4)
+                    {
+                        $params= array();
+                        $params[]= ($sv= sprintf("0x%08x",$dw));
+                        mk_mem($addr);
+                        $mem[$addr]['src']= "dd\t$sv";
+                        $mem[$addr]['inst']= $insts["DD"];
+                        $mem[$addr]['pattern']= "n_";
+                        $mem[$addr]['params']= $params;
+                        debug( sprintf("mem[%x] Added pchar DP %08x",$addr,$dw) );
+                        $addr++;
+                        $dw= 0;
+                        $bidx= 0;
+                    }
+                }
+                if ($bidx != 0)
+                {
+                    $params= array();
+                    $params[]= ($sv= sprintf("0x%08x",$dw));
+                    mk_mem($addr);
+                    $mem[$addr]['src']= "dd\t$sv";
+                    $mem[$addr]['inst']= $insts["DD"];
+                    $mem[$addr]['pattern']= "n_";
+                    $mem[$addr]['params']= $params;
+                    debug( sprintf("mem[%x] Added pchar DP %08x",$addr,$dw) );
+                    $addr++;
+                }
+                $params= array();
+                $params[]= 0;
+                mk_mem($addr);
+                $mem[$addr]['src']= "dd\t0";
+                $mem[$addr]['inst']= $insts["DD"];
+                $mem[$addr]['pattern']= "n_";
+                $mem[$addr]['params']= $params;
+                debug( sprintf("mem[%x] Added pstring 0",$addr) );
+                $addr++;
+                return;
+            }
+            else
+                ddie("Parameter string of .dp is missing");
+        }
+        
         else if (($W == "SECTION") || ($W == ".SECTION") ||
                  startof($W, "SEG") || startof($W, ".SEG"))
         {

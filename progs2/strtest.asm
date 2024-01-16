@@ -57,7 +57,8 @@ s2:	.dd	0x6c6c6548
 	.dd	0x21646c72
 	.dd	0x0000000a
 	.dd	0
-
+s3:	.dp	"Hello World!\n"
+	
 	.seg	print_old
 print_old::
 	push	lr
