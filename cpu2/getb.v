@@ -17,4 +17,4 @@ module getb
 		  7'b0;
    assign res= {24'b0, g_byte};
    
-endmodule // getb_putb
+endmodule // getb

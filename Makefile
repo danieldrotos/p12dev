@@ -28,6 +28,7 @@ MODS		= defs hwconf \
 		      cpu2/reg2in \
 		      cpu2/rfm2 \
                       cpu2/getb \
+                      cpu2/putb \
 		    computer/gpio_out4 \
 		    computer/gpio_in \
 		    computer/timer \

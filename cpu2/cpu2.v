@@ -205,11 +205,21 @@ module cpu2
       .res(res_ext_getb)
       );
    
+   wire [WIDTH-1:0]	       res_ext_putb;
+   putb #(.WIDTH(WIDTH)) mod_ext_putb
+     (
+      .opd(opd),
+      .opb(opb),
+      .byte_idx(ic[15] ? ic[1:0] : opa[1:0]),
+      .res(res_ext_putb)
+      );
+   
    // Select data for write back
    assign wb_data= inst_alu      ? res_alu:
 		   inst_call     ? res_call:
 		   inst_ld       ? mr_data:
 		   inst_ext_getb ? res_ext_getb:
+		   inst_ext_putb ? res_ext_putb:
 		   inst_st?0:
 		   0;
    assign wb_address= inst_call?4'd15:
