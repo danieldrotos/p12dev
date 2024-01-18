@@ -1273,24 +1273,30 @@ function proc_asm_line($l)
                 $a= my_parse_string($pl);
                 $bidx= 0;
                 $dw= 0;
+                $ds= '';
                 foreach ($a as $i=>$ch)
                 {
                     $pv= ord($ch);
                     $pv2= $pv << ($bidx * 8);
                     $dw|= $pv2;
+                    if ($pv >= 32)
+                        $ds= $ch.$ds;
+                    else
+                        $ds= "\\".sprintf("%03o",$pv).$ds;
                     debug( sprintf("PChar=$ch, pv=%02x pv2=%08x dw=%08x", $pv, $pv2, $dw) );
                     if ((++$bidx) == 4)
                     {
                         $params= array();
                         $params[]= ($sv= sprintf("0x%08x",$dw));
                         mk_mem($addr);
-                        $mem[$addr]['src']= "dd\t$sv";
+                        $mem[$addr]['src']= "dd\t$sv\t; \"$ds\"";
                         $mem[$addr]['inst']= $insts["DD"];
                         $mem[$addr]['pattern']= "n_";
                         $mem[$addr]['params']= $params;
                         debug( sprintf("mem[%x] Added pchar DP %08x",$addr,$dw) );
                         $addr++;
                         $dw= 0;
+                        $ds= '';
                         $bidx= 0;
                     }
                 }
@@ -1299,7 +1305,7 @@ function proc_asm_line($l)
                     $params= array();
                     $params[]= ($sv= sprintf("0x%08x",$dw));
                     mk_mem($addr);
-                    $mem[$addr]['src']= "dd\t$sv";
+                    $mem[$addr]['src']= "dd\t$sv\t; \"$ds\"";
                     $mem[$addr]['inst']= $insts["DD"];
                     $mem[$addr]['pattern']= "n_";
                     $mem[$addr]['params']= $params;
