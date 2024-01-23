@@ -1,4 +1,4 @@
-PRJ		= .
+PRJ		= $(realpath ./)
 PMON		= $(PRJ)/pmon
 LIB		= $(PRJ)/lib
 
