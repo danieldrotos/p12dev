@@ -590,35 +590,39 @@ $conds= $conds1;
 $insts= $insts1;
   
 
-  if (!function_exists('random_bytes')) {
+if (!function_exists('random_bytes'))
+{
     function rand_bytes($len)
     {
-      $s= '';
-      for ($i=0; $i<$len; $i++)
-      {
-	$n= rand(0,255);
-	$c= chr($n);
-	$s.= $c;
-      }
-      return $s;
+        $s= '';
+        for ($i=0; $i<$len; $i++)
+        {
+            $n= rand(0,255);
+            $c= chr($n);
+            $s.= $c;
+        }
+        return $s;
     }
-  }
+        }
 
-  if (!function_exists('array_key_first')) {
+if (!function_exists('array_key_first'))
+{
     function array_key_first(array $arr) {
-      foreach($arr as $key => $unused) {
-        return $key;
-      }
-      return NULL;
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
     }
-  }
+        }
 
-  if( !function_exists('array_key_last') ) {
+if( !function_exists('array_key_last') )
+{
     function array_key_last(array $array) {
-      if( !empty($array) ) return key(array_slice($array, -1, 1, true));
+        if( !empty($array) ) return key(array_slice($array, -1, 1, true));
     }
-  }
-  
+        }
+
+
 function arri($a, $idx)
 {
     if (empty($a))         return '';
@@ -641,6 +645,7 @@ function devdeb($x)
     if ($DevDeb && $ddf !== false)
         fwrite($ddf, $x);
 }
+
 
 function ddie($error_msg, $exit_code= 1, $f= false, $l= false)
 {
