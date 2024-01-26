@@ -1011,12 +1011,13 @@ function skey_of($name, $inseg)
 }
 
 
-function define_symbol($name, $value, $type, $inseg_id, $pfin='', $plnr='')
+function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr='')
 {
-    global $syms, $fin, $lnr;
+    global $syms, $fin, $lnr, $segment;
     if ($name=='') return '';
     if ($pfin=='') $pfin= $fin;
     if ($plnr=='') $plnr= $lnr;
+    if ($inseg_id===false) $inseg_id= arri($segment, 'id');
     $skey= $inseg_id.$name;
     $es= arri($syms,$skey);
     if ($es != '')
@@ -1044,13 +1045,14 @@ function define_symbol($name, $value, $type, $inseg_id, $pfin='', $plnr='')
 }
 
 
-function extern_symbol($name, $inseg_id, $pfin='', $plnr='')
+function extern_symbol($name, $inseg_id=false, $pfin='', $plnr='')
 {
-    global $syms, $fin, $lnr;
+    global $syms, $fin, $lnr, $segment;
     if ($name=='') return '';
     if ($pfin=='') $pfin= $fin;
     if ($plnr=='') $plnr= $lnr;
-    $skey= $inseg_id.$name;
+    if ($inseg_id===false) $inseg_id= arri($segment, 'id');
+    $skey= $name;
     $es= arri($syms,$skey);
     if ($es != '')
     {
@@ -1067,10 +1069,10 @@ function extern_symbol($name, $inseg_id, $pfin='', $plnr='')
     $s= new_symbol($name, 0, 'S');
     $s['fin']= $pfin;
     $s['lnr']= $plnr;
-    $s['segid']= $inseg_id;
+    $s['segid']= ''; // must be global
     $s['defined']= false;
     $s['extern']= true;
-    $syms[$skey]= $s;
+    $syms[$name]= $s;
     return $skey;
 }
 
@@ -1142,7 +1144,7 @@ function proc_asm_line($l)
             mk_mem($addr);
             if ($commas > 1)
             {
-                $label= mk_symbol($n, $addr, "L");
+                $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 make_sym_global($n);
             }
@@ -1150,7 +1152,7 @@ function proc_asm_line($l)
             {
                 if (find_extern($n))
                     ddie("Extern symbol $n reused localy");
-                $label= mk_symbol($n, $addr, "L");
+                $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
             }
@@ -1205,7 +1207,7 @@ function proc_asm_line($l)
                 return;
             $val= intval($w,0);
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
-            mk_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
+            /*mk*/define_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             if ($W=="==")
                 make_sym_global($prew);
             else
@@ -1237,11 +1239,12 @@ function proc_asm_line($l)
             if (find_local($w))
                 ddie("Local symbol $w can not be extern");
             debug("Make symbol $w exist...");
-            $seg= $segment;
+            /*$seg= $segment;
             $segment= false;
             mk_symbol_exist($w, "X");
             $syms[$w]['extern']= true;
-            $segment= $seg;
+            $segment= $seg;*/
+            extern_symbol($w, '');
             return;
         }
         

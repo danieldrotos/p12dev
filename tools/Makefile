@@ -21,7 +21,7 @@ TEST3_LIBS_FN	= $(addprefix $(LIB)/,$(addsuffix .p2o,$(TEST3_LIBS)))
 
 STDLIB		= $(LIB)/plib.p2l
 
-test3: test3_byo.p2h test3_byl.p2h
+test3: test3_byo.p2h #test3_byl.p2h
 
 test3_byo.p2h: p2as.php test3.asm $(TEST3_LIBS_FN)
 	php p2as.php -l -dd -o test3_byo.p2h test3.asm $(TEST3_LIBS_FN)
