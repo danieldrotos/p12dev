@@ -863,8 +863,7 @@ function new_symbol($name, $value, $type)
         'lnr'   => $lnr,
         'segid' => '',
         'owner' => '',
-        'defined'=> true,
-        'extern'=> false,
+        'defined'=> true
     );
 }
 
@@ -942,7 +941,7 @@ function make_sym_global($w)
         debug("symbol $w is already exported");
         return; // alreay global
     }
-    if (is_array($sg) && is_array($sl) && !$sg['extern'])
+    if (is_array($sg) && is_array($sl))
         ddie("Redefinition of global symbol ($w)");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
@@ -971,18 +970,6 @@ function find_global($name)
     $s= arri($syms, $name);
     if (($s != '') &&
         (($s['segid'] == '') || ($s['segid'] === false)))
-        return true;
-    return false;
-}
-
-
-function find_extern($name)
-{
-    global $syms;
-    $s= arri($syms, $name);
-    if (($s != '') &&
-        (arri($s,'extern')!='') &&
-        ($s['extern'] == true))
         return true;
     return false;
 }
@@ -1022,10 +1009,6 @@ function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr=''
     $es= arri($syms,$skey);
     if ($es != '')
     {
-        if ($es['extern']!==false)
-        {
-            ddie("Redefinition of symbol $name", $pfin, $plnr);
-        }
         $es['type']= $type;
         $es['value']= $value;
         $es['extern']= false;
@@ -1041,38 +1024,6 @@ function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr=''
         $s['owner']= $inseg_id;
     }
     $syms[$skey]= $s;
-    return $skey;
-}
-
-
-function extern_symbol($name, $inseg_id=false, $pfin='', $plnr='')
-{
-    global $syms, $fin, $lnr, $segment;
-    if ($name=='') return '';
-    if ($pfin=='') $pfin= $fin;
-    if ($plnr=='') $plnr= $lnr;
-    if ($inseg_id===false) $inseg_id= arri($segment, 'id');
-    $skey= $name;
-    $es= arri($syms,$skey);
-    if ($es != '')
-    {
-        if ($es['extern']!==false)
-        {
-            return $skey;            
-        }
-        if ($es['extern'])
-        {
-            return $skey;
-        }
-        return $skey;
-    }
-    $s= new_symbol($name, 0, 'S');
-    $s['fin']= $pfin;
-    $s['lnr']= $plnr;
-    $s['segid']= ''; // must be global
-    $s['defined']= false;
-    $s['extern']= true;
-    $syms[$name]= $s;
     return $skey;
 }
 
@@ -1150,8 +1101,6 @@ function proc_asm_line($l)
             }
             else
             {
-                if (find_extern($n))
-                    ddie("Extern symbol $n reused localy");
                 $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
@@ -1231,6 +1180,7 @@ function proc_asm_line($l)
 
         else if (($W == ".EXTERN") || ($W == "EXTERN"))
         {
+            /*
             $w= strtok(" \t");
             if (($w!==false) && ($w[0]==';'))
                 return;
@@ -1239,12 +1189,8 @@ function proc_asm_line($l)
             if (find_local($w))
                 ddie("Local symbol $w can not be extern");
             debug("Make symbol $w exist...");
-            /*$seg= $segment;
-            $segment= false;
-            mk_symbol_exist($w, "X");
-            $syms[$w]['extern']= true;
-            $segment= $seg;*/
             extern_symbol($w, '');
+            */
             return;
         }
         
@@ -1655,8 +1601,6 @@ function proc_p2h_line($l)
         if ($owner == "s")
             $owner= $segid;
         debug(sprintf("Def $type from p2h: key=$key name=$name value=$value val=$val segid=$segid"));
-        if (($segid != '') && find_extern($name))
-            ddie("Extern symbol $name redefined as local");
         $s= arri($syms, $key);
         if (!is_array($s))
         {
@@ -1668,14 +1612,10 @@ function proc_p2h_line($l)
         else
         {
             debug("Importing sym by updating it $name");
-            if ($s['type']=="X")
-                $syms[$key]['type']= $type;
-            else
-                ddie("Redefinition of $name", 1);
+            ddie("Redefinition of $name", 1);
         }
         $syms[$key]['type']= $type;
         $syms[$key]['name']= $name;
-        $syms[$key]['extern']= arri($syms[$key], 'extern');
         if ($type == "=")
         {
             $syms[$key]['defined']= true;
@@ -1726,8 +1666,6 @@ function proc_p2h_line($l)
         $last= last_ok("//N record ({$w2}) without prev //C");
         $w3= strtok(" \n");
         debug("Symbol $w2 definition place in $fin in seg $w3 val=$last_code_at");
-        if (find_extern($w2))
-            ddie("Extern symbol $w can not be local");
         set_symbol($w3.$w2, $last_code_at, $w3);
         $mem[$last_code_at]['tags'][$w2]= $w2;
     }
@@ -1957,8 +1895,6 @@ function param_value($p, $fin, $lnr)
         }
         else
         {
-            if (!$s['defined'] && !$s['extern'])
-                ddie("Undefined symbol {$p} is not extern", 1, $fin, $lnr);
         }
         return $s['value'];
     }
