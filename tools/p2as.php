@@ -1011,6 +1011,70 @@ function skey_of($name, $inseg)
 }
 
 
+function define_symbol($name, $value, $type, $inseg_id, $pfin='', $plnr='')
+{
+    global $syms, $fin, $lnr;
+    if ($name=='') return '';
+    if ($pfin=='') $pfin= $fin;
+    if ($plnr=='') $plnr= $lnr;
+    $skey= $inseg_id.$name;
+    $es= arri($syms,$skey);
+    if ($es != '')
+    {
+        if ($es['extern']!==false)
+        {
+            ddie("Redefinition of symbol $name", $pfin, $plnr);
+        }
+        $es['type']= $type;
+        $es['value']= $value;
+        $es['extern']= false;
+        $es['defined']= true;
+        return $skey;
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $pfin;
+    $s['lnr']= $plnr;
+    if ($inseg_id!='')
+    {
+        $s['segid']= $inseg_id;
+        $s['owner']= $inseg_id;
+    }
+    $syms[$skey]= $s;
+    return $skey;
+}
+
+
+function extern_symbol($name, $inseg_id, $pfin='', $plnr='')
+{
+    global $syms, $fin, $lnr;
+    if ($name=='') return '';
+    if ($pfin=='') $pfin= $fin;
+    if ($plnr=='') $plnr= $lnr;
+    $skey= $inseg_id.$name;
+    $es= arri($syms,$skey);
+    if ($es != '')
+    {
+        if ($es['extern']!==false)
+        {
+            return $skey;            
+        }
+        if ($es['extern'])
+        {
+            return $skey;
+        }
+        return $skey;
+    }
+    $s= new_symbol($name, 0, 'S');
+    $s['fin']= $pfin;
+    $s['lnr']= $plnr;
+    $s['segid']= $inseg_id;
+    $s['defined']= false;
+    $s['extern']= true;
+    $syms[$skey]= $s;
+    return $skey;
+}
+
+
 function mk_mem($addr, $icode=0, $error= false)
 {
     global $mem, $fin, $lnr, $segment;
