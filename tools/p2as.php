@@ -1550,7 +1550,7 @@ function proc_p2h_line($l)
     else if ($W1 == "//T")
     {
         // Segment definition
-        //T idstring name noload=0|1 abs=0|1
+        //T segmentid name noload=0|1 abs=0|1
         $name= strtok(" \t");
         $w= strtok(" \t");
         $noload= 0;
@@ -1585,7 +1585,7 @@ function proc_p2h_line($l)
     else if (($W1 == "//L") || ($W1 == "//=") || ($W1 == "//S"))
     {
         // Symbol or label
-        //L key name value owner segid
+        //L key name hexvalue owner segmentid
         $type= $W1[2];
         $key= $w2;
         $name= strtok(" \t");
@@ -1675,7 +1675,7 @@ function proc_p2h_line($l)
     else if ($W1 == "//R")
     {
         // Relocation info about prev code record
-        //R hexaddress mode symbol value
+        //R hexaddress mode symbol hexvalue
         $a= 0 + intval($w2, 16);
         $mode= strtok(" \n");
         $sym= strtok(" \n");
@@ -1724,15 +1724,19 @@ function proc_p2h_line($l)
     else if ($W2 == "//C")
     {
         // Code record
-        // icode //C address source code
-        // 02490000 //C 00016 shr	r4		; m>>= 1
+        // icode //C address lnr source code
+        // 02490000 //C 00016    56 shr	r4		; m>>= 1
         // 0      7 9 11
         //              13  17
-        //                    19
+        //                    19  23
+        //                          25
         $w3= strtok(" \t");
         $v= intval($w1, 16);
         mk_mem($addr, $v);
-        $mem[$addr]['src']= substr($org, 19);
+        $w4= strtok(" \t");
+        $lnr= 0+$w4;
+        $mem[$addr]['lnr']= $lnr;
+        $mem[$addr]['src']= substr($org, 25);
         $last_code_at= $addr++;
         debug(sprintf("Last //C record at %08x\n", $last_code_at));
     }
@@ -2362,7 +2366,7 @@ foreach ($mem as $a => $m)
           debug ($o= sprintf("//; %s", $m['label']['name']) );
           $hex.= $o."\n";
           }*/
-        debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m['src']) );
+        debug( $o= sprintf("%08x //%s %05x %5d %s", $m['icode'], $m['cell_type'], $a, $m['lnr'], $m['src']) );
         $hex.= $o."\n";
         if ($m['error'] != false)
         {
