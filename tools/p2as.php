@@ -1714,6 +1714,13 @@ function proc_p2h_line($l)
                 $addr+= $v;
         }
     }
+
+    else if ($W1 == "//F")
+    {
+        // File name of source
+        //F filename
+        $fin= $w2;
+    }
     
     else if ($W1 == "//H")
     {
@@ -1726,9 +1733,9 @@ function proc_p2h_line($l)
         // Code record
         // icode //C address lnr source code
         // 02490000 //C 00016    56 shr	r4		; m>>= 1
-        // 0      7 9 11
-        //              13  17
-        //                    19  23
+        // 0      7 9 11|   | |   | |
+        //              13  17|   | |
+        //                    19  23|
         //                          25
         $w3= strtok(" \t");
         $v= intval($w1, 16);
@@ -2320,12 +2327,19 @@ $hex.= "//; CODE\n";
 $p= -1;
 $checksum= 0;
 $prev_segment_id= '';
+$prev_fin= '';
 debug( $o= sprintf("//P -") );
 $hex.= $o."\n";
 foreach ($mem as $a => $m)
 {
     if (!is_array($m))
         continue;
+    if ($m['fin'] != $prev_fin)
+    {
+        debug( $o= sprintf("//F %s", $m['fin']) );
+        $hex.= $o."\n";
+        $prev_fin= $m['fin'];
+    }
     $segment= arri($segs, $m['segid']);
     if ($segment == '')
     {

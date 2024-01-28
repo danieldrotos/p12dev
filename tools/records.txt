@@ -2,15 +2,17 @@
 //T segmentid name noload=0|1 abs=0|1
 //L key name hexvalue owner segmentid
 //P -
-//P id name
+//P segmentid name
 //G name
 //N name segmentid
 //R hexaddress mode symbol hexvalue
 //I hexaddress mode hexvalue
 //+ hexvalue
+//F filename
 //H hexvalue
 icode //C hexaddress declnr source code
 //E
+//;
 
 
 
@@ -54,6 +56,11 @@ Immediate info
 //I hexaddress mode hexvalue
 
 
+Filename of source
+
+//F filename
+
+
 Skip defined by .ds
 
 //+ hexvalue
@@ -72,3 +79,8 @@ icode //C hexaddress declnr source...
 End record
 
 //E
+
+
+Comment
+
+//; comment
