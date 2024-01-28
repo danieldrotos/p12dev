@@ -1605,7 +1605,9 @@ function proc_p2h_line($l)
         if (!is_array($s))
         {
             debug("Importing sym by making it $name");
-            mk_symbol(/*$segid.*/$name, $val, $type);
+            //mk_symbol(/*$segid.*/$name, $val, $type);
+            $syms[$key]= new_symbol($name, $val, $type);
+            //$syms[$key]= $segid;
             if ($type == "L")
                 $syms[$key]['defined']= false;
         }
@@ -1614,12 +1616,12 @@ function proc_p2h_line($l)
             debug("Importing sym by updating it $name");
             ddie("Redefinition of $name", 1);
         }
-        $syms[$key]['type']= $type;
-        $syms[$key]['name']= $name;
+        //$syms[$key]['type']= $type;
+        //$syms[$key]['name']= $name;
         if ($type == "=")
         {
             $syms[$key]['defined']= true;
-            $syms[$key]['value']= $val;
+            //$syms[$key]['value']= $val;
         }
         if ($segid != '')
         {
@@ -1898,7 +1900,8 @@ function param_value($p, $fin, $lnr)
         }
         return $s['value'];
     }
-    ddie("Symbol not found: {$p} as {$skey}");
+    if (!$conly)
+        ddie("Symbol not found: {$p} as {$skey}");
     return 0;
 }
 
