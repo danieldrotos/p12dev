@@ -150,7 +150,7 @@ itt:	nop
 	
 	db	'H','e','l','l','o',' ',0
 	dw	1,-1,'a'
-;	db	"Hello \"World\"!" ;
+	db	"Hello \"World\"!" ;
 	dd	0xdeadbeef
 
 	dd	"ABC"
