@@ -652,7 +652,7 @@ function ddie($error_msg, $exit_code= 1, $f= false, $l= false)
     global $error, $fin, $lnr;
     if ($f === false) $f= $fin;
     if ($l === false) $l= $lnr;
-    $error= "{$fin}:{$lnr}: {$error_msg}";
+    $error= "{$f}:{$l}: {$error_msg}";
     debug("Error: $error");
     echo $error."\n";
     exit($exit_code);
@@ -1032,10 +1032,13 @@ function mk_mem($addr, $icode=0, $error= false)
 {
     global $mem, $fin, $lnr, $segment;
     $m= arri($mem, $addr);
+    debug("mk_mem(addr=$addr fin=$fin lnr=$lnr)");
     if ($m !== '')
     {
         if ($mem[$addr]['icode']==0)
             $mem[$addr]['icode']= $icode;
+        $mem[$addr]['lnr']= $lnr;
+        debug("mem[{$addr}] updated");
         return;
     }
     $mem[$addr]= array();
@@ -1086,7 +1089,7 @@ function proc_asm_line($l)
     while ($w !== false)
     {
         $W= strtoupper($w);
-        debug("proc_asm_line; w=$w");
+        debug("proc_asm_line; lnr=$lnr w=$w");
         
         if (($n= is_label($w)) !== false)
         {
@@ -1407,8 +1410,10 @@ function proc_asm_line($l)
         else if (($inst= is_inst($W)) !== false)
         {
             $icode= $icode | $inst['icode'];
-            debug("proc_asm_line; INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
+            debug("proc_asm_line; lnr=$lnr INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
             mk_mem($addr, $icode);
+            debug("proc_asm_line; lnr=$lnr");
+            debug("mem[{$addr}].lnr={$mem[$addr]['lnr']}");
             $mem[$addr]['src']= $org;
             $mem[$addr]['inst']= $inst;
             $o= sprintf("%05x %08x (%s)", $addr, $icode, $mem[$addr]['segid']);
@@ -1911,7 +1916,10 @@ function param_value($p, $fin, $lnr)
         return $s['value'];
     }
     if (!$conly)
-        ddie("Symbol not found: {$p} as {$skey}");
+    {
+        debug("fin=$fin lnr=$lnr");
+        ddie("Symbol not found: {$p} as {$skey}", 1, $fin, $lnr);
+    }
     return 0;
 }
 
