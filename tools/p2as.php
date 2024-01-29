@@ -2015,7 +2015,6 @@ function proc_relocs(&$m)
 
 // PHASE 1
 ///////////////////////////////////////////////////////////////////////
-
 // Load source files and do PHASE 1
 foreach ($fina as $fin)
 {
