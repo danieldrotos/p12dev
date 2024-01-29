@@ -10,7 +10,7 @@ pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc pmon_chip.asc
 #	grep '^L' pmon.cdb|grep the_end|awk '-F:' '{print $$NF}'
 
 pmon.p2h: pmon.asm fn_dtoi.asm fn_isdigit.asm eof_pmon.asm
-	php $(TOOLS)/p2as.php -l -o $@ $^
+	php $(TOOLS)/p2as.php -l -k -o $@ $^
 
 pmon.cc: pmon.p2h
 	php $(TOOLS)/hex2c.php $< >$@

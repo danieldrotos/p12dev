@@ -24,7 +24,7 @@ $first_fin= '';
 $src= '';
 $fina= array();
 $conly= false;
-$keep= true;//false;
+$keep= false;
 $out_type= "exe"; // "obj" // "lib"
 
 if (isset($argv[0]))
@@ -590,35 +590,39 @@ $conds= $conds1;
 $insts= $insts1;
   
 
-  if (!function_exists('random_bytes')) {
+if (!function_exists('random_bytes'))
+{
     function rand_bytes($len)
     {
-      $s= '';
-      for ($i=0; $i<$len; $i++)
-      {
-	$n= rand(0,255);
-	$c= chr($n);
-	$s.= $c;
-      }
-      return $s;
+        $s= '';
+        for ($i=0; $i<$len; $i++)
+        {
+            $n= rand(0,255);
+            $c= chr($n);
+            $s.= $c;
+        }
+        return $s;
     }
-  }
+        }
 
-  if (!function_exists('array_key_first')) {
+if (!function_exists('array_key_first'))
+{
     function array_key_first(array $arr) {
-      foreach($arr as $key => $unused) {
-        return $key;
-      }
-      return NULL;
+        foreach($arr as $key => $unused) {
+            return $key;
+        }
+        return NULL;
     }
-  }
+        }
 
-  if( !function_exists('array_key_last') ) {
+if( !function_exists('array_key_last') )
+{
     function array_key_last(array $array) {
-      if( !empty($array) ) return key(array_slice($array, -1, 1, true));
+        if( !empty($array) ) return key(array_slice($array, -1, 1, true));
     }
-  }
-  
+        }
+
+
 function arri($a, $idx)
 {
     if (empty($a))         return '';
@@ -641,6 +645,7 @@ function devdeb($x)
     if ($DevDeb && $ddf !== false)
         fwrite($ddf, $x);
 }
+
 
 function ddie($error_msg, $exit_code= 1, $f= false, $l= false)
 {
@@ -858,8 +863,7 @@ function new_symbol($name, $value, $type)
         'lnr'   => $lnr,
         'segid' => '',
         'owner' => '',
-        'defined'=> true,
-        'extern'=> false,
+        'defined'=> true
     );
 }
 
@@ -937,7 +941,7 @@ function make_sym_global($w)
         debug("symbol $w is already exported");
         return; // alreay global
     }
-    if (is_array($sg) && is_array($sl) && !$sg['extern'])
+    if (is_array($sg) && is_array($sl))
         ddie("Redefinition of global symbol ($w)");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
@@ -971,18 +975,6 @@ function find_global($name)
 }
 
 
-function find_extern($name)
-{
-    global $syms;
-    $s= arri($syms, $name);
-    if (($s != '') &&
-        (arri($s,'extern')!='') &&
-        ($s['extern'] == true))
-        return true;
-    return false;
-}
-
-
 function skey_of($name, $inseg)
 {
     global $syms;
@@ -1003,6 +995,36 @@ function skey_of($name, $inseg)
         if ($s != '') return $name;
     }
     return '';
+}
+
+
+function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr='')
+{
+    global $syms, $fin, $lnr, $segment;
+    if ($name=='') return '';
+    if ($pfin=='') $pfin= $fin;
+    if ($plnr=='') $plnr= $lnr;
+    if ($inseg_id===false) $inseg_id= arri($segment, 'id');
+    $skey= $inseg_id.$name;
+    $es= arri($syms,$skey);
+    if ($es != '')
+    {
+        $es['type']= $type;
+        $es['value']= $value;
+        $es['extern']= false;
+        $es['defined']= true;
+        return $skey;
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $pfin;
+    $s['lnr']= $plnr;
+    if ($inseg_id!='')
+    {
+        $s['segid']= $inseg_id;
+        $s['owner']= $inseg_id;
+    }
+    $syms[$skey]= $s;
+    return $skey;
 }
 
 
@@ -1073,15 +1095,13 @@ function proc_asm_line($l)
             mk_mem($addr);
             if ($commas > 1)
             {
-                $label= mk_symbol($n, $addr, "L");
+                $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 make_sym_global($n);
             }
             else
             {
-                if (find_extern($n))
-                    ddie("Extern symbol $n reused localy");
-                $label= mk_symbol($n, $addr, "L");
+                $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
             }
@@ -1136,7 +1156,7 @@ function proc_asm_line($l)
                 return;
             $val= intval($w,0);
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
-            mk_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
+            /*mk*/define_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             if ($W=="==")
                 make_sym_global($prew);
             else
@@ -1160,6 +1180,7 @@ function proc_asm_line($l)
 
         else if (($W == ".EXTERN") || ($W == "EXTERN"))
         {
+            /*
             $w= strtok(" \t");
             if (($w!==false) && ($w[0]==';'))
                 return;
@@ -1168,11 +1189,8 @@ function proc_asm_line($l)
             if (find_local($w))
                 ddie("Local symbol $w can not be extern");
             debug("Make symbol $w exist...");
-            $seg= $segment;
-            $segment= false;
-            mk_symbol_exist($w, "X");
-            $syms[$w]['extern']= true;
-            $segment= $seg;
+            extern_symbol($w, '');
+            */
             return;
         }
         
@@ -1532,7 +1550,7 @@ function proc_p2h_line($l)
     else if ($W1 == "//T")
     {
         // Segment definition
-        //T idstring name noload=0|1 abs=0|1
+        //T segmentid name noload=0|1 abs=0|1
         $name= strtok(" \t");
         $w= strtok(" \t");
         $noload= 0;
@@ -1567,7 +1585,7 @@ function proc_p2h_line($l)
     else if (($W1 == "//L") || ($W1 == "//=") || ($W1 == "//S"))
     {
         // Symbol or label
-        //L key name value owner segid
+        //L key name hexvalue owner segmentid
         $type= $W1[2];
         $key= $w2;
         $name= strtok(" \t");
@@ -1583,31 +1601,27 @@ function proc_p2h_line($l)
         if ($owner == "s")
             $owner= $segid;
         debug(sprintf("Def $type from p2h: key=$key name=$name value=$value val=$val segid=$segid"));
-        if (($segid != '') && find_extern($name))
-            ddie("Extern symbol $name redefined as local");
         $s= arri($syms, $key);
         if (!is_array($s))
         {
             debug("Importing sym by making it $name");
-            mk_symbol(/*$segid.*/$name, $val, $type);
+            //mk_symbol(/*$segid.*/$name, $val, $type);
+            $syms[$key]= new_symbol($name, $val, $type);
+            //$syms[$key]= $segid;
             if ($type == "L")
                 $syms[$key]['defined']= false;
         }
         else
         {
             debug("Importing sym by updating it $name");
-            if ($s['type']=="X")
-                $syms[$key]['type']= $type;
-            else
-                ddie("Redefinition of $name", 1);
+            ddie("Redefinition of $name", 1);
         }
-        $syms[$key]['type']= $type;
-        $syms[$key]['name']= $name;
-        $syms[$key]['extern']= arri($syms[$key], 'extern');
+        //$syms[$key]['type']= $type;
+        //$syms[$key]['name']= $name;
         if ($type == "=")
         {
             $syms[$key]['defined']= true;
-            $syms[$key]['value']= $val;
+            //$syms[$key]['value']= $val;
         }
         if ($segid != '')
         {
@@ -1654,8 +1668,6 @@ function proc_p2h_line($l)
         $last= last_ok("//N record ({$w2}) without prev //C");
         $w3= strtok(" \n");
         debug("Symbol $w2 definition place in $fin in seg $w3 val=$last_code_at");
-        if (find_extern($w2))
-            ddie("Extern symbol $w can not be local");
         set_symbol($w3.$w2, $last_code_at, $w3);
         $mem[$last_code_at]['tags'][$w2]= $w2;
     }
@@ -1663,7 +1675,7 @@ function proc_p2h_line($l)
     else if ($W1 == "//R")
     {
         // Relocation info about prev code record
-        //R hexaddress mode symbol value
+        //R hexaddress mode symbol hexvalue
         $a= 0 + intval($w2, 16);
         $mode= strtok(" \n");
         $sym= strtok(" \n");
@@ -1681,7 +1693,7 @@ function proc_p2h_line($l)
         //I hexaddress mode hexvalue
         $mode= strtok(" \t");
         $v= 0 + intval(strtok(" \t"), 16);
-        $last= last_ok("//I without perv //C");
+        $last= last_ok("//I without prev //C");
         $mem[$last_code_at]['immediate']= array('mode'=>$mode,
                                                 'value'=>$v);
     }
@@ -1691,16 +1703,22 @@ function proc_p2h_line($l)
         // Skip defined by .ds
         //+ hexvalue
         $v= 0 + intval($w2, 16);
-        mk_mem($addr, 0);
-        $mem[$addr]['skip']= $v;
-        $last_code_at= $addr;
-        debug(sprintf("Skip //+ record at %08x by %x\n", $addr, $v));
+        $last= last_ok("//+ without prev //C");
+        $mem[$last_code_at]['skip']= $v;
+        debug(sprintf("Skip //+ record at %08x by %x\n", $last_code_at, $v));
         if ($v > 0)
         {
             $v--;
             if ($v > 0)
                 $addr+= $v;
         }
+    }
+
+    else if ($W1 == "//F")
+    {
+        // File name of source
+        //F filename
+        $fin= $w2;
     }
     
     else if ($W1 == "//H")
@@ -1712,15 +1730,19 @@ function proc_p2h_line($l)
     else if ($W2 == "//C")
     {
         // Code record
-        // icode //C address source code
-        // 02490000 //C 00016 shr	r4		; m>>= 1
-        // 0      7 9 11
-        //              13  17
-        //                    19
+        // icode //C address lnr source code
+        // 02490000 //C 00016    56 shr	r4		; m>>= 1
+        // 0      7 9 11|   | |   | |
+        //              13  17|   | |
+        //                    19  23|
+        //                          25
         $w3= strtok(" \t");
         $v= intval($w1, 16);
         mk_mem($addr, $v);
-        $mem[$addr]['src']= substr($org, 19);
+        $w4= strtok(" \t");
+        $lnr= 0+$w4;
+        $mem[$addr]['lnr']= $lnr;
+        $mem[$addr]['src']= substr($org, 25);
         $last_code_at= $addr++;
         debug(sprintf("Last //C record at %08x\n", $last_code_at));
     }
@@ -1885,12 +1907,11 @@ function param_value($p, $fin, $lnr)
         }
         else
         {
-            if (!$s['defined'] && !$s['extern'])
-                ddie("Undefined symbol {$p} is not extern", 1, $fin, $lnr);
         }
         return $s['value'];
     }
-    ddie("Symbol not found: {$p} as {$skey}");
+    if (!$conly)
+        ddie("Symbol not found: {$p} as {$skey}");
     return 0;
 }
 
@@ -2119,7 +2140,7 @@ if ($unrefed && !$conly && !$keep)
         if (($m['segid'] == '') ||
             ($segs[$m['segid']]['refed']))
         {
-            debug("Copy {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+            debug(sprintf("Copy 0x%x/{$m['skip']} from '{$m['segid']}' at 0x%x", $m['address'], $da));
             if ($da != $m['address'])
             {
                 debug("Re-location needed tags=".print_r($m['tags'],true));
@@ -2130,8 +2151,8 @@ if ($unrefed && !$conly && !$keep)
                     {
                         debug("Sym $t has key ".print_r($skey,true));
                         $s= $syms[$skey];
-                        debug("Re-locate skey=$skey '{$s['name']}' from {$s['value']} to $da");
-                        //$syms[$skey]['value']= $da;
+                        debug(sprintf("Re-locate skey=$skey '{$s['name']}' from 0x%x to 0x%x", $s['value'], $da));
+                        $syms[$skey]['value']= $da;
                     }
                     else
                         debug("Warning: No sym for $t");
@@ -2144,7 +2165,7 @@ if ($unrefed && !$conly && !$keep)
                 $da+= $m['skip']-1;
         }
         else
-            debug("Skip {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+            debug(sprintf("Skip 0x%x/{$m['skip']} from '{$m['segid']}' at 0x%x", $m['address'], $da));
     }
     //debug("MEM_WITH_SKIPPED_SEGS=".print_r($newmem,true));
     $corg= count($mem);
@@ -2305,12 +2326,19 @@ $hex.= "//; CODE\n";
 $p= -1;
 $checksum= 0;
 $prev_segment_id= '';
+$prev_fin= '';
 debug( $o= sprintf("//P -") );
 $hex.= $o."\n";
 foreach ($mem as $a => $m)
 {
     if (!is_array($m))
         continue;
+    if ($m['fin'] != $prev_fin)
+    {
+        debug( $o= sprintf("//F %s", $m['fin']) );
+        $hex.= $o."\n";
+        $prev_fin= $m['fin'];
+    }
     $segment= arri($segs, $m['segid']);
     if ($segment == '')
     {
@@ -2351,7 +2379,7 @@ foreach ($mem as $a => $m)
           debug ($o= sprintf("//; %s", $m['label']['name']) );
           $hex.= $o."\n";
           }*/
-        debug( $o= sprintf("%08x //%s %05x %s", $m['icode'], $m['cell_type'], $a, $m['src']) );
+        debug( $o= sprintf("%08x //%s %05x %5d %s", $m['icode'], $m['cell_type'], $a, $m['lnr'], $m['src']) );
         $hex.= $o."\n";
         if ($m['error'] != false)
         {
