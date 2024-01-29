@@ -44,6 +44,7 @@ div_ret:
 	pop	pc
 ;	ret
 
+div_space::
 	.ds	2
 	.dd	0x55aa
 	

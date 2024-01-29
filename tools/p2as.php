@@ -24,7 +24,7 @@ $first_fin= '';
 $src= '';
 $fina= array();
 $conly= false;
-$keep= true;//false;
+$keep= false;
 $out_type= "exe"; // "obj" // "lib"
 
 if (isset($argv[0]))
@@ -1693,7 +1693,7 @@ function proc_p2h_line($l)
         //I hexaddress mode hexvalue
         $mode= strtok(" \t");
         $v= 0 + intval(strtok(" \t"), 16);
-        $last= last_ok("//I without perv //C");
+        $last= last_ok("//I without prev //C");
         $mem[$last_code_at]['immediate']= array('mode'=>$mode,
                                                 'value'=>$v);
     }
@@ -1703,10 +1703,9 @@ function proc_p2h_line($l)
         // Skip defined by .ds
         //+ hexvalue
         $v= 0 + intval($w2, 16);
-        mk_mem($addr, 0);
-        $mem[$addr]['skip']= $v;
-        $last_code_at= $addr;
-        debug(sprintf("Skip //+ record at %08x by %x\n", $addr, $v));
+        $last= last_ok("//+ without prev //C");
+        $mem[$last_code_at]['skip']= $v;
+        debug(sprintf("Skip //+ record at %08x by %x\n", $last_code_at, $v));
         if ($v > 0)
         {
             $v--;
@@ -2141,7 +2140,7 @@ if ($unrefed && !$conly && !$keep)
         if (($m['segid'] == '') ||
             ($segs[$m['segid']]['refed']))
         {
-            debug("Copy {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+            debug(sprintf("Copy 0x%x/{$m['skip']} from '{$m['segid']}' at 0x%x", $m['address'], $da));
             if ($da != $m['address'])
             {
                 debug("Re-location needed tags=".print_r($m['tags'],true));
@@ -2152,8 +2151,8 @@ if ($unrefed && !$conly && !$keep)
                     {
                         debug("Sym $t has key ".print_r($skey,true));
                         $s= $syms[$skey];
-                        debug("Re-locate skey=$skey '{$s['name']}' from {$s['value']} to $da");
-                        //$syms[$skey]['value']= $da;
+                        debug(sprintf("Re-locate skey=$skey '{$s['name']}' from 0x%x to 0x%x", $s['value'], $da));
+                        $syms[$skey]['value']= $da;
                     }
                     else
                         debug("Warning: No sym for $t");
@@ -2166,7 +2165,7 @@ if ($unrefed && !$conly && !$keep)
                 $da+= $m['skip']-1;
         }
         else
-            debug("Skip {$m['address']}/{$m['skip']} from '{$m['segid']}' at $da");
+            debug(sprintf("Skip 0x%x/{$m['skip']} from '{$m['segid']}' at 0x%x", $m['address'], $da));
     }
     //debug("MEM_WITH_SKIPPED_SEGS=".print_r($newmem,true));
     $corg= count($mem);
