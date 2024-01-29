@@ -25,7 +25,8 @@ str:	db	"_;_a\"b\"_c\n_"
 	db	-55
 	dw	-55
 	dd	-55
-
+	.ds	1
+	
 	segment	a
 	sym_in_a = 12
 label_in_a:

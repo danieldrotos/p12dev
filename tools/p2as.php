@@ -1215,6 +1215,7 @@ function proc_asm_line($l)
             if (($w!==false) && ($w[0]==';'))
                 return;
             $x= 0 + intval($w,0);
+            if ($x < 1) ddie("Space size must be greater than 0");
             mk_mem($addr);
             $mem[$addr]['src']= $org;
             $mem[$addr]['skip']= $x;
