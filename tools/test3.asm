@@ -1,9 +1,6 @@
 	.proc	p2
 
 	org	1
-	.extern	div
-	.extern	rand
-	.extern	rand_max
 	
 	mvzl	sp,stack
 	
@@ -20,7 +17,6 @@ main_cycle:
 stack::	.ds	1
 	.ends
 	
-	.extern	text
 	.seg	tseg
 text	==	11
 	.ends

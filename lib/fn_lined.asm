@@ -1,10 +1,5 @@
 	.proc	p2
 
-	.extern	_check_uart
-	.extern	_read
-	.extern	_pes
-	.extern	_putchar
-	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
 	;; OUT: -

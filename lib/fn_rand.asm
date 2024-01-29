@@ -1,7 +1,5 @@
 	.proc	p2
 
-	.extern	divabs
-	
 	;; Implementation of 32 bit xorshift algorithm by George Marsaglia
 	;; https://www.jstatsoft.org/article/view/v008i14
 	;; DOI: 10.18637/jss.v008.i14
@@ -67,7 +65,7 @@ rand_max::
 	call	rand
 	mov	r0,r1
 	mov	r1,r2
-	call	divabs
+	call	div
 	mov	r1,r3
 	
 	pop	r3
