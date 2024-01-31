@@ -19,7 +19,8 @@ all: pmonitor lib \
 	bufout \
 	letest \
 	rndtest \
-	strtest
+	strtest \
+	dtoitest
 
 
 pmonitor:
@@ -66,6 +67,13 @@ rndtest.p2h: rnd_test.asm \
 		$(LIB)/fn_pmon.p2o
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
+
+dtoitest: dtoitest.p2h dtoitest.asc dtoitest.cdb
+
+dtoitest.p2h: dtoi_test.asm \
+		$(LIB)/fn_isdigit.p2o \
+		$(LIB)/fn_dtoi.p2o
+	php $(TOOLS)/p2as.php -l -o $@ $^
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

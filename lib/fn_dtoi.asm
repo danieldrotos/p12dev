@@ -20,7 +20,7 @@ dtoi_cyc:
 	ld	r0,r3+,r2	; pick a char
 	sz	r0		; end of string?
 	jz	dtoi_true	; normal exit
-	call	isdigit	; check ascii char
+	call	isdigit		; check ascii char
 	jnc	dtoi_false	; exit if not a number
 	sub	r0,'0'		; convert char to number
 	mul	r1,10		; shift tmp

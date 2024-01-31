@@ -26,8 +26,8 @@ the_begin:
 _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	ret
-_f003:	jmp	isdigit
-_f004:	jmp	dtoi
+_f003:	ret
+_f004:	ret
 _f005:	jmp	cold_start
 _f006:	jmp	strchr
 _f007:	jmp	streq

@@ -9,7 +9,9 @@ OBJECTS		= \
 		fn_io.p2o \
 		fn_lined.p2o \
 		fn_pmon.p2o \
-		fn_rand.p2o
+		fn_rand.p2o \
+		fn_dtoi.p2o \
+		fn_isdigit.p2o
 
 all: lib
 
