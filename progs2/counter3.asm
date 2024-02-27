@@ -1,6 +1,7 @@
 	.proc	P2
 	
 PORTA	equ	0xff00
+PORTB	equ	0xff01
 btn	equ	0xff20
 	
 callin		=	0xf000
@@ -62,6 +63,7 @@ real_start:
 	C1 ld	r1,btn
 	C1 st	r1,last_btn
 	st	r10,PORTA
+	st	r10,PORTB
 	mov	r1,r10
 	mov	r2,r10
 	call	pesf
