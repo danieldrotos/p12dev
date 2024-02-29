@@ -56,9 +56,9 @@ module n4_top
    wire [3:0] test_out_select;
    
    assign clk_select     = switches[15:12];
-   assign display_select = switches[11:8];
-   assign test_out_select= switches[7:4];
-   assign test_reg_select= switches[3:0];
+   assign test_out_select= switches[11: 8];
+   assign display_select = switches[ 7: 4];
+   assign test_reg_select= switches[ 3: 0];
    
    assign f100MHz= CLK;
    clk_gen clock_generator

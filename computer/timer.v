@@ -132,6 +132,7 @@ module timer
 		  case (addr)
 		    REG_CTRL: control<= din;
 		    REG_AR  : ar<= din;
+		    default: ;
 		  endcase
 	       end
 	     else //if (cs & ~wen)

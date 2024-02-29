@@ -67,7 +67,9 @@ module cpu2
    wire 		       flag_wb_en;
    wire 		       alu_flag_en;
    wire 		       alu_wb_en;
-   
+   wire 		       inst_alu;
+   wire			       inst_ext_gpb;
+
    regm #(.WIDTH(8)) reg_flag
      (
       .clk(clk),
@@ -127,12 +129,10 @@ module cpu2
    wire 		       inst_ld_ext= inst_ext_mem & ic[24];
    wire			       inst_ext_getb= inst_ext_gpb & ~ic[24];
    wire			       inst_ext_putb= inst_ext_gpb & ic[24];
-   wire 		       inst_alu;
    wire 		       inst_ld;
    wire 		       inst_st;
    wire 		       inst_mem;
    wire 		       inst_ext_mem;
-   wire			       inst_ext_gpb;
    wire 		       inst_br;
    wire 		       inst_wb;
    assign inst_ld= inst_ld_r | inst_ld_i | inst_ld_ext;

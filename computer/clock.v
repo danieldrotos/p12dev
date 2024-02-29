@@ -65,10 +65,14 @@ module clock
    genvar	   i;
    generate
       for (i=2;i<16;i=i+1)
-	always @(posedge clk)
-	  if (reset) bcnt[i]<= 0;
-	  else if (reached & en & |bcnt[i]) bcnt[i]<= bcnt[i]-1;
-	  else if (cs & wen & sel[i])       bcnt[i]<= din;
+        begin
+          always @(posedge clk)
+	    begin
+	      if (reset) bcnt[i]<= 0;
+	      else if (reached & en & |bcnt[i]) bcnt[i]<= bcnt[i]-1;
+	      else if (cs & wen & sel[i])       bcnt[i]<= din;
+	    end
+	end
    endgenerate
    
    assign dout= sel[0]?clock:

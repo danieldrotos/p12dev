@@ -12,9 +12,9 @@ module simif
     output wire [WIDTH-1:0] dout
     );
 
-   parameter		    CMD_PRINT= 8'h70; // p
-   parameter		    CMD_DETECT= 8'h5f; // _
-   parameter		    ANS_PRESENT= 8'h21; // !
+   localparam		    CMD_PRINT= 8'h70; // p
+   localparam		    CMD_DETECT= 8'h5f; // _
+   localparam		    ANS_PRESENT= 8'h21; // !
    
    reg [7:0] 	       cmd;
    reg [7:0] 	       param;

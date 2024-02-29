@@ -47,9 +47,9 @@ module bool_top
    wire [3:0] test_out_select;
    
    assign clk_select     = switches[15:12];
-   assign display_select = switches[11:8];
-   assign test_out_select= switches[7:4];
-   assign test_reg_select= switches[3:0];
+   assign test_out_select= switches[11: 8];
+   assign display_select = switches[ 7: 4];
+   assign test_reg_select= switches[ 3: 0];
    
    assign f100MHz= CLK;
    clk_gen clock_generator
@@ -86,10 +86,10 @@ module bool_top
         .in9(f25MHz),
         .in10(f50MHz),
         .in11(f100MHz),
-        .in12(btnc),
-        .in13(btnc),
-        .in14(btnc),
-        .in15(btnc));
+        .in12(btn[3]),
+        .in13(btn[3]),
+        .in14(btn[3]),
+        .in15(btn[3]));
    
 BUFG clkg(.I(sel_clk), .O(selected_clk));
 
@@ -206,7 +206,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       .clk            (f25MHz),
       .reset          (res),
       .di             (display_data),
-      .pixels         ({portd:portc}),
+      .pixels         ({portd,portc}),
       .direct         (display_select==10),
       .segl           (SEGL),
       .anl            (ANL),

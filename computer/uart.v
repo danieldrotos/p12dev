@@ -120,6 +120,7 @@ module uart
       .uart_tx_busy (tx_busy),
       .uart_tx_en (utx_wen),
       .uart_tx_data (din[7:0]),
+      .data_bits (32'd8),
       .cycles_per_bit (cycles_per_bit)
       );
 
@@ -164,7 +165,7 @@ module uart
 	    FSM_QUEUE  : rx_fsm<= FSM_IDLE;//FSM_GOT;
 	    FSM_GOT    : rx_fsm<= rx_readout ? FSM_READOUT : FSM_GOT;
 	    FSM_READOUT: rx_fsm<= !rx_valid  ? FSM_IDLE    : FSM_READOUT;
-	    default    : rx_fsm<= FSM_IDLE;
+	    //default    : rx_fsm<= FSM_IDLE;
 	  endcase
      end
    assign rx_not_empty= rx_fsm==FSM_GOT;
@@ -181,7 +182,7 @@ module uart
 	  case (qfsm)
 	    QFSM_IDLE: qfsm<=  rd_data ? QFSM_READ : QFSM_IDLE;
 	    QFSM_READ: qfsm<= !rd_data ? QFSM_IDLE : QFSM_READ;
-	    default: qfsm<= FSM_IDLE;
+	    //default: qfsm<= FSM_IDLE;
 	  endcase
      end
    

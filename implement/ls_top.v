@@ -39,15 +39,15 @@ module ls_top
    reg [3:0]          btn;
    reg [7:0] 	      switches;
    
-   //wire [3:0] clk_select;
+   wire [3:0] clk_select;
    wire [3:0] display_select;
-   //wire [3:0] test_reg_select;
-   //wire [3:0] test_out_select;
+   wire [3:0] test_reg_select;
+   wire [3:0] test_out_select;
    
-   //assign clk_select     = switches[15:12];
-   assign display_select = switches[7:4];
-   //assign test_out_select= switches[7:4];
-   //assign test_reg_select= switches[3:0];
+   assign clk_select     = 4'd0;//switches[15:12];
+   assign test_out_select= 4'd0;//switches[11: 8];
+   assign display_select = switches[ 7: 4];
+   assign test_reg_select= switches[ 3: 0];
    
    assign f100MHz= CLK;
    clk_gen clock_generator
