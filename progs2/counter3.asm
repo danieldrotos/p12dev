@@ -2,6 +2,8 @@
 	
 PORTA	equ	0xff00
 PORTB	equ	0xff01
+UART_CTRL	=	0xff41
+UART_CPB	=	0xff44
 btn	equ	0xff20
 	
 callin		=	0xf000
@@ -18,6 +20,11 @@ dummy		=	12
 	jmp	start
 	db	dummy
 start:	
+	mvzl	r1,217
+	st	r1,UART_CPB
+	mvzl	r1,3		; turn on rx and tx
+	st	r1,UART_CTRL
+
 	mvzl	r13,eof_stack
 	mvzl	r10,0
 	ld	r1,btn
