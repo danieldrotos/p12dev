@@ -1,91 +1,91 @@
-# A fejlesztõrendszer használata
+# A fejlesztÅ‘rendszer hasznÃ¡lata
 
-A szövegfájlok szerkesztésére tetszõleges szövegszerkesztõt
-használhatunk. Windows-on a geany is alkalmazható. Az Open funkcióval
-megnyithatók a szerkesztendõ fájlok.
-
-
-## 1. Projekt létrehozása
+A szÃ¶vegfÃ¡jlok szerkesztÃ©sÃ©re tetszÅ‘leges szÃ¶vegszerkesztÅ‘t
+hasznÃ¡lhatunk. Windows-on a geany is alkalmazhatÃ³. Az Open funkciÃ³val
+megnyithatÃ³k a szerkesztendÅ‘ fÃ¡jlok.
 
 
-Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
-
-- `PRG` az assembly forrás fájl neve, az .asm kiteresztés nélkül! A
-  példában a fájl egy alkönyvtárban van, de tehetjük a csomag
-  könyvtárába is (ahol a `prj.mk` fájl van), akkor nem kell a névbe
-  útvonal. Vagy készíthetünk saját alkönyvtárat.
-
-- `INSTS` a szimulációban lefuttatandó utasítások száma.
+## 1. Projekt lÃ©trehozÃ¡sa
 
 
-## 2. Írjuk meg a programot
+TÃ¶ltsÃ¼k ki/mÃ³dosÃ­tsuk a `prj.mk` fÃ¡jlt. ParamÃ©terek:
 
-A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
-**.asm** kiterjesztéssel. Az irodalomjegyzékbõl használjuk a
+- `PRG` az assembly forrÃ¡s fÃ¡jl neve, az .asm kiteresztÃ©s nÃ©lkÃ¼l! A
+  pÃ©ldÃ¡ban a fÃ¡jl egy alkÃ¶nyvtÃ¡rban van, de tehetjÃ¼k a csomag
+  kÃ¶nyvtÃ¡rÃ¡ba is (ahol a `prj.mk` fÃ¡jl van), akkor nem kell a nÃ©vbe
+  Ãºtvonal. Vagy kÃ©szÃ­thetÃ¼nk sajÃ¡t alkÃ¶nyvtÃ¡rat.
+
+- `INSTS` a szimulÃ¡ciÃ³ban lefuttatandÃ³ utasÃ­tÃ¡sok szÃ¡ma.
+
+
+## 2. Ãrjuk meg a programot
+
+A `PRG` paramÃ©terben megadott nÃ©ven (Ã©s helyre) mentsÃ¼k el a fÃ¡jlt
+**.asm** kiterjesztÃ©ssel. Az irodalomjegyzÃ©kbÅ‘l hasznÃ¡ljuk a
 
 [pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
 
-anyagot, amiben megtaláljuk a CPU utasításait, és a
+anyagot, amiben megtalÃ¡ljuk a CPU utasÃ­tÃ¡sait, Ã©s a
 
 [pasm](https://docs.google.com/document/d/1bQZooX6hUN2C4n99xTbH_ixLitfhPmOWg5OT2IrxJ5U/edit?usp=sharing)
 
-dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
-fordításhoz az alább szereplõ eljárást használjuk!
+dokumentumot, amiben az assembler pszeudÃ³ utasÃ­tÃ¡sai vannak leÃ­rva. A
+fordÃ­tÃ¡shoz az alÃ¡bb szereplÅ‘ eljÃ¡rÃ¡st hasznÃ¡ljuk!
 
 
-## 3. Fordítás, szimuláció
+## 3. FordÃ­tÃ¡s, szimulÃ¡ciÃ³
 
-A mûveletet parancssorból a
+A mÅ±veletet parancssorbÃ³l a
 
 ```
 make
 ```
 
-parancs kiadásával végezhetjük el. Geany-ban válasszuk az
-"Összeállítás" menübõl a "Make" pontot (Shift-F9). A geany ilyenkor
-elmenti a módosított fájlokat.
+parancs kiadÃ¡sÃ¡val vÃ©gezhetjÃ¼k el. Geany-ban vÃ¡lasszuk az
+"Ã–sszeÃ¡llÃ­tÃ¡s" menÃ¼bÅ‘l a "Make" pontot (Shift-F9). A geany ilyenkor
+elmenti a mÃ³dosÃ­tott fÃ¡jlokat.
 
 A make parancs
 
-- lefordítja az assembly forrást
-- lefordítja a HW tervet
-- lefuttatja a szimulációt, ez generálja a VCD fájlt
-- megnyitja a VCD fájlt a megjelenítõben (gtkwave)
+- lefordÃ­tja az assembly forrÃ¡st
+- lefordÃ­tja a HW tervet
+- lefuttatja a szimulÃ¡ciÃ³t, ez generÃ¡lja a VCD fÃ¡jlt
+- megnyitja a VCD fÃ¡jlt a megjelenÃ­tÅ‘ben (gtkwave)
 
-A fordításnak a gtkwave bezárásakor lesz vége, a geany-ban ez után
-folytathatjuk a munkát.
+A fordÃ­tÃ¡snak a gtkwave bezÃ¡rÃ¡sakor lesz vÃ©ge, a geany-ban ez utÃ¡n
+folytathatjuk a munkÃ¡t.
 
 
-## 4. Egyéb mûveletek
+## 4. EgyÃ©b mÅ±veletek
 
-A fordítás és a szimuláció eredményének letörlése:
+A fordÃ­tÃ¡s Ã©s a szimulÃ¡ciÃ³ eredmÃ©nyÃ©nek letÃ¶rlÃ©se:
 
 ```
 make clean
 ```
 
-Geany esetén: "Összeállítás" menü "Make egyéni céllal"
-(Shift-Ctrl-F9), majd írjuk be a clean, vagy wclean célt.
+Geany esetÃ©n: "Ã–sszeÃ¡llÃ­tÃ¡s" menÃ¼ "Make egyÃ©ni cÃ©llal"
+(Shift-Ctrl-F9), majd Ã­rjuk be a clean, vagy wclean cÃ©lt.
 
-A szoftver és a hardver terv lefordítása szimuláció nélkül:
+A szoftver Ã©s a hardver terv lefordÃ­tÃ¡sa szimulÃ¡ciÃ³ nÃ©lkÃ¼l:
 
 ```
 make compile
 ```
 
-Csak a hardver lefordítása és szimulációja:
+Csak a hardver lefordÃ­tÃ¡sa Ã©s szimulÃ¡ciÃ³ja:
 
 ```
 make sim
 ```
 
-Csak a hardver lefordítása, szimuláció nélkül:
+Csak a hardver lefordÃ­tÃ¡sa, szimulÃ¡ciÃ³ nÃ©lkÃ¼l:
 
 ```
 make hw
 ```
 
-Csak a szoftver lefordítása:
+Csak a szoftver lefordÃ­tÃ¡sa:
 
 ```
 make sw
