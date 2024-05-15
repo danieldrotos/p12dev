@@ -21,11 +21,16 @@ Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
 ## 2. Írjuk meg a programot
 
 A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
-**.asm** kiterjesztéssel. Az irodalomjegyzékbõl használjuk a pcpu
-anyagot, amiben megtaláljuk a CPU utasításait, és a pasm-ot, amiben az
-assembler pszeudó utasításai vannak leírva. A fordításhoz azonban
-__ne__ a pasm-ban leírt módot, hanem az itt szereplõ eljárást
-használjuk!
+**.asm** kiterjesztéssel. Az irodalomjegyzékbõl használjuk a
+
+[pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
+
+anyagot, amiben megtaláljuk a CPU utasításait, és a
+
+[pasm](https://docs.google.com/document/d/1bQZooX6hUN2C4n99xTbH_ixLitfhPmOWg5OT2IrxJ5U/edit?usp=sharing)
+
+dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
+fordításhoz az alább szereplõ eljárást használjuk!
 
 
 ## 3. Fordítás, szimuláció
