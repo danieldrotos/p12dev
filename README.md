@@ -65,7 +65,7 @@ make clean
 ```
 
 Geany esetén: "Összeállítás" menü "Make egyéni céllal"
-(Shift-Ctrl-F9), majd írjuk be a clean, vagy wclean célt.
+(Shift-Ctrl-F9), majd írjuk be a clean célt.
 
 A szoftver és a hardver terv lefordítása szimuláció nélkül:
 
