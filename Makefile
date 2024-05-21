@@ -10,12 +10,12 @@ AW		?= 16
 TOOLS		= tools
 
 MODS		= defs hwconf \
-		  computer/decoder \
-		  computer/comp \
-		    computer/addrdec1 \
-		    computer/addrdec2 \
-		    computer/memory \
-		    computer/mems \
+		  hw/computer/decoder \
+		  hw/computer/comp \
+		    hw/computer/addrdec1 \
+		    hw/computer/addrdec2 \
+		    hw/computer/memory \
+		    hw/computer/mems \
 		    cpu1/cpu1 \
 		      cpu1/regm \
 		      cpu1/adder \
@@ -29,15 +29,15 @@ MODS		= defs hwconf \
 		      cpu2/rfm2 \
                       cpu2/getb \
                       cpu2/putb \
-		    computer/gpio_out4 \
-		    computer/gpio_in \
-		    computer/timer \
-		    computer/simif \
-		    computer/arm_fifo \
-		    computer/uart \
-		    computer/uart_rx \
-		    computer/uart_tx \
-		    computer/clock
+		    hw/computer/gpio_out4 \
+		    hw/computer/gpio_in \
+		    hw/computer/timer \
+		    hw/computer/simif \
+		    hw/computer/arm_fifo \
+		    hw/computer/uart \
+		    hw/computer/uart_rx \
+		    hw/computer/uart_tx \
+		    hw/computer/clock
 
 
 TB_VER		= $(patsubst %,%.v,$(TB))
