@@ -73,11 +73,13 @@ real_start:
 	st	r10,PORTB
 	mov	r1,r10
 	mov	r2,r10
-	call	pesf
-	db	"%x %d\n"
+	mvzl	r0,msgf
+	call	printf
 	add	r10,1
 	jmp	cyc
 
+msgf:
+	db	"%x %d\n"
 	.ends			; main
 	
 ;	.seg	try_himem
