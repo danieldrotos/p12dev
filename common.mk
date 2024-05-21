@@ -1,5 +1,5 @@
 
-TOOLS		= $(PRJ)/tools
+TOOLS		= $(PRJ)/sw/tools
 LIB		= $(PRJ)/lib
 PMON		= $(PRJ)/pmon
 

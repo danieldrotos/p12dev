@@ -9,7 +9,7 @@ TOP		= tm
 include prj.mk
 AW		?= 16
 
-TOOLS		= tools
+TOOLS		= sw/tools
 
 MODS		= hw/defs hw/hwconf \
 		  hw/computer/decoder \
@@ -116,7 +116,7 @@ clean:
 	$(MAKE) -C examples clean
 	$(MAKE) -C progs2 clean
 	$(MAKE) -C pmon clean
-	$(MAKE) -C tools clean
+	$(MAKE) -C sw/tools clean
 	$(MAKE) -C hw/implement clean
 	$(MAKE) -C lib clean
 	$(RM) $(clean_files)
