@@ -326,19 +326,19 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../pmon/pmon.asc">
+      <File Path="$PPRDIR/../../sw/pmon/pmon.asc">
         <FileInfo SFType="MIF">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../progs2/counter3.asc">
+      <File Path="$PPRDIR/../../sw/progs2/counter3.asc">
         <FileInfo SFType="MIF">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PPRDIR/../../pmon/pmon_chip.asc">
+      <File Path="$PPRDIR/../../sw/pmon/pmon_chip.asc">
         <FileInfo SFType="MIF">
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="simulation"/>
