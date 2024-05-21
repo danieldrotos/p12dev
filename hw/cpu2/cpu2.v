@@ -35,7 +35,7 @@ module cpu2
    wire [WIDTH-1:0] 	       opd;
    // results
    wire [WIDTH-1:0] 	       res_alu;
-   wire [7:0] 		       res_flags;
+   wire [WIDTH-1:0]	       res_flags;
    wire [WIDTH-1:0] 	       res_call;
    wire [WIDTH-1:0] 	       res_ld;
    // selected data to use in writeback
@@ -57,7 +57,7 @@ module cpu2
       );
 
    // FLAG register
-   wire [7:0] 		       flags;
+   wire [WIDTH-1:0]	       flags;
    wire 		       flag_c;
    wire 		       flag_s, flag_n;
    wire 		       flag_z;
@@ -70,7 +70,7 @@ module cpu2
    wire 		       inst_alu;
    wire			       inst_ext_gpb;
 
-   regm #(.WIDTH(8)) reg_flag
+   regm #(.WIDTH(WIDTH)) reg_flag
      (
       .clk(clk),
       .reset(reset/*1'b0*/),

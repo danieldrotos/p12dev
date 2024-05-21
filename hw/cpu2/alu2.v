@@ -6,18 +6,18 @@ module alu2
     parameter IWIDTH=16
     )
    (
-    input wire [5:0] 	    op,
+    input wire [5:0]	    op,
     
-    input wire [7:0] 	    fi,
+    input wire [WIDTH-1:0]  fi,
     input wire [WIDTH-1:0]  bi,
     input wire [WIDTH-1:0]  di,
     input wire [IWIDTH-1:0] im,
     
     output wire [WIDTH-1:0] res,
-    output wire [7:0] 	    fo,
+    output wire [WIDTH-1:0] fo,
 
-    output wire 	    wb_en, 
-    output wire 	    flag_en
+    output wire		    wb_en, 
+    output wire		    flag_en
     );
 
    // input flags
@@ -251,7 +251,7 @@ module alu2
 		 (op[3:0]==4'hb)? di :
 		 (op[3:0]==4'hc)? di :
 		 (op[3:0]==4'hd)? di :
-		 (op[3:0]==4'he)? { 24'd0, fi } :
+		 (op[3:0]==4'he)? fi :
 		 (op[3:0]==4'hf)? di :
 		 di;
 
@@ -331,7 +331,7 @@ module alu2
 	      (op[5:4]==2'b10)? vo_1 :
 	      vi;
    // combined flags
-   wire [7:0] 		    res_flags;
+   wire [WIDTH-1:0]	    res_flags;
    assign res_flags[`CIDX]= co;
    assign res_flags[`SIDX]= so;
    assign res_flags[`ZIDX]= zo;
@@ -340,6 +340,7 @@ module alu2
    assign res_flags[`UIDX]= (op[5:0]==6'b101111)?di[`UIDX]:fi[`UIDX];
    assign res_flags[`N1IDX]= (op[5:0]==6'b101111)?di[`N1IDX]:fi[`N1IDX];
    assign res_flags[`N2IDX]= (op[5:0]==6'b101111)?di[`N2IDX]:fi[`N2IDX];
+   assign res_flags[WIDTH-1:8]= fi[WIDTH-1:8];
    
    // Produce outputs
    assign res= (op_1)? res_1 :
