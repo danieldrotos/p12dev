@@ -54,6 +54,7 @@ GTKW		= $(patsubst %,%.gtkw,$(TB))
 
 include $(PRJ)/common.mk
 
+.PHONY: sw hw pmon
 
 all: progs sw show
 
