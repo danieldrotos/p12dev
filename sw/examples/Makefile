@@ -1,4 +1,4 @@
-PRJ		= ..
+PRJ		= ../..
 
 include	$(PRJ)/sw/common.mk
 

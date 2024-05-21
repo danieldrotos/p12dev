@@ -1,5 +1,5 @@
 PRJ		= $(realpath ./)
-PMON		= $(PRJ)/pmon
+PMON		= $(PRJ)/sw/pmon
 LIB		= $(PRJ)/sw/lib
 INCLUDES	= -I hw
 
@@ -62,12 +62,12 @@ compile: sw hw
 
 progs:
 	$(MAKE) -C sw/lib all
-	$(MAKE) -C examples all
-	$(MAKE) -C progs2 all
-	$(MAKE) -C pmon all
+	$(MAKE) -C sw/examples all
+	$(MAKE) -C sw/progs2 all
+	$(MAKE) -C sw/pmon all
 
 comp_pmon:
-	$(MAKE) -C pmon all
+	$(MAKE) -C sw/pmon all
 
 comp_mon: comp_pmon
 
@@ -113,9 +113,9 @@ clean_files	= *~ $(VCD) $(VVP) \
 		hex2asc source.txt
 
 clean:
-	$(MAKE) -C examples clean
-	$(MAKE) -C progs2 clean
-	$(MAKE) -C pmon clean
+	$(MAKE) -C sw/examples clean
+	$(MAKE) -C sw/progs2 clean
+	$(MAKE) -C sw/pmon clean
 	$(MAKE) -C sw/tools clean
 	$(MAKE) -C hw/implement clean
 	$(MAKE) -C sw/lib clean

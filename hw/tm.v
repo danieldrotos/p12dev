@@ -3,7 +3,7 @@
 
 `unconnected_drive pull0
 `ifndef PRG
- `define PRG "progs2/counter3.asc"
+ `define PRG "sw/progs2/counter3.asc"
 `endif
 
 `ifndef AW
@@ -100,7 +100,7 @@ module tm
        .PROGRAM( `PRG ),
        .CPU_TYPE(`CPU_TYPE),
        .COMP_TYPE(`COMP_TYPE),
-       .PMON_CONTENT("./pmon/pmon_chip.asc")
+       .PMON_CONTENT("./sw/pmon/pmon_chip.asc")
        )
    comp
      (

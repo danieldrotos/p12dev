@@ -1,7 +1,7 @@
 
 TOOLS		= $(PRJ)/sw/tools
 LIB		= $(PRJ)/sw/lib
-PMON		= $(PRJ)/pmon
+PMON		= $(PRJ)/sw/pmon
 
 ifeq ($(OS),Windows_NT)
 RM		= del /f /q
