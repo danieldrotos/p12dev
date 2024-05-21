@@ -1,34 +1,36 @@
 PRJ		= $(realpath ./)
 PMON		= $(PRJ)/pmon
 LIB		= $(PRJ)/lib
+INCLUDES	= -I hw
 
-TB		= tm
+TB		= hw/tm
+TOP		= tm
 
 include prj.mk
 AW		?= 16
 
 TOOLS		= tools
 
-MODS		= defs hwconf \
+MODS		= hw/defs hw/hwconf \
 		  hw/computer/decoder \
 		  hw/computer/comp \
 		    hw/computer/addrdec1 \
 		    hw/computer/addrdec2 \
 		    hw/computer/memory \
 		    hw/computer/mems \
-		    cpu1/cpu1 \
-		      cpu1/regm \
-		      cpu1/adder \
-		      cpu1/alu1 \
-		      cpu1/pc1 \
-		      cpu1/rfm1 \
-		      cpu1/schedm \
-		    cpu2/cpu2 \
-		      cpu2/alu2 \
-		      cpu2/reg2in \
-		      cpu2/rfm2 \
-                      cpu2/getb \
-                      cpu2/putb \
+		    hw/cpu1/cpu1 \
+		      hw/cpu1/regm \
+		      hw/cpu1/adder \
+		      hw/cpu1/alu1 \
+		      hw/cpu1/pc1 \
+		      hw/cpu1/rfm1 \
+		      hw/cpu1/schedm \
+		    hw/cpu2/cpu2 \
+		      hw/cpu2/alu2 \
+		      hw/cpu2/reg2in \
+		      hw/cpu2/rfm2 \
+                      hw/cpu2/getb \
+                      hw/cpu2/putb \
 		    hw/computer/gpio_out4 \
 		    hw/computer/gpio_in \
 		    hw/computer/timer \
@@ -90,14 +92,15 @@ iss: comp_pmon comp_sw
 	$(ISS) $(PRG)
 
 $(VCD): $(VVP)
-	vvp $(VVP)
+	vvp -n $(VVP)
 
 $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DINSTS=$(INSTS) \
 		-DIVERILOG=1 \
-		-o $(VVP) -s $(TB) $(TB_VER) $(MODS_VER)
+		$(INCLUDES) \
+		-o $(VVP) -s $(TOP) $(TB_VER) $(MODS_VER)
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
@@ -117,3 +120,4 @@ clean:
 	$(MAKE) -C lib clean
 	$(RM) $(clean_files)
 	$(RM) computer/*~ cpu1/*~ cpu2/*~
+	$(RM) hw/computer/*~ hw/cpu1/*~ hw/cpu2/*~

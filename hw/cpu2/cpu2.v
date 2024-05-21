@@ -201,7 +201,7 @@ module cpu2
      (
       .opd(opd),
       .opb(opb),
-      .byte_idx(ic[15] ? ic[1:0] : opa[1:0]),
+      .byte_idx( ic[15] ? {30'b0,ic[1:0]} : {30'b0,opa[1:0]} ),
       .res(res_ext_getb)
       );
    
@@ -210,7 +210,7 @@ module cpu2
      (
       .opd(opd),
       .opb(opb),
-      .byte_idx(ic[15] ? ic[1:0] : opa[1:0]),
+      .byte_idx( ic[15] ? {30'b0,ic[1:0]} : {30'b0,opa[1:0]} ),
       .res(res_ext_putb)
       );
    

@@ -154,7 +154,7 @@ module tm
    // Stop after simulating INSTS cpu instructions
    initial
      begin
-	$dumpfile("tm.vcd");
+	$dumpfile("hw/tm.vcd");
 	$dumpvars;
 	#(`INSTS*8 + 14) $finish;
      end
