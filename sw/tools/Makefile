@@ -1,6 +1,6 @@
 PRJ		= ../..
 
-include $(PRJ)/common.mk
+include $(PRJ)/sw/common.mk
 
 all: mk_libs test2.asc test2.cdb test3
 

@@ -1,6 +1,6 @@
 PRJ		= ..
 
-include $(PRJ)/common.mk
+include $(PRJ)/sw/common.mk
 
 AW		?= 16
 

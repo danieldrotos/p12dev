@@ -52,7 +52,7 @@ VCD		= $(patsubst %,%.vcd,$(TB))
 
 GTKW		= $(patsubst %,%.gtkw,$(TB))
 
-include $(PRJ)/common.mk
+include $(PRJ)/sw/common.mk
 
 .PHONY: sw hw pmon
 
