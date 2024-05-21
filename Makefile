@@ -1,6 +1,6 @@
 PRJ		= $(realpath ./)
 PMON		= $(PRJ)/pmon
-LIB		= $(PRJ)/lib
+LIB		= $(PRJ)/sw/lib
 INCLUDES	= -I hw
 
 TB		= hw/tm
@@ -61,7 +61,7 @@ all: progs sw show
 compile: sw hw
 
 progs:
-	$(MAKE) -C lib all
+	$(MAKE) -C sw/lib all
 	$(MAKE) -C examples all
 	$(MAKE) -C progs2 all
 	$(MAKE) -C pmon all
@@ -118,7 +118,7 @@ clean:
 	$(MAKE) -C pmon clean
 	$(MAKE) -C sw/tools clean
 	$(MAKE) -C hw/implement clean
-	$(MAKE) -C lib clean
+	$(MAKE) -C sw/lib clean
 	$(RM) $(clean_files)
 	$(RM) computer/*~ cpu1/*~ cpu2/*~
 	$(RM) hw/computer/*~ hw/cpu1/*~ hw/cpu2/*~

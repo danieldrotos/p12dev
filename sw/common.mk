@@ -1,6 +1,6 @@
 
 TOOLS		= $(PRJ)/sw/tools
-LIB		= $(PRJ)/lib
+LIB		= $(PRJ)/sw/lib
 PMON		= $(PRJ)/pmon
 
 ifeq ($(OS),Windows_NT)
