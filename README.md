@@ -11,10 +11,10 @@ assembler and function library.
 
 - GNU Make
 - Icarus verilog
-- GtkWave
+- GtkWave (on windows inlcuded in Icarus)
 - PHP-CLI
 - uCsim
-- TeraTerm
+- TeraTerm (on windows), xfce4-terminal and telnet (on linux)
 - Vivado
 
 
@@ -28,7 +28,7 @@ Open `prk.mk` file with a text editor and set project parameters:
 - `INSTS` number of instructions to simulate.
 
 
-## Develop assembly software
+## Develop software
 
 Create a file with name used in `PRG` parameter and with **.asm**
 extension and develop your software. Use CPU instaructions documented in
@@ -42,7 +42,8 @@ and use assembler features and directives according to
 
 ## Compiling and simulating
 
-Open a command window, navigate to development system root directory, and issue
+Open a command window, navigate to development system root directory,
+and issue
 
 ```
 make
