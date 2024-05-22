@@ -93,7 +93,7 @@ g startaddress
 monitor command, using hexadecimal address. cmd1 and cmd2 windows can
 be used to control the simulator, documentation can be found at:
 
-(http://www.ucsim.hu)
+http://www.ucsim.hu
 
 
 ## FPGA implementation
