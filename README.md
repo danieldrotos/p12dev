@@ -9,12 +9,13 @@ assembler and function library.
 
 ## Required tools
 
+- 64 bit operating system (Windows or *nix like OS)
 - GNU Make
 - Icarus verilog
 - GtkWave (on windows inlcuded in Icarus)
 - PHP-CLI
 - uCsim
-- TeraTerm (on windows), xfce4-terminal and telnet (on linux)
+- TeraTerm (on windows), xfce4-terminal and telnet (on *nix)
 - Vivado
 
 
