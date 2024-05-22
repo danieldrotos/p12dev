@@ -1,92 +1,101 @@
-# A fejlesztőrendszer használata
+# p12dev Development Environment
 
-A szövegfájlok szerkesztésére tetszőleges szövegszerkesztőt
-használhatunk. Windows-on a geany is alkalmazható. Az Open funkcióval
-megnyithatók a szerkesztendő fájlok.
-
-
-## 1. Projekt létrehozása
-
-
-Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
-
-- `PRG` az assembly forrás fájl neve, az .asm kiteresztés nélkül! A
-  példában a fájl egy alkönyvtárban van, de tehetjük a csomag
-  könyvtárába is (ahol a `prj.mk` fájl van), akkor nem kell a névbe
-  útvonal. Vagy készíthetünk saját alkönyvtárat.
-
-- `INSTS` a szimulációban lefuttatandó utasítások száma.
+**p12dev** is a hardware and sofware development environment for
+**p1516** and **p2223** soft processors. It includes verilog models of
+the processors, implementation ready code for a microcomputer equipped
+with a monitor program, and software development tools, including an
+assembler and function library.
 
 
-## 2. Írjuk meg a programot
+## Required tools
 
-A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
-**.asm** kiterjesztéssel. Az irodalomjegyzékből használjuk a
+- GNU Make
+- Icarus verilog
+- GtkWave
+- PHP-CLI
+- uCsim
+- TeraTerm
+- Vivado
+
+
+## Starting new project
+
+Open `prk.mk` file with a text editor and set project parameters:
+
+- `PRG` name of the assembly source file, without .asm extension. If
+  it is in a subdirectory, path must be used.
+  
+- `INSTS` number of instructions to simulate.
+
+
+## Develop assembly software
+
+Create a file with name used in `PRG` parameter and with **.asm**
+extension and develop your software. Use CPU instaructions documented in
 
 [pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
 
-anyagot, amiben megtaláljuk a CPU utasításait, és a
+and use assembler features and directives according to
 
 [pasm](https://docs.google.com/document/d/1bQZooX6hUN2C4n99xTbH_ixLitfhPmOWg5OT2IrxJ5U/edit?usp=sharing)
 
-dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
-fordításhoz az alább szereplő eljárást használjuk!
 
+## Compiling and simulating
 
-## 3. Fordítás, szimuláció
-
-A műveletet parancssorból a
+Open a command window, navigate to development system root directory, and issue
 
 ```
 make
 ```
 
-parancs kiadásával végezhetjük el. Geany-ban válasszuk az
-"Összeállítás" menüből a "Make" pontot (Shift-F9). A geany ilyenkor
-elmenti a módosított fájlokat.
+command. It will
 
-A make parancs
+- compile your assembly source
+- compile hardware model
+- run verilog simuulaton and generate VCD file
+- open VCD file viewer (gtkwave).
 
-- lefordítja az assembly forrást
-- lefordítja a HW tervet
-- lefuttatja a szimulációt, ez generálja a VCD fájlt
-- megnyitja a VCD fájlt a megjelenítőben (gtkwave)
-
-A fordításnak a gtkwave bezárásakor lesz vége, a geany-ban ez után
-folytathatjuk a munkát.
+The compilation finishes when you close gtkwave window, then you will
+got the command prompt back.
 
 
-## 4. Egyéb műveletek
-
-A fordítás és a szimuláció eredményének letörlése:
+## Other operations
 
 ```
-make clean
+make progs        ; compile monitor and examples
+make sw           ; compile your app only
+make hw           ; compile hardware model only
+make sim          ; run simulation
+make show         ; open gtkwave and show VCD file
+make clean        ; delete compiled files
 ```
 
-Geany esetén: "Összeállítás" menü "Make egyéni céllal"
-(Shift-Ctrl-F9), majd írjuk be a clean célt.
 
-A szoftver és a hardver terv lefordítása szimuláció nélkül:
+## Instruction set simulation
 
-```
-make compile
-```
-
-Csak a hardver lefordítása és szimulációja:
+Besides hardware simulation, the system can be simulated in software
+level using uCsim simulator. It can be started with
 
 ```
-make sim
+make iss
 ```
 
-Csak a hardver lefordítása, szimuláció nélkül:
+command. It starts the simulation and opens three terminal windows,
+titled with **UART**, **cmd1**, and **cmd2**. The UART window is
+connected to simulated uart, press ENTER in this window to get the
+monitor prompt. To start your program, issue
 
 ```
-make hw
+g startaddress
 ```
 
-Csak a szoftver lefordítása:
+monitor command, using hexadecimal address. cmd1 and cmd2 windows can
+be used to control the simulator, documentation can be found at:
 
-```
-make sw
-```
+[ucsim](http://www.ucsim.hu)
+
+
+## FPGA implementation
+
+See documentation for detailed instructions how to compile and
+download system to an FPGA board.
