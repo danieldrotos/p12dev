@@ -53,7 +53,7 @@ command. It will
 
 - compile your assembly source
 - compile hardware model
-- run verilog simuulaton and generate VCD file
+- run verilog simulation and generate VCD file
 - open VCD file viewer (gtkwave).
 
 The compilation finishes when you close gtkwave window, then you will
@@ -93,7 +93,7 @@ g startaddress
 monitor command, using hexadecimal address. cmd1 and cmd2 windows can
 be used to control the simulator, documentation can be found at:
 
-[ucsim](http://www.ucsim.hu)
+(http://www.ucsim.hu)
 
 
 ## FPGA implementation
