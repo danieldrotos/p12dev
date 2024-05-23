@@ -64,10 +64,16 @@ from the following address:</p>
   installation is now complete.</p>
 
 
-<h2>A szükséges szoftverek</h2>
+<h2>
+  <span lang="hu">A szükséges szoftverek</span>
+  <span lang="en">Required softwares</span>
+</h2>
 
-<p>A fejlesztőrendszer használatához szükséges egyéb szoftverek a
-következők:</p>
+<p lang="hu">A fejlesztőrendszer használatához szükséges egyéb
+szoftverek a következők:</p>
+
+<p lang="en">Following softwares are required to use the development
+system:</p>
 
 <ul>
   <li>Icarus Verilog</li>
@@ -79,23 +85,35 @@ következők:</p>
   <li>Vivado</li>
 </ul>
 
-<p>Mivel a rendszerre való fejlesztési folyamat alapvetően assembly
-nyelvű szoftver fejlesztésből áll, célszerű lehet egy olyan
+<p lang="hu">Mivel a rendszerre való fejlesztési folyamat alapvetően
+assembly nyelvű szoftver fejlesztésből áll, célszerű lehet egy olyan
 szövegszerkesztőt is telepíteni (pl. egy IDE szoftvert), amely ehhez
 megfelelő támogatást nyújt (pl. VS-Code, CodeBlocks, Geany, stb.).</p>
 
-<h2>Projekt létrehozása és beállítása</h2>
+<p lang="en">Since the process of developing a system is essentially
+assembly software development, it may be appropriate to use a text
+editor (or an IDE) that has good support for such a development
+(e.g. VS-Code, CodeBlocks, Geany, etc.).</p>
 
-<p>Egy szövegszerkesztővel nyissuk meg a fejlesztőrendszer könyvtárban
-található prj.mk nevű fájlt, és írjuk be a projektünk assembly nyelvű
-forrását tartalmazó fájl nevét:</p>
+<h2>
+  <span lang="hu">Projekt létrehozása és beállítása</span>
+  <span lang="en">Creating a project and setting parameters</span>
+</h2>
 
-<samp>PRG = sw/progs2/counter3</samp>
+<p lang="hu">Egy szövegszerkesztővel nyissuk meg a fejlesztőrendszer
+könyvtárban található prj.mk nevű fájlt, és írjuk be a projektünk
+assembly nyelvű forrását tartalmazó fájl nevét:</p>
+
+<p lang="en">Look for the prj.mk file in the root directory of the
+development system and open it with a text editor. Enter the name of
+your assembly source file, like:</p>
+
+<p><samp>PRG = sw/progs2/counter3</samp></p>
 
 <p>a <code>PRG</code> paramétert tartalmazó sorba, az = jel után. A
 fájl nevében az útvonalat a fejlesztőrendszer gyökér könyvtárához
 képest adjuk meg. A fájl nevében nem kell feltüntetni az .asm
-kiterjesztést!  Alapértelmezésként a progs2 alkönyvtárban található
+kiterjesztést! Alapértelmezésként a sw/progs2 alkönyvtárban található
 counter3 nevű példa program neve van megadva.</p>
 
 <p>Hozzuk létre a fájlt a megadott könyvtárban, a megadott névvel (és
