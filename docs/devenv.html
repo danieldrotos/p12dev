@@ -110,48 +110,93 @@ your assembly source file, like:</p>
 
 <p><samp>PRG = sw/progs2/counter3</samp></p>
 
-<p>a <code>PRG</code> paramétert tartalmazó sorba, az = jel után. A
-fájl nevében az útvonalat a fejlesztőrendszer gyökér könyvtárához
-képest adjuk meg. A fájl nevében nem kell feltüntetni az .asm
-kiterjesztést! Alapértelmezésként a sw/progs2 alkönyvtárban található
-counter3 nevű példa program neve van megadva.</p>
+<p lang="hu">a <code>PRG</code> paramétert tartalmazó sorba, az = jel
+után. A fájl nevében az útvonalat a fejlesztőrendszer gyökér
+könyvtárához képest adjuk meg. A fájl nevében nem kell feltüntetni az
+.asm kiterjesztést! Alapértelmezésként a sw/progs2 alkönyvtárban
+található counter3 nevű példa program neve van megadva.</p>
 
-<p>Hozzuk létre a fájlt a megadott könyvtárban, a megadott névvel (és
-.asm kiterjesztéssel), és írjuk meg a programot.</p>
+<p lang="en">in the line of <code>PRG</code> parameter, after the =
+sign. Path in the file name sould be relative to root directory of the
+package. Do not include the .asm extension in the name. Name of the
+counter3 example is used from sw/progs2 directory by default. Change
+it to your app name.</p>
 
-<h3>Projekt paraméterek</h3>
+<p lang="hu">Hozzuk létre a fájlt a megadott könyvtárban, a megadott
+névvel (és .asm kiterjesztéssel), és írjuk meg a programot.</p>
 
-<p>A rendszer felépítését és a futtatás módját befolyásoló paraméterek
-két külön fájlban találhatók: prj.mk és hw/hwconf.v.</p>
+<p lang="en">Create the assembly source file with the name you used
+above and place it in the correct directory. Write your code into the
+assembly source file.</p>
+
+
+<h3>
+  <span lang="hu">Projekt paraméterek</span>
+  <span lang="en">Project parameters</span>
+</h3>
+
+<p lang="hu">A rendszer felépítését és a futtatás módját befolyásoló
+  paraméterek két külön fájlban találhatók: <b>prj.mk</b> és <b>hw/hwconf.v</b>.</p>
+
+<p lang="en">Parameters affecting the system architecture and the way
+  it runs are in two separate files: <b>prj.mk</b> and <b>hw/hwconf.v</b>.</p>
+
 
 <h4><code>INSTS</code></h4>
 
-<p>A paraméter a prj.mk fájlban található. Értéke egy szám, amely a
-hardver szimuláció során lefuttatandó CPU utasítások számát
+<p lang="hu">A paraméter a prj.mk fájlban található. Értéke egy szám,
+amely a hardver szimuláció során lefuttatandó CPU utasítások számát
 definiálja. A megadott számú utasítás után a szimuláció leáll.</p>
+
+<p lang="en">The parameter is located in prj.mk file. It's value is a
+number, specifying number of CPU instructions to simulate during
+hardware simulation. Simulation will stop after running specifid
+number of instructions.</p>
 
 <h4><code>CPU_TYPE</code></h4>
 
-<p>A paraméter a hw/hwconf.v fájlban található. Az értéke az adja meg,
-hogy a számítógépbe p1516, vagy p2223 típusú CPU kerüljön-e. A p1516
-CPU használatához az értéket 1-re, míg a p2223-hoz 2-re kell állítani.</p>
+<p lang="hu">A paraméter a hw/hwconf.v fájlban található. Az értéke az
+adja meg, hogy a számítógépbe p1516, vagy p2223 típusú CPU
+kerüljön-e. A p1516 CPU használatához az értéket 1-re, míg a p2223-hoz
+2-re kell állítani.</p>
 
+<p lang="en">Parameter is in hw/hwconf.v file. It specifies type of
+the CPU included in the computer. Value 1 selects p1516 type of CPU
+while value 2 selects p2223.</p>
+  
 <h4><code>COMP_TYPE</code></h4>
 
-<p>A paraméter a hw/hwconf.v fájlban található. Az értéke a rendszerbe
-kerülő számítógép (computer) típusát adja meg. A v1 típusú számítógép
-használatához az értéket 1-re, míg a v2 típushoz 2-re kell állítani.</p>
+<p lang="hu">A paraméter a hw/hwconf.v fájlban található. Az értéke a
+rendszerbe kerülő számítógép (computer) típusát adja meg. A v1 típusú
+számítógép használatához az értéket 1-re, míg a v2 típushoz 2-re kell
+állítani.</p>
+
+<p lange="en">Parameter is in hw/hwconf.v file. Value of this
+parameter selects type of the computer. Type v1 computer can be
+selected by set this parameter to 1. Value of 2 selects type
+v2. Please note, that type v1 is now obsolete.</p>
+
 
 <h4><code>AW</code></h4>
 
-<p>A paraméter a hw/hwconf.v fájlban található. Az értéke a CPU-hoz
-kapcsolt memória cím busz bemenetének mérete bitekben. A memória
-kapacitása így 2<sup>AW</sup> szó (minden szó 32 bit) lesz. Alapértelmezés
-szerinti értéke 17, ami 128Kszó memóriát eredményez, ez a legnagyobb
-felhasználható méret az implementációhoz használt FPGA kártyák
-esetében.</p>
+<p lang="hu">A paraméter a hw/hwconf.v fájlban található. Az értéke a
+CPU-hoz kapcsolt memória cím busz bemenetének mérete bitekben. A
+memória kapacitása így 2<sup>AW</sup> szó (minden szó 32 bit)
+lesz. Alapértelmezés szerinti értéke 17, ami 128 Kszó memóriát
+eredményez, ez a legnagyobb felhasználható méret az implementációhoz
+használt FPGA kártyák esetében.</p>
 
-<h3>Az assembly nyelvű program</h3>
+<p lange="en">Parameter is in hw/hwconf.v file. Value of this
+parameter specifies the width of the address bus of memory that is
+connected to the CPU. The capacity of the memory will be 2<sup>AW</sup> word. Use
+  of value 17 defines 128 Kword memory which reflects the memory size
+  available on FPGA boards.</p>
+
+
+<h3>
+  <span lang="hu">Az assembly nyelvű program</span>
+  <span lang="en">Using assembly languge</span>
+</h3>
 
 <p>A p2223 processzoros, v2 típusú számítógépnek a memóriájába be van
 töltve a PMon monitor program. Ez lehetővé teszi a gép kezelését akkor
