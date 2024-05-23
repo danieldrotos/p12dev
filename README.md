@@ -32,7 +32,7 @@ Open `prk.mk` file with a text editor and set project parameters:
 ## Develop software
 
 Create a file with name used in `PRG` parameter and with **.asm**
-extension and develop your software. Use CPU instaructions documented in
+extension and develop your software. Use CPU instructions documented in
 
 [pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
 
