@@ -49,39 +49,35 @@ or instruction level, or implemented on various FPGA boards.</p>
 <span lang="en">Installing development system</span>
 </h2>
 
-<p lang="hu">Töltsük le a csomagot tartalmazó ZIP fájlt (p12dev.zip) a
+<p lang="hu">Töltsük le a csomagot tartalmazó ZIP fájlt (p12dev-X.Y.Z.zip) a
   következő címről:</p>
 
 <p lang="en">Download the ZIP file containing the package (p12dev.zip)
 from the following address:</p>
 
-<p><a href="http://mazsola.iit.uni-miskolc.hu/~drdani/proc_tools">http://mazsola.iit.uni-miskolc.hu/~drdani/proc_tools</a></p>
+<p><a href="https://github.com/danieldrotos/p12dev/releases/latest">https://github.com/danieldrotos/p12dev/releases/latest</a></p>
 
-<p lang="hu">majd csomagoljuk ki egy tetszőleges könyvtárba. A
-  kicsomagoláskor létrejön egy p12dev alkönyvtár, ezzel a telepítés
-  kész.</p>
+<p lang="hu">majd csomagoljuk ki egy tetszőleges könyvtárba, ezzel a
+  telepítés kész.</p>
 
-<p lang="en">then unpack it into a directory of your choice. When
-  unpacking a p12dev subdirectory will be created and the installation
-  is complete.</p>
+<p lang="en">then unpack it into a directory of your choice, the
+  installation is now complete.</p>
 
 
 <h2>A szükséges szoftverek</h2>
 
-<p>A fenti címről a fejlesztőrendszer használatához szükséges egyéb
-szoftverek windows-os telepítő csomagjai is letölthetőek:</p>
+<p>A fejlesztőrendszer használatához szükséges egyéb szoftverek a
+következők:</p>
 
 <ul>
-  <li>Icarus Verilog (iverilog-v11-20210204-x64_setup.exe)</li>
-  <li>GNU Make (make-3.81.exe)</li>
-  <li>PHP-CLI (php-setup.exe)</li>
-  <li>&mu;Csim (ucsim_x.y.z_setup.exe)</li>
-  <li>TeraTerm (teraterm-4.106.exe)</li>
-  <li>GtkWave (gtkwave-setup.exe)</li>
+  <li>Icarus Verilog</li>
+  <li>GNU Make</li>
+  <li>PHP-CLI</li>
+  <li>&mu;Csim</li>
+  <li>TeraTerm</li>
+  <li>GtkWave</li>
+  <li>Vivado</li>
 </ul>
-
-<p>Töltsük le a telepítőket, majd futtassuk le őket. A gtkwave
-szoftver telepítőjét futtassuk utolsónak!</p>
 
 <p>Mivel a rendszerre való fejlesztési folyamat alapvetően assembly
 nyelvű szoftver fejlesztésből áll, célszerű lehet egy olyan
@@ -90,7 +86,7 @@ megfelelő támogatást nyújt (pl. VS-Code, CodeBlocks, Geany, stb.).</p>
 
 <h2>Projekt létrehozása és beállítása</h2>
 
-<p>Egy szövegszerkesztővel nyissuk meg a proc1516v könyvtárban
+<p>Egy szövegszerkesztővel nyissuk meg a fejlesztőrendszer könyvtárban
 található prj.mk nevű fájlt, és írjuk be a projektünk assembly nyelvű
 forrását tartalmazó fájl nevét:</p>
 
@@ -330,7 +326,7 @@ lefordításával állíthatunk elő.</p>
 programot, és alkalmazói szoftverként a counter3 példa programot
 tartalmazzák. A kész bit fájlokat a</p>
 
-<p><a href="http://mazsola.iit.uni-miskolc.hu/~drdani/proc_tools/p2223">http://mazsola.iit.uni-miskolc.hu/~drdani/proc_tools/p2223</a></p>
+<p><a href="https://github.com/danieldrotos/p12dev/releases/precompiled-bitfiles">https://github.com/danieldrotos/p12dev/releases/precompiled-bitfiles</a></p>
 
 <p>címről tölthetjük le:</p>
 
