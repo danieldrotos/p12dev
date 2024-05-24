@@ -275,7 +275,7 @@ command (go), where you must use the address which was used in the
   <span lang="en">Hardware simulation</span>
 </h3>
 
-<p>A hardver szimuláció az áramkör kapu szintű szimulációja. A
+<p lang="en">A hardver szimuláció az áramkör kapu szintű szimulációja. A
 szimulációhoz egy verilog szimulátor szükséges, a fejlesztőrendszer az
 Icarus verilog szoftvert használja. A szimuláció több lépésből áll, az
 Icarus a tervet először szimulálható formára alakítja,
@@ -284,46 +284,79 @@ memóriájának tartalmára is, tehát mindenekelőtt a futtatandó programot
 kell lefordítanunk és átalakítanunk a verilog számára szükséges
 formátumra.</p>
 
-<p>A második lépésben fut maga a szimuláció, amelynek során a tesztelt
+<p lang="en">Hardware simulation means gate level simulation of the circuit.
+It requires a verilog simulator, the development system uses Icarus verilog
+software. Simulation takes several step. First, Icarus converts the model 
+into an internal form that is suitable for the simulation. This step needs 
+the memory content, so we need to compile the software first to generate 
+needed memory content file which the Icarus is able to read.</p>
+
+<p lang="hu">A második lépésben fut maga a szimuláció, amelynek során a tesztelt
 áramkörre (vagyis a számítógépre) megfelelő bemeneti jeleket
   kapcsolunk. A szimuláció az <code>INSTS</code> paraméterben megadott
 számú CPU utasítás után leáll.</p>
 
-<p>A szimuláció az áramkörben megjelenő jelek értékét egy kimeneti
+<p lang="en">In second step the simulation will run when input signal
+  values are applied to input of the circuit. The simulation stops when
+  CPU executes as many instructions as specified in the <code>NSTS</code>
+  parameter.
+</p>
+
+<p lang="hu">A szimuláció az áramkörben megjelenő jelek értékét egy kimeneti
 fájlba írja (dump fájl), amelyet a harmadik lépésben megjeleníthetünk
 és kiértékelhetünk. A teljes folyamat lefuttatását egy Makefile
 vezérli, amelyet parancssorból kezelhetünk.</p>
 
-<p>Nyissunk meg egy parancsértelmező ablakot (pl. Powershell), és
+<p lang="en">The simulation writes out values of internal signals into 
+  an output file (dump file) which can be displayed in the third step.
+  The whole process is controlled by a Makefile which can be used form
+  command line.
+</p>
+
+<p lang="hu">Nyissunk meg egy parancsértelmező ablakot (pl. Powershell), és
 váltsunk a csomag gyökér könyvtárára. Pl. ha a ZIP fájlt az Asztal-ra
-csomagoltuk ki, akkor adjuk ki a</p>
+csomagoltuk ki egy p12dev könyvtárba, akkor adjuk ki a:</p>
+
+<p lang="en">Open a command window (e.g. PowerShell on windows) and 
+  change working directory to root of the development system. For example,
+  if the package is unzipped into p12dev on Desktop, enter:
+</p>
+
+<p lang="hu">samp>cd Asztal/p12dev</samp></p>
+<p lang="en">samp>cd Desktop/p12dev</samp></p>
 
 
-<samp>cd Asztal\p12dev</samp>
-
-
-<p>parancsot. Ha a szükséges szoftvereket telepítettünk, a szimuláció
+<p lang="hu">parancsot. Ha a szükséges szoftvereket telepítettünk, a szimuláció
 és a megjelenítés a</p>
 
+<p lang="en">command. If the required softwares are installed, the simulation
+  and displaying the result can be done with:
+</p>
 
-<samp>make</samp>
+<p><samp>make</samp></p>
 
 
-<p>parancs kiadásával futtatható le. A szimuláció után elindul a
+<p lang="hu">parancs kiadásával futtatható le. A szimuláció után elindul a
 gtkwave szoftver, amely a dump fájl tartalmát idődiagram formájában
 kirajzolja és lehetővé teszi a gép működésének vizsgálatát.</p>
 
-<p>A make parancs paramétere segítségével a folyamat egyes lépései
+<p lang="en">command. After the simulaton, gtkwave softwer is started
+  which displays content of the dump file on a time diagram.</p>
+
+<p lang="hu">A make parancs paramétere segítségével a folyamat egyes lépései
 önállóan is lefuttathatók:</p>
 
+<p lang="en">Using following parameters to make command, it is possible
+  to run any step of the process separately:
+</p>
 
-<samp>make progs     ; példaprogramok és a monitor lefordítása
+<p></p><samp>make progs     ; példaprogramok és a monitor lefordítása
 make sw        ; a projektben megadott program lefordítása
 make hw        ; a hardver lefordítása
 make sim       ; a lefordított hardver szimulációja
 make show      ; a dump fájl megjelenítése
 make clean     ; a generált fájlok törlése
-</samp>
+</samp></p>
 
 
 <h4>A teszt modul használata</h4>
