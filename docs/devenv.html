@@ -198,50 +198,82 @@ connected to the CPU. The capacity of the memory will be 2<sup>AW</sup> word. Us
   <span lang="en">Using assembly languge</span>
 </h3>
 
-<p>A p2223 processzoros, v2 típusú számítógépnek a memóriájába be van
-töltve a PMon monitor program. Ez lehetővé teszi a gép kezelését akkor
-is, ha nem töltünk be felhasználói programot, illetve biztosítja a
-felhasználói program cseréjét. A PMon elindulását a memória 0 címén
-található JMP 0xf03c utasítás biztosítja (kódja: 0x01f2f03c). A
-monitor helyett a felhasználói programmal is indíthatjuk a gépet, ha a
-szoftvert úgy írjuk meg, hogy az első utasítása a 0 címre kerüljön:</p>
+<p lang="hu">A p2223 processzoros, v2 típusú számítógépnek a
+memóriájába be van töltve a PMon monitor program. Ez lehetővé teszi a
+gép kezelését akkor is, ha nem töltünk be felhasználói programot,
+illetve biztosítja a felhasználói program cseréjét. A PMon elindulását
+a memória 0 címén található JMP 0xf03c utasítás biztosítja (kódja:
+0x01f2f03c). A monitor helyett a felhasználói programmal is
+indíthatjuk a gépet, ha a szoftvert úgy írjuk meg, hogy az első
+utasítása a 0 címre kerüljön:</p>
+
+<p lang="en">PMon monitor program is already loaded into computer
+memory if you use v2 type of computer with p2223 processor. This
+allows you to operate the computer when no user program is loaded, and
+makes possible to load in new user program. PMon is started by a JMP
+0xf03c instruction located at address 0 (code of it is
+0x01f2f03c). You can start the machine with the user program instead,
+if you overwrite the JMP at 0 with your program's code by placing it
+at 0 with the following directive:</p>
+
+<p><samp>.org 0</samp></p>
 
 
-<samp>.org 0</samp>
+<p lang="hu">Ezt a módszert hardver, és esetleg utasítás szintű
+szimuláció esetén célszerű használni. Ebben az esetben törekedjünk
+arra, hogy a program valamilyen funkciójával legyen lehetőség a
+monitorhoz való visszatérésre. A monitorba való visszatérést
+legegyszerűbben az 0xf000 című szubrutin meghívásával érhetjük el:</p>
+
+<p lang="en">This method can be usefull for hardware or
+instruction-level simulation. In this case you should provide some
+possibility to exit the user program and jump back to monitor. The
+easiest way to return to the monitor is call subroutine at 0xf000:</p>
+
+  
+<p><samp>call 0xf000</samp></p>
 
 
-<p>Ezt a módszert hardver, és esetleg utasítás szintű szimuláció
-esetén célszerű használni. Ebben az esetben törekedjünk arra, hogy a
-program valamilyen funkciójával legyen lehetőség a monitorhoz való
-visszatérésre. A monitorba való visszatérést legegyszerűbben az 0xf000
-című szubrutin meghívásával érhetjük el:</p>
+<p lang="hu">Ennek hiányában az FPGA kártyán futó alkalmazói programot
+nem tudjuk lecserélni, új program betöltéséhez újra kell programoznunk
+az FPGA áramkört. A monitor elérésének további módjait annak
+leírásában találjuk.</p>
+
+<p lang="en">Without this, the application running on FPGA can not be
+replaced and you have to reprogram the whole FPGA. Further ways to
+access the monitor program are described in its documentation.</p>
 
 
-<samp>call 0xf000</samp>
+<p lang="hu">Ha 0-tól eltérő kezdőcímet használunk, pl.</p>
+
+<p lang="en">If you place your program at address different than 0,
+like:</p>
 
 
-<p>Ennek hiányában az FPGA kártyán futó alkalmazói programot nem
-tudjuk lecserélni, új program betöltéséhez újra kell programoznunk az
-FPGA áramkört. A monitor elérésének további módjait annak leírásában
-találjuk.</p>
-
-<p>Ha 0-tól eltérő kezdőcímet használunk, pl.</p>
+<p><samp>.org 1</samp></p>
 
 
-<samp>.org 1</samp>
-
-
-<p>akkor a programot a megfelelő monitor parancs kiadásával
+<p lang="hu">akkor a programot a megfelelő monitor parancs kiadásával
 indíthatjuk (paraméterként az ORG direktívával megadott kezdőcímet
 használjuk):</p>
 
+<p lang="en">then your app can be started with appropriate monitor
+command (go), where you must use the address which was used in the
+.org directive:</p>
 
-<samp>g 1</samp>
+
+<p><samp>g 1</samp></p>
 
 
-<h2>A projekt futtatása</h2>
+<h2>
+  <span lang="hu">A projekt futtatása</span>
+  <span lang="en">Running the project</span>
+</h2>
 
-<h3>Hardver szimuláció</h3>
+<h3>
+  <span lang="hu">Hardver szimuláció</span>
+  <span lang="en">Hardware simulation</span>
+</h3>
 
 <p>A hardver szimuláció az áramkör kapu szintű szimulációja. A
 szimulációhoz egy verilog szimulátor szükséges, a fejlesztőrendszer az
@@ -254,8 +286,8 @@ formátumra.</p>
 
 <p>A második lépésben fut maga a szimuláció, amelynek során a tesztelt
 áramkörre (vagyis a számítógépre) megfelelő bemeneti jeleket
-kapcsolunk. A szimuláció az INSTS paraméterben megadott számú CPU
-utasítás után leáll.</p>
+  kapcsolunk. A szimuláció az <code>INSTS</code> paraméterben megadott
+számú CPU utasítás után leáll.</p>
 
 <p>A szimuláció az áramkörben megjelenő jelek értékét egy kimeneti
 fájlba írja (dump fájl), amelyet a harmadik lépésben megjeleníthetünk
