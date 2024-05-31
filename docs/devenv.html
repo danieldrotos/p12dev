@@ -371,18 +371,36 @@ make clean     ; remove generated files
 </samp></p>
 
 
-<h4>A teszt modul használata</h4>
 
-<p>A gép számára szükséges bemeneti jeleket a tm.v (Verilog Test
-Module) fájl módosításával állíthatjuk elő.</p>
+<h4>
+  <span lang="hu">A teszt modul használata</span>
+  <span lang="en">Using test module</span>
+</h4>
 
-<h3>Utasítás szintű szimuláció</h3>
+<p lang="hu">A gép számára szükséges bemeneti jeleket a tm.v (Verilog
+Test Module) fájl módosításával állíthatjuk elő.</p>
 
-<p>Az utasítás szintű szimulációt az &mu;Csim szoftver valósítja meg,
-természetesen az indítás előtt le kell fordítani a futtatandó
-programot. A futtatást és a szimulátor elindítását elvégezhetjük a
-fejlesztőrendszer gyökér könyvtárában a</p>
+<p lang="en">You have to modify the tm.v (Verilog Test Module) file to
+  produce input signals for the computer, requied by the tested app.</p>
 
+
+<h3>
+  <span lang="hu">Utasítás szintű szimuláció</span>
+  <span lang="hu">Instruction level simulation</span>
+</h3>
+
+<p lang="hu">Az utasítás szintű szimulációt az &mu;Csim szoftver
+valósítja meg, természetesen az indítás előtt le kell fordítani a
+futtatandó programot. A futtatást és a szimulátor elindítását
+elvégezhetjük a fejlesztőrendszer gyökér könyvtárában a</p>
+
+<p lang="en">The instruction level simulation is performed by the
+&mu;Csim software. Code of the application must be compiled before the
+simulation. Requied compilation and start of the simulator can be done
+by following command (issued in root directory of the develeopment
+system):</p>
+
+<p></p>
 
 <samp>make iss</samp>
 
