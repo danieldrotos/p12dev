@@ -324,6 +324,7 @@ adjuk ki a:</p>
   example, if the package is unzipped into p12dev on Desktop, enter:
 </p>
 
+
 <p lang="hu">samp>cd Asztal/p12dev</samp></p>
 <p lang="en">samp>cd Desktop/p12dev</samp></p>
 
@@ -334,6 +335,7 @@ szimuláció és a megjelenítés a</p>
 <p lang="en">command. If the required softwares are installed, the
   simulation and displaying the result can be done with:
 </p>
+
 
 <p><samp>make</samp></p>
 
@@ -352,8 +354,8 @@ lépései önállóan is lefuttathatók:</p>
   possible to run any step of the process separately:
 </p>
 
-<p></p>
 
+<p></p>
 <p lang="hu"><samp>make progs     ; példaprogramok és a monitor lefordítása
 make sw        ; a projektben megadott program lefordítása
 make hw        ; a hardver lefordítása
@@ -386,7 +388,7 @@ Test Module) fájl módosításával állíthatjuk elő.</p>
 
 <h3>
   <span lang="hu">Utasítás szintű szimuláció</span>
-  <span lang="hu">Instruction level simulation</span>
+  <span lang="en">Instruction level simulation</span>
 </h3>
 
 <p lang="hu">Az utasítás szintű szimulációt az &mu;Csim szoftver
@@ -400,50 +402,87 @@ simulation. Requied compilation and start of the simulator can be done
 by following command (issued in root directory of the develeopment
 system):</p>
 
-<p></p>
 
-<samp>make iss</samp>
+<p></p><p><samp>make iss</samp></p>
 
 
-<p>parancs kiadásával. A fordítás után elindul a szimulátor, a
-memóriába betöltődik a projektben megadott program kódja és a
+<p lang="hu">parancs kiadásával. A fordítás után elindul a szimulátor,
+a memóriába betöltődik a projektben megadott program kódja és a
 monitor. A program futtatása elindul. Az &mu;Csim mellett három
-TeraTerm ablak is megnyílik, a fejlécük UART, cmd1&nbsp;és
-cmd2&nbsp;lesz.</p>
+terminál ablak is megnyílik, a fejlécük <b>UART</b>, <b>cmd1</b> és <b>cmd2</b>
+  lesz.</p>
 
-<p>Az UART ablak a szimulált soros vonalhoz kapcsolódik. Ha a
-programot a monitor mellé fordítottuk le, akkor itt egy ENTER
+<p lang="en">After compilation of the app, the simulator starts. The
+simulated memory is filled with the code of the project's app and the
+monitor. Besides &mu;Csim (which runs in the background), three
+terminal windows open, titled <b>UART</b>, <b>cmd1</b> and <b>cmd2</b>.</p>
+
+<p lang="hu">Az UART ablak a szimulált soros vonalhoz kapcsolódik. Ha
+a programot a monitor mellé fordítottuk le, akkor itt egy ENTER
 lenyomása után a monitor promptját (kettőspont) fogjuk látni. A
 monitor segítségével elindíthatjuk a programunkat a</p>
 
-
-<samp>g kezdőcím</samp>
-
-
-<p>parancs kiadásával, ahol a kezdőcímet hexadecimálisan kell
-megadnunk.</p>
-
-<p>A cmd1 és cmd2 ablakok az &mu;Csim parancssorai, itt adhatunk ki a
-szimulátornak parancsokat. A szimulátor leírását a</p>
-
-<p><a href="https://www.google.com/url?q=http://www.ucsim.hu&amp;sa=D&amp;source=editors&amp;ust=1716454321199681&amp;usg=AOvVaw3VjYM4uv1l6DAHQmPzuRiu">http://www.ucsim.hu</a></p>
-
-<p>címen olvashatjuk. A GPIO kezelésének egyik módja, hogy az egyik
-cmd ablakot függőlegesen felnagyítjuk legalább 34 sor méretűre, majd
-kiadjuk a</p>
+<p lang="en">The UART window is connected to the simulated uart. When
+you compile your app by keeping monitor start instruction, and press
+ENTER in this window, the monitor prompt (colon) will appear. You can
+start your app with the following monitor command:</p>
 
 
-<samp>set con dport</samp>
+<p></p>
+<p>
+<span lang="hu"><samp>g kezdőcím</samp></span>
+<span lang="en"><samp>g startaddress</samp></span>
+</p>
 
 
-<p>parancsot. Ezután látni fogjuk a négy kimeneti és a két bemeneti
-portot. A bemeneti portok alsó 16 bitjét az alattuk feltüntetett
-billentyűkkel válthajuk át.</p>
+<p lang="hu">parancs kiadásával, ahol a <i>kezdőcím</i>et
+hexadecimálisan kell megadnunk.</p>
 
-<p>A szimulátorból való kilépéshez adjuk ki a kill&nbsp;parancsot az
-  egyik cmd a blakban.</p>
+<p lang="en">where <i>startaddress</i> of the app must be entered in
+hexadecimal.</p>
 
-<h3>Megvalósítás FPGA kártyán</h3>
+<p lang="hu">A cmd1 és cmd2 ablakok az &mu;Csim parancssorai, itt
+adhatunk ki a szimulátornak parancsokat. A szimulátor leírását a</p>
+
+<p lang="en">The cmd1 and cmd2 windows are command consoles of the
+simulator, you can enter &mu&Csim commands there. Documentation of the
+simulator is at:</p>
+
+
+<p><a href="http://www.ucsim.hu">http://www.ucsim.hu</a></p>
+
+
+<p lang="hu">címen olvashatjuk. A GPIO kezelésének egyik módja, hogy
+az egyik cmd ablakot függőlegesen felnagyítjuk legalább 34 sor
+méretűre, majd kiadjuk a</p>
+
+<p lang="en">GPIO can be handled in several ways, one is the use of
+interactive interface, which can be started by:</p>
+
+
+<p></p><p><samp>set con dport</samp></p>
+
+
+<p lang="hu">parancsot. Ezután látni fogjuk a négy kimeneti és a két
+bemeneti portot. A bemeneti portok alsó 16 bitjét az alattuk
+feltüntetett billentyűkkel válthajuk át.</p>
+
+<p lang="en">command. Values of all GPIO port (2 inputs, 4 outputs)
+registers will appear (you should increase window size to at least 34
+lines to make room for all). You can use displayed keys to toggle
+input port bits.</p>
+
+<p lang="hu">A szimulátorból való kilépéshez adjuk ki a <b>kill</b> parancsot
+  az egyik cmd a blakban.</p>
+
+<p lange="en">To exit the simulator <b>kill</b> command can be used in
+a command window.</p>
+
+
+<h3>
+  <span lang="hu">Megvalósítás FPGA kártyán</span>
+  <span lang="en">Implementation on FPGA board</span>
+</h3>
 
 <p>Az FPGA kártyán való megvalósításhoz a fejlesztőrendszerben kész
 Vivado projekteket találunk</p>
