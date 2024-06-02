@@ -35,7 +35,7 @@ module cpu2
    wire [WIDTH-1:0] 	       opd;
    // results
    wire [WIDTH-1:0] 	       res_alu;
-   wire [WIDTH-1:0]	       res_flags;
+   wire [WIDTH-1:0]	       alu_res_flags;
    wire [WIDTH-1:0] 	       res_call;
    wire [WIDTH-1:0] 	       res_ld;
    // selected data to use in writeback
@@ -58,6 +58,7 @@ module cpu2
 
    // FLAG register
    wire [WIDTH-1:0]	       flags;
+   wire [WIDTH-1:0]	       flags_din;
    wire 		       flag_c;
    wire 		       flag_s, flag_n;
    wire 		       flag_z;
@@ -69,13 +70,14 @@ module cpu2
    wire 		       alu_wb_en;
    wire 		       inst_alu;
    wire			       inst_ext_gpb;
-
+   wire			       inst_ext_sfr;
+   
    regm #(.WIDTH(WIDTH)) reg_flag
      (
       .clk(clk),
       .reset(reset/*1'b0*/),
       .cen(flag_wb_en),
-      .din (res_flags),
+      .din(flags_din),
       .dout(flags)
       );
    assign flag_c= flags[`CIDX];
@@ -86,7 +88,9 @@ module cpu2
    assign flag_u= flags[`UIDX];
    assign flag_o= flag_v;
    assign flag_n= flag_s;
-   assign flag_wb_en= ena & inst_alu & alu_flag_en & phw;
+   assign flag_wb_en= ena & phw &
+		      (inst_alu & alu_flag_en) |
+		      (inst_ext_wrs && (rb==4'd0));
 
    // Instruction Register contains instruction code
    regm #(.WIDTH(WIDTH)) reg_ic
@@ -129,6 +133,8 @@ module cpu2
    wire 		       inst_ld_ext= inst_ext_mem & ic[24];
    wire			       inst_ext_getb= inst_ext_gpb & ~ic[24];
    wire			       inst_ext_putb= inst_ext_gpb & ic[24];
+   wire			       inst_ext_rds= inst_ext_sfr & ~ic[24];
+   wire			       inst_ext_wrs= inst_ext_sfr & ic[24];
    wire 		       inst_ld;
    wire 		       inst_st;
    wire 		       inst_mem;
@@ -139,13 +145,15 @@ module cpu2
    assign inst_st= inst_st_r | inst_st_i | inst_st_ext;
    assign inst_ext_mem= inst_ext & (ext_code==4'd0);
    assign inst_ext_gpb= inst_ext & (ext_code==4'd1);
+   assign inst_ext_sfr= inst_ext & (ext_code==4'd2);
    assign inst_mem= inst_st | inst_ld;
    assign inst_alu= inst_alu1 | inst_alu2;
    assign inst_br= inst_call | ((inst_alu | inst_ld) & (rd==4'd15));
    assign inst_wb= (inst_alu & alu_wb_en) |
 		   inst_br |
 		   inst_ld |
-		   inst_ext_gpb;
+		   inst_ext_gpb |
+		   nist_ext_rds;
 
    // decode condition
    assign ena= (cond==4'h0)? 1 : // always
@@ -179,11 +187,16 @@ module cpu2
       .im(im16),
       // outputs
       .res(res_alu),
-      .fo(res_flags),
+      .fo(alu_res_flags),
       .wb_en(alu_wb_en),
       .flag_en(alu_flag_en)
       );
 
+   assign flags_din= inst_alu ? alu_res_flags :
+		     inst_ext_wrs ? opd :
+		     flags;
+
+   
    // CALL inst
    wire 		       inst_call_idx;
    wire [WIDTH-1:0] 	       aof_call_abs;
@@ -215,6 +228,17 @@ module cpu2
       .byte_idx( ic[15] ? {30'b0,ic[1:0]} : {30'b0,opa[1:0]} ),
       .res(res_ext_putb)
       );
+
+   wire [WIDTH-1:0]	       res_ext_rds;
+   sfr #(.WIDTH(WIDTH)) mod_ext_sfr
+     (
+      .clk(clk),
+      .reset(reset),
+      .addr(rb),
+      .cen(ena & inst_ext_wrs & phw),
+      .din(wb_data),
+      .dout(res_ext_rds)
+      );
    
    // Select data for write back
    assign wb_data= inst_alu      ? res_alu:
@@ -222,7 +246,9 @@ module cpu2
 		   inst_ld       ? mr_data:
 		   inst_ext_getb ? res_ext_getb:
 		   inst_ext_putb ? res_ext_putb:
-		   inst_st?0:
+		   inst_ext_rds  ? res_ext_rds:
+		   inst_ext_wrs  ? opd:
+		   inst_st       ? 0:
 		   0;
    assign wb_address= inst_call?4'd15:
 		      rd;

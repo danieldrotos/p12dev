@@ -31,6 +31,7 @@ MODS		= hw/defs hw/hwconf \
 		      hw/cpu2/rfm2 \
                       hw/cpu2/getb \
                       hw/cpu2/putb \
+		      hw/cpu2/sfr \
 		    hw/computer/gpio_out4 \
 		    hw/computer/gpio_in \
 		    hw/computer/timer \
