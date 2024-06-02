@@ -192,7 +192,7 @@ module cpu2
       .flag_en(alu_flag_en)
       );
 
-   assign flags_din= inst_alu ? alu_res_flags :
+   assign flags_din= inst_alu1 ? alu_res_flags :
 		     inst_ext_wrs ? opd :
 		     flags;
 
@@ -230,6 +230,7 @@ module cpu2
       );
 
    wire [WIDTH-1:0]	       res_ext_rds;
+   wire [WIDTH-1:0]	       sfr_dout;
    sfr #(.WIDTH(WIDTH)) mod_ext_sfr
      (
       .clk(clk),
@@ -237,8 +238,9 @@ module cpu2
       .addr(rb),
       .cen(ena & inst_ext_wrs & phw),
       .din(wb_data),
-      .dout(res_ext_rds)
+      .dout(sfr_dout)
       );
+   assign res_ext_rds= (rb==4'd0) ? flags : sfr_dout;
    
    // Select data for write back
    assign wb_data= inst_alu      ? res_alu:

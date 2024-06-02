@@ -11,6 +11,9 @@ goon:
 	ld	r2,dta
 	setf	r2
 	getf	r3
+	mvzl	r4,0xaa00
+	wrs	r4,r0
+	rds	r5,r0
 	getb	r1,r2,1
 	putb	r1,r1,1
 	getb	r1,r2,2

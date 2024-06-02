@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Sun Jun  2 20:19:36 2024
+[*] Sun Jun  2 20:30:09 2024
 [*]
 [dumpfile] "/home/drdani/prj/p12dev/hw/tm.vcd"
-[dumpfile_mtime] "Sun Jun  2 20:18:57 2024"
-[dumpfile_size] 47839330
+[dumpfile_mtime] "Sun Jun  2 20:29:34 2024"
+[dumpfile_size] 50390045
 [savefile] "/home/drdani/prj/p12dev/hw/tm.gtkw"
-[timestart] 14890000000
+[timestart] 29570000000
 [size] 1744 908
 [pos] 92 88
-*-33.229092 35020000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-33.229092 61080000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tm.
 [treeopen] tm.comp.
 [treeopen] tm.comp.genblk1.
@@ -79,8 +79,10 @@ tm.comp.RxD
 @22
 tm.comp.genblk1.cpu.regs.r1out[31:0]
 tm.comp.genblk1.cpu.regs.r2out[31:0]
-@23
 tm.comp.genblk1.cpu.regs.r3out[31:0]
+tm.comp.genblk1.cpu.regs.r4out[31:0]
+@23
+tm.comp.genblk1.cpu.regs.r5out[31:0]
 @22
 tm.comp.genblk1.cpu.mod_ext_getb.byte_idx[31:0]
 tm.comp.genblk1.cpu.mod_ext_getb.ex[24:0]
