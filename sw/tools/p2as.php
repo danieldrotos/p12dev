@@ -579,6 +579,18 @@ $conds2= array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
         "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
     )),
+    "GETBN" =>array("icode"=>0x06010000, "params"=>array(
+        "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
+        "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    )),
+    "GETBS" =>array("icode"=>0x06016000, "params"=>array(
+        "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
+        "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    )),
+    "GETBZ" =>array("icode"=>0x06014000, "params"=>array(
+        "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
+        "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    )),
     // EXT 011P
     "PUTB" =>array("icode"=>0x07010000, "params"=>array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
@@ -760,6 +772,7 @@ function is_cond($W)
     return $cond;
 }
 
+/*
 function is_exmode($W)
 {
     if (empty($W))
@@ -772,6 +785,7 @@ function is_exmode($W)
         return 0x00000000;
     return false;
 }
+*/
 
 
 function is_inst($W)
@@ -1132,12 +1146,14 @@ function proc_asm_line($l)
             debug("proc_asm_line; ICODE= ".sprintf("%08x",$icode));
         }
         
+        /*
         else if (($exm= is_exmode($W)) !== false)
         {
             debug("proc_asm_line; EX= ".sprintf("%08x",$exm));
             $icode= $icode | $exm;
             debug("proc_asm_line; ICODE= ".sprintf("%08x",$icode));
         }
+        */
         
         else if (($W == ".PROC") || 
                  ($W == "PROC") ||
