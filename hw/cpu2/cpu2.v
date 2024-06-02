@@ -153,7 +153,7 @@ module cpu2
 		   inst_br |
 		   inst_ld |
 		   inst_ext_gpb |
-		   nist_ext_rds;
+		   inst_ext_rds;
 
    // decode condition
    assign ena= (cond==4'h0)? 1 : // always
