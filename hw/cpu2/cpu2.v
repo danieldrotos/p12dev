@@ -144,7 +144,8 @@ module cpu2
    assign inst_br= inst_call | ((inst_alu | inst_ld) & (rd==4'd15));
    assign inst_wb= (inst_alu & alu_wb_en) |
 		   inst_br |
-		   inst_ld;
+		   inst_ld |
+		   inst_ext_gpb;
 
    // decode condition
    assign ena= (cond==4'h0)? 1 : // always
@@ -202,6 +203,7 @@ module cpu2
       .opd(opd),
       .opb(opb),
       .byte_idx( ic[15] ? {30'b0,ic[1:0]} : {30'b0,opa[1:0]} ),
+      .ex_mode( ic[14:13] ),
       .res(res_ext_getb)
       );
    
