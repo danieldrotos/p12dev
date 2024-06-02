@@ -574,7 +574,7 @@ $conds2= array(
 	  // EXT 011L
 	  "rn_" =>array("icode"=>0x07000000,"placements"=>array("rd","#16"))
       )),
-    // EXT 011P
+    // EXT 011P GETB
     "GETB" =>array("icode"=>0x06010000, "params"=>array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
         "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
@@ -591,10 +591,18 @@ $conds2= array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
         "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
     )),
-    // EXT 011P
+    // EXT 011P PUTB
     "PUTB" =>array("icode"=>0x07010000, "params"=>array(
         "rrr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb","ri0")),
         "rrn_" =>array("icode"=>0x00008000,"placements"=>array("rd","rb","#2"))
+    )),
+    // EXT 011P RDS
+    "RDS" =>array("icode"=>0x06020000, "params"=>array(
+        "rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
+    )),
+    // EXT 011P WRS
+    "WRS" =>array("icode"=>0x07020000, "params"=>array(
+        "rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
     ))
   );
 
