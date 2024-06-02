@@ -22,6 +22,6 @@ module getb
 	      (ex_mode == 2'b11) ? {(WIDTH-8){g_byte[7]}} : // SEX
 	      opd[WIDTH-1:8];
    
-   assign res= {24'b0, g_byte};
+   assign res= {ex, g_byte};
    
 endmodule // getb
