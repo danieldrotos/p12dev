@@ -6,18 +6,18 @@ module alu2
     parameter IWIDTH=16
     )
    (
-    input wire [5:0]	    op,
+    input wire [5:0]	    op, // operation code
     
-    input wire [WIDTH-1:0]  fi,
-    input wire [WIDTH-1:0]  bi,
-    input wire [WIDTH-1:0]  di,
-    input wire [IWIDTH-1:0] im,
+    input wire [WIDTH-1:0]  fi, // input flags
+    input wire [WIDTH-1:0]  bi, // Rb content
+    input wire [WIDTH-1:0]  di, // Rd content
+    input wire [IWIDTH-1:0] im, // immediate value
     
-    output wire [WIDTH-1:0] res,
-    output wire [WIDTH-1:0] fo,
+    output wire [WIDTH-1:0] res, // result
+    output wire [WIDTH-1:0] fo,  // output flags
 
-    output wire		    wb_en, 
-    output wire		    flag_en
+    output wire		    wb_en,  // enable write-back
+    output wire		    flag_en // enable flags write 
     );
 
    // input flags
@@ -366,7 +366,7 @@ module alu2
 		    !op[0]&op[1]
 		    );
    assign wb_en= wb_en_reg | wb_en_im | wb_en_1;
-   assign fo= res_flags; // TODO
+   assign fo= (op_1 & op[3:0]==4'hf) ? di : res_flags;
 
    wire 		    flag_en_reg, flag_en_im, flag_en_1;
    assign flag_en_reg= op_2reg &

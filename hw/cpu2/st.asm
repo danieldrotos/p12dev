@@ -6,9 +6,11 @@ PORTA	=	0xff00
 PORTB	=	0xff01
 	
 	jmp	goon
-dta:	dd	0x12fe5678
+dta:	dd	0x12fe5600
 goon:
 	ld	r2,dta
+	setf	r2
+	getf	r3
 	getb	r1,r2,1
 	putb	r1,r1,1
 	getb	r1,r2,2
