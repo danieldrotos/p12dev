@@ -760,6 +760,20 @@ function is_cond($W)
     return $cond;
 }
 
+function is_exmode($W)
+{
+    if (empty($W))
+        return false;
+    if (($W == "SX"))
+        return 0x00006000;
+    if (($W == "ZX"))
+        return 0x00004000;
+    if (($W == "NX"))
+        return 0x00000000;
+    return false;
+}
+
+
 function is_inst($W)
 {
     global $insts;
@@ -1115,6 +1129,13 @@ function proc_asm_line($l)
         {
             debug("proc_asm_line; COND= ".sprintf("%08x",$cond));
             $icode= $icode | $cond;
+            debug("proc_asm_line; ICODE= ".sprintf("%08x",$icode));
+        }
+        
+        else if (($exm= is_exmode($W)) !== false)
+        {
+            debug("proc_asm_line; EX= ".sprintf("%08x",$exm));
+            $icode= $icode | $exm;
             debug("proc_asm_line; ICODE= ".sprintf("%08x",$icode));
         }
         
