@@ -92,7 +92,7 @@ if (isset($argv[0]))
         $p= strrpos($obj_name, ".");
         if ($p === false)
         {
-            echo "Error: Can not convert source filename to list filename\n";
+            echo "Error: Can not convert object filename to list filename\n";
             exit(5);
         }
         $lst_name= substr($obj_name, 0, $p).".lst";
@@ -830,27 +830,44 @@ function is_label($w)
     return false;
 }
 
+$custom_regs= array();
+
 function is_reg($w)
 {
+    global $custom_regs;
+    
+    $r= false;
     $W= strtoupper($w);
     debug("Check if $w/$W is a reg?");
     $W= preg_replace('/[+*-]/', "", $W);
     debug("Check if $w/$W is a reg?");
     if ($W == "PC")
-    {  $r= 15; debug("pc=15"); }
+    { $r= 15; debug("pc=15"); return $r; }
     else if ($W == "LR")
-    { $r= 14;; debug("lr=14"); }
+    { $r= 14; debug("lr=14"); return $r; }
     else if ($W == "SP")
-    { $r= 13; debug("sp=13"); }
-    else if (preg_match("/^R[0-9][0-9]*/", $W))
+    { $r= 13; debug("sp=13"); return $r; }
+    else
+    {
+        if (arri($custom_regs, $W) != '')
+        {
+            debug("Match as customreg=$W:{$custom_regs[$W]}");
+            $W= $custom_regs[$W];
+        }
+    }
+
+    if (preg_match("/^R[0-9][0-9]*/", $W))
     {
         $w= substr($W, 1);
-        $r= intval($w,0);
+        $r= intval($w, 10);
+        if (($r > 15) || ($r < 0))
+            return false;
         debug("Match as a reg: w=$w r=$r");
         return($r);
     }
     else
         return false;
+    
     return $r;
 }
 
@@ -1106,6 +1123,7 @@ function proc_asm_line($l)
     global $fin, $conds, $insts, $mem, $syms, $lnr, $addr;
     global $conds1, $conds2, $insts1, $insts2, $proc;
     global $segs, $segment, $commas;
+    global $custom_regs;
     $org= $l;
     $icode= 0;
     $label= false;
@@ -1446,10 +1464,23 @@ function proc_asm_line($l)
         }
 
         else if (($W == "ENDS") || ($W == ".ENDS"))
-      {
-	    if ($segment!==false)
-              debug("Finish segment: {$segment['name']},{$segment['id']}");
+        {
+            if ($segment!==false)
+                debug("Finish segment: {$segment['name']},{$segment['id']}");
             $segment= false;
+            return;
+        }
+
+        else if (($W == "REQ") || ($W == ".REQ"))
+        {
+            $wnew= strtoupper(strtok(" \t,"));
+            $wold= strtoupper(strtok(" \t,"));
+            if (($wnew=='') || ($wold==''))
+                ddie(".REQ needs two parameters");
+            if (is_reg($wold)===false)
+                ddie("Second parameter of .REQ is unknown register");
+            $custom_regs[$wnew]= $wold;
+            debug(print_r($custom_regs,true));
             return;
         }
         
@@ -1503,7 +1534,8 @@ function proc_asm_line($l)
         if ($r !== false)
         {
             $pattern.= "r";
-            $params[]= $r;
+            $W= "R".$r;
+            $params[]= $r;            
             if (is_w($W))
             {
                 $mem[$addr]['icode']|= 0x01000000;
