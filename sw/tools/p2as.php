@@ -2094,30 +2094,58 @@ function proc_relocs(&$m)
 // PHASE 1
 ///////////////////////////////////////////////////////////////////////
 // Load source files and do PHASE 1
-foreach ($fina as $fin)
+
+function ph1($ph1_fin)
 {
-    $fext= pathinfo($fin, PATHINFO_EXTENSION);
-    if ($fext=="s" || $fext=="asm")
-    {
-        // Assembly source
-        debug("\n;; Phase 1 of file $fin [ASM]\n");
-        $src= file_get_contents($fin);
-        $lines= preg_split("/\r\n|\n|\r/", $src);
-        $nuof_lines= count($lines);
-        debug("$nuof_lines lines buffered");
-        for ($li= 0; $li < $nuof_lines; $li++)
+    global $fin, $lnr;
+    debug("\n;; Phase 1 of file $ph1_fin [ASM]\n");
+    $fin= $ph1_fin;
+    $src= file_get_contents($ph1_fin);
+    $lines= preg_split("/\r\n|\n|\r/", $src);
+    $nuof_lines= count($lines);
+    debug("$nuof_lines lines buffered");
+    for ($li= 0; $li < $nuof_lines; $li++)
         {
             $lnr= $li+1;
             $l= trim($lines[$li]);
             //$l= preg_replace("/;.*$/", "", $l);
             debug("\n");
             debug("line[$lnr]: $l");
+            $l2= $l;
+            $w= strtok($l2, " \t,=;");
+            if ($w!='')
+            {
+                $W= strtoupper($w);
+                if ($W==".INCLUDE")
+                {
+                    $w= strtok(" \t,=;");
+                    if ($w!='')
+                    {
+                        if (!file_exists($w))
+                            ddie("Included file ($w) not found");
+                        ph1($w);
+                        $fin= $ph1_fin;
+                        $lnr= $li+1;
+                        continue;
+                    }
+                }
+            }
             proc_asm_line($l);
         }
+}
+
+foreach ($fina as $ph1_fin)
+{
+    $fext= pathinfo($ph1_fin, PATHINFO_EXTENSION);
+    if ($fext=="s" || $fext=="asm")
+    {
+        // Assembly source
+        ph1($ph1_fin);
     }
     else if (($fext=="p2h") || ($fext == "p2o") || ($fext == "p2l"))
     {
         // Object file
+        $fin= $ph1_fin;
         debug("\n;; Phase 1 of file $fin [P2H]\n");
         debug(sprintf("Start read of $fin at address %05x\n", $addr));
         $last_code_at= false;
