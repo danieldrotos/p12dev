@@ -1,3 +1,3 @@
 #PRG		= sw/progs2/counter3
-PRG		= hw/cpu2/st
+PRG		= sw/progs2/bugtest
 INSTS		= 25000

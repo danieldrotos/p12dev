@@ -1534,8 +1534,6 @@ function proc_asm_line($l)
         if ($r !== false)
         {
             $pattern.= "r";
-            $W= "R".$r;
-            $params[]= $r;            
             if (is_w($W))
             {
                 $mem[$addr]['icode']|= 0x01000000;
@@ -1551,6 +1549,8 @@ function proc_asm_line($l)
                 $mem[$addr]['icode']|= 0x00004000;
                 debug( sprintf("Set P bit: %08x",$mem[$addr]['icode']) );
             }
+            $W= "R".$r;
+            $params[]= $r;            
             debug("Parameter value: $r");
         }
         else

@@ -20,7 +20,8 @@ all: pmonitor lib \
 	letest \
 	rndtest \
 	strtest \
-	dtoitest
+	dtoitest \
+	bugtest
 
 
 pmonitor:
@@ -60,6 +61,8 @@ letest.p2h: le_test.asm $(LIB)/fn_lined.asm $(LIB)/fn_pmon.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
 rndtest: rndtest.p2h rndtest.asc rndtest.cdb
+
+bugtest: bugtest.p2h bugtest.asc bugtest.cdb
 
 rndtest.p2h: rnd_test.asm \
 		$(LIB)/fn_div.p2o \
