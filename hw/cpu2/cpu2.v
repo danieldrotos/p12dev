@@ -192,7 +192,7 @@ module cpu2
       .flag_en(alu_flag_en)
       );
 
-   assign flags_din= inst_alu1 ? alu_res_flags :
+   assign flags_din= inst_alu ? alu_res_flags :
 		     inst_ext_wrs ? opd :
 		     flags;
 
