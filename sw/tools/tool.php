@@ -20,7 +20,7 @@
       return $info['dir'];
     }
     return "";
-}
+  }
 
   if (isset($argv[0]))
   {

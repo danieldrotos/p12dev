@@ -627,20 +627,62 @@ if (!function_exists('random_bytes'))
 
 if (!function_exists('array_key_first'))
 {
-    function array_key_first(array $arr) {
-        foreach($arr as $key => $unused) {
+    function array_key_first(array $arr)
+    {
+        foreach($arr as $key => $unused)
+        {
             return $key;
         }
         return NULL;
     }
-        }
+}
 
 if( !function_exists('array_key_last') )
 {
-    function array_key_last(array $array) {
+    function array_key_last(array $array)
+    {
         if( !empty($array) ) return key(array_slice($array, -1, 1, true));
     }
+}
+
+
+function get_home()
+{
+    if (false !== ($home = getenv('HOME')))
+    {
+        return $home;
+    }
+    if (/*isWindows() &&*/ false !== ($home = getenv('USERPROFILE')))
+    {
+        return $home;
+    }
+    if (function_exists('posix_getuid') && function_exists('posix_getpwuid')) {
+        $info = posix_getpwuid(posix_getuid());
+        return $info['dir'];
+    }
+    return "";
+}
+
+
+function sys_inc()
+{
+    $i= 0;
+    $d= "./";
+    while ($i<6)
+    {
+        if (file_exists($d.".version"))
+        {
+            return $d."/sw/lib";
+            break;
         }
+        $d= "../".$d;
+        $i++;
+    }
+    $d= get_home();
+    if (file_exists($d."/p12tool") && file_exists($d."/p12tool/include"))
+        return $d."/p12tool/include";
+    return "";
+}
 
 
 function arri($a, $idx)
@@ -2121,9 +2163,16 @@ function ph1($ph1_fin)
                     $w= strtok(" \t,=;");
                     if ($w!='')
                     {
-                        if (!file_exists($w))
+                        $d= dirname($ph1_fin);
+                        $si= sys_inc();
+                        if (file_exists($w))
+                            ph1($w);
+                        else if (file_exists($d."/".$w))
+                            ph1($d."/".$w);
+                        else if ($si!='' && file_exists($si."/".$w))
+                            ph1($si."/".$w);
+                        else
                             ddie("Included file ($w) not found");
-                        ph1($w);
                         $fin= $ph1_fin;
                         $lnr= $li+1;
                         continue;
