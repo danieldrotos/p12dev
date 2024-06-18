@@ -14,6 +14,12 @@
 	$i++;
 	$aw= $argv[$i];
       }
+      else if ($argv[$i] == "-v")
+      {
+	$i++;
+	$vf= $argv[$i];
+	$ver= trim(file_get_contents($vf));
+      }
       else
 	$fin= $argv[$i];
     }
@@ -36,6 +42,8 @@
   $mem_size= 1 << $aw;
   $sep= " \r\t\v";
   echo "#include \"pmon.h\"\n";
+  echo "\n";
+  echo "const char * p12cpu_version= \"$ver\";\n";
   echo "\n";
   echo "t_mem pmon[]= {\n";
   foreach ($lines as $l)
