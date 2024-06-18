@@ -24,7 +24,10 @@ module sfr
 	       FEAT1_SFR |
 	       FEAT1_FLAG32;
    
-   assign dout= (addr==SFR_VERSION) ? 0 :
+   assign dout= (addr==SFR_VERSION) ? { 8'd0,
+					8'd`VER_MAIN,
+					8'd`VER_SUB,
+					8'd`VER_REL } :
 		(addr==SFR_FEAT1) ? sf1	:
 		(addr==SFR_FEAT2) ? 0 :
 		0;

@@ -11,7 +11,7 @@ AW		?= 16
 
 TOOLS		= sw/tools
 
-MODS		= hw/defs hw/hwconf \
+MODS		= hw/defs hw/hwconf hw/version \
 		  hw/computer/decoder \
 		  hw/computer/comp \
 		    hw/computer/addrdec1 \
@@ -103,6 +103,9 @@ $(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
 		-DIVERILOG=1 \
 		$(INCLUDES) \
 		-o $(VVP) -s $(TOP) $(TB_VER) $(MODS_VER)
+
+hw/version.v: .version $(TOOLS)/tool.php
+	php $(TOOLS)/tool.php -vg >$@
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 

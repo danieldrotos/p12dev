@@ -20,6 +20,29 @@
 	mvzl	r0,'0'
 	call	_putchar
 
+	rds	r1,r1
+	st	r1,GPIOA.ODR
+	getb	r0,r1,2
+	add	r0,'0'
+	call	_putchar
+	mvzl	r0,'.'
+	call	_putchar
+	getb	r0,r1,1
+	add	r0,'0'
+	call	_putchar
+	mvzl	r0,'.'
+	call	_putchar
+	getb	r0,r1,0
+	add	r0,'0'
+	call	_putchar
+
+	mov	r0,r1
+	getbz	r1,r0,2
+	getbz	r2,r0,1
+	getbz	r3,r0,0
+	call	_pesf
+	db	"\nVer %d.%d.%d\n"
+	
 end:	jmp	end
 	
 s1:	db	"Hello %d %x\n"
