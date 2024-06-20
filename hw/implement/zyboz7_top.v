@@ -36,15 +36,15 @@ module zyboz7_top
    wire 	      f1Hz;
    
    reg [3:0]          btn;
-   reg [7:0] 	      switches;
+   reg [3:0] 	      switches;
    
    //wire [3:0] clk_select;
-   wire [3:0] display_select;
+   //wire [3:0] display_select;
    //wire [3:0] test_reg_select;
    //wire [3:0] test_out_select;
    
    //assign clk_select     = switches[15:12];
-   assign display_select = switches[7:4];
+   //assign display_select = switches[7:4];
    //assign test_out_select= switches[7:4];
    //assign test_reg_select= switches[3:0];
    
@@ -126,7 +126,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
    wire [2:0]  clk_stat;
    
    assign porti= {28'd0, btn};
-   assign portj= {24'd0, switches};
+   assign portj= {28'd0, switches};
    comp
      #(
        .PROGRAM        ( `PRG ),
@@ -169,6 +169,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       .irqs           (irqs)
       );
    
+   /*
    wire [31:0] display_data;
    wire [3:0]  display_sel;
    mux16 dspmx(
@@ -190,6 +191,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         .in14(mdo),
         .in15(addr),
         .out(display_data));
+   */
    
    /*
    wire [7:0] drv_seg;

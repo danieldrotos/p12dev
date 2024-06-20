@@ -1,10 +1,10 @@
 	.proc	P2
 	
-PORTA	equ	0xff00
-PORTB	equ	0xff01
+PORTA		equ	0xff00
+PORTB		equ	0xff01
 UART_CTRL	=	0xff41
 UART_CPB	=	0xff44
-btn	equ	0xff20
+btn		equ	0xff20
 	
 callin		=	0xf000
 enter_by_uart	=	0xf001
@@ -17,7 +17,7 @@ pesf		=	0xf015
 dummy		=	12
 	
 	org	1
-	jmp	start ;start
+	jmp	start		;start
 	db	dummy
 start:	
 	mvzl	r1,217
@@ -29,7 +29,7 @@ start:
 	mvzl	r10,0
 	ld	r1,btn
 	st	r1,last_btn
-	jmp	real_start ;try_himem
+	jmp	real_start	 ;try_himem
 	
 	.segment try_himem
 	dummy	=	33
@@ -63,7 +63,7 @@ cyc:
 	;db	cyc_belso
 cyc:
 real_start:	
-	;call	enter_by_uart		; enter monitor by uart
+	call	enter_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
 	call	pressed
 	C1 call	callin
