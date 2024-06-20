@@ -1,3 +1,5 @@
+`include "version.v"
+
 module sfr
   #(
     parameter WIDTH= 32
