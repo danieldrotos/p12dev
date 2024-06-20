@@ -20,7 +20,7 @@
 	mvzl	r0,'0'
 	call	_putchar
 
-	rds	r1,r1
+	rds	r1,Sver
 	st	r1,GPIOA.ODR
 	getb	r0,r1,2
 	add	r0,'0'

@@ -889,6 +889,14 @@ function is_reg($w)
     { $r= 14; debug("lr=14"); return $r; }
     else if ($W == "SP")
     { $r= 13; debug("sp=13"); return $r; }
+    else if ($W == "SFLAG")
+    { $r= 0; debug("Sflag=SFR[0]"); return $r; }
+    else if ($W == "SVER")
+    { $r= 1; debug("Sver=SFR[1]"); return $r; }
+    else if ($W == "SFEAT1")
+    { $r= 2; debug("Sfeat1=SFR[2]"); return $r; }
+    else if ($W == "SFEAT2")
+    { $r= 3; debug("Sfeat2=SFR[3]"); return $r; }
     else
     {
         if (arri($custom_regs, $W) != '')
