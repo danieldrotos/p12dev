@@ -21,7 +21,7 @@ assembler and function library.
 
 ## Starting new project
 
-Open `prk.mk` file with a text editor and set project parameters:
+Open `prj.mk` file with a text editor and set project parameters:
 
 - `PRG` name of the assembly source file, without .asm extension. If
   it is in a subdirectory, path must be used.
