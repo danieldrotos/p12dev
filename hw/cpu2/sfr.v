@@ -20,7 +20,8 @@ module sfr
    localparam		    FEAT1_GETB_EXT= 32'h0000_0001;
    localparam		    FEAT1_SFR     = 32'h0000_0002;
    localparam		    FEAT1_FLAG32  = 32'h0000_0004;
-
+   localparam		    FEAT1_CES     = 32'h0000_0008;
+   
    wire [WIDTH-1:0]	    sf1;
    assign sf1= FEAT1_GETB_EXT |
 	       FEAT1_SFR |
