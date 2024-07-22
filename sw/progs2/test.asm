@@ -11,10 +11,10 @@ pesf		=	0xf015
 	mvzl	r0,3
 	st	r0,0xff41
 	
-	call	pesf
+	ces	pesf
 	db	"A"
 
-	UN call	pesf
+	ces	pesf
 	db	"B"
 
 stop:	jmp	stop

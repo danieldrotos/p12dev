@@ -604,6 +604,11 @@ $conds2= array(
     // EXT 011P WRS
     "WRS" =>array("icode"=>0x07020000, "params"=>array(
         "rr_" =>array("icode"=>0x00000000,"placements"=>array("rd","rb"))
+    )),
+    // UNCONDITIONAL 1111 010 CES
+    "CES"  =>array("icode"=>0xf4000000, "params"=>array(
+        "rn_" =>array("icode"=>0x01000000,"placements"=>array("rd","#20")),
+        "n_"=>array("icode"=>0x00000000,"placements"=>array("#24"))
     ))
   );
 
