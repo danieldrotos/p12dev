@@ -3,10 +3,21 @@
 CLOCK_PRE	equ	0xff50
 
 printf		=	0xf014
+pesf		=	0xf015
 	
 	org	0
 	mvzl	r13,0xefff
+	mvzl	r0,3
+	st	r0,0xff41
+	
+	call	pesf
+	db	"A"
 
+	UN call	pesf
+	db	"B"
+
+stop:	jmp	stop
+	
 	mvzl	r0,1
 	st	r0,CLOCK_PRE
 	
