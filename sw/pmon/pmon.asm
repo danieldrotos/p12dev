@@ -1819,6 +1819,7 @@ pesf:
 	push	r2
 	mov	r0,LR
 	call	printf
+	inc	r2
 	st	r2,reg2
 	pop	r2
 	pop	r0
