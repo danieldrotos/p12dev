@@ -104,15 +104,17 @@ module cpu2
 
    // pick parts of the IC
    wire [3:0]		       cond= ic[31:28];
-   wire [2:0] 		       inst= ic[27:25];
+   wire [2:0]		       inst= ic[27:25];
+
+   wire			       uncond= (cond==4'hf);
    
-   wire 		       inst_alu2= inst==0;
-   wire 		       inst_alu1= inst==1;
-   wire 		       inst_call= inst==2;
-   wire 		       inst_ext = inst==3;
-   wire 		       inst_st_r= inst==4;
-   wire 		       inst_ld_r= inst==5;
-   wire 		       inst_st_i= inst==6;
+   wire 		       inst_alu2= (inst==0) & !uncond;
+   wire 		       inst_alu1= (inst==1) & !uncond;
+   wire 		       inst_call= (inst==2);
+   wire 		       inst_ext = (inst==3) & !uncond;
+   wire 		       inst_st_r= (inst==4) & !uncond;
+   wire 		       inst_ld_r= (inst==5) & !uncond;
+   wire 		       inst_st_i= (inst==6) & !uncond;
 
    wire 		       inst_param= ic[24];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};

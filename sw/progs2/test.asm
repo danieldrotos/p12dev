@@ -6,6 +6,7 @@ printf		=	0xf014
 pesf		=	0xf015
 	
 	org	0
+	UN mvzl	r1,0xabcd
 	mvzl	r13,0xefff
 	mvzl	r0,3
 	st	r0,0xff41
