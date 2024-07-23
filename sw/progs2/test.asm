@@ -12,7 +12,7 @@ pesf		=	0xf015
 	st	r0,0xff41
 	
 	ces	pesf
-	db	"A"
+	db	"HelloWorld!\n"
 
 	ces	pesf
 	db	"B"
