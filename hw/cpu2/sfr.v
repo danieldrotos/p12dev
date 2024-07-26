@@ -25,7 +25,8 @@ module sfr
    wire [WIDTH-1:0]	    sf1;
    assign sf1= FEAT1_GETB_EXT |
 	       FEAT1_SFR |
-	       FEAT1_FLAG32;
+	       FEAT1_FLAG32 |
+	       FEAT1_CES;
    
    assign dout= (addr==SFR_VERSION) ? { 8'd0,
 					8'd`VER_MAIN,
