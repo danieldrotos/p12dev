@@ -113,27 +113,30 @@
 
     <p><samp>PRG = sw/progs2/counter3</samp></p>
 
-    <p lang="hu">a <code>PRG</code> paramétert tartalmazó sorba, az =
-      jel után. A fájl nevében az útvonalat a fejlesztőrendszer gyökér
-      könyvtárához képest adjuk meg. A fájl nevében nem kell
-      feltüntetni az .asm kiterjesztést! Alapértelmezésként a
-      sw/progs2 alkönyvtárban található counter3 nevű példa program
-      neve van megadva.</p>
-    
-    <p lang="en">in the line of <code>PRG</code> parameter, after the
-      = sign. Path in the file name sould be relative to root
-      directory of the package. Do not include the .asm extension in
-      the name. Name of the counter3 example is used from sw/progs2
-      directory by default. Change it to your app name.</p>
+    <p>
+      <p lang="hu">a <code>PRG</code> paramétert tartalmazó sorba, az =
+	jel után. A fájl nevében az útvonalat a fejlesztőrendszer gyökér
+	könyvtárához képest adjuk meg. A fájl nevében nem kell
+	feltüntetni az .asm kiterjesztést! Alapértelmezésként a
+	sw/progs2 alkönyvtárban található counter3 nevű példa program
+	neve van megadva.</p>
+      
+      <p lang="en">in the line of <code>PRG</code> parameter, after the
+	= sign. Path in the file name sould be relative to root
+	directory of the package. Do not include the .asm extension in
+	the name. Name of the counter3 example is used from sw/progs2
+	directory by default. Change it to your app name.</p>
+    </p>
 
-    <p lang="hu">Hozzuk létre a fájlt a megadott könyvtárban, a
-      megadott névvel (és .asm kiterjesztéssel), és írjuk meg a
-      programot.</p>
-    
-    <p lang="en">Create the assembly source file with the name you
-      used above and place it in the correct directory. Write your
-      code into the assembly source file.</p>
-    
+    <p>
+      <p lang="hu">Hozzuk létre a fájlt a megadott könyvtárban, a
+	megadott névvel (és .asm kiterjesztéssel), és írjuk meg a
+	programot.</p>
+      
+      <p lang="en">Create the assembly source file with the name you
+	used above and place it in the correct directory. Write your
+	code into the assembly source file.</p>
+    </p>
 
     <h3>
       <span lang="hu">Projekt paraméterek</span>
@@ -241,23 +244,24 @@
   
     <p><samp>call 0xf000</samp></p>
 
+    <p>
+      <p lang="hu">Ennek hiányában az FPGA kártyán futó alkalmazói
+	programot nem tudjuk lecserélni, új program betöltéséhez újra
+	kell programoznunk az FPGA áramkört. A monitor elérésének
+	további módjait annak leírásában találjuk.</p>
+      
+      <p lang="en">Without this, the application running on FPGA can not
+	be replaced and you have to reprogram the whole FPGA. Further
+	ways to access the monitor program are described in its
+	documentation.</p>
+    </p>
 
-    <p lang="hu">Ennek hiányában az FPGA kártyán futó alkalmazói
-      programot nem tudjuk lecserélni, új program betöltéséhez újra
-      kell programoznunk az FPGA áramkört. A monitor elérésének
-      további módjait annak leírásában találjuk.</p>
-
-    <p lang="en">Without this, the application running on FPGA can not
-      be replaced and you have to reprogram the whole FPGA. Further
-      ways to access the monitor program are described in its
-      documentation.</p>
-
-
-    <p lang="hu">Ha 0-tól eltérő kezdőcímet használunk, pl.</p>
-    
-    <p lang="en">If you place your program at address different than 0,
-      like:</p>
-
+    <p>
+      <p lang="hu">Ha 0-tól eltérő kezdőcímet használunk, pl.</p>
+      
+      <p lang="en">If you place your program at address different than 0,
+	like:</p>
+    </p>
 
     <p><samp>.org 1</samp></p>
 
@@ -283,90 +287,104 @@
       <span lang="hu">Hardver szimuláció</span>
       <span lang="en">Hardware simulation</span>
     </h3>
-    
-    <p lang="hu">A hardver szimuláció az áramkör kapu szintű
-      szimulációja. A szimulációhoz egy verilog szimulátor szükséges,
-      a fejlesztőrendszer az Icarus verilog szoftvert használja. A
-      szimuláció több lépésből áll, az Icarus a tervet először
-      szimulálható formára alakítja, &ldquo;lefordítja&rdquo;. Ehhez a
-      lépéshez szükség van a számítógép memóriájának tartalmára is,
-      tehát mindenekelőtt a futtatandó programot kell lefordítanunk és
-      átalakítanunk a verilog számára szükséges formátumra.</p>
 
-    <p lang="en">Hardware simulation means gate level simulation of
-      the circuit.  It requires a verilog simulator, the development
-      system uses Icarus verilog software. Simulation takes several
-      step. First, Icarus converts the model into an internal form
-      that is suitable for the simulation. This step needs the memory
-      content, so we need to compile the software first to generate
-      needed memory content file which the Icarus is able to read.</p>
+    <p>
+      <p lang="hu">A hardver szimuláció az áramkör kapu szintű
+	szimulációja. A szimulációhoz egy verilog szimulátor szükséges,
+	a fejlesztőrendszer az Icarus verilog szoftvert használja. A
+	szimuláció több lépésből áll, az Icarus a tervet először
+	szimulálható formára alakítja, &ldquo;lefordítja&rdquo;. Ehhez a
+	lépéshez szükség van a számítógép memóriájának tartalmára is,
+	tehát mindenekelőtt a futtatandó programot kell lefordítanunk és
+	átalakítanunk a verilog számára szükséges formátumra.
+      </p>
     
-    <p lang="hu">A második lépésben fut maga a szimuláció, amelynek
-      során a tesztelt áramkörre (vagyis a számítógépre) megfelelő
-      bemeneti jeleket kapcsolunk. A szimuláció az <code>INSTS</code> paraméterben megadott
-      számú CPU utasítás után leáll.</p>
-
-    <p lang="en">In second step the simulation will run when input signal
-      values are applied to input of the circuit. The simulation stops
-      when CPU executes as many instructions as specified in the <code>NSTS</code>
-      parameter.
+      <p lang="en">Hardware simulation means gate level simulation of
+	the circuit.  It requires a verilog simulator, the development
+	system uses Icarus verilog software. Simulation takes several
+	step. First, Icarus converts the model into an internal form
+	that is suitable for the simulation. This step needs the memory
+	content, so we need to compile the software first to generate
+	needed memory content file which the Icarus is able to read.
+      </p>
     </p>
 
-    <p lang="hu">A szimuláció az áramkörben megjelenő jelek értékét
-      egy kimeneti fájlba írja (dump fájl), amelyet a harmadik
-      lépésben megjeleníthetünk és kiértékelhetünk. A teljes folyamat
-      lefuttatását egy Makefile vezérli, amelyet parancssorból
-      kezelhetünk.</p>
+    <p>
+      <p lang="hu">A második lépésben fut maga a szimuláció, amelynek
+	során a tesztelt áramkörre (vagyis a számítógépre) megfelelő
+	bemeneti jeleket kapcsolunk. A szimuláció az <code>INSTS</code> paraméterben megadott
+	számú CPU utasítás után leáll.
+      </p>
     
-    <p lang="en">The simulation writes out values of internal signals
-      into an output file (dump file) which can be displayed in the
-      third step.  The whole process is controlled by a Makefile which
-      can be used form command line.
+      <p lang="en">In second step the simulation will run when input signal
+	values are applied to input of the circuit. The simulation stops
+	when CPU executes as many instructions as specified in the <code>NSTS</code>
+	parameter.
+      </p>
     </p>
 
-    <p lang="hu">Nyissunk meg egy parancsértelmező ablakot
-      (pl. Powershell), és váltsunk a csomag gyökér
-      könyvtárára. Pl. ha a ZIP fájlt az Asztal-ra csomagoltuk ki egy
-      p12dev könyvtárba, akkor adjuk ki a:</p>
-
-    <p lang="en">Open a command window (e.g. PowerShell on windows)
-      and change working directory to root of the development
-      system. For example, if the package is unzipped into p12dev on
-      Desktop, enter:
+    <p>
+      <p lang="hu">A szimuláció az áramkörben megjelenő jelek értékét
+	egy kimeneti fájlba írja (dump fájl), amelyet a harmadik
+	lépésben megjeleníthetünk és kiértékelhetünk. A teljes folyamat
+	lefuttatását egy Makefile vezérli, amelyet parancssorból
+	kezelhetünk.</p>
+      
+      <p lang="en">The simulation writes out values of internal signals
+	into an output file (dump file) which can be displayed in the
+	third step.  The whole process is controlled by a Makefile which
+	can be used form command line.
+      </p>
     </p>
 
-
-    <p lang="hu">samp>cd Asztal/p12dev</samp></p>
-    <p lang="en">samp>cd Desktop/p12dev</samp></p>
-    
-    
-    <p lang="hu">parancsot. Ha a szükséges szoftvereket telepítettünk,
-      a szimuláció és a megjelenítés a</p>
-    
-    <p lang="en">command. If the required softwares are installed, the
-      simulation and displaying the result can be done with:
+    <p>
+      <p lang="hu">Nyissunk meg egy parancsértelmező ablakot
+	(pl. Powershell), és váltsunk a csomag gyökér
+	könyvtárára. Pl. ha a ZIP fájlt az Asztal-ra csomagoltuk ki egy
+	p12dev könyvtárba, akkor adjuk ki a:
+      </p>
+        
+      <p lang="en">Open a command window (e.g. PowerShell on windows)
+	and change working directory to root of the development
+	system. For example, if the package is unzipped into p12dev on
+	Desktop, enter:
+      </p>
     </p>
     
+    <p lang="hu"><samp>cd Asztal/p12dev</samp></p>
+    <p lang="en"><samp>cd Desktop/p12dev</samp></p>
+    <br>
+
+    <p>
+      <p lang="hu">parancsot. Ha a szükséges szoftvereket telepítettünk,
+	a szimuláció és a megjelenítés a</p>
+      
+      <p lang="en">command. If the required softwares are installed, the
+	simulation and displaying the result can be done with:
+      </p>
+    </p>
     
     <p><samp>make</samp></p>
     
-
-    <p lang="hu">parancs kiadásával futtatható le. A szimuláció után
-      elindul a gtkwave szoftver, amely a dump fájl tartalmát
-      idődiagram formájában kirajzolja és lehetővé teszi a gép
-      működésének vizsgálatát.</p>
-    
-    <p lang="en">command. After the simulaton, gtkwave softwer is
-      started which displays content of the dump file on a time
-      diagram.</p>
-    
-    <p lang="hu">A make parancs paramétere segítségével a folyamat
-      egyes lépései önállóan is lefuttathatók:</p>
-    
-    <p lang="en">Using following parameters to make command, it is
-      possible to run any step of the process separately:
+    <p>
+      <p lang="hu">parancs kiadásával futtatható le. A szimuláció után
+	elindul a gtkwave szoftver, amely a dump fájl tartalmát
+	idődiagram formájában kirajzolja és lehetővé teszi a gép
+	működésének vizsgálatát.</p>
+      
+      <p lang="en">command. After the simulaton, gtkwave softwer is
+	started which displays content of the dump file on a time
+	diagram.</p>
     </p>
-    
+
+    <p>
+      <p lang="hu">A make parancs paramétere segítségével a folyamat
+	egyes lépései önállóan is lefuttathatók:</p>
+      
+      <p lang="en">Using following parameters to make command, it is
+	possible to run any step of the process separately:
+      </p>
+    </p>
     
     <p></p>
     <p lang="hu"><samp>make progs     ; példaprogramok és a monitor lefordítása
@@ -419,30 +437,32 @@ make clean     ; remove generated files
 
     <p></p><p><samp>make iss</samp></p>
     
+    <p>
+      <p lang="hu">parancs kiadásával. A fordítás után elindul a
+	szimulátor, a memóriába betöltődik a projektben megadott program
+	kódja és a monitor. A program futtatása elindul. Az &mu;Csim
+	mellett három terminál ablak is megnyílik, a fejlécük <b>UART</b>, <b>cmd1</b> és <b>cmd2</b>
+	lesz.</p>
+      
+      <p lang="en">After compilation of the app, the simulator
+	starts. The simulated memory is filled with the code of the
+	project's app and the monitor. Besides &mu;Csim (which runs in
+	the background), three terminal windows open, titled <b>UART</b>, <b>cmd1</b> and <b>cmd2</b>.</p>
+    </p>
 
-    <p lang="hu">parancs kiadásával. A fordítás után elindul a
-      szimulátor, a memóriába betöltődik a projektben megadott program
-      kódja és a monitor. A program futtatása elindul. Az &mu;Csim
-      mellett három terminál ablak is megnyílik, a fejlécük <b>UART</b>, <b>cmd1</b> és <b>cmd2</b>
-      lesz.</p>
-
-    <p lang="en">After compilation of the app, the simulator
-      starts. The simulated memory is filled with the code of the
-      project's app and the monitor. Besides &mu;Csim (which runs in
-      the background), three terminal windows open, titled <b>UART</b>, <b>cmd1</b> and <b>cmd2</b>.</p>
-
-    <p lang="hu">Az UART ablak a szimulált soros vonalhoz
-      kapcsolódik. Ha a programot a monitor mellé fordítottuk le,
-      akkor itt egy ENTER lenyomása után a monitor promptját
-      (kettőspont) fogjuk látni. A monitor segítségével elindíthatjuk
-      a programunkat a</p>
-
-    <p lang="en">The UART window is connected to the simulated
-      uart. When you compile your app by keeping monitor start
-      instruction, and press ENTER in this window, the monitor prompt
-      (colon) will appear. You can start your app with the following
-      monitor command:</p>
-    
+    <p>
+      <p lang="hu">Az UART ablak a szimulált soros vonalhoz
+	kapcsolódik. Ha a programot a monitor mellé fordítottuk le,
+	akkor itt egy ENTER lenyomása után a monitor promptját
+	(kettőspont) fogjuk látni. A monitor segítségével elindíthatjuk
+	a programunkat a</p>
+      
+      <p lang="en">The UART window is connected to the simulated
+	uart. When you compile your app by keeping monitor start
+	instruction, and press ENTER in this window, the monitor prompt
+	(colon) will appear. You can start your app with the following
+	monitor command:</p>
+    </p>
 
     <p></p>
     <p>
@@ -450,20 +470,24 @@ make clean     ; remove generated files
       <span lang="en"><samp>g startaddress</samp></span>
     </p>
     
-    
-    <p lang="hu">parancs kiadásával, ahol a <i>kezdőcím</i>et
-      hexadecimálisan kell megadnunk.</p>
-    
-    <p lang="en">where <i>startaddress</i> of the app must be entered in
-      hexadecimal.</p>
-    
-    <p lang="hu">A cmd1 és cmd2 ablakok az &mu;Csim parancssorai, itt
-      adhatunk ki a szimulátornak parancsokat. A szimulátor leírását a</p>
-    
-    <p lang="en">The cmd1 and cmd2 windows are command consoles of the
-      simulator, you can enter &mu&Csim commands there. Documentation
-      of the simulator is at:</p>
 
+    <p>
+      <p lang="hu">parancs kiadásával, ahol a <i>kezdőcím</i>et
+	hexadecimálisan kell megadnunk.</p>
+      
+      <p lang="en">where <i>startaddress</i> of the app must be entered in
+	hexadecimal.</p>
+    </p>
+
+    <p>
+      <p lang="hu">A cmd1 és cmd2 ablakok az &mu;Csim parancssorai, itt
+	adhatunk ki a szimulátornak parancsokat. A szimulátor leírását a</p>
+      
+      <p lang="en">The cmd1 and cmd2 windows are command consoles of the
+	simulator, you can enter &mu;Csim commands there. Documentation
+	of the simulator is at:</p>
+    </p>
+    
 
     <p><a href="http://www.ucsim.hu">http://www.ucsim.hu</a></p>
 
@@ -478,22 +502,26 @@ make clean     ; remove generated files
 
     <p></p><p><samp>set con dport</samp></p>
     
+    <p>
+      <p lang="hu">parancsot. Ezután látni fogjuk a négy kimeneti és a
+	két bemeneti portot. A bemeneti portok alsó 16 bitjét az alattuk
+	feltüntetett billentyűkkel válthajuk át.</p>
+      
+      <p lang="en">command. Values of all GPIO port (2 inputs, 4
+	outputs) registers will appear (you should increase window size
+	to at least 34 lines to make room for all). You can use
+	displayed keys to toggle input port bits.</p>
+    </p>
+
+    <p>
+      <p lang="hu">A szimulátorból való kilépéshez adjuk ki a <b>kill</b>
+	parancsot
+	az egyik cmd a blakban.</p>
+      
+      <p lang="en">To exit the simulator <b>kill</b> command can be used in
+	a command window.</p>
+    </p>
     
-    <p lang="hu">parancsot. Ezután látni fogjuk a négy kimeneti és a
-      két bemeneti portot. A bemeneti portok alsó 16 bitjét az alattuk
-      feltüntetett billentyűkkel válthajuk át.</p>
-    
-    <p lang="en">command. Values of all GPIO port (2 inputs, 4
-      outputs) registers will appear (you should increase window size
-      to at least 34 lines to make room for all). You can use
-      displayed keys to toggle input port bits.</p>
-
-    <p lang="hu">A szimulátorból való kilépéshez adjuk ki a <b>kill</b> parancsot
-      az egyik cmd a blakban.</p>
-
-    <p lange="en">To exit the simulator <b>kill</b> command can be used in
-      a command window.</p>
-
 
     <h3>
       <span lang="hu">Megvalósítás FPGA kártyán</span>
