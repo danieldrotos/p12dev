@@ -4,6 +4,7 @@
 
 _callin		==	0xf000
 _enter_by_uart	==	0xf001
+_getchar	==	0xf002	
 _isdigit	==	0xf003
 _dtoi		==	0xf004
 _cold_start	==	0xf005
@@ -25,6 +26,7 @@ _printf		==	0xf014
 _pesf		==	0xf015
 
 monitor		==	0xf000
+getchar		==	0xf002	
 putchar		==	0xf00e
 printf		==	0xf014
 pesf		==	0xf015

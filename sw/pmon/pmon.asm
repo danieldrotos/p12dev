@@ -25,7 +25,7 @@ the_begin:
 	
 _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
-_f002:	ret
+_f002:	jmp	getchar
 _f003:	ret
 _f004:	ret
 _f005:	jmp	cold_start
@@ -1420,6 +1420,18 @@ read:
 ;; 	pop	r1
 ;; 	ret
 
+	
+	;; Wait and read one character
+	;; ---------------------------
+	;; IN: -
+	;; OUT: F.C=1
+	;;      r0 character
+getchar:
+	call	check_uart
+	C0 jmp	getchar
+	call	read
+	ret
+	
 	
 	;; Send one character
 	;; ------------------
