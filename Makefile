@@ -77,6 +77,9 @@ comp_lib:
 
 comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
+$(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l $(PMON)/pmon.p2h
+	php $(TOOLS)/p2as.php -l -o $@ $(PRG).asm $(LIB)/plib.p2l
+
 sw: comp_pmon comp_lib comp_sw
 
 source:

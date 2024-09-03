@@ -23,7 +23,6 @@ endif
 	php $(TOOLS)/p2as.php -l -o $@ $< $(LIB)/plib.p2l
 
 .p2h.asc:
-	$(MAKE) -C $(PMON) pmon.p2h
 	php $(TOOLS)/hex2asc.php -m $(AW) $(PMON)/pmon.p2h $< >$@
 
 .p2h.cdb:

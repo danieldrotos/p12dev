@@ -55,7 +55,6 @@ init_btn:
 	jnz	pressed_inited
 	mvzl	r1,1
 	st	r1,last_btn_inited
-restart_btn::
 	ld	r1,GPIO.BTN
 	st	r1,last_btn
 	jmp	pressed_false
@@ -65,7 +64,6 @@ init_sw:
 	jnz	pressed_inited
 	mvzl	r1,1
 	st	r1,last_sw_inited
-restart_sw::
 	ld	r1,GPIO.SW
 	st	r1,last_sw
 	jmp	pressed_false
@@ -104,5 +102,19 @@ pressed_end:
 	pop	pc
 ;	ret
 
+restart_btn::
+	push	r1
+	ld	r1,GPIO.BTN
+	st	r1,last_btn
+	pop	r1
+	ret
+
+restart_sw::
+	push	r1
+	ld	r1,GPIO.SW
+	st	r1,last_sw
+	pop	r1
+	ret
+	
 	.ends
 	
