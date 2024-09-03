@@ -32,3 +32,4 @@ samp {
   white-space: pre;
 }
 
+table { border-collapse: collapse; }
