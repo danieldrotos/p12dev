@@ -72,9 +72,12 @@ comp_pmon:
 
 comp_mon: comp_pmon
 
+comp_lib:
+	$(MAKE) -C sw/lib all
+
 comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
-sw: comp_pmon comp_sw
+sw: comp_pmon comp_lib comp_sw
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc

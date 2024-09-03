@@ -11,11 +11,14 @@ OBJECTS		= \
 		fn_pmon.p2o \
 		fn_rand.p2o \
 		fn_dtoi.p2o \
-		fn_isdigit.p2o
+		fn_isdigit.p2o \
+		fn_pressed.p2o
 
 all: lib
 
-lib: plib.asm $(OBJECTS)
+lib: plib.p2l
+
+plib.p2l: plib.asm $(OBJECTS)
 	php $(TOOLS)/p2as.php -c -l -dd -o plib.p2l $^
 
 clean:

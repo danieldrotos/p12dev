@@ -2168,7 +2168,7 @@ function ph1($ph1_fin)
             debug("\n");
             debug("line[$lnr]: $l");
             $l2= $l;
-            $w= strtok($l2, " \t,=;");
+            $w= strtok($l2, " \t,=");
             if ($w!='')
             {
                 $W= strtoupper($w);

@@ -22,6 +22,7 @@ pressed::
 	pop	pc
 ;	ret
 
+	
 	;; Check pos edge on a switch
 	;; Input : R0= bit mask of examined SW
 	;; Output: C=0 not switched
@@ -52,19 +53,21 @@ init_btn:
 	ld	r1,last_btn_inited
 	sz	r1
 	jnz	pressed_inited
-	ld	r1,GPIO.BTN
-	st	r1,last_btn
 	mvzl	r1,1
 	st	r1,last_btn_inited
+restart_btn::
+	ld	r1,GPIO.BTN
+	st	r1,last_btn
 	jmp	pressed_false
 init_sw:
 	ld	r1,last_sw_inited
 	sz	r1
 	jnz	pressed_inited
-	ld	r1,GPIO.SW
-	st	r1,last_sw
 	mvzl	r1,1
 	st	r1,last_sw_inited
+restart_sw::
+	ld	r1,GPIO.SW
+	st	r1,last_sw
 	jmp	pressed_false
 pressed_inited:
 	;; R1 address of last
