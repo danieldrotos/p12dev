@@ -32,6 +32,12 @@ samp {
   white-space: pre;
 }
 
+#inst {
+  padding: 4px;
+  font-family: monospace;
+  white-space: pre;
+}
+
 table { border-collapse: collapse; }
 
 tt { font-family: monospace }
