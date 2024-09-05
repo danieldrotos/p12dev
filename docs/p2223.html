@@ -33,7 +33,7 @@
     architektúrájú, 32 bites szoft processzor, amelyet FPGA-val
     valósíthatunk meg.</p>
     
-    <p><img title="" src="images/image12.png" alt="" /></p>
+    <p><img src="genblk1_0_cpu.png" alt="cpu_block" /></p>
     
     <h1>A mikroprocesszor részei</h1>
     
@@ -1690,7 +1690,7 @@
 	  F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1
 	</td>
       </tr>
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  CMP
 	</td>
@@ -1785,7 +1785,7 @@
     
     <table border="1">
       
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  NEG
 	</td>
@@ -1795,8 +1795,8 @@
 	<td>
 	  <span id="inst">COND.0010.Rd  .0101.----.----.----.----</span>
 	</td>
-	<td>
-	  Rd,F[OZCS]=  <img src="images/image3.png" alt="" /> + 1
+	<td style="padding-top:5px">
+	  Rd,F[OZCS]= <span style="text-decoration:overline;">Rd</span> + 1
 	</td>
       </tr>
       
@@ -1812,7 +1812,7 @@
     
     <table border="1">
       
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  NOT
 	</td>
@@ -1822,8 +1822,8 @@
 	<td>
 	  <span id="inst">COND.0010.Rd  .0100.----.----.----.----</span>
 	</td>
-	<td>
-	  Rd,F[ZS]= <img src="images/image3.png" alt="" />
+	<td style="padding-top:5px">
+	  Rd,F[ZS]= <span style="text-decoration:overline;">Rd</span>
 	</td>
       </tr>
       
@@ -1938,6 +1938,7 @@
       </tr>
       
     </table>
+    
     <p><img title="" src="images/image9.png" alt="rol.png" /></p>
     
     <p>33 bites forgatás balra a C bittel együtt. A C Flag bit értéke
@@ -1977,7 +1978,7 @@
     
     <table border="1">
       
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  SBB
 	</td>
@@ -1987,11 +1988,11 @@
 	<td>
 	  <span id="inst">COND.0000.Rd  .0111.----.Rb  .----.----</span>
 	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + <img src="images/image1.png" alt="" /> + C
+	<td style="padding-top:5px">
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + C
 	</td>
       </tr>
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  SBB
 	</td>
@@ -2001,8 +2002,8 @@
 	<td>
 	  <span id="inst">COND.0001.Rd  .0111.s16 .s16 .s16 .s16</span>
 	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + <img src="images/image2.png" alt="" /> + C
+	<td style="padding-top:5px">
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + C
 	</td>
       </tr>
       
@@ -2155,7 +2156,7 @@
     
     <table border="1">
       
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  SUB
 	</td>
@@ -2165,11 +2166,11 @@
 	<td>
 	  <span id="inst">COND.0000.Rd  .0110.----.Rb  .----.----</span>
 	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + <img src="images/image1.png" alt="" /> + 1
+	<td style="padding-top:5px">
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1
 	</td>
       </tr>
-      <tr>
+      <tr valign="bottom">
 	<td>
 	  SUB
 	</td>
@@ -2179,8 +2180,8 @@
 	<td>
 	  <span id="inst">COND.0001.Rd  .0110.s16 .s16 .s16 .s16</span>
 	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + <img src="images/image2.png" alt="" />+ 1
+	<td style="padding-top:5px">
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + 1
 	</td>
       </tr>
       
