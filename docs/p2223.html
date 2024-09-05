@@ -33,7 +33,7 @@
     architektúrájú, 32 bites szoft processzor, amelyet FPGA-val
     valósíthatunk meg.</p>
     
-    <p><img src="genblk1_0_cpu.png" alt="cpu_block" /></p>
+    <p><img src="cpu_block.png" alt="cpu_block" /></p>
     
     <h1>A mikroprocesszor részei</h1>
     
@@ -73,7 +73,7 @@
     a megcímzett rekeszből 32 bites adatot olvas be, illetve 32 bites
       adatot ír ki.</p>
     
-    <p><img title="" src="images/image8.png" alt="" /></p>
+    <p><img title="" src="mem_hu.svg" alt="" /></p>
     
     <h2>Regiszterek</h2>
     
@@ -81,7 +81,7 @@
     regiszter készlet 16 db 32 bites regiszterből áll. A regiszterek
       elnevezése: R0, R1...R15.</p>
 
-    <p><img title="" src="images/image11.png" alt="" /></p>
+    <p><img title="" src="progmodel2.svg" alt="" /></p>
     
 
     <h3>Speciális regiszterek</h3>
@@ -175,7 +175,7 @@
       nélküli műveleteknél az eredmény a változatlan <b>di</b>
       bemeneti érték lesz.</p>
 
-    <p><img title="" src="images/image6.png" alt="" /></p>
+    <p><img title="" src="alu.png" alt="" /></p>
     
     <p>Az <b>fi</b> bemenetre a flag regiszter művelet előtti értéke
       kerül, míg az <b>op</b> az elvégzendő művelet kódja. Az eredmény
@@ -282,8 +282,8 @@
 	  -
 	</td>
 	<td>
-	  Mindig igaz, az utasítás a Flag-ek értékétől függetlenül végrehajtódik
-	</td>
+	  Mindig igaz, az utasítás a Flag-ek értékétől függetlenül
+	végrehajtódik</td>
       </tr>
       <tr>
 	<td>
@@ -1939,7 +1939,7 @@
       
     </table>
     
-    <p><img title="" src="images/image9.png" alt="rol.png" /></p>
+    <p><img title="" src="rol.svg" alt="rol.png" /></p>
     
     <p>33 bites forgatás balra a C bittel együtt. A C Flag bit értéke
       az Rd[31] bit forgatás előtti értéke lesz. A C Flag bit forgatás
@@ -1967,7 +1967,7 @@
       
     </table>
     
-    <p><img title="" src="images/image10.png" alt="ror.png" /></p>
+    <p><img title="" src="ror.svg" alt="ror.png" /></p>
     
     <p>33 bites forgatás jobbra a C Flag bittel együtt. A C Flag
       értéke az Rd[0] bit forgatás előtti értéke lesz. A C Flag bit
@@ -2089,7 +2089,7 @@
       
     </table>
     
-    <p><img title="" src="images/image7.png" alt="sha.png" /></p>
+    <p><img title="" src="sha.svg" alt="sha.png" /></p>
     
     <p>Signed 32 bites adat aritmetikai (előjel tartó) eltolása jobbra
       1 bittel. A C Flag bit az Rd[0] eltolás előtti értékét veszi
@@ -2118,7 +2118,7 @@
       
     </table>
     
-    <p><img title="" src="images/image4.png" alt="shl.png" /></p>
+    <p><img title="" src="shl.svg" alt="shl.png" /></p>
     
     <p>Eltolás balra 1 bittel. A C Flag bit az Rd[31] eltolás előtti
       értékét kapja, az Rd[0] bitje 0 lesz. A Z és S Flag bitek az Rd
@@ -2145,7 +2145,7 @@
       
     </table>
     
-    <p><img title="" src="images/image5.png" alt="shr.png" /></p>
+    <p><img title="" src="shr.svg" alt="shr.png" /></p>
     
     <p>Unsigned 32 bites adat eltolása jobbra 1 bittel. A C Flag bit
       értéke az Rd[0] eltolás előtti értéke lesz. Az Rd[31] bit 0
