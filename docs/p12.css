@@ -41,3 +41,33 @@ samp {
 table { border-collapse: collapse; }
 
 tt { font-family: monospace }
+
+#mov {
+  background-color: #bff;
+  border: 1px solid #999;
+  font-family: monospace;
+}
+
+#call {
+  background-color: #fbf;
+  border: 1px solid #999;
+  font-family: monospace;
+}
+
+#mem {
+  background-color: #ffb;
+  border: 1px solid #999;
+  font-family: monospace;
+}
+
+#alu2 {
+  background-color: #bfb;
+  border: 1px solid #999;
+  font-family: monospace;
+}
+
+#alu1 {
+  background-color: #bbf;
+  border: 1px solid #999;
+  font-family: monospace;
+}
