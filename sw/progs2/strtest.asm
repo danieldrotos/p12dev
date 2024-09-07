@@ -1,10 +1,5 @@
 	.cpu	p2
 
-SIMIF.CMD_PAR	=	0xffff
-monitor		=	0xf000
-putchar		=	0xf00e
-pesf		=	0xf015
-	
 	.org	1
 
 TST	=	0x12345678

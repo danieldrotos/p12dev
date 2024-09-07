@@ -1,7 +1,5 @@
 	cpu	p2
 	
-monitor	= 0xf001
-putchar	= 0xf00e
 pvhex	= 0xf011
 
 porta	= 0xff00
@@ -40,7 +38,7 @@ ciklus:
 	Z call	ff_leptetes
 		
 	ldl0	r0,2
-	call	pressed
+	call	local_pressed
 	NC jmp 	tovabb
 ; BTN1 megnyomodott
 ; run= !run
@@ -127,7 +125,7 @@ printh_vissza:
 	ret
 
 ; R0: bit mask of examined BTN
-pressed:
+local_pressed:
 	push	lr
 	ld	r1,last_btn
 	ld	r2,btn

@@ -10,7 +10,7 @@ vege:	jmp	vege
 start:	
 	ldl0	r0,'A' ;65		; 'A'
 cikl:	
-	call	putchar
+	call	local_putchar
 	inc	r0
 	ldl0	r10,'Z' ;91		; 'Z'
 	inc	r10
@@ -19,7 +19,7 @@ cikl:
 	jmp	start
 	
 	;; print char in R0
-putchar:
+local_putchar:
 	push	r14
 	inc	sp
 	ldl0	r12,'p' ;112		; 'p'
@@ -38,7 +38,7 @@ print_cikl:
 	ld	r0,r1
 	or	r0,r0,r0
 	jz	print_exit
-	call	putchar
+	call	local_putchar
 	inc	r1
 	jmp	print_cikl
 print_exit:

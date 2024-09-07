@@ -1,10 +1,5 @@
 	.proc	p2
 
-CLOCK_PRE	equ	0xff50
-
-printf		=	0xf014
-pesf		=	0xf015
-	
 	org	0
 	UN mvzl	r1,0xabcd
 	mvzl	r13,0xefff
@@ -20,7 +15,7 @@ pesf		=	0xf015
 stop:	jmp	stop
 	
 	mvzl	r0,1
-	st	r0,CLOCK_PRE
+	st	r0,CLOCK.PRE
 	
 	mvl	r0,0xffffffff
 	mvh	r0,0xffffffff

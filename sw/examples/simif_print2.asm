@@ -15,7 +15,7 @@ simif	equ	0xffff
 vege:	jmp	vege
 
 	org	0x20
-putchar:
+local_putchar:
 	push	lr
 	mvzl	r10,simif
 	mvzl	r12,'p'
@@ -32,7 +32,7 @@ print_cikl:
 	ld	r0,r1
 	cmp	r0,0
 	jz	print_exit
-	call	putchar
+	call	local_putchar
 	add	r1,1
 	jmp	print_cikl
 print_exit:

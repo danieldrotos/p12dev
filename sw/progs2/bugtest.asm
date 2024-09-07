@@ -1,8 +1,5 @@
 	.cpu	p2
 	
-	.include	fn_io.asm
-	.include	fn_pmon.asm
-
 	org	0
 	.req	RA,r1
 	ld	r0,RA+,r2
