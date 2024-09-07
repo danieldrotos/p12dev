@@ -1,11 +1,11 @@
 [*]
-[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
-[*] Fri Jun  7 10:48:23 2024
+[*] GTKWave Analyzer v3.3.120 (w)1999-2024 BSI
+[*] Sat Sep  7 12:58:25 2024
 [*]
-[dumpfile] "/extra/drdani/prj/p12dev/hw/tm.vcd"
-[dumpfile_mtime] "Fri Jun  7 10:45:53 2024"
-[dumpfile_size] 100371618
-[savefile] "/extra/drdani/prj/p12dev/hw/tm.gtkw"
+[dumpfile] "/home/drdani/prj/p12dev/hw/tm.vcd"
+[dumpfile_mtime] "Sat Sep  7 12:51:46 2024"
+[dumpfile_size] 102661484
+[savefile] "/home/drdani/prj/p12dev/hw/tm.gtkw"
 [timestart] 0
 [size] 1744 908
 [pos] 176 92
@@ -73,19 +73,5 @@ tm.comp.PORTC[31:0]
 tm.comp.PORTD[31:0]
 tm.comp.PORTI[31:0]
 tm.comp.PORTJ[31:0]
-@28
-tm.comp.TxD
-@29
-tm.comp.RxD
-@22
-tm.comp.genblk1.cpu.regs.r0out[31:0]
-tm.comp.genblk1.cpu.regs.r1out[31:0]
-tm.comp.genblk1.cpu.regs.r2out[31:0]
-tm.comp.genblk1.cpu.regs.r3out[31:0]
-tm.comp.genblk1.cpu.regs.r4out[31:0]
-tm.comp.genblk1.cpu.regs.r5out[31:0]
-tm.comp.genblk1.cpu.mod_ext_getb.opb[31:0]
-tm.comp.genblk1.cpu.mod_ext_getb.opd[31:0]
-tm.comp.genblk1.cpu.mod_ext_getb.res[31:0]
 [pattern_trace] 1
 [pattern_trace] 0
