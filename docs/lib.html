@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html id="html-tag" lang="en">
+  <script>
+   const $htmlTag = document.querySelector("#html-tag")
+   const urlParams = new URL(window.location.toLocaleString()).searchParams;
+   const lvar= urlParams.get('lang');
+   switch(lvar) {
+     case "hu":
+       $htmlTag.lang = "hu"
+       $htmlTag.classList.add("hungarianLang")
+       break
+     default:
+       $htmlTag.classList.add("englishLang")
+       break
+   }
+  </script>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="p12.css">
+    <title>p2223 function library</title>
+  </head>
+  
+  <body>
+
+    <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
+    <a href="index.html?lang=hu">HU</a>
+    <a href="index.html?lang=en">EN</a>
+
+    <h1>
+      <psan lang="en">p2223 function library</psan>
+      <span lang="hu">p2223 függvény könyvtár</span>
+    </h1>
+
+    <p>A fejlesztőrendszerben a projekt alkalmazásának lefordítása
+    során a program kiegészül a rendszerben elérhető
+    függvényekkel. Ezeken túl a pmon monitorprogram függvényei is
+    hívhatók.</p>
+      
+    <h2>
+      <span lang="en">Output functions</span>
+      <span lang="hu">Kimeneti függvények</span>
+    </h2>
+
+    
+    <h3>_putchar, putchar</h3>
+
+    <ul><li>Bemenet(ek): R0 karakter</li>
+      <li>Kimenet(ek): -</li>
+    </ul>
+    
+    <p>A bemenetként megadott karakterkód kiírása az UART periférián
+    keresztül a terminálra. A függvény először megvárja az előzőleg
+    kiírt karakter kiküldését.</p>
+
+
+    <h3>_prints</h3>
+
+    <ul><li>Bemenet(ek): R0 sztring kezdőcíme</li>
+      <li>Kimenet(ek): -</li>
+    </ul>
+
+    <p></p>
+
+
+    <h3>_printsnl</h3>
+
+
+    <h3>_print_vhex</h3>
+
+
+    <h3>_printd</h3>
+
+
+    <h3>_pes</h3>
+
+
+    <h3>_printf, printf</h3>
+
+
+    <h3>_pesf, pesf</h3>
+
+
+    <h2>
+      <span lang="en">Input functions</span>
+      <span lang="hu">Bemeneti függvények</span>
+    </h2>
+
+
+    <h3>_check_uart, _input_avail</h3>
+
+    
+    <h3>_getchar, getchar</h3>
+
+
+    <h3>_read</h3>
+
+
+    <h3>le_init, le_setbuf</h3>
+
+
+    <h3>le_start</h3>
+
+
+    <h3>le_read, tu_fgets</h3>
+
+    
+    <hr>
+  </body>
+</html>

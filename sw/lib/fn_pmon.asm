@@ -11,6 +11,7 @@ _cold_start	==	0xf005
 _strchr		==	0xf006
 _streq		==	0xf007
 _check_uart	==	0xf008
+_input_avail	==	0xf008	
 _hexchar2value	==	0xf009
 _value2hexchar	==	0xf00a
 _htoi		==	0xf00b
