@@ -1,15 +1,15 @@
 	.proc	p2
 
-	org	0
+	org	1
 	UN mvzl	r1,0xabcd
 	mvzl	r13,0xefff
 	mvzl	r0,3
 	st	r0,0xff41
 	
-	ces	pesf
+	ces	eprintf
 	db	"HelloWorld!\n"
 
-	ces	pesf
+	ces	eprintf
 	db	"B"
 
 stop:	jmp	stop

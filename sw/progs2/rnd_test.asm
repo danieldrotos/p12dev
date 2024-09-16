@@ -5,11 +5,11 @@
 	mvzl	r2,10
 cyc:
 	call	rand
-	call	pesf
+	call	eprintf
 	.db	"%u\n"
 	mvzl	r0,100
 	call	rand_max
-	call	pesf
+	call	eprintf
 	.db	"%u\n"
 	dec	r2
 	jnz	cyc

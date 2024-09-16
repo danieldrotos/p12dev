@@ -17,10 +17,10 @@ all: pmonitor lib \
 	ff \
 	game \
 	bufout \
-	letest \
-	rndtest \
+	le_test \
+	rnd_test \
 	strtest \
-	dtoitest \
+	dtoi_test \
 	bugtest
 
 
@@ -55,28 +55,14 @@ bufout: bufout.p2h bufout.asc bufout.cdb
 
 strtest: strtest.p2h strtest.asc strtest.cdb
 
-letest: letest.p2h letest.asc letest.cdb
+le_test: le_test.p2h le_test.asc le_test.cdb
 
-letest.p2h: le_test.asm $(LIB)/fn_lined.asm $(LIB)/fn_pmon.asm
-	php $(TOOLS)/p2as.php -l -o $@ $^
-
-rndtest: rndtest.p2h rndtest.asc rndtest.cdb
+rnd_test: rnd_test.p2h rnd_test.asc rnd_test.cdb
 
 bugtest: bugtest.p2h bugtest.asc bugtest.cdb
 
-rndtest.p2h: rnd_test.asm \
-		$(LIB)/fn_div.p2o \
-		$(LIB)/fn_rand.p2o \
-		$(LIB)/fn_pmon.p2o
-	php $(TOOLS)/p2as.php -l -o $@ $^
+dtoi_test: dtoi_test.p2h dtoi_test.asc dtoi_test.cdb
 
-
-dtoitest: dtoitest.p2h dtoitest.asc dtoitest.cdb
-
-dtoitest.p2h: dtoi_test.asm \
-		$(LIB)/fn_isdigit.p2o \
-		$(LIB)/fn_dtoi.p2o
-	php $(TOOLS)/p2as.php -l -o $@ $^
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

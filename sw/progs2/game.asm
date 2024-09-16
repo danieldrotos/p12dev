@@ -1,9 +1,7 @@
 	cpu	p2
 
-prints	= 0xf00f
 pvhex	= 0xf011
 avail	= 0xf008
-read	= 0xf00d
 pes	= 0xf012
 	
 porta	= 0xff00
@@ -224,3 +222,5 @@ counter:
 	;; ----------------------------------------------------------------	
 	ds	100
 verem:
+	db	0
+	

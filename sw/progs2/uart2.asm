@@ -22,7 +22,6 @@
 	btn	equ	0xff20
 
 check_uart	=	0xf008
-read		=	0xf00d
 pes		=	0xf012
 	
 	org	1
