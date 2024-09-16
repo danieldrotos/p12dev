@@ -42,7 +42,7 @@
     </h2>
 
     
-    <h3>_putchar, putchar</h3>
+    <h3>putchar</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -61,7 +61,7 @@
     kiírt karakter kiküldését.</p>
 
 
-    <h3>_prints</h3>
+    <h3>prints</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -78,7 +78,7 @@
     <p>Szöveg (0 végződésű karaktersorozat) kiírása a terminálra.</p>
 
 
-    <h3>_printsnl</h3>
+    <h3>printsnl</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -97,7 +97,7 @@
       ezután a függvény kiír egy soremelés karaktert</p>
 
     
-    <h3>_print_vhex</h3>
+    <h3>printh</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -120,39 +120,58 @@
     elválasztó jelet is kiír.</p>
 
     
-    <h3>_printd</h3>
+    <h3>printd</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0 value</span>
+	<span lang="hu">R0 érték</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
 	</li>
     </ul>
 
+    <p>A bemenetként megadott 32 bites (pozitív) bináris számot kiírja
+      a terminálra tízes számrendszerben.</p>
 
-    <h3>_pes</h3>
+    
+    <h3>eprints</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
 	</li>
     </ul>
 
+    <p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
+    sztringnek a program kódjában közvetlenül a szubrutint meghívó
+    CALL utasítás után kell lennie. A szubrutin a sztring záró nullája
+    utáni címre fog visszatérni. Escape szekvenciák nem
+    használhatók. A funkciónak sem bemeneti, sem kimeneti paraméterei
+    nincsenek. Helyes használatára egy példa:</p>
 
-    <h3>_printf, printf</h3>
+    <samp>
+        nop
+
+        call    pes
+        db      ”Hello World”
+        mvzl    r0,12
+        ...
+    </samp>
+
+    
+    <h3>printf</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -168,7 +187,7 @@
     </ul>
 
 
-    <h3>_pesf, pesf</h3>
+    <h3>eprintf</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -190,7 +209,7 @@
     </h2>
 
 
-    <h3>_check_uart, _input_avail</h3>
+    <h3>input_avail</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -206,7 +225,7 @@
     </ul>
 
     
-    <h3>_getchar, getchar</h3>
+    <h3>getchar</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -222,7 +241,7 @@
     </ul>
 
 
-    <h3>_read</h3>
+    <h3>read</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -238,7 +257,7 @@
     </ul>
 
 
-    <h3>le_init, le_setbuf</h3>
+    <h3>le_init</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -270,7 +289,7 @@
     </ul>
 
 
-    <h3>le_read, tu_fgets</h3>
+    <h3>le_read</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -330,7 +349,7 @@
     </ul>
 
 
-    <h3>_htoi</h3>
+    <h3>htoi</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -346,7 +365,7 @@
     </ul>
 
     
-    <h3>_strchr</h3>
+    <h3>strchr</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -362,7 +381,7 @@
     </ul>
 
     
-    <h3>_streq</h3>
+    <h3>streq</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -378,7 +397,7 @@
     </ul>
 
     
-    <h3>_strieq</h3>
+    <h3>strieq</h3>
     
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -486,7 +505,7 @@
     </ul>
 
 
-    <h3>restart_btn</h3>
+    <h3>restart_button</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>

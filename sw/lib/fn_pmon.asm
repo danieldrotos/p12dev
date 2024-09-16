@@ -26,10 +26,54 @@ _printd		==	0xf013
 _printf		==	0xf014
 _pesf		==	0xf015
 
-monitor		==	0xf000
-getchar		==	0xf002	
-putchar		==	0xf00e
-printf		==	0xf014
-pesf		==	0xf015
+
+monitor::
+	jmp	_callin
+
+input_avail::
+	jmp	_check_uart
+	
+getchar::
+	jmp	_getchar
+
+read::
+	jmp	_read
+	
+putchar::
+	jmp	_putchar
+
+prints::
+	jmp	_prints
+
+printsnl::
+	jmp	_printsnl
+
+printh::
+	jmp	_print_vhex
+	
+printd::
+	jmp	_printd
+	
+eprints::
+	jmp	_pes
+
+printf::
+	jmp	_printf
+
+eprintf::
+	jmp	_pesf
+
+htoi::
+	jmp	_htoi
+
+strchr::
+	jmp	_strchr
+
+streq::
+	jmp	_streq
+
+strieq::
+	jmp	_strieq
+
 	
 	.ends

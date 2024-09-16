@@ -103,6 +103,7 @@ pressed_end:
 ;	ret
 
 restart_btn::
+restart_button::
 	push	r1
 	ld	r1,GPIO.BTN
 	st	r1,last_btn
@@ -110,6 +111,7 @@ restart_btn::
 	ret
 
 restart_sw::
+restart_switch::
 	push	r1
 	ld	r1,GPIO.SW
 	st	r1,last_sw
