@@ -1,7 +1,8 @@
 	.proc	p2
 
 	.org	1
-	
+
+	mvzl	sp,stack
 	mvzl	r2,10
 cyc:
 	call	rand
@@ -16,4 +17,8 @@ cyc:
 
 the_end:
 	jmp	the_end
+	
+	ds	100
+stack:
+	db	0
 	

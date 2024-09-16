@@ -2,6 +2,8 @@
 
 	.org	1
 
+	mvzl	sp.stack
+	
 TST	=	0x12345678
 
 	mvl	r0,TST
@@ -167,3 +169,8 @@ out:
 	pop	r0
 	st	r0,SIMIF.CMD_PAR
 	ret
+
+	ds	100
+stack:
+	db	0
+	

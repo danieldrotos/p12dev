@@ -197,6 +197,7 @@ log_ov:
 	
 	ds	100
 stack:	
-
+	db	0
+	
 	org	0x1000
 logs:	

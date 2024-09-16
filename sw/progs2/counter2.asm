@@ -16,3 +16,5 @@ cyc:
 
 	ds	100
 eof_stack:	
+	db	0
+	

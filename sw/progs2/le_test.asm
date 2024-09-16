@@ -2,6 +2,7 @@
 
 	org	1
 
+	mvzl	sp,stack
 	mvzl	r0,buf
 	mvzl	r1,100
 	call	le_init
@@ -28,4 +29,8 @@ gotit:
 	
 buf:	ds	100
 quit:	db	"quit"
+	
+	ds	100
+stack:
+	db	0
 	

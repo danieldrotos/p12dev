@@ -56,3 +56,5 @@ text:	db	"5671"
 	
 	ds	100
 atoi_stack:	
+	db	0
+	

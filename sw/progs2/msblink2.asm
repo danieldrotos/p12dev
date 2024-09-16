@@ -55,3 +55,5 @@ period2: dd	200
 	
 	ds	100
 stack:	
+	db	0
+	

@@ -4,6 +4,7 @@
 	
 	org	1
 
+	mvzl	sp,stack
 	mvzl	r0,str
 	call	dtoi
 	mov	r2,r1
@@ -13,4 +14,8 @@ end:
 	jmp	end
 
 str:	db	"4294967295"
+	
+	ds	100
+stack:
+	db	0
 	

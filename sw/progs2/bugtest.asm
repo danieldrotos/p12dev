@@ -47,4 +47,5 @@ null_str:	db	"(null)"
 
 	ds	100
 stack:
+	db	0
 	

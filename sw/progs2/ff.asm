@@ -160,3 +160,5 @@ run:
 		
 	ds	100
 verem:
+	db	0
+	

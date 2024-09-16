@@ -14,3 +14,5 @@ div_end:
 
 	ds	256
 div_stack:
+	db	0
+	

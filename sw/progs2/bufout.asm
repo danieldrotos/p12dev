@@ -120,3 +120,5 @@ obuf_lu:
 stack:
 	ds	200
 eof_stack:	
+	db	0
+	
