@@ -47,7 +47,7 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
+	<span lang="en">R0 character</span>
 	<span lang="hu">R0 karakter</span>
       </li>
       <li><span lang="en">Output(s):</span>
@@ -66,7 +66,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	R0 sztring kezdőcíme
+	<span lang="en">R0 address of string</span>
+	<span lang="hu">R0 sztring kezdőcíme</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -74,7 +75,7 @@
       </li>
     </ul>
 
-    <p></p>
+    <p>Szöveg (0 végződésű karaktersorozat) kiírása a terminálra.</p>
 
 
     <h3>_printsnl</h3>
@@ -82,8 +83,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0 address of string</span>
+	<span lang="hu">R0 sztring kezdőcíme</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -92,23 +93,33 @@
 	</li>
     </ul>
 
+    <p>Szöveg (0 végződésű karaktersorozat) kiírása a terminálra,
+      ezután a függvény kiír egy soremelés karaktert</p>
 
+    
     <h3>_print_vhex</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0 value;
+	  <br>R1 nr of chars between separators (_)</span>
+	<span lang="hu">R0 számérték;
+	  <br>R1 az elválasztó (_) közötti karakterek száma</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
 	</li>
     </ul>
 
+    <p>Kiírja a bemeneti 32 bites bináris egész szám értékét a
+    terminálra hexadecimális számrendszerben, 8 karakteren, bevezető
+    nullákkal. Az R1-ben megadott számú karakterenként egy _
+    elválasztó jelet is kiír.</p>
 
+    
     <h3>_printd</h3>
 
     <ul>
