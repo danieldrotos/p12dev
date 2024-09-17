@@ -186,8 +186,8 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
 
@@ -198,8 +198,10 @@
     használ fel a szubrutin, amennyi formázó utasítás van a
     szövegben.</p>
 
-    <p>A szubrutin módosítja az R0-R12 regiszterek, valamit a Flag
-    regiszter értékét. A formázó szövegben escape szekvenciákat is
+    <p><b>A függvény módosítja az R0-R12 regiszterek, valamit a Flag
+      regiszter értékét.</b></p>
+
+      <p>A formázó szövegben escape szekvenciákat is
     használhatunk:</p>
 
     <table border=1>
@@ -233,22 +235,25 @@
     <h3>eprintf</h3>
 
     <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
+      <li><span lang="en">Input(s): R1..R12 parameter values</span>
+	<span lang="hu">Bemenet(ek): R1..R12 paraméter értékek</span>
 	<span lang="en"></span>
 	<span lang="hu"></span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
 
     <p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
     formázó szövegnek közvetlenül a CALL (vagy CES) utasítás után kell
-    lennie, a további paraméterek a printf szubrutinéval egyeznek (ez
-    a funkció az R0 regiszterben nem vár bemenő adatot).</p>
+    lennie, a további paraméterek a printf szubrutinéval egyeznek,
+    azonban ez a funkció az R0 regiszterben nem vár bemenő adatot.</p>
+
+    <p><b>A függvény módosítja az R0-R12 regiszterek, valamit a Flag
+      regiszter értékét.</b></p>
 
     <samp>UART_CPB = 0xff44
 

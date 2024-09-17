@@ -24,11 +24,12 @@ ffcnt	= 0xff52
 	ldl0	r0,s_clrscr
 	call	prints
 
-	call	pes
-	db	"Hello World!"
+	ces	pes
+	db	"Hello World!\n"
 	
 	ldl0	r0,1
 	st	r0,x
+	ldl0	r0,2
 	st	r0,y
 	call	drawit
 	
