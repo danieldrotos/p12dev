@@ -2,7 +2,7 @@
 
 	.org	1
 
-	mvzl	sp.stack
+	mvzl	sp,stack
 	
 TST	=	0x12345678
 
