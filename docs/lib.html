@@ -94,7 +94,7 @@
     </ul>
 
     <p>Szöveg (0 végződésű karaktersorozat) kiírása a terminálra,
-      ezután a függvény kiír egy soremelés karaktert</p>
+      ezután a függvény kiír egy soremelés karaktert.</p>
 
     
     <h3>printh</h3>
@@ -157,9 +157,9 @@
     <p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
     sztringnek a program kódjában közvetlenül a szubrutint meghívó
     CALL utasítás után kell lennie. A szubrutin a sztring záró nullája
-    utáni címre fog visszatérni. Escape szekvenciák nem
-    használhatók. A funkciónak sem bemeneti, sem kimeneti paraméterei
-    nincsenek. Helyes használatára egy példa:</p>
+    utáni címre fog visszatérni. Escape szekvenciák (formázó
+    karakterek) nem használhatók. A funkciónak sem bemeneti, sem
+    kimeneti paraméterei nincsenek. Helyes használatára egy példa:</p>
 
     <samp>
         nop
@@ -170,12 +170,17 @@
         ...
     </samp>
 
+    <p>A CALL utasítás helyett ebben az esetben használható a CES
+      utasítás is.</p>
+    
     
     <h3>printf</h3>
 
     <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
+      <li><span lang="en">Input(s): R0 address of format string
+	<br>R1..R12 parameter values</span>
+	<span lang="hu">Bemenet(ek): R0 formázó szöveg címe
+	<br>R1..R12 paraméterek értékei</span>
 	<span lang="en"></span>
 	<span lang="hu"></span>
       </li>
@@ -186,7 +191,45 @@
       </li>
     </ul>
 
+    <p>Formázott szöveg kiírása a terminálra. A szövegben
+    elhelyezhetők formázó utasítások (% jellel kezdve), amelyek egy
+    adat megfelelő formátumban való kiírását eredményezik. Az adatokat
+    az R1..R12 regiszterekben adhatjuk át, amelyekből sorban annyit
+    használ fel a szubrutin, amennyi formázó utasítás van a
+    szövegben.</p>
 
+    <p>A szubrutin módosítja az R0-R12 regiszterek, valamit a Flag
+    regiszter értékét. A formázó szövegben escape szekvenciákat is
+    használhatunk:</p>
+
+    <table border=1>
+      <tr><th>Escape szekvencia</th> <th>Kiírt karakterkód</th></tr>
+      <tr><td>\a</td> <td>7</td></tr>
+      <tr><td>\b</td> <td>8</td></tr>
+      <tr><td>\e</td> <td>31</td></tr>
+      <tr><td>\f</td> <td>12</td></tr>
+      <tr><td>\n</td> <td>10</td></tr>
+      <tr><td>\r</td> <td>13</td></tr>
+      <tr><td>\t</td> <td>9</td></tr>
+      <tr><td>\v</td> <td>11</td></tr>
+      <tr><td>\\</td> <td>'\'</td></tr>
+      <tr><td>\0</td> <td>0</td></tr>
+    </table>
+
+    <p>A szubrutin által kezelt formázó utasítások a következők:</p>
+
+    <table border=1>
+      <tr><th>Utasítás</th> <th>Formátum</th> <th>Példa, megjegyzés</th></tr>
+      <tr><td>%%</td> <td>Százalékjel</td> <td>%</td></tr>
+      <tr><td>%u, %d</td> <td>Előjel nélküli decimális</td> <td>12345</td></tr>
+      <tr><td>%x</td> <td>32 bites hexadecimális</td> <td>1A2B3C5D</td></tr>
+      <tr><td>%s</td> <td>Szöveg</td> <td>az adat regiszternek a
+      beillesztendő szöveg címét kell tartalmaznia</td></tr>
+      <tr><td>%c</td> <td>Karakter</td> <td>az adat regiszterben lévő
+      ASCII kódot írja ki</td></tr>
+    </table>
+
+    
     <h3>eprintf</h3>
 
     <ul>
@@ -202,6 +245,20 @@
       </li>
     </ul>
 
+    <p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
+    formázó szövegnek közvetlenül a CALL (vagy CES) utasítás után kell
+    lennie, a további paraméterek a printf szubrutinéval egyeznek (ez
+    a funkció az R0 regiszterben nem vár bemenő adatot).</p>
+
+    <samp>UART_CPB = 0xff44
+
+        ld      r1,UART_CPB
+        mov     r2,r1
+        ces     eprintf
+        db      ”Uart cpb= %d (0x%x)\n”
+        nop
+        ...
+    </samp>
 
     <h2>
       <span lang="en">Input functions</span>
