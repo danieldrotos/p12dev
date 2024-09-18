@@ -1464,19 +1464,30 @@ prints:
 	push	r3
 	push	r4
 	push	r2
+	push	r1
+	push	r5
 	
 	mvzl	r4,0
 	sz	r0
 	Z1 mvzl	r0,null_str
 	mov	r2,r0
 prints_go:
-	ld	r0,r4+,r2
-	sz	r0
+	ld	r1,r4+,r2
+	sz	r1
+	mvzl	r5,0
 	jz	prints_done
-	call	putchar
+prints_byte:
+	getb	r0,r1,r5
+	sz	r0
+	NZ call	putchar
+	inc	r5
+	cmp	r5,4
+	jnz	prints_byte
 	jmp	prints_go
 	
 prints_done:
+	pop	r5
+	pop	r1
 	pop	r2
 	pop	r4
 	pop	r3
@@ -1495,16 +1506,27 @@ pes:
 	push	lr
 	push	r0
 	push	r1
+	push	r2
+	push	r3
 	mov	r1,lr
 pes_next:
-	ld	r0,r1
+	ld	r2,r1
 	inc	r1
-	sz	r0
+	sz	r2
 	jz	pes_done
-	call	putchar
+	mvzl	r3,0
+pes_byte:
+	getb	r0,r2,r3
+	sz	r0
+	NZ call	putchar
+	inc	r3
+	cmp	r3,4
+	jnz	pes_byte
 	jmp	pes_next
 pes_done:
 	st	r1,pes_ret_to
+	pop	r3
+	pop	r2
 	pop	r1
 	pop	r0
 	pop	lr
