@@ -55,6 +55,25 @@ TST	=	0x12345678
 	db	"unpacked: String, printed by pes\n"
 	ces	eprints
 	dp	"packed: String, printed by pes\n"
+
+	mvzl	r1,12
+	ces	eprintf
+	db	"decimal %d in unpacked\n"
+	ces	eprintf
+	dp	"decimal %u in packed\n"
+
+	mvzl	r1,s1
+	ces	eprintf
+	db	"unpacked str in unpacked: %s"
+	mvzl	r1,s1
+	ces	eprintf
+	dp	"unpacked str in packed: %s"
+	mvzl	r1,s3
+	ces	eprintf
+	db	"packed str in unpacked: %s"
+	mvzl	r1,s3
+	ces	eprintf
+	dp	"packed str in packed: %s"
 	
 	call	monitor
 

@@ -1424,7 +1424,7 @@ function proc_asm_line($l)
                         $ds= $ch.$ds;
                     else
                         $ds= "\\".sprintf("%03o",$pv).$ds;
-                    debug( sprintf("PChar=$ch, pv=%02x pv2=%08x dw=%08x", $pv, $pv2, $dw) );
+                    //debug( sprintf("PChar={$ch}, pv=%02x pv2=%08x dw=%08x", $pv, $pv2, $dw) );
                     if ((++$bidx) == 4)
                     {
                         $params= array();

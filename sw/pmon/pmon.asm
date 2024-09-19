@@ -1724,6 +1724,8 @@ printf:
 	push	lr
 	push	r0
 	push	r1
+	push	r2
+	push	r3
 	
 	st	r1,reg1
 	st	r2,reg2
@@ -1740,10 +1742,14 @@ printf:
 
 	mov	r2,r0		; pointer to format string
 	mvzl	r1,reg1		; pointer to params
+	mvzl	r3,0		; byte idx in packed str
 printf_cyc:
 	ld	r0,r2		; get next char
 	sz	r0		; is it EOS?
 	jz	printf_ret
+	getbz	r0,r0,r3	; pick next byte
+	sz	r0		; is it null?
+	jz	printf_nextword	; no more non-nulls
 
 	cmp	r0,'\\'
 	jnz	printf_notescape
@@ -1839,11 +1845,18 @@ printf_notc:
 	jmp	printf_next
 printf_print:
 	call	putchar		; print actual char
-printf_next:	
+printf_next:
+	inc	r3		; next byte in word
+	cmp	r3,4		; all 4 processed?
+	jnz	printf_cyc
+printf_nextword:
 	inc	r2		; inc string ptr
+	mvzl	r3,0		; restart byte idx
 	jmp	printf_cyc
 	
 printf_ret:
+	pop	r3
+	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
