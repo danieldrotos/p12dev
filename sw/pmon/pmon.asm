@@ -1724,7 +1724,6 @@ printf:
 	push	lr
 	push	r0
 	push	r1
-	push	r2
 	push	r3
 	
 	st	r1,reg1
@@ -1754,11 +1753,21 @@ printf_cyc:
 	cmp	r0,'\\'
 	jnz	printf_notescape
 
+	inc	r3
+	cmp	r3,4
+	jnz	printf_l1
+printf_l2:
+	mvzl	r3,0
 	inc	r2
 	ld	r0,r2
 	sz	r0
 	jz	printf_ret
-
+printf_l1:
+	ld	r0,r2
+	getbz	r0,r0,r3
+	sz	r0
+	jz	printf_l2
+	
 	cmp	r0,'a'
 	Z mvzl	r0,7
 	Z jmp	printf_print
@@ -1795,11 +1804,21 @@ printf_notescape:
 	cmp	r0,'%'		; is it a format char?
 	jnz	printf_print
 
+	inc	r3
+	cmp	r3,4
+	jnz	printf_l3
+printf_l4:
+	mvzl	r3,0
 	inc	r2		; go to format char
 	ld	r0,r2
 	sz	r2		; is it EOS?
 	jz	printf_ret
-
+printf_l3:
+	ld	r0,r2
+	getbz	r0,r0,r3
+	sz	r0
+	jz	printf_l4
+	
 	cmp	r0,'%'		; % is used to print %
 	jz	printf_print
 
@@ -1856,7 +1875,6 @@ printf_nextword:
 	
 printf_ret:
 	pop	r3
-	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
