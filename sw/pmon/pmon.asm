@@ -1847,6 +1847,7 @@ printf_x:
 printf_notx:
 	cmp	r0,'s'
 	jnz	printf_nots
+printf_s:
 	ld	r0,r1
 	inc	r1
 	call	prints

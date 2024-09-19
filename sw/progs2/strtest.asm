@@ -74,9 +74,16 @@ TST	=	0x12345678
 	mvzl	r1,s3
 	ces	eprintf
 	dp	"packed str in packed: %s"
+	mvzl	r1,s0
+	ces	eprintf
+	.dp	"empty in packed: \"%s\" done\n"
+	mvzl	r1,0
+	ces	eprintf
+	.dp	"NULL in packed: \"%s\" done\n"
 	
 	call	monitor
 
+s0:	.db	0
 s1:	.db	"unpacked: Hello World!\n"
 s2:	.dd	0x6c6c6548
 	.dd	0x6f57206f
