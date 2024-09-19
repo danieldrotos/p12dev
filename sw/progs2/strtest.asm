@@ -137,8 +137,8 @@ p2_end:
 	pop	pc
 	.ends
 	
-	.seg	strlen
-strlen::
+	.seg	local_strlen
+strlen:
 	push	r0
 	push	r2
 	push	r3
@@ -168,8 +168,8 @@ p2_end:
 	ret
 	.ends
 	
-	.seg	strsize
-strsize::
+	.seg	local_strsize
+strsize:
 	push	r0
 	push	r2
 	push	r3
