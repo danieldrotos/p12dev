@@ -1477,9 +1477,10 @@ prints_go:
 	mvzl	r5,0
 	jz	prints_done
 prints_byte:
-	getb	r0,r1,r5
+	getbz	r0,r1,r5
 	sz	r0
 	NZ call	putchar
+	jz 	prints_go
 	inc	r5
 	cmp	r5,4
 	jnz	prints_byte
@@ -1516,9 +1517,10 @@ pes_next:
 	jz	pes_done
 	mvzl	r3,0
 pes_byte:
-	getb	r0,r2,r3
+	getbz	r0,r2,r3
 	sz	r0
 	NZ call	putchar
+	jz	pes_next
 	inc	r3
 	cmp	r3,4
 	jnz	pes_byte
