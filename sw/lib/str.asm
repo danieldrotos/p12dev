@@ -1,6 +1,27 @@
 	cpu	p2
 
+
+	.seg	fn_streq
+streq::
+	jmp	_streq
+
+	.ends
+
+
+	.seg	fn_strchr
+strchr::
+	jmp	_strchr
+
+	.ends
 	
+
+	.seg	fn_strieq
+strieq::
+	jmp	_strieq
+
+	.ends
+	
+
 	.seg	fn_strlen
 
 	;; INPUT  R0= string address

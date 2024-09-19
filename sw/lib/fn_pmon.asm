@@ -65,15 +65,5 @@ eprintf::
 
 htoi::
 	jmp	_htoi
-
-strchr::
-	jmp	_strchr
-
-streq::
-	jmp	_streq
-
-strieq::
-	jmp	_strieq
-
 	
 	.ends
