@@ -1293,18 +1293,25 @@ htoi:
 	push	lr
 	push	r2
 	push	r3
+	push	r4
+	push	r5
 	mvzl	r1,0		; return value
 	mvzl	r3,0		; index
 htoi_cyc:
-	ld	r2,r3+,r0	; pick a char
-	sz	r2		; check eof string
+	mvzl	r5,0
+	ld	r4,r3+,r0	; pick a char
+	sz	r4		; check eof string
 	jz	htoi_eos
+htoi_byte:
+	getbz	r2,r4,r5
+	sz	r2
+	jz	htoi_cyc
 	cmp	r2,'.'		; skip separators
-	jz	htoi_cyc
+	jz	htoi_next
 	cmp	r2,'_'
-	jz	htoi_cyc
+	jz	htoi_next
 	cmp	r2,'-'
-	jz	htoi_cyc
+	jz	htoi_next
 	push	r0
 	mov	r0,r2
 	call	hexchar2value
@@ -1317,7 +1324,11 @@ htoi_cyc:
 	shl	r1
 	and	r2,0xf
 	or	r1,r2
-	jmp	htoi_cyc
+htoi_next:
+	inc	r5
+	cmp	r5,4
+	jz	htoi_cyc
+	jmp	htoi_byte
 htoi_nok:
 	clc
 	jmp	htoi_ret
@@ -1325,7 +1336,9 @@ htoi_eos:
 	cmp	r3,1
 	HI clc
 	LS sec
-htoi_ret:	
+htoi_ret:
+	pop	r5
+	pop	r4
 	pop	r3
 	pop	r2
 	pop	pc
