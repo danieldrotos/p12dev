@@ -1,12 +1,78 @@
 	cpu	p2
 
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	fn_dtoi
+	;; In : R0 address of string/packed
+	;; Out: R1 numeric value of string
+	;;      F.C=1 conversion success
+	;;      F.C=0 conversion error
+dtoi::
+	push	lr
+	push	r2
+	push	r3
+	push	r4
+	push	r5
+	
+	mvzl	r1,0		; tmp value
+	mov	r2,r0		; address in r2
+	mvzl	r3,0		; index
+	
+dtoi_cyc:
+	mvzl	r5,0
+	ld	r4,r3+,r2	; pick a char
+	sz	r4		; end of string?
+	jz	dtoi_true	; normal exit
+dtoi_byte:
+	getbz	r0,r4,r5
+	sz	r0
+	jz	dtoi_cyc
+	call	isdigit		; check ascii char
+	jnc	dtoi_false	; exit if not a number
+	sub	r0,'0'		; convert char to number
+	mul	r1,10		; shift tmp
+	add	r1,r0		; add actual number
+	inc	r5
+	cmp	r5,4
+	jz	dtoi_cyc
+	jmp	dtoi_byte
+	
+dtoi_true:
+	sec
+	jmp	dtoi_ret
+dtoi_false:
+	clc
+dtoi_ret:
+	pop	r5
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	pc
+;	ret
+
+	.ends
+	
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	fn_htoi
+htoi::
+	jmp	_htoi
+
+	.ends
+	
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	fn_streq
 streq::
 	jmp	_streq
 
 	.ends
 
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	fn_strchr
 strchr::
@@ -15,6 +81,8 @@ strchr::
 	.ends
 	
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	fn_strieq
 strieq::
 	jmp	_strieq
@@ -22,9 +90,10 @@ strieq::
 	.ends
 	
 
-	.seg	fn_strlen
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	;; INPUT  R0= string address
+	.seg	fn_strlen
+	;; INPUT  R0= address of string/packed
 	;; OUTPUT R1= nuof chars in string
 strlen::
 	push	r0
@@ -39,7 +108,7 @@ p2_next:
 	sz	r3
 	jz	p2_end
 p2_cyc:	
-	getb	r0,r3,r2
+	getbz	r0,r3,r2
 	sz	r0
 	NZ inc	r4
 	inc	r2
@@ -58,9 +127,10 @@ p2_end:
 	.ends
 
 	
-	.seg	fn_strsize
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	;; INPUT  R0= address of string
+	.seg	fn_strsize
+	;; INPUT  R0= address of string/packed
 	;; OUTPUT R1= nuof words in memory occupied by string
 	;;            (including closing null)
 strsize::
@@ -77,7 +147,7 @@ p2_next:
 	sz	r3
 	jz	p2_end
 p2_cyc:	
-	getb	r0,r3,r2
+	getbz	r0,r3,r2
 	inc	r2
 	test	r2,3
 	Z plus	r1,1
@@ -92,3 +162,6 @@ p2_end:
 	ret
 	
 	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

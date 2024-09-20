@@ -63,7 +63,4 @@ printf::
 eprintf::
 	jmp	_pesf
 
-htoi::
-	jmp	_htoi
-	
 	.ends

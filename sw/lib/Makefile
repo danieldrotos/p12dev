@@ -7,7 +7,6 @@ AW		?= 16
 OBJECTS		= \
 		math.p2o \
 		str.p2o \
-		fn_dtoi.p2o \
 		fn_io.p2o \
 		fn_isdigit.p2o \
 		fn_lined.p2o \
