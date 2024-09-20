@@ -42,32 +42,18 @@ table { border-collapse: collapse; }
 
 tt { font-family: monospace }
 
-#mov {
-  background-color: #bff;
-  border: 1px solid #999;
-  font-family: monospace;
+.mov, .call, .mem, .alu1, .alu2 {
+    border-radius: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    border: 1px solid #ddd;
+    font-family: monospace;
 }
 
-#call {
-  background-color: #fbf;
-  border: 1px solid #999;
-  font-family: monospace;
-}
+.mov  { background-color: #dff; }
+.call { background-color: #fdf; }
+.mem  { background-color: #ffd; }
+.alu1 { background-color: #ddf; }
+.alu2 { background-color: #dfd; }
 
-#mem {
-  background-color: #ffb;
-  border: 1px solid #999;
-  font-family: monospace;
-}
-
-#alu2 {
-  background-color: #bfb;
-  border: 1px solid #999;
-  font-family: monospace;
-}
-
-#alu1 {
-  background-color: #bbf;
-  border: 1px solid #999;
-  font-family: monospace;
-}
+a.inst { text-decoration: none; }
