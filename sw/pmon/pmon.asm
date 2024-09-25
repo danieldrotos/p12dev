@@ -1112,15 +1112,28 @@ cmd_f:
 	;; locate charater in string
 	;; IN: R0 character, R1 string address
 	;; OUT: R1 address of char found, or NULL, Flag.C=1 if found
+	;;      R2 byte index in the word
 strchr:
-	push	r1
-	push	r2
+	;push	r1
+	;push	r2
+	push	r3
+	push	r4
 strchr_cyc:
-	ld	r2,r1
-	sz	r2
+	mvzl	r2,0		; byte index re-start
+	ld	r3,r1		; get next word
+	sz	r3		; check for eof
 	jz	strchr_no	; eof string found
-	cmp	r2,r0		; compare
-	jz	strchr_yes
+strchr_go:	
+	getbz	r4,r3,r2	; pick a byte
+	sz	r4		; is it zero?
+	jz	strchr_word	; if yes, pick next word
+	cmp	r4,r0		; compare
+	jz	strchr_yes	; found it
+strchr_byte:
+	inc	r2		; advance byte index
+	cmp	r2,4		; check byte overflow
+	jnz	strchr_go	; no, overflow, go on
+strchr_word:			; overflow
 	plus	r1,1		; go to next char
 	jmp	strchr_cyc
 strchr_yes:
@@ -1130,8 +1143,10 @@ strchr_no:
 	mvzl	r1,0
 	clc
 strchr_ret:
-	pop	r2
-	pop	r1
+	pop	r4
+	pop	r3
+	;pop	r2
+	;pop	r1
 	ret
 
 
