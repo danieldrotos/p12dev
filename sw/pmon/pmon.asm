@@ -1165,9 +1165,15 @@ str_cmp_eq:
 	push	r4
 	push	r5
 	push	r6
+	push	r7		; byte idx in string 1
+	push	r8		; byte idx in string 2
+	mvzl	r7,0
+	mvzl	r8,0
 streq_cyc:	
 	ld	r2,r0		; Got one-one char
+	getbz	r2,r2,r7
 	ld	r6,r1		; from two strings
+	getbz	r6,r6,r8
 	sz	r3		; Prepare for comparing
 	Z1 or	r2,0x20		; if insensitive case
 	sz	r3
@@ -1177,6 +1183,8 @@ streq_cyc:
 
 	ld	r2,r0		; Pick original (non-prepared)
 	ld	r6,r1		; chars to check EOS
+	getbz	r2,r2,r7
+	getbz	r6,r6,r8
 	sz	r2		; convert them to boolean
 	Z0 mvzl	r2,1		; values in R2,R6
 	Z1 mvzl	r2,0		; and copy in R4,R5
@@ -1189,7 +1197,8 @@ streq_cyc:
 	jz	streq_yes
 	and 	r2,r6		; just one is EOS: not equal
 	jz	streq_no
-	plus	r0,1		; non are EOS: go to check next char
+				; non are EOS: go to check next char
+	plus	r0,1		
 	plus	r1,1
 	jmp	streq_cyc
 	
@@ -1206,7 +1215,9 @@ streq_ret:
 	jz	streq_ret_ret
 	inc	r1
 	jmp	streq_ret
-streq_ret_ret:	
+streq_ret_ret:
+	pop	r8
+	pop	r7
 	pop	r6
 	pop	r5
 	pop	r4
