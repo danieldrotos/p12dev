@@ -80,6 +80,40 @@ TST	=	0x12345678
 	mvzl	r1,0
 	ces	eprintf
 	.dp	"NULL in packed: \"%s\" done\n"
+
+sc1:	
+	mvzl	r1,s1
+	mvzl	r0,'Z'
+	call	strchr
+	ces	eprintf
+	db	"Z in unpacked: 0x%x %d\n"
+
+sc2:	
+	mvzl	r1,s3
+	mvzl	r0,'Z'
+	call	strchr
+	ces	eprintf
+	db	"Z in packed: 0x%x %d\n"
+
+sc3:	
+	mvzl	r1,s1
+	mvzl	r0,'c'
+	call	strchr
+	ces	eprintf
+	db	"c in unpacked: 0x%x %d\n"
+	sub	r1,s1
+	ces	eprintf
+	db	"word: %d byte: %d\n"
+
+sc4:	
+	mvzl	r1,s3
+	mvzl	r0,'d'
+	call	strchr
+	ces	eprintf
+	db	"d in packed: 0x%x %d\n"
+	sub	r1,s3
+	ces	eprintf
+	db	"word: %d byte: %d\n"
 	
 	call	monitor
 
