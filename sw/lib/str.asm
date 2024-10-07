@@ -1,5 +1,15 @@
 	cpu	p2
 
+	;;
+	;; F.C,R1= dtoi(R0:str)
+	;; F.C,R1= htoi(R0:str)
+	;; F.c,R1:addr= strchr(R0:chr, R1:str)
+	;; F.C= streq(R0:str1, R1:str2)
+	;; F.C= strieq(R0:str1, R1:str2)
+	;; R1= strlen(R0:str)
+	;; R1= strsize(R0:str)
+	;; 
+	
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

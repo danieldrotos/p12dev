@@ -610,6 +610,25 @@
     <p>32 bites, előjel nélküli véletlen szám generálása.</p>
 
 
+    <h3>rand_max</h3>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=max value</span>
+	<span lang="hu">R0=maximum</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R1=next random number</span>
+	<span lang="hu">R1=következő véletlen szám</span>
+      </li>
+    </ul>
+
+    <p>32 bites, előjel nélküli véletlen szám generálása, amely a
+    0 és a maximum (paraméter) értékhatárok közé esik.</p>
+
+
     <h3>srand</h3>
 
     <ul>
@@ -641,31 +660,39 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0=bitmask of button</span>
+	<span lang="hu">R0=nyomógomb bitmaszkja</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">Flag.C=1 if pressed</span>
+	<span lang="hu">Flag.C=1 ha megnyomták</span>
       </li>
     </ul>
 
+    <p>Nyomógomb megnyomásának vizsgálata. A függvény a gomb
+    megnyomásának detektálása után egy meghíváskor fog megnyomott
+    értéket adni.</p>
+    
 
     <h3>switched</h3>
     
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0=bitmask of switch</span>
+	<span lang="hu">R0=kapcsoló bitmaszkja</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">Flag.C=1 if switch turned on</span>
+	<span lang="hu">Flag.C=1 ha a kapcsolót bekapcsolták</span>
       </li>
     </ul>
+
+    <p>Kapcsoló bekapcsolásának vizsgálata.A függvény a kapcsoló
+      bekapcsolásának detektálása után egy meghíváskor fog bekapcsolt
+      értéket adni.</p>
 
 
     <h3>restart_button</h3>
@@ -673,15 +700,18 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
+
+    <p>A nyomógombok állapotának megváltozását detektáló algoritmus
+    alaphelyzetbe állítása.</p>
 
 
     <h3>restart_switch</h3>
@@ -689,15 +719,18 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
+
+    <p>A kapcsolók állapotának megváltozását detektáló algoritmus
+      alaphelyzetbe állítása.</p>
 
     
     <hr>

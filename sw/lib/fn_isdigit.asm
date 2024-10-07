@@ -1,5 +1,9 @@
 	.proc	p2
 
+	;; 
+	;; F.C= isdigit(R0:char)
+	;;
+	
 	.seg	isdigit
 	
 	;; In : R0 character

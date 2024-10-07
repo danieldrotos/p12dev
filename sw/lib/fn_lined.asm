@@ -1,5 +1,11 @@
 	.proc	p2
 
+	;;
+	;; le_init(R0:buffer, R1:size)
+	;; le_start()
+	;; F.C= le_read()
+	;;
+	
 	.seg	line_editor
 	;; IN: R0 buffer address, R1 buffer length
 	;; OUT: -

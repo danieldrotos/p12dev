@@ -1,12 +1,25 @@
 	.proc	p2
 
+	;;
+	;; monitor()
+	;; F.C= input_avail()
+	;; F.C,R0= getchar()
+	;; R0= read()
+	;; putchar(R0:char)
+	;; prints(R0:str)
+	;; printsln(R0:str)
+	;; printh(R0:val,R1:sep_len)
+	;; printd(R0:val)
+	;; eprints()
+	;; printf(R0:format,R1:param,...)
+	;; eprintf(R1:param,...)
+	;; 
+	
 	.seg	functions_pmon
 
 _callin		==	0xf000
 _enter_by_uart	==	0xf001
 _getchar	==	0xf002	
-_isdigit	==	0xf003
-_dtoi		==	0xf004
 _cold_start	==	0xf005
 _strchr		==	0xf006
 _streq		==	0xf007
