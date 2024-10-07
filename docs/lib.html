@@ -88,8 +88,8 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
 	</li>
     </ul>
 
@@ -281,10 +281,14 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">Flag.C=1 if input is available</span>
+	<span lang="hu">Flag.C=1 ha van bemenő adat</span>
       </li>
     </ul>
+
+    <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy
+    van-e az UART-ban beolvasható vett karakter, ha igen, a flag
+    regiszter C bitje 1 lesz.</p>
 
     
     <h3>getchar</h3>
@@ -292,31 +296,38 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">Flag.C=1, R0=received character</span>
+	<span lang="hu">Flag.C=1, R0=beolvasott karakter</span>
       </li>
     </ul>
 
+    <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az
+    UART áramkörből.</p>
 
+    
     <h3>read</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0=received character</span>
+	<span lang="hu">R0=vett karakater</span>
       </li>
     </ul>
+
+    <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
+    karakterre, a vevő állapotát előzőleg az input_avail funkcióval
+    kell vizsgálni.</p>
 
 
     <h3>le_init</h3>
@@ -324,15 +335,19 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">R0=buffer address, R1=buffer length</span>
+	<span lang="hu">R0=puffer címe, R1=puffer hossza</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
+
+    <p>A sor beolvasó függvény számára beállítja a beolvasáshoz
+    használandó puffer címét és méretét. A puffert üresre állítja, így
+    a sor beolvasása elkezdhető.</p>
 
 
     <h3>le_start</h3>
@@ -340,15 +355,18 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
     </ul>
+
+    <p>A sor beolvasó függvény által használt puffert kiüríti, így új
+    beolvasás kezdhető.</p>
 
 
     <h3>le_read</h3>
@@ -356,15 +374,20 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en"></span>
-	<span lang="hu"></span>
+	<span lang="en">Flag.C=1 if line read is ready (ENTER pressed)</span>
+	<span lang="hu">Flag.C=1 ha a sor beolvasás kész (ENTER-t lenyomták)</span>
       </li>
     </ul>
+
+    <p>Megvizsgálja, hogy van-e beolvasható karakter, ha igen,
+    elhelyezi a sor pufferben, amíg az meg nem telik. Kezeli a
+    backspace törlő billentyűt. Ha a bevitel közben megnyomták az
+    ENTER-t, akkor a C flag-et 1-be állítja.</p>
 
 
     <h2>
