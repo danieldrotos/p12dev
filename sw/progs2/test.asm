@@ -32,7 +32,7 @@ stop:	jmp	stop
 	call	printf
 
 	mvzl	r1,65535
-	call	0xf015
+	ces	0xf015
 	db	"d=%x\n"
 	mvzl	r0,'B'
 	call	0xf00e

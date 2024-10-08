@@ -30,20 +30,20 @@ TST	=	0x12345678
 	
 	mvzl	r0,s1
 	call	strlen
-	call	eprintf
+	ces	eprintf
 	.db	"Len of unpacked: %d\n"
 	mvzl	r0,s1
 	call	strsize
-	call	eprintf
+	ces	eprintf
 	.db	"Size of unpacked: %d\n"
 	
 	mvzl	r0,s2
 	call	strlen
-	call	eprintf
+	ces	eprintf
 	.db	"Len of packed: %d\n"
 	mvzl	r0,s2
 	call	strsize
-	call	eprintf
+	ces	eprintf
 	.db	"Size of packed: %d\n"
 
 	mvzl	r0,s1

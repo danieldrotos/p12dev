@@ -31,7 +31,7 @@ log_ptr:	dd	0
 real_start:	
 	ldl0	sp,stack
 
-	call	pes
+	ces	pes
 	db	"Hello World\n"
 	
 	ld	r0,0

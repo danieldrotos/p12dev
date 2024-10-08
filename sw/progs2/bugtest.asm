@@ -37,7 +37,7 @@
 	getbz	r1,r0,2
 	getbz	r2,r0,1
 	getbz	r3,r0,0
-	call	_pesf
+	ces	_pesf
 	db	"\nVer %d.%d.%d\n"
 	
 end:	jmp	end
