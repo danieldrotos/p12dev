@@ -85,7 +85,7 @@ process_input:
 	;; it was not QUIT command,
 	;; suppose it is a decimal number
 	mvzl	r0,buffer	; convert entered decimal number
-	call	_dtoi		; to integer value
+	call	dtoi		; to integer value
 	cmp	r1,1		; check low limit
 	ULT jmp	ui_wrong
 	cmp	r1,20		; check high limit
