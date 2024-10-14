@@ -61,7 +61,9 @@ blink_fr2.p2h: blink_fr2.asm \
 		$(LIB)/fn_pmon.asm \
 		$(LIB)/fn_io.asm \
 		$(LIB)/fn_lined.asm \
-		$(LIB)/fn_div.asm \
+		$(LIB)/fn_isdigit.asm \
+		$(LIB)/str.asm \
+		$(LIB)/math.asm \
 		$(LIB)/fn_pressed.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 

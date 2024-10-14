@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if [ -d $HOME/prj/ucsim_main ]; then
     SIM=$HOME/prj/ucsim_main/src/sims/p1516.src/ucsim_p1516
 else
