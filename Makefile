@@ -63,9 +63,9 @@ compile: sw hw
 
 progs:
 	$(MAKE) -C sw/lib all
+	$(MAKE) -C sw/pmon all
 	$(MAKE) -C sw/examples all
 	$(MAKE) -C sw/progs2 all
-	$(MAKE) -C sw/pmon all
 
 comp_pmon:
 	$(MAKE) -C sw/pmon all
