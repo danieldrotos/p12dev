@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="63" Path="/mhome/staff/drdani/prj/p12dev/hw/implement/n4_2023.1.xpr">
+<Project Product="Vivado" Version="7" Minor="63" Path="/extra/drdani/prj/p12dev/hw/implement/n4_2023.1.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1674eb9463374933aab0455684d79eab"/>
