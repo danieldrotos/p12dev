@@ -34,11 +34,11 @@ Open `prj.mk` file with a text editor and set project parameters:
 Create a file with name used in `PRG` parameter and with **.asm**
 extension and develop your software. Use CPU instructions documented in
 
-[pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
+[pcpu](https://danieldrotos.github.io/p12dev/p2223.html)
 
 and use assembler features and directives according to
 
-[pasm](https://docs.google.com/document/d/1bQZooX6hUN2C4n99xTbH_ixLitfhPmOWg5OT2IrxJ5U/edit?usp=sharing)
+[pasm](https://danieldrotos.github.io/p12dev/asm.html)
 
 
 ## Compiling and simulating
