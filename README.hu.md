@@ -23,11 +23,11 @@ Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
 A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
 **.asm** kiterjesztéssel. Az irodalomjegyzékből használjuk a
 
-[pcpu](https://docs.google.com/document/d/1MMJTB6DxL5sSkYoF5do1A1qZC5c4BnU0c9VOwRNeq6Y/edit?usp=sharing)
+[pcpu](https://danieldrotos.github.io/p12dev/p2223.html)
 
 anyagot, amiben megtaláljuk a CPU utasításait, és a
 
-[pasm](https://docs.google.com/document/d/1bQZooX6hUN2C4n99xTbH_ixLitfhPmOWg5OT2IrxJ5U/edit?usp=sharing)
+[pasm](https://danieldrotos.github.io/p12dev/asm.html)
 
 dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
 fordításhoz az alább szereplő eljárást használjuk!
