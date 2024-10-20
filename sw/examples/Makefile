@@ -61,7 +61,7 @@ blink_fr2.p2h: blink_fr2.asm \
 		$(LIB)/fn_pmon.asm \
 		$(LIB)/dev.asm \
 		$(LIB)/fn_lined.asm \
-		$(LIB)/fn_isdigit.asm \
+		$(LIB)/char.asm \
 		$(LIB)/str.asm \
 		$(LIB)/math.asm \
 		$(LIB)/fn_pressed.asm

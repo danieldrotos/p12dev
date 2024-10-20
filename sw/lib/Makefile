@@ -8,7 +8,7 @@ OBJECTS		= \
 		math.p2o \
 		str.p2o \
 		dev.p2o \
-		fn_isdigit.p2o \
+		char.p2o \
 		fn_lined.p2o \
 		fn_pmon.p2o \
 		fn_pressed.p2o
