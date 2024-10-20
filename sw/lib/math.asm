@@ -1,10 +1,10 @@
 	cpu	p2
 
 	;;
-	;; R2:quotient,R3:reminder= div(R0:number,R1:divisor)
-	;; srand(R0:seed)
-	;; R1= rand()
-	;; R1= rand_max(R0:max)
+	;; R2:quotient,R3:reminder= div      (R0:number,R1:divisor)
+	;;                          srand    (R0:seed)
+	;; R1=                      rand     ()
+	;; R1=                      rand_max (R0:max)
 	;; 
 	
 	.seg	fn_div

@@ -1,18 +1,18 @@
 	.proc	p2
 
 	;;
-	;; monitor()
-	;; F.C= input_avail()
-	;; F.C,R0= getchar()
-	;; R0= read()
-	;; putchar(R0:char)
-	;; prints(R0:str)
-	;; printsln(R0:str)
-	;; printh(R0:val,R1:sep_len)
-	;; printd(R0:val)
-	;; eprints()
-	;; printf(R0:format,R1:param,...)
-	;; eprintf(R1:param,...)
+	;;          monitor     ()
+	;; F.C=     input_avail ()
+	;; F.C,R0=  getchar     ()
+	;; R0=      read        ()
+	;;          putchar     (R0:char)
+	;;          prints      (R0:str)
+	;;          printsln    (R0:str)
+	;;          printh      (R0:val,R1:sep_len)
+	;;          printd      (R0:val)
+	;;          eprints     ()
+	;;          printf      (R0:format,R1:param,...)
+	;;          eprintf     (R1:param,...)
 	;; 
 	
 	.seg	functions_pmon

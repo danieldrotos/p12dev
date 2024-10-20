@@ -1,10 +1,10 @@
 	.proc	p2
 
 	;;
-	;; F.C= pressed(R0:btn)
-	;; F.C= switched(R0:sw)
-	;; restart_button()
-	;; restart_switch()
+	;; F.C=  pressed        (R0:btn)
+	;; F.C=  switched       (R0:sw)
+	;;       restart_button ()
+	;;       restart_switch ()
 	;; 
 	
 	.seg	fn_pressed

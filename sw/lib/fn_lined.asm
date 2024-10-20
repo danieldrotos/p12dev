@@ -1,9 +1,9 @@
 	.proc	p2
 
 	;;
-	;; le_init(R0:buffer, R1:size)
-	;; le_start()
-	;; F.C= le_read()
+	;;       le_init  (R0:buffer, R1:size)
+	;;       le_start ()
+	;; F.C=  le_read  ()
 	;;
 	
 	.seg	line_editor

@@ -1,7 +1,5 @@
 	.proc	P2
 
-;	.include	fn_io.asm
-	
 btn		=	GPIO.BTN
 dummy		=	12
 	
