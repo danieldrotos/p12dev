@@ -7,7 +7,7 @@
 	;;       restart_switch ()
 	;; 
 	
-	.seg	fn_pressed
+	.seg	_lib_segment_bsp
 
 last_btn:
 	ds	1

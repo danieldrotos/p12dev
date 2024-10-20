@@ -19,74 +19,74 @@
 	;;
 
 	
-	.seg	putchar
+	.seg	_lib_segment_putchar
 putchar::
 	jmp	_putchar
 	.ends
 
 	
-	.seg	prints
+	.seg	_lib_segment_prints
 prints::
 	jmp	_prints
 	.ends
 	
 
-	.seg	printsnl	
+	.seg	_lib_segment_printsnl	
 printsnl::
 	jmp	_printsnl
 	.ends
 
 
-	.seg	printh
+	.seg	_lib_segment_printh
 printh::
 	jmp	_print_vhex
 	.ends
 
 
-	.seg	printd
+	.seg	_lib_segment_printd
 printd::
 	jmp	_printd
 	.ends
 
 
-	.seg	eprints
+	.seg	_lib_segment_eprints
 eprints::
 	jmp	_pes
 	.ends
 	
 
-	.seg	printf
+	.seg	_lib_segment_printf
 printf::
 	jmp	_printf
 	.ends
 
 
-	.seg	eprintf
+	.seg	_lib_segment_eprintf
 eprintf::
 	jmp	_pesf
 	.ends
 
 
-	.seg	input_avail
+	.seg	_lib_segment_input_avail
 input_avail::
 	jmp	_check_uart
 	.ends
 
 
-	.seg	getchar
+	.seg	_lib_segment_getchar
 getchar::
 	jmp	_getchar
 	.ends
 
 
-	.seg	read
+	.seg	_lib_segment_read
 read::
 	jmp	_read
 	.ends
 
 	
 	
-	.seg	line_editor
+	.seg	_lib_segment_line_editor
 	;; IN: R0 buffer address, R1 buffer length
 	;; OUT: -
 le_init::

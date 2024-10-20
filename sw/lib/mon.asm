@@ -4,7 +4,7 @@
 	;;          monitor     ()
 	;; 
 	
-	.seg	functions_pmon
+	.seg	_lib_segment_pmon
 
 _callin		==	0xf000
 _enter_by_uart	==	0xf001

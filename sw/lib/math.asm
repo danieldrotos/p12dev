@@ -7,7 +7,7 @@
 	;; R1=                      rand_max (R0:max)
 	;; 
 	
-	.seg	fn_div
+	.seg	_lib_segment_div
 
 	;; INPUT  R0= N, R1= D
 	;; OUTPUT R2= Q, R3= R
@@ -53,7 +53,7 @@ div_ret:
 	;; https://www.jstatsoft.org/article/view/v008i14
 	;; DOI: 10.18637/jss.v008.i14
 	
-	.seg	fn_rand
+	.seg	_lib_segment_rand
 
 seed:	.db	2127401289
 
@@ -100,7 +100,9 @@ c3:	shl	r1
 	pop	r0
 	pop	pc
 ;	ret
-
+	.ends
+	
+	.seg	_lib_segment_rand_max
 	;; Calculate next value converted to range 0..R0
 	;; Input : R0 max value
 	;; Output: R1 next random value in 0..R0 range

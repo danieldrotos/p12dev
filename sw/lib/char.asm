@@ -4,7 +4,7 @@
 	;; F.C=  isdigit (R0:char)
 	;;
 	
-	.seg	isdigit
+	.seg	_lib_segment_isdigit
 	
 	;; In : R0 character
 	;; Out: F.C=1 number (0-9)

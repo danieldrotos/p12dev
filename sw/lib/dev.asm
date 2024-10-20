@@ -1,6 +1,6 @@
 	.proc	p2
 
-	.seg	regs_of_clock
+	.seg	_lib_segment_regs_of_clock
 	
 CLOCK.CLOCK	==	0xff50
 CLOCK.CLK	==	0xff50
@@ -22,7 +22,7 @@ CLOCK.BCNT15	==	0xff5f
 
 	.ends
 	
-	.seg	regs_of_gpio
+	.seg	_lib_segment_regs_of_gpio
 
 GPIO.PORTA	==	0xff00	; 7seg (selectable)
 GPIO.PORTB	==	0xff01	; led
@@ -48,7 +48,7 @@ GPIO.SW		==	0xff10	; GPIOJ.IDR
 
 	.ends
 
-	.seg	regs_of_timer
+	.seg	_lib_segment_regs_of_timer
 
 TIMER.CTRL	==	0xff30
 TIMER.AR	==	0xff31
@@ -57,7 +57,7 @@ TIMER.STAT	==	0xff33
 
 	.ends
 
-	.seg	regs_of_uart
+	.seg	_lib_segment_regs_of_uart
 
 UART.DR		==	0xff40
 UART.CTRL	==	0xff41
@@ -71,7 +71,7 @@ UART.SREG3	==	0xff4f
 
 	.ends
 
-	.seg	regs_of_simif
+	.seg	_lib_segment_regs_of_simif
 
 SIMIF.CMD_PAR	==	0xffff
 

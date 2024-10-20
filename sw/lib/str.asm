@@ -13,7 +13,7 @@
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_dtoi
+	.seg	_lib_segment_dtoi
 	;; In : R0 address of string/packed
 	;; Out: R1 numeric value of string
 	;;      F.C=1 conversion success
@@ -66,7 +66,7 @@ dtoi_ret:
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_htoi
+	.seg	_lib_segment_htoi
 htoi::
 	jmp	_htoi
 
@@ -75,7 +75,7 @@ htoi::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_strchr
+	.seg	_lib_segment_strchr
 strchr::
 	jmp	_strchr
 
@@ -84,7 +84,7 @@ strchr::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_streq
+	.seg	_lib_segment_streq
 streq::
 	jmp	_streq
 
@@ -93,7 +93,7 @@ streq::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_strieq
+	.seg	_lib_segment_strieq
 strieq::
 	jmp	_strieq
 
@@ -102,7 +102,7 @@ strieq::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_strlen
+	.seg	_lib_segment_strlen
 	;; INPUT  R0= address of string/packed
 	;; OUTPUT R1= nuof chars in string
 strlen::
@@ -139,7 +139,7 @@ p2_end:
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	fn_strsize
+	.seg	_lib_segment_strsize
 	;; INPUT  R0= address of string/packed
 	;; OUTPUT R1= nuof words in memory occupied by string
 	;;            (including closing null)
