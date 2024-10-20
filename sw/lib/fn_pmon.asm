@@ -2,15 +2,6 @@
 
 	;;
 	;;          monitor     ()
-	;; F.C=     input_avail ()
-	;; F.C,R0=  getchar     ()
-	;; R0=      read        ()
-	;;          printsln    (R0:str)
-	;;          printh      (R0:val,R1:sep_len)
-	;;          printd      (R0:val)
-	;;          eprints     ()
-	;;          printf      (R0:format,R1:param,...)
-	;;          eprintf     (R1:param,...)
 	;; 
 	
 	.seg	functions_pmon
@@ -40,32 +31,5 @@ _pesf		==	0xf015
 
 monitor::
 	jmp	_callin
-
-input_avail::
-	jmp	_check_uart
-	
-getchar::
-	jmp	_getchar
-
-read::
-	jmp	_read
-
-printsnl::
-	jmp	_printsnl
-
-printh::
-	jmp	_print_vhex
-	
-printd::
-	jmp	_printd
-	
-eprints::
-	jmp	_pes
-
-printf::
-	jmp	_printf
-
-eprintf::
-	jmp	_pesf
 
 	.ends
