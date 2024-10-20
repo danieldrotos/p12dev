@@ -5,8 +5,6 @@
 	;; F.C=     input_avail ()
 	;; F.C,R0=  getchar     ()
 	;; R0=      read        ()
-	;;          putchar     (R0:char)
-	;;          prints      (R0:str)
 	;;          printsln    (R0:str)
 	;;          printh      (R0:val,R1:sep_len)
 	;;          printd      (R0:val)
@@ -51,12 +49,6 @@ getchar::
 
 read::
 	jmp	_read
-	
-putchar::
-	jmp	_putchar
-
-prints::
-	jmp	_prints
 
 printsnl::
 	jmp	_printsnl
