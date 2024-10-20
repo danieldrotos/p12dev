@@ -58,12 +58,12 @@ poll2: poll2.p2h poll2.asc poll2.cdb
 blink_fr2: blink_fr2.p2h blink_fr2.cdb
 
 blink_fr2.p2h: blink_fr2.asm \
-		$(LIB)/fn_pmon.asm \
+		$(LIB)/mon.asm \
 		$(LIB)/dev.asm \
 		$(LIB)/char.asm \
 		$(LIB)/str.asm \
 		$(LIB)/math.asm \
-		$(LIB)/fn_pressed.asm \
+		$(LIB)/bsp.asm \
 		$(LIB)/inout.asm
 	php $(TOOLS)/p2as.php -l -o $@ $^
 
