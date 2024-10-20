@@ -60,7 +60,6 @@ blink_fr2: blink_fr2.p2h blink_fr2.cdb
 blink_fr2.p2h: blink_fr2.asm \
 		$(LIB)/fn_pmon.asm \
 		$(LIB)/dev.asm \
-		$(LIB)/fn_lined.asm \
 		$(LIB)/char.asm \
 		$(LIB)/str.asm \
 		$(LIB)/math.asm \

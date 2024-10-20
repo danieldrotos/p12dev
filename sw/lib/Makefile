@@ -10,7 +10,6 @@ OBJECTS		= \
 		dev.p2o \
 		char.p2o \
 		inout.asm \
-		fn_lined.p2o \
 		fn_pmon.p2o \
 		fn_pressed.p2o
 
