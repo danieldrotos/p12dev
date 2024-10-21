@@ -11,8 +11,8 @@
 	;;          eprintf     (R1:param,...)
 	;;
 	;; F.C=     input_avail ()
-	;; F.C,R0=  getchar     ()
-	;; R0=      read        ()
+	;; F.C,R4=  getchar     ()
+	;; R4=      read        ()
 	;;          le_init     (R0:buffer, R1:size)
 	;;          le_start    ()
 	;; F.C=     le_read     ()
@@ -75,13 +75,18 @@ input_avail::
 
 	.seg	_lib_segment_getchar
 getchar::
-	jmp	_getchar
+	push	lr
+gc_wait:	
+	call	_check_uart
+	jnc	gc_wait
+	ld	r4,UART.DR
+	pop	pc
 	.ends
 
 
 	.seg	_lib_segment_read
 read::
-	jmp	_read
+	ld	r4,UART.DR
 	.ends
 
 	
@@ -128,7 +133,7 @@ tu_fgets::
 	call	_check_uart	; if there is no char
 	NC jmp	ler_ret		; return with false
 ler_got_char:	
-	call	_read		; read one char
+	ld	r0,UART.DR	; read one char
 	cmp	r0,13		; check CR and LF
 	jz	ler_true	; both accepted as ENTER
 	cmp	r0,10
