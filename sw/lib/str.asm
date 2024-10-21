@@ -1,7 +1,7 @@
 	cpu	p2
 
 	;;
-	;; F.C,R1=              dtoi    (R0:str)
+	;; F.C,R4=              dtoi    (R0:str)
 	;; F.C,R1=              htoi    (R0:str)
 	;; F.C,R1:addr,R2:idx=  strchr  (R0:chr, R1:str)
 	;; F.C=                 streq   (R0:str1, R1:str2)
@@ -16,34 +16,34 @@
 
 	.seg	_lib_segment_dtoi
 	;; In : R0 address of string/packed
-	;; Out: R1 numeric value of string
+	;; Out: R4 numeric value of string
 	;;      F.C=1 conversion success
 	;;      F.C=0 conversion error
 dtoi::
 	push	lr
+	push	r1
 	push	r2
 	push	r3
-	push	r4
 	push	r5
 	
-	mvzl	r1,0		; tmp value
+	mvzl	r4,0		; return value
 	mov	r2,r0		; address in r2
 	mvzl	r3,0		; index
 	
 dtoi_cyc:
 	mvzl	r5,0
-	ld	r4,r3+,r2	; pick a char
-	sz	r4		; end of string?
+	ld	r1,r3+,r2	; pick a char
+	sz	r1		; end of string?
 	jz	dtoi_true	; normal exit
 dtoi_byte:
-	getbz	r0,r4,r5
+	getbz	r0,r1,r5
 	sz	r0
 	jz	dtoi_cyc
 	call	isdigit		; check ascii char
 	jnc	dtoi_false	; exit if not a number
 	sub	r0,'0'		; convert char to number
-	mul	r1,10		; shift tmp
-	add	r1,r0		; add actual number
+	mul	r4,10		; shift tmp
+	add	r4,r0		; add actual number
 	inc	r5
 	cmp	r5,4
 	jz	dtoi_cyc
@@ -56,9 +56,9 @@ dtoi_false:
 	clc
 dtoi_ret:
 	pop	r5
-	pop	r4
 	pop	r3
 	pop	r2
+	pop	r1
 	pop	pc
 ;	ret
 

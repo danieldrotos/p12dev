@@ -7,7 +7,7 @@
 	mvzl	sp,stack
 	mvzl	r0,str
 	call	dtoi
-	mov	r2,r1
+	mov	r2,r4
 	ces	pesf
 	db	"val=%d %x\n"
 end:

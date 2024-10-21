@@ -86,18 +86,19 @@ process_input:
 	;; suppose it is a decimal number
 	mvzl	r0,buffer	; convert entered decimal number
 	call	dtoi		; to integer value
-	cmp	r1,1		; check low limit
+	cmp	r4,1		; check low limit
 	ULT jmp	ui_wrong
-	cmp	r1,20		; check high limit
+	cmp	r4,20		; check high limit
 	UGT jmp	ui_wrong
 	;; value can be accepted
 ui_good:	
-	st	r1,frequ	; store as frequ
+	st	r4,frequ	; store as frequ
 	call	fr2pt		; calculate new period time
 	mvzl	r0,0		; force blink event by expiring counter
 	st	r0,CLOCK.BCNT2	; to pick up new value
 	jmp	ui_done
 ui_wrong:
+	mov	r1,r4
 	call	_pesf		; print error message
 	.db	"%d not in range 1-20\n"
 ui_done:	
