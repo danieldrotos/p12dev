@@ -1170,10 +1170,48 @@ str_cmp_eq:
 	mvzl	r7,0
 	mvzl	r8,0
 streq_cyc:	
-	ld	r2,r0		; Got one-one char
+	ld	r2,r0		; Got one char from first str
+	sz	r2		; is it eos?
+	jz	streq_pick2	; if yes, go on
+	getbz	r2,r2,r7	; pick one byte
+	sz	r2		; is it 0?
+	jnz	streq_pick2	; if not, go on
+	inc	r7		; step to next byte
+	cmp	r7,4		; word is overflowed?
+	jz	streq_p1ov
+streq_p1nov:
+	ld	r2,r0		; pick orig word, and
+	getbz	r2,r2,r7	; check next byte
+	sz	r2		; is it 0?
+	jnz	streq_pick2	; if not, go on
+streq_p1ov:	
+	inc	r0		; if yes, move pointer
+	mvzl	r7,0		; and reset byte counter
+	ld	r2,r0		; get first byte of next word
 	getbz	r2,r2,r7
-	ld	r6,r1		; from two strings
-	getbz	r6,r6,r8
+
+streq_pick2:	
+	ld	r6,r1		; pick from second string
+	sz	r6		; is it eos?
+	jz	streq_prep	; if yes, go to compare
+	getbz	r6,r6,r8	; pick a byte
+	sz	r6		; is it 0?
+	jnz	streq_prep	; if not, go to compare
+	inc	r8		; step to next byte
+	cmp	r8,4		; is word overflowed?
+	jz	streq_p2ov
+streq_p2nov:
+	ld	r6,r1		; pick orig word, and
+	getbz	r6,r6,r8	; check next byte
+	sz	r6		; is it 0?
+	jnz	streq_prep	; if not, go on
+streq_p2ov:
+	inc	r1		; if yes, move pointer
+	mvzl	r8,0		; and reset byte counter
+	ld	r6,r1		; get next word
+	getbz	r6,r6,r8	; and pick first byte
+
+streq_prep:	
 	sz	r3		; Prepare for comparing
 	Z1 or	r2,0x20		; if insensitive case
 	sz	r3
@@ -1198,8 +1236,16 @@ streq_cyc:
 	and 	r2,r6		; just one is EOS: not equal
 	jz	streq_no
 				; non are EOS: go to check next char
-	plus	r0,1		
-	plus	r1,1
+streq_next:				
+	inc	r7		; step byte count
+	cmp	r7,4		; if word overflows
+	Z plus	r0,1		; then step the pointer
+	Z mvzl	r7,0		; and reset the byte counter
+
+	inc	r8
+	cmp	r8,4
+	Z plus	r1,1
+	Z mvzl	r8,0
 	jmp	streq_cyc
 	
 streq_no:
