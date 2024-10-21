@@ -85,6 +85,8 @@ sc1:
 	mvzl	r1,s1
 	mvzl	r0,'Z'
 	call	strchr
+	mov	r1,r4
+	mov	r2,r5
 	ces	eprintf
 	db	"Z in unpacked: 0x%x %d\n"
 
@@ -92,6 +94,8 @@ sc2:
 	mvzl	r1,s3
 	mvzl	r0,'Z'
 	call	strchr
+	mov	r1,r4
+	mov	r2,r5
 	ces	eprintf
 	db	"Z in packed: 0x%x %d\n"
 
@@ -99,6 +103,8 @@ sc3:
 	mvzl	r1,s1
 	mvzl	r0,'c'
 	call	strchr
+	mov	r1,r4
+	mov	r2,r5
 	ces	eprintf
 	db	"c in unpacked: 0x%x %d\n"
 	sub	r1,s1
@@ -109,6 +115,8 @@ sc4:
 	mvzl	r1,s3
 	mvzl	r0,'d'
 	call	strchr
+	mov	r1,r4
+	mov	r2,r5
 	ces	eprintf
 	db	"d in packed: 0x%x %d\n"
 	sub	r1,s3

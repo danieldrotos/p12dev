@@ -2,12 +2,12 @@
 
 	;;
 	;; F.C,R4=              dtoi    (R0:str)
-	;; F.C,R1=              htoi    (R0:str)
-	;; F.C,R1:addr,R2:idx=  strchr  (R0:chr, R1:str)
+	;; F.C,R4=              htoi    (R0:str)
+	;; F.C,R4:addr,R5:idx=  strchr  (R0:chr, R1:str)
 	;; F.C=                 streq   (R0:str1, R1:str2)
 	;; F.C=                 strieq  (R0:str1, R1:str2)
-	;; R1=                  strlen  (R0:str)
-	;; R1=                  strsize (R0:str)
+	;; R4=                  strlen  (R0:str)
+	;; R4=                  strsize (R0:str)
 	;; R4=                  char    (R0:str, R1:idx)
 	;; 
 	
@@ -21,6 +21,7 @@
 	;;      F.C=0 conversion error
 dtoi::
 	push	lr
+	push	r0
 	push	r1
 	push	r2
 	push	r3
@@ -28,10 +29,10 @@ dtoi::
 	
 	mvzl	r4,0		; return value
 	mov	r2,r0		; address in r2
-	mvzl	r3,0		; index
+	mvzl	r3,0		; word index
 	
 dtoi_cyc:
-	mvzl	r5,0
+	mvzl	r5,0		; byte index
 	ld	r1,r3+,r2	; pick a char
 	sz	r1		; end of string?
 	jz	dtoi_true	; normal exit
@@ -59,8 +60,8 @@ dtoi_ret:
 	pop	r3
 	pop	r2
 	pop	r1
+	pop	r0
 	pop	pc
-;	ret
 
 	.ends
 	
@@ -69,7 +70,12 @@ dtoi_ret:
 
 	.seg	_lib_segment_htoi
 htoi::
-	jmp	_htoi
+	push	lr
+	push	r1
+	call	_htoi
+	mov	r4,r1
+	pop	r1
+	pop	pc
 
 	.ends
 	
@@ -78,8 +84,16 @@ htoi::
 
 	.seg	_lib_segment_strchr
 strchr::
-	jmp	_strchr
-
+	push	lr
+	push	r1
+	push	r2
+	call	_strchr
+	mov	r4,r1
+	mov	r5,r2
+	pop	r2
+	pop	r1
+	pop	pc
+	
 	.ends
 	
 
@@ -105,12 +119,12 @@ strieq::
 
 	.seg	_lib_segment_strlen
 	;; INPUT  R0= address of string/packed
-	;; OUTPUT R1= nuof chars in string
+	;; OUTPUT R4= nuof chars in string
 strlen::
 	push	r0
+	push	r1
 	push	r2
 	push	r3
-	push	r4
 	mov	r1,r0
 	mvzl	r2,0
 	mvzl	r4,0
@@ -128,10 +142,9 @@ p2_cyc:
 	Z jmp	p2_next
 	jmp	p2_cyc
 p2_end:
-	mov	r1,r4
-	pop	r4
 	pop	r3
 	pop	r2
+	pop	r1
 	pop	r0
 	ret
 
@@ -146,9 +159,9 @@ p2_end:
 	;;            (including closing null)
 strsize::
 	push	r0
+	push	r1
 	push	r2
 	push	r3
-	push	r4
 	mov	r1,r0
 	mvzl	r2,0
 	mvzl	r4,0
@@ -165,10 +178,9 @@ p2_cyc:
 	Z jmp	p2_next
 	jmp	p2_cyc
 p2_end:
-	mov	r1,r4
-	pop	r4
 	pop	r3
 	pop	r2
+	pop	r1
 	pop	r0
 	ret
 	
