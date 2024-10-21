@@ -75,12 +75,12 @@ comp_mon: comp_pmon
 comp_lib:
 	$(MAKE) -C sw/lib all
 
-comp_sw: $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_app: $(PRG).p2h $(PRG).asc $(PRG).cdb
 
 $(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l $(PMON)/pmon.p2h
 	php $(TOOLS)/p2as.php -l -o $@ $(PRG).asm $(LIB)/plib.p2l
 
-sw: comp_pmon comp_lib comp_sw
+sw: comp_pmon comp_lib comp_app
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc
@@ -96,7 +96,7 @@ synth: $(VVP)
 
 hw: synth
 
-iss: comp_pmon comp_sw
+iss: sw
 	$(ISS) $(PRG)
 
 $(VCD): $(VVP)
