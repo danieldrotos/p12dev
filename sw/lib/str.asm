@@ -1,13 +1,14 @@
 	cpu	p2
 
 	;;
-	;; F.C,R1=       dtoi    (R0:str)
-	;; F.C,R1=       htoi    (R0:str)
-	;; F.c,R1:addr=  strchr  (R0:chr, R1:str)
-	;; F.C=          streq   (R0:str1, R1:str2)
-	;; F.C=          strieq  (R0:str1, R1:str2)
-	;; R1=           strlen  (R0:str)
-	;; R1=           strsize (R0:str)
+	;; F.C,R1=              dtoi    (R0:str)
+	;; F.C,R1=              htoi    (R0:str)
+	;; F.C,R1:addr,R2:idx=  strchr  (R0:chr, R1:str)
+	;; F.C=                 streq   (R0:str1, R1:str2)
+	;; F.C=                 strieq  (R0:str1, R1:str2)
+	;; R1=                  strlen  (R0:str)
+	;; R1=                  strsize (R0:str)
+	;; R4=                  char    (R0:str, R1:idx)
 	;; 
 	
 
@@ -170,6 +171,58 @@ p2_end:
 	pop	r2
 	pop	r0
 	ret
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_char
+	;; In : R0 address of string/packed
+	;;      R1 char index
+	;; Out: R1 char at index, or 0
+char::
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r5
+
+	mvzl	r3,0		; word index
+
+char_cyc:
+	mvzl	r5,0		; start byte index in word
+	ld	r4,r3+,r0	; pick a word
+	sz	r4		; EOS?
+	jz	char_ret_eos
+char_byte:
+	getbz	r2,r4,r5	; pick byte from word
+	sz	r2		; is it 0?
+	jz	char_cyc	; if yes, get next word
+char_nonz:
+	sz	r1		; if index==0
+	jz	char_ret_act	; then return actual char
+	dec	r1		; count
+	jz	char_ret_act	; repeat if index is not reached
+
+	inc	r5		; next byte index
+	cmp	r5,4		; is it overflowed?
+	jz	char_cyc
+	jmp	char_byte
+	
+char_ret_act:
+	mov	r4,r2
+	jmp	char_ret
+char_ret_eos:
+	mvzl	r4,0
+char_ret:	
+	pop	r5
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
 	
 	.ends
 

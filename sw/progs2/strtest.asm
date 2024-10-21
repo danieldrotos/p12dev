@@ -171,22 +171,6 @@ p2_end:
 	pop	pc
 	.ends
 
-	.seg	test_strcmp
-	;; R0, R1 addresses
-	;; R3=true case sensitive
-	;; R3=false case insensitive
-test_strcmp::
-	push	lr
-	push	r0
-	push	r1
-
-	pop	r1
-	pop	r0
-	pop	lr
-	ret
-	
-	.ends
-	
 	ds	100
 stack:
 	db	0
