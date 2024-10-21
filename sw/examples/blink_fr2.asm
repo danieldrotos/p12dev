@@ -41,7 +41,7 @@ fr2pt:
 	mvzl	r0,1000
 	ld	r1,frequ
 	call	div
-	st	r2,ptime
+	st	r4,ptime
 	pop	pc
 ;	ret
 

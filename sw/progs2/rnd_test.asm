@@ -6,10 +6,12 @@
 	mvzl	r2,10
 cyc:
 	call	rand
+	mov	r1,r4
 	ces	eprintf
 	.db	"%u\n"
 	mvzl	r0,100
 	call	rand_max
+	mov	r1,r4
 	ces	eprintf
 	.db	"%u\n"
 	dec	r2

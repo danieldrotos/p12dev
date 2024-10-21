@@ -87,6 +87,7 @@ gc_wait:
 	.seg	_lib_segment_read
 read::
 	ld	r4,UART.DR
+	ret
 	.ends
 
 	

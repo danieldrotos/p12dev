@@ -54,7 +54,7 @@ show_counter:
 	st	r0,counter
 	ldl0	r1,1000
 	call	div
-	st	r2,led
+	st	r4,led
 	jmp	main_cycle
 
 	
@@ -63,6 +63,7 @@ show_counter:
 proc_input:
 	push	lr
 	call	read
+	mov	r0,r4
 	ld	r1,porta
 	shl	r1
 	shl	r1
