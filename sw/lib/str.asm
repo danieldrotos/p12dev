@@ -202,7 +202,7 @@ char::
 	push	r5
 
 	mvzl	r3,0		; word index
-
+	inc	r1
 char_cyc:
 	mvzl	r5,0		; start byte index in word
 	ld	r4,r3+,r0	; pick a word
@@ -213,8 +213,6 @@ char_byte:
 	sz	r2		; is it 0?
 	jz	char_cyc	; if yes, get next word
 char_nonz:
-	sz	r1		; if index==0
-	jz	char_ret_act	; then return actual char
 	dec	r1		; count
 	jz	char_ret_act	; repeat if index is not reached
 

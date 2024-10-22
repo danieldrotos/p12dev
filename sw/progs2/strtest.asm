@@ -3,7 +3,41 @@
 	.org	1
 
 	mvzl	sp,stack
-	
+
+	mvzl	r0,s1
+	call	prints
+	mvzl	r9,0
+c1:
+	mov	r1,r9
+	call	char
+	sz	r4
+	jz	c2
+	mov	r1,r9
+	mov	r2,r4
+	mov	r3,r4
+	ces	eprintf
+	.db	"s1[%d]= %c,%d\n"
+	inc	r9
+	jmp	c1
+c2:	
+
+	mvzl	r0,s3
+	call	prints
+	mvzl	r9,0
+c11:
+	mov	r1,r9
+	call	char
+	sz	r4
+	jz	c12
+	mov	r1,r9
+	mov	r2,r4
+	mov	r3,r4
+	ces	eprintf
+	.db	"s3[%d]= %c,%d\n"
+	inc	r9
+	jmp	c11
+c12:	
+
 TST	=	0x12345678
 
 	mvl	r0,TST
