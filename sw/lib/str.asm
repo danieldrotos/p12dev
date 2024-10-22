@@ -1,14 +1,14 @@
 	cpu	p2
 
 	;;
-	;; F.C,R4=              dtoi    (R0:str)
-	;; F.C,R4=              htoi    (R0:str)
-	;; F.C,R4:addr,R5:idx=  strchr  (R0:chr, R1:str)
-	;; F.C=                 streq   (R0:str1, R1:str2)
-	;; F.C=                 strieq  (R0:str1, R1:str2)
-	;; R4=                  strlen  (R0:str)
-	;; R4=                  strsize (R0:str)
-	;; R4=                  char    (R0:str, R1:idx)
+	;; F.C,R4=              dtoi        (R0:str)
+	;; F.C,R4=              htoi        (R0:str)
+	;; F.C,R4:addr,R5:idx=  str_chr     (R0:chr, R1:str)
+	;; F.C=                 str_eq      (R0:str1, R1:str2)
+	;; F.C=                 str_ieq     (R0:str1, R1:str2)
+	;; R4=                  str_len     (R0:str)
+	;; R4=                  str_size    (R0:str)
+	;; R4=                  str_getchar (R0:str, R1:idx)
 	;; 
 	
 
@@ -82,8 +82,8 @@ htoi::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_strchr
-strchr::
+	.seg	_lib_segment_str_chr
+str_chr::
 	push	lr
 	push	r1
 	push	r2
@@ -99,8 +99,8 @@ strchr::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_streq
-streq::
+	.seg	_lib_segment_str_eq
+str_eq::
 	jmp	_streq
 
 	.ends
@@ -108,8 +108,8 @@ streq::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_strieq
-strieq::
+	.seg	_lib_segment_str_ieq
+str_ieq::
 	jmp	_strieq
 
 	.ends
@@ -117,10 +117,10 @@ strieq::
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_strlen
+	.seg	_lib_segment_str_len
 	;; INPUT  R0= address of string/packed
 	;; OUTPUT R4= nuof chars in string
-strlen::
+str_len::
 	push	r0
 	push	r1
 	push	r2
@@ -153,11 +153,11 @@ p2_end:
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_strsize
+	.seg	_lib_segment_str_size
 	;; INPUT  R0= address of string/packed
 	;; OUTPUT R1= nuof words in memory occupied by string
 	;;            (including closing null)
-strsize::
+str_size::
 	push	r0
 	push	r1
 	push	r2
@@ -189,11 +189,11 @@ p2_end:
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	_lib_segment_char
+	.seg	_lib_segment_str_getchar
 	;; In : R0 address of string/packed
 	;;      R1 char index
 	;; Out: R1 char at index, or 0
-char::
+str_getchar::
 	push	lr
 	push	r0
 	push	r1

@@ -9,7 +9,7 @@
 	mvzl	r9,0
 c1:
 	mov	r1,r9
-	call	char
+	call	str_getchar
 	sz	r4
 	jz	c2
 	mov	r1,r9
@@ -26,7 +26,7 @@ c2:
 	mvzl	r9,0
 c11:
 	mov	r1,r9
-	call	char
+	call	str_getchar
 	sz	r4
 	jz	c12
 	mov	r1,r9
@@ -63,20 +63,20 @@ TST	=	0x12345678
 	call	print
 	
 	mvzl	r0,s1
-	call	strlen
+	call	str_len
 	ces	eprintf
 	.db	"Len of unpacked: %d\n"
 	mvzl	r0,s1
-	call	strsize
+	call	str_size
 	ces	eprintf
 	.db	"Size of unpacked: %d\n"
 	
 	mvzl	r0,s2
-	call	strlen
+	call	str_len
 	ces	eprintf
 	.db	"Len of packed: %d\n"
 	mvzl	r0,s2
-	call	strsize
+	call	str_size
 	ces	eprintf
 	.db	"Size of packed: %d\n"
 
@@ -118,7 +118,7 @@ TST	=	0x12345678
 sc1:	
 	mvzl	r1,s1
 	mvzl	r0,'Z'
-	call	strchr
+	call	str_chr
 	mov	r1,r4
 	mov	r2,r5
 	ces	eprintf
@@ -127,7 +127,7 @@ sc1:
 sc2:	
 	mvzl	r1,s3
 	mvzl	r0,'Z'
-	call	strchr
+	call	str_chr
 	mov	r1,r4
 	mov	r2,r5
 	ces	eprintf
@@ -136,7 +136,7 @@ sc2:
 sc3:	
 	mvzl	r1,s1
 	mvzl	r0,'c'
-	call	strchr
+	call	str_chr
 	mov	r1,r4
 	mov	r2,r5
 	ces	eprintf
@@ -148,7 +148,7 @@ sc3:
 sc4:	
 	mvzl	r1,s3
 	mvzl	r0,'d'
-	call	strchr
+	call	str_chr
 	mov	r1,r4
 	mov	r2,r5
 	ces	eprintf
