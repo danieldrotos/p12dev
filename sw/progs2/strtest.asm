@@ -138,7 +138,26 @@ bad:	call	str_setchar
 	mvzl	r1,scp
 	ces	eprintf
 	db	"after change: %s"
+	jmp	packed_test
+
+resu:	db	"string is unpacked: %s"
+resp:	db	"string is packed: %s"
 	
+packed_test:
+	mvzl	r0,scu
+	call	str_packed
+	C mvzl	r0,resp
+	NC mvzl	r0,resu
+	mvzl	r1,scu
+	call	printf
+
+	mvzl	r0,scp
+	call	str_packed
+	C mvzl	r0,resp
+	NC mvzl	r0,resu
+	mvzl	r1,scp
+	call	printf
+
 TST	=	0x12345678
 
 	mvl	r0,TST

@@ -10,6 +10,7 @@
 	;; R4=                  str_size    (R0:str)
 	;; R4=                  str_getchar (R0:str, R1:idx)
 	;;                      str_setchar (R0:str, R1:idx, R2:char)
+	;; F.C=                 str_packed  (R0:str)
 	;; 
 	
 
@@ -280,6 +281,33 @@ schar_ret:
 	pop	r1
 	ret
 	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_str_packed
+	;; In : R0 string address
+	;; Out: F.C=1 if string is packed
+str_packed::
+	push	r1
+	push	r2
+	mvzl	r2,0		; index
+sp_cyc:
+	ld	r1,r2+,r0	; pick word
+	sz	r1
+	jz	sp_false
+	and	r1,0xff00	; check upper bytes
+	jz	sp_cyc
+sp_true:
+	sec
+	jmp	sp_ret
+sp_false:	
+	clc
+sp_ret:	
+	pop	r3
+	pop	r2
+	ret
 	.ends
 
 	
