@@ -258,7 +258,7 @@ schar_cyc:
 schar_byte:
 	getbz	r6,r4,r5	; pick byte from word
 	sz	r6		; is it 0?
-	Z inc	r3		; if yes, get next word
+	Z plus	r3,1		; if yes, get next word
 	jz	schar_cyc
 schar_nonz:
 	dec	r1		; count

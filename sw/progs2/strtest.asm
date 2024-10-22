@@ -44,29 +44,98 @@ c3:
 	mvzl	r1,scu
 	ces	eprintf
 	db	"before change: %s"
+c4:	
 	mvzl	r0,scu
 	mvzl	r1,0
 	mvzl	r2,'A'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[0]=A: %s"
 	mvzl	r1,1
 	mvzl	r2,'B'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[1]=B: %s"
 	mvzl	r1,2
 	mvzl	r2,'C'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[2]=C: %s"
 	mvzl	r1,3
 	mvzl	r2,'D'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[3]=D: %s"
 	mvzl	r1,4
 	mvzl	r2,'E'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[4]=E: %s"
 	mvzl	r1,20
 	mvzl	r2,'_'
 	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change[20]=_: %s"
 	mvzl	r1,200
 	mvzl	r2,'!'
 	call	str_setchar
+	
 	mvzl	r1,scu
+	ces	eprintf
+	db	"after change: %s"
+	
+	mvzl	r1,scp
+	ces	eprintf
+	db	"before change: %s"
+c5:	
+	mvzl	r0,scp
+	mvzl	r1,0
+	mvzl	r2,'A'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[0]=A: %s"
+	mvzl	r1,1
+	mvzl	r2,'B'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[1]=B: %s"
+	mvzl	r1,2
+	mvzl	r2,'C'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[2]=C: %s"
+	mvzl	r1,3
+	mvzl	r2,'D'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[3]=D: %s"
+	mvzl	r1,4
+	mvzl	r2,'E'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[4]=E: %s"
+	mvzl	r1,20
+	mvzl	r2,'_'
+	call	str_setchar
+	mvzl	r1,scp
+	ces	eprintf
+	db	"after change[20]=_: %s"
+	mvzl	r1,200
+	mvzl	r2,'!'
+	call	str_setchar
+	
+	mvzl	r1,scp
 	ces	eprintf
 	db	"after change: %s"
 	
