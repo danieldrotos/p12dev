@@ -266,6 +266,7 @@ schar_nonz:
 
 	inc	r5		; next byte index
 	cmp	r5,4		; is it overflowed?
+	Z plus	r3,1
 	jz	schar_cyc
 	jmp	schar_byte
 	

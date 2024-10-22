@@ -121,7 +121,7 @@ c5:
 	db	"after change[3]=D: %s"
 	mvzl	r1,4
 	mvzl	r2,'E'
-	call	str_setchar
+bad:	call	str_setchar
 	mvzl	r1,scp
 	ces	eprintf
 	db	"after change[4]=E: %s"

@@ -4,6 +4,7 @@ include $(PRJ)/sw/common.mk
 
 AW		?= 16
 
+PLIB		= $(LIB)/plib.p2l
 
 all: pmonitor lib \
 	counter2 \
@@ -19,7 +20,7 @@ all: pmonitor lib \
 	bufout \
 	le_test \
 	rnd_test \
-	strtest \
+	strtest.asc strtest.cdb \
 	dtoi_test \
 	bugtest
 
@@ -53,7 +54,9 @@ game: game.p2h game.asc game.cdb
 
 bufout: bufout.p2h bufout.asc bufout.cdb
 
-strtest: strtest.p2h strtest.asc strtest.cdb
+#strtest: strtest.p2h strtest.asc strtest.cdb
+
+strtest.p2h: strtest.asm $(PLIB)
 
 le_test: le_test.p2h le_test.asc le_test.cdb
 
