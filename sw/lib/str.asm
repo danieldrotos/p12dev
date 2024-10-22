@@ -9,6 +9,7 @@
 	;; R4=                  str_len     (R0:str)
 	;; R4=                  str_size    (R0:str)
 	;; R4=                  str_getchar (R0:str, R1:idx)
+	;;                      str_setchar (R0:str, R1:idx, R2:char)
 	;; 
 	
 
@@ -155,7 +156,7 @@ p2_end:
 
 	.seg	_lib_segment_str_size
 	;; INPUT  R0= address of string/packed
-	;; OUTPUT R1= nuof words in memory occupied by string
+	;; OUTPUT R4= nuof words in memory occupied by string
 	;;            (including closing null)
 str_size::
 	push	r0
@@ -192,10 +193,8 @@ p2_end:
 	.seg	_lib_segment_str_getchar
 	;; In : R0 address of string/packed
 	;;      R1 char index
-	;; Out: R1 char at index, or 0
+	;; Out: R4 char at index, or 0
 str_getchar::
-	push	lr
-	push	r0
 	push	r1
 	push	r2
 	push	r3
@@ -203,36 +202,82 @@ str_getchar::
 
 	mvzl	r3,0		; word index
 	inc	r1
-char_cyc:
+gchar_cyc:
 	mvzl	r5,0		; start byte index in word
 	ld	r4,r3+,r0	; pick a word
 	sz	r4		; EOS?
-	jz	char_ret_eos
-char_byte:
+	jz	gchar_ret_eos
+gchar_byte:
 	getbz	r2,r4,r5	; pick byte from word
 	sz	r2		; is it 0?
-	jz	char_cyc	; if yes, get next word
-char_nonz:
+	jz	gchar_cyc	; if yes, get next word
+gchar_nonz:
 	dec	r1		; count
-	jz	char_ret_act	; repeat if index is not reached
+	jz	gchar_ret_act	; repeat if index is not reached
 
 	inc	r5		; next byte index
 	cmp	r5,4		; is it overflowed?
-	jz	char_cyc
-	jmp	char_byte
+	jz	gchar_cyc
+	jmp	gchar_byte
 	
-char_ret_act:
+gchar_ret_act:
 	mov	r4,r2
-	jmp	char_ret
-char_ret_eos:
+	jmp	gchar_ret
+gchar_ret_eos:
 	mvzl	r4,0
-char_ret:	
+gchar_ret:	
 	pop	r5
 	pop	r3
 	pop	r2
 	pop	r1
-	pop	r0
-	pop	pc
+	ret
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_str_setchar
+	;; In : R0 address of string/packed
+	;;      R1 char index
+	;;      R2 new character
+	;; Out: -
+str_setchar::
+	push	r1
+	push	r3
+	push	r5
+	push	r6
+	
+	mvzl	r3,0		; word index
+	inc	r1
+schar_cyc:
+	mvzl	r5,0		; start byte index in word
+	ld	r4,r3,r0	; pick a word
+	sz	r4		; EOS?
+	jz	schar_ret
+schar_byte:
+	getbz	r6,r4,r5	; pick byte from word
+	sz	r6		; is it 0?
+	Z inc	r3		; if yes, get next word
+	jz	schar_cyc
+schar_nonz:
+	dec	r1		; count
+	jz	schar_set	; repeat if index is not reached
+
+	inc	r5		; next byte index
+	cmp	r5,4		; is it overflowed?
+	jz	schar_cyc
+	jmp	schar_byte
+	
+schar_set:
+	putb	r4,r2,r5	; replace char in orig word
+	st	r4,r3,r0	; store in memory
+schar_ret:
+	pop	r6
+	pop	r5
+	pop	r3
+	pop	r1
+	ret
 	
 	.ends
 

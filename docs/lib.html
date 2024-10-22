@@ -566,6 +566,48 @@
     <p>A függvény egy sztring által elfoglalt memória hely méretét
     adja meg, beleértve a sztringet záró 0 értékű szót is.</p>
 
+
+    <h3>str_getchar</h3>
+
+    <ul>
+      <li><spanlang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=string, R1=index</span>
+	<span lang="hu">R0=sztring, R1=index</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R4=char in string at index</span>
+	<span lang="hu">R4=a sztring indexedik karaktere</span>
+      </li>
+    </ul>
+
+    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
+    karakterét adja, az első karakter sorszáma 0. Ha a sorszám
+    nagyobb, mint a sztring hossza, akkor 0 lesz az eredmény.</p>
+
+    
+    <h3>str_setchar</h3>
+
+    <ul>
+      <li><spanlang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=string, R1=index, R2=char</span>
+	<span lang="hu">R0=sztring, R1=index, R2=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
+    (első karakter sorszáma 0) karakterét lecseréli a megadott
+    karakterre. Ha a sorszám nagyobb a sztring hosszánál, akkor nem
+    történik módosítás.
+    </p>
+
     
     <h2>
       <span lang="en">Arithmetic functions</span>

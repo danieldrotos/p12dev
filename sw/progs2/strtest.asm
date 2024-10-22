@@ -37,7 +37,39 @@ c11:
 	inc	r9
 	jmp	c11
 c12:	
-
+	jmp	c3
+scu:	db	"unpacked string for changes\n"
+scp:	dp	"packed string for changes\n"
+c3:
+	mvzl	r1,scu
+	ces	eprintf
+	db	"before change: %s"
+	mvzl	r0,scu
+	mvzl	r1,0
+	mvzl	r2,'A'
+	call	str_setchar
+	mvzl	r1,1
+	mvzl	r2,'B'
+	call	str_setchar
+	mvzl	r1,2
+	mvzl	r2,'C'
+	call	str_setchar
+	mvzl	r1,3
+	mvzl	r2,'D'
+	call	str_setchar
+	mvzl	r1,4
+	mvzl	r2,'E'
+	call	str_setchar
+	mvzl	r1,20
+	mvzl	r2,'_'
+	call	str_setchar
+	mvzl	r1,200
+	mvzl	r2,'!'
+	call	str_setchar
+	mvzl	r1,scu
+	ces	eprintf
+	db	"after change: %s"
+	
 TST	=	0x12345678
 
 	mvl	r0,TST
