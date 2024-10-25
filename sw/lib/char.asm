@@ -61,4 +61,36 @@ isupper::
 	jmp	_char_is_true
 	
 	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	.seg	_lib_segment_isalpha
+
+	;; In : R0=char
+	;; Out: F.C=1 islower || isupper
+isalpha::
+	push	lr
+	call	islower
+	C pop	pc
+	call	isupper
+	pop	pc
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	.seg	_lib_segment_isalnum
+
+	;; In : R0=char
+	;; Out: F.C=1 isalpha || isdigit
+isalnum::
+	push	lr
+	call	isalpha
+	C pop	pc
+	call	isdigit
+	pop	pc
+	
+	.ends
 	
