@@ -18,12 +18,29 @@ last_btn_inited:
 last_sw_inited:	
 	db	0
 
+	;; Convert btn/sw number into bitmask
+nr_to_mask:
+	push	r1
+	and	r0,0xfff0	; max nr is 15
+	mvzl	r1,1		; mask for nr==0
+nr_to_mask_cyc:	
+	sz	r0		; is nr zero?
+	jz	nr_to_mask_ret	; if yes, go out
+	shl	r1		; shift mask up
+	dec	r0		; decrement nr
+	jmp	nr_to_mask_cyc	; check for zero
+nr_to_mask_ret:
+	mov	r0,r1		; return mask in R0
+	pop	r1
+	ret
+	
 	;; Check button press
-	;; Input : R0= bit mask of examined BTN
+	;; Input : R0= number of examined BTN (0-15)
 	;; Output: C=0 not pressed
 	;;         C=1 pressed
 pressed::
 	push	lr
+	call	nr_to_mask
 	clc
 	call	pos_edge
 	pop	pc
@@ -31,11 +48,12 @@ pressed::
 
 	
 	;; Check pos edge on a switch
-	;; Input : R0= bit mask of examined SW
+	;; Input : R0= number of examined SW (0-15)
 	;; Output: C=0 not switched
 	;;         C=1 switched off->on
 switched::
 	push	lr
+	call	nr_to_mask
 	sec
 	call	pos_edge
 	pop	pc

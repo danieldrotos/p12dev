@@ -31,7 +31,7 @@ ffcnt	= 0xff52
 	ld	r0,btn
 	st	r0,last_btn
 ciklus:
-	call	monitor
+	;call	monitor
 		
 	ld	r0,ffcnt
 	sz	r0

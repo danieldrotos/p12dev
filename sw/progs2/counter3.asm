@@ -49,7 +49,7 @@ cyc:
 cyc:
 real_start:	
 	call	monitor_by_uart		; enter monitor by uart
-	mvzl	r0,1			; bitmask of checked button
+	mvzl	r0,0			; number of checked button
 	call	pressed
 	C1 call	monitor
 	call	restart_btn

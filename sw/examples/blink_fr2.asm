@@ -121,10 +121,10 @@ prompt:
 	;; Check for button press and handle it
 btn_press:
 	push	lr
-	mvzl	r0,2		; mask of BTN[1]
+	mvzl	r0,1		; nr of BTN[1]
 	call	pressed		; if pressed
 	C call	monitor		; then go out to monitor
-	mvzl	r0,1		; mask of SW[0]
+	mvzl	r0,0		; nr of SW[0]
 	call	switched
 	C call	monitor
 	pop	pc

@@ -37,8 +37,8 @@ ffcnt	= 0xff52
 	;; ----------------------------------------------------------------
 	;; checks for input events
 main_cycle:
-	;; Event 1: press of BTN[2]
-	ldl0	r0,2
+	;; Event 1: press of BTN[1]
+	ldl0	r0,1
 	call	pressed
 	C call	monitor		; BTN1 pressed: back to monitor
 no_press:

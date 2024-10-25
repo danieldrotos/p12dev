@@ -62,7 +62,7 @@ main_cyc:
 	
 	;jmp	main_cyc	; main cycle
 
-	ldl0	r0,2		; check btn[1]
+	ldl0	r0,1		; check btn[1]
 	call	pressed
 	;; press btn[1]: BTND
 	C call	0xf000		; enter monitor
@@ -80,7 +80,7 @@ main_cyc:
 	call	read
 	call	send
 nochar:	
-	ldl0	r0,4
+	ldl0	r0,2
 	call	pressed
 	NC jmp	nopress4
 	;; press btn[2]: BTNU
