@@ -48,10 +48,10 @@ cyc:
 	;db	cyc_belso
 cyc:
 real_start:	
-	call	_enter_by_uart		; enter monitor by uart
+	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,1			; bitmask of checked button
 	call	pressed
-	C1 call	_callin
+	C1 call	monitor
 	call	restart_btn
 	st	r10,GPIO.PORTA
 	st	r10,GPIO.PORTB

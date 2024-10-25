@@ -21,55 +21,55 @@
 	
 	.seg	_lib_segment_putchar
 putchar::
-	jmp	_putchar
+	jmp	_pm_putchar
 	.ends
 
 	
 	.seg	_lib_segment_prints
 prints::
-	jmp	_prints
+	jmp	_pm_prints
 	.ends
 	
 
 	.seg	_lib_segment_printsnl	
 printsnl::
-	jmp	_printsnl
+	jmp	_pm_printsnl
 	.ends
 
 
 	.seg	_lib_segment_printh
 printh::
-	jmp	_print_vhex
+	jmp	_pm_print_vhex
 	.ends
 
 
 	.seg	_lib_segment_printd
 printd::
-	jmp	_printd
+	jmp	_pm_printd
 	.ends
 
 
 	.seg	_lib_segment_eprints
 eprints::
-	jmp	_pes
+	jmp	_pm_pes
 	.ends
 	
 
 	.seg	_lib_segment_printf
 printf::
-	jmp	_printf
+	jmp	_pm_printf
 	.ends
 
 
 	.seg	_lib_segment_eprintf
 eprintf::
-	jmp	_pesf
+	jmp	_pm_pesf
 	.ends
 
 
 	.seg	_lib_segment_input_avail
 input_avail::
-	jmp	_check_uart
+	jmp	_pm_check_uart
 	.ends
 
 
@@ -77,7 +77,7 @@ input_avail::
 getchar::
 	push	lr
 gc_wait:	
-	call	_check_uart
+	call	_pm_check_uart
 	jnc	gc_wait
 	ld	r4,UART.DR
 	pop	pc
@@ -133,11 +133,13 @@ tu_fgets::
 	push	r1
 	push	r2
 	push	r3
+	push	r4
 	
-	call	_check_uart	; if there is no char
+	call	input_avail	; if there is no char
 	NC jmp	ler_ret		; return with false
 ler_got_char:	
-	ld	r0,UART.DR	; read one char
+	call	read		; read one char
+	mov	r0,r4
 	cmp	r0,13		; check CR and LF
 	jz	ler_true	; both accepted as ENTER
 	cmp	r0,10
@@ -161,7 +163,7 @@ ler_del:
 	mvzl	r0,0
 	sz	r1
 	NZ st	r0,r1,r2
-	ces	_pes
+	ces	eprintf
 	db	"\e[1D \e[1D"
 	jmp	ler_false
 	
@@ -182,7 +184,7 @@ ler_nobs:
 	UGE jmp	ler_noroom
 	ld	r1,le_buf_addr
 	st	r0,r1,r2
-	call	_putchar
+	call	putchar
 	mvzl	r0,0
 	st	r0,r1,r3
 	st	r3,le_ptr
@@ -197,6 +199,7 @@ ler_true:
 	sec
 	jmp	ler_ret
 ler_ret:
+	pop	r4
 	pop	r3
 	pop	r2
 	pop	r1

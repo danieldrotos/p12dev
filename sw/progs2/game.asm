@@ -40,7 +40,7 @@ main_cycle:
 	;; Event 1: press of BTN[2]
 	ldl0	r0,2
 	call	pressed
-	C call	_callin		; BTN1 pressed: back to monitor
+	C call	monitor		; BTN1 pressed: back to monitor
 no_press:
 	;; Event 2: input on UART
 	call	avail		; check UART

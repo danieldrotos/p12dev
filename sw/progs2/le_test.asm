@@ -15,13 +15,13 @@ gotit:
 	mvzl	r0,10		; echo ENTER
 	call	putchar
 	mvzl	r0,buf		; echo buffer
-	call	_prints
+	call	prints
 	mvzl	r0,10		; print LF
 	call	putchar		
 
 	mvzl	r0,buf
 	mvzl	r1,quit
-	call	_strieq
+	call	str_ieq
 	C call	monitor
 	
 	call	le_start

@@ -79,7 +79,7 @@ process_input:
 	call	putchar
 	mvzl	r0,buffer	; check for word "quit"
 	mvzl	r1,cmd_quit
-	call	_strieq		; case insensitive compare
+	call	_pm_strieq	; case insensitive compare
 	C call	monitor		; if eq, go out to monitor
 	C jmp	ui_done		; normal exit when continued
 	;; it was not QUIT command,
@@ -99,7 +99,7 @@ ui_good:
 	jmp	ui_done
 ui_wrong:
 	mov	r1,r4
-	call	_pesf		; print error message
+	call	_pm_pesf	; print error message
 	.db	"%d not in range 1-20\n"
 ui_done:	
 	call	prompt		; print prompt
@@ -112,7 +112,7 @@ ui_ret:
 	;; Print prompt
 prompt:
 	push	lr
-	call	_pes
+	call	_pm_pes
 	.db	"Enter fr in Hz (quit to monitor): "
 	pop	pc
 ;	ret

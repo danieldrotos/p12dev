@@ -79,7 +79,7 @@ htoi::
 	Z ret
 	push	lr
 	push	r1
-	call	_htoi
+	call	_pm_htoi
 	mov	r4,r1
 	pop	r1
 	pop	pc
@@ -101,7 +101,7 @@ str_chr::
 	mov	r4,r0
 	mov	r0,r1
 	mov	r1,r4
-	call	_strchr
+	call	_pm_strchr
 	mov	r4,r1
 	mov	r5,r2
 	pop	r2
@@ -120,7 +120,7 @@ str_eq::
 	Z ret
 	sz	r1
 	Z ret	
-	jmp	_streq
+	jmp	_pm_streq
 
 	.ends
 
@@ -134,7 +134,7 @@ str_ieq::
 	Z ret
 	sz	r1
 	Z ret	
-	jmp	_strieq
+	jmp	_pm_strieq
 
 	.ends
 	
