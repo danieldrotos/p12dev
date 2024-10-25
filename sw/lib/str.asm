@@ -321,6 +321,9 @@ schar_ret:
 	;; In : R0 string address
 	;; Out: F.C=1 if string is packed
 str_packed::
+	sz	r0		; check NULL pointer
+	Z clc
+	Z ret
 	push	r1
 	push	r2
 	mvzl	r2,0		; index
