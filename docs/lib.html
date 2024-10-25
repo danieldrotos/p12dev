@@ -190,8 +190,6 @@
     </h2>
 
 
-
-
     <table border="1">
       <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
 	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
@@ -247,86 +245,39 @@
 
     
     <h2>
-      <span lang="en">Arithmetic functions</span>
-      <span lang="hu">Aritmetikai függvények</span>
+      <span lang="en">Math functions</span>
+      <span lang="hu">Matematikai függvények</span>
     </h2>
 
 
-    <h3>div</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=number, R1=divisor</span>
-	<span lang="hu">R0=osztandó, R1=osztó</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=quotient, R5=reminder</span>
-	<span lang="hu">R4=eredmény, R5=maradék</span>
-      </li>
-    </ul>
-
-    <p>Előjel nélküli egész számok osztása: R2= R0/R1. Az osztó (R1)
-    nem lehet 0. Az osztás maradéka az R3 regiszterbe kerül.</p>
-
-
-    <h3>rand</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=next random number</span>
-	<span lang="hu">R4=következő véletlen szám</span>
-      </li>
-    </ul>
-
-    <p>32 bites, előjel nélküli véletlen szám generálása.</p>
-
-
-    <h3>rand_max</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=max value</span>
-	<span lang="hu">R0=maximum</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=next random number</span>
-	<span lang="hu">R4=következő véletlen szám</span>
-      </li>
-    </ul>
-
-    <p>32 bites, előjel nélküli véletlen szám generálása, amely a
-    0 és a maximum (paraméter) értékhatárok közé esik.</p>
-
-
-    <h3>srand</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=seed</span>
-	<span lang="hu">R0=aktuális véletlen szám</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-    </ul>
-
-    <p>A véletlen szám generátor aktuális értékének beállítása. A
-    következő rand hívás a véletlen szekvencia következő értékét fogja
-    adni.</p>
-
+    <table border="1">
+      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
+	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
+	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
+      </tr>
+      <tr><td>R4:quot, R5:rem</td>
+	<td><a href="lib_math.html#div">div</a></td>
+	<td>(R0:num, R1:div)</td>
+      </tr>
+      <tr><td>R4:val</td>
+	<td><a href="lib_math.html#rand">rand</a></td>
+	<td>()</td>
+      </tr>
+      <tr><td>R4:val</td>
+	<td><a href="lib_math.html#rand_max">rand_max</a></td>
+	<td>(R0:max)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_math.html#srand">srand</a></td>
+	<td>(R0:seed)</td>
+      </tr>
+    </table>
+    <!-- 
+	 <tr><td></td>
+	 <td><a href="lib_math.html#"></a></td>
+	 <td>()</td>
+	 </tr>
+       -->
     
     <h2>
       <span lang="en">Board specific functions</span>
@@ -334,83 +285,35 @@
     </h2>
 
 
-    <h3>pressed</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=bitmask of button</span>
-	<span lang="hu">R0=nyomógomb bitmaszkja</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">Flag.C=1 if pressed</span>
-	<span lang="hu">Flag.C=1 ha megnyomták</span>
-      </li>
-    </ul>
-
-    <p>Nyomógomb megnyomásának vizsgálata. A függvény a gomb
-    megnyomásának detektálása után egy meghíváskor fog megnyomott
-    értéket adni.</p>
+    <table border="1">
+      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
+	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
+	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
+      </tr>
+      <tr><td>F.C:pressed</td>
+	<td><a href="lib_bsp.html#pressed">pressed</a></td>
+	<td>(R0:btnmask)</td>
+      </tr>
+      <tr><td>F.C:switched</td>
+	<td><a href="lib_bsp.html#switched">switched</a></td>
+	<td>(R0:switchmask)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_bsp.html#restart_button">restart_button</a></td>
+	<td>()</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_bsp.html#restart_switch">restart_switch</a></td>
+	<td>()</td>
+      </tr>
+    </table>
+    <!-- 
+	 <tr><td></td>
+	 <td><a href="lib_bsp.html#"></a></td>
+	 <td>()</td>
+	 </tr>
+       -->
     
-
-    <h3>switched</h3>
-    
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=bitmask of switch</span>
-	<span lang="hu">R0=kapcsoló bitmaszkja</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">Flag.C=1 if switch turned on</span>
-	<span lang="hu">Flag.C=1 ha a kapcsolót bekapcsolták</span>
-      </li>
-    </ul>
-
-    <p>Kapcsoló bekapcsolásának vizsgálata.A függvény a kapcsoló
-      bekapcsolásának detektálása után egy meghíváskor fog bekapcsolt
-      értéket adni.</p>
-
-
-    <h3>restart_button</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-    </ul>
-
-    <p>A nyomógombok állapotának megváltozását detektáló algoritmus
-    alaphelyzetbe állítása.</p>
-
-
-    <h3>restart_switch</h3>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-    </ul>
-
-    <p>A kapcsolók állapotának megváltozását detektáló algoritmus
-      alaphelyzetbe állítása.</p>
-
     
     <hr>
   </body>
