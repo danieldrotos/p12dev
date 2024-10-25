@@ -3,7 +3,7 @@
 	;;
 	;; F.C,R4=              dtoi        (R0:str)
 	;; F.C,R4=              htoi        (R0:str)
-	;; F.C,R4:addr,R5:idx=  str_chr     (R0:chr, R1:str)
+	;; F.C,R4:addr,R5:idx=  str_chr     (R0:str, R1:chr)
 	;; F.C=                 str_eq      (R0:str1, R1:str2)
 	;; F.C=                 str_ieq     (R0:str1, R1:str2)
 	;; R4=                  str_len     (R0:str)
@@ -89,6 +89,9 @@ str_chr::
 	push	lr
 	push	r1
 	push	r2
+	mov	r4,r0
+	mov	r0,r1
+	mov	r1,r4
 	call	_strchr
 	mov	r4,r1
 	mov	r5,r2

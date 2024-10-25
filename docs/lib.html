@@ -466,13 +466,13 @@
       befejeződik a hibás karakternél.</p>
 
     
-    <h3>str_getchr</h3>
+    <h3>str_chr</h3>
 
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=character, R1=string</span>
-	<span lang="hu">R0=karakter, R1=sztring</span>
+	<span lang="en">R0=string, R1=character</span>
+	<span lang="hu">R0=sztring, R1=karakter</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -481,11 +481,11 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakter keresése az R1 címen kezdődő
+    <p>Az R1 regiszterben lévő karakter keresése az R0 címen kezdődő
     sztringben, a kis- és a nagybetűk különbözőnek számítanak. Ha a
-    keresett karakter megtalálható a szövegben, akkor az R1 a karakter
-    tartalmazó szó címe lesz, az R2 pedig a karakter indexe a
-    szóban. Ha nincs találat, az R1 és R2 0 lesz. A találatot a flag
+    keresett karakter megtalálható a szövegben, akkor az R4 a karakter
+    tartalmazó szó címe lesz, az R5 pedig a karakter indexe a
+    szóban. Ha nincs találat, az R4 és R5 0 lesz. A találatot a flag
     regiszter C bitjének 1 értéke jelzi.</p>
 
     
