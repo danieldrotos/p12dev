@@ -1,16 +1,20 @@
 	.proc	p2
 
 	;; 
-	;; F.C=  isdigit (R0:char)
-	;; F.C=  islower (R0:char)
-	;; F.C=  isupper (R0:char)
-	;; F.C=  isalpha (R0:char)
-	;; F.C=  isalnum (R0:char)
-	;; F.C=  isblank (R0:char)
-	;; F.C=  isprint (R0:char)
-	;; F.C=  ispunct (R0:char)
-	;; F.C=  isspace (R0:char)
-	;;
+	;; F.C=  isdigit  (R0:char)
+	;; F.C=  islower  (R0:char)
+	;; F.C=  isupper  (R0:char)
+	;; F.C=  isalpha  (R0:char)
+	;; F.C=  isalnum  (R0:char)
+	;; F.C=  isblank  (R0:char)
+	;; F.C=  isprint  (R0:char)
+	;; F.C=  ispunct  (R0:char)
+	;; F.C=  isspace  (R0:char)
+	;; F.C=  isxdigit (R0:char)
+	;; R4=   toupper  (R0:char)
+	;; R4=   tolower  (R0:char)
+	;; R4=   toupper  (R0:char)
+	;; 
 	
 
 	.seg	_lib_segment_character_fn
@@ -158,13 +162,14 @@ isp_false:
 
 	.ends
 
+	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_isspace
 
 	;; In : R0=char
 	;; Out: F.C=1 space
-ispunct::
+isspace::
 	cmp	r0,32
 	jz	_char_is_true
 	cmp	r0,9
@@ -175,4 +180,63 @@ ispunct::
 	
 	.ends
 
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_isxdigit
+
+	;; In : R0=char
+	;; Out: F.C=1 hex digit
+isxdigit::
+	push	lr
+	push	r0
+	push	r1
+	push	r4
+	push	r5
+	mov	r1,r0
+	mvzl	r0,xdigits
+	call	str_chr
+	pop	r5
+	pop	r4
+	pop	r1
+	pop	r0
+	pop	pc
+xdigits:
+	.dp	"0123456789abcdefABCDEF"
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_tolower
+tolower::
+	mov	r4,r0
+	push	lr
+	call	isupper
+	NC pop	pc
+	or	r4,0x20
+	pop	pc
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_toupper
+toupper::
+	mov	r4,r0
+	push	lr
+	call	islower
+	NC pop	pc
+	push	r0
+	mvzl	r0,0x20
+	not	r0
+	and	r4,r0
+	pop	r0
+	pop	pc
+	
+	.ends
+
+	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

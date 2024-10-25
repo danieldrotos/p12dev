@@ -218,6 +218,64 @@
       C bitje 1 lesz.</p>    
 
     
+    <a name="isxdigit"><h3>isxdigit</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=character</span>
+	<span lang="hu">R0=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if character is hexdigit</span>
+	<span lang="hu">Flag.C=1 ha a karakter hexa számjegy</span>
+      </li>
+    </ul>
+
+    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
+      hexadecimális számjegy karakter ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</p>    
+
+    
+    <a name="tolower"><h3>tolower</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=character</span>
+	<span lang="hu">R0=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R4: lowercase character</span>
+	<span lang="hu">R4: kisbetű</span>
+      </li>
+    </ul>
+
+    <p>Az R0 regiszterben lévő karakterkód átalakítása kisbetűsre, ha
+    a bemeneti adat egy nagybetű kódja.</p>    
+
+    
+    <a name="toupper"><h3>toupper</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=character</span>
+	<span lang="hu">R0=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R4: uppercase character</span>
+	<span lang="hu">R4: nagybetű</span>
+      </li>
+    </ul>
+
+    <p>Az R0 regiszterben lévő karakterkód átalakítása nagybetűsre, ha
+      a bemeneti adat egy kisbetű kódja.</p>    
+
+    
     <hr>
   </body>
 </html>
