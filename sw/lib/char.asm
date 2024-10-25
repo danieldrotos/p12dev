@@ -9,6 +9,7 @@
 	;; F.C=  isblank (R0:char)
 	;; F.C=  isprint (R0:char)
 	;; F.C=  ispunct (R0:char)
+	;; F.C=  isspace (R0:char)
 	;;
 	
 
@@ -155,6 +156,23 @@ isp_false:
 	clc
 	pop	pc
 
+	.ends
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_isspace
+
+	;; In : R0=char
+	;; Out: F.C=1 space
+ispunct::
+	cmp	r0,32
+	jz	_char_is_true
+	cmp	r0,9
+	ULT jmp	_char_is_false
+	cmp	r0,13
+	UGT jmp	_char_is_false
+	jmp	_char_is_true
+	
 	.ends
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
