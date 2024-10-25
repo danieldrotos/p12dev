@@ -1,8 +1,9 @@
 	.proc	p2
 
 	;;
-	;;          monitor     ()
-	;; 
+	;;      monitor          ()
+	;; 	monitor_by_uart  ()
+	;;
 	
 	.seg	_lib_segment_pmon
 
