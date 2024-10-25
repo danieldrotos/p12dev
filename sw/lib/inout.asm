@@ -93,11 +93,13 @@ read::
 	
 	
 	.seg	_lib_segment_line_editor
-	;; IN: R0 buffer address, R1 buffer length
+	;; IN : R0 buffer address, R1 buffer length
 	;; OUT: -
 le_init::
 le_setbuf::
 	push	lr
+	sz	r0
+	Z mvzl	r1,0
 	st	r0,le_buf_addr	; store buffer info
 	st	r1,le_buf_len	; in local vars
 	call	le_start	; set buffer empty
@@ -113,7 +115,8 @@ le_start::
 	mvzl	r2,0		; set cursor post to 0
 	st	r2,le_cursor_pos
 	ld	r1,le_buf_addr	; buf[0]= 0
-	st	r2,r1
+	sz	r1
+	NZ st	r2,r1
 	mvzl	r1,le_ptr	; ptr= 0
 	st	r2,r1
 	pop	r2
@@ -156,8 +159,9 @@ ler_del:
 	st	r2,le_ptr
 	ld	r1,le_buf_addr	; buf[ptr]=0
 	mvzl	r0,0
-	st	r0,r1,r2
-	call	_pes
+	sz	r1
+	NZ st	r0,r1,r2
+	ces	_pes
 	db	"\e[1D \e[1D"
 	jmp	ler_false
 	
@@ -167,6 +171,9 @@ ler_nobs:
 	cmp	r0,128		; skip graphic chars
 	UGE jmp	ler_false
 	;; process accpeted char
+	ld	r1,le_buf_addr
+	sz	r1
+	jz	ler_false
 	ld	r1,le_buf_len
 	ld	r2,le_ptr
 	mov	r3,r2
