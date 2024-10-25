@@ -32,7 +32,8 @@ dtoi::
 	mvzl	r4,0		; return value
 	mov	r2,r0		; address in r2
 	mvzl	r3,0		; word index
-	
+	sz	r2		; check pointer
+	jz	dtoi_false	; for NULL value
 dtoi_cyc:
 	mvzl	r5,0		; byte index
 	ld	r1,r3+,r2	; pick a char
@@ -72,6 +73,10 @@ dtoi_ret:
 
 	.seg	_lib_segment_htoi
 htoi::
+	sz	r0		; check NULL pointer
+	Z mvzl	r4,0
+	Z clc
+	Z ret
 	push	lr
 	push	r1
 	call	_htoi
@@ -86,6 +91,10 @@ htoi::
 
 	.seg	_lib_segment_str_chr
 str_chr::
+	sz	r0		; check NULL pointer
+	Z clc
+	Z ret
+	zeb	r1		; prepare character
 	push	lr
 	push	r1
 	push	r2
@@ -106,6 +115,11 @@ str_chr::
 
 	.seg	_lib_segment_str_eq
 str_eq::
+	clc			; return false if
+	sz	r0		; any pointer is NULL
+	Z ret
+	sz	r1
+	Z ret	
 	jmp	_streq
 
 	.ends
@@ -115,6 +129,11 @@ str_eq::
 
 	.seg	_lib_segment_str_ieq
 str_ieq::
+	clc			; return false if
+	sz	r0		; any pointer is NULL
+	Z ret
+	sz	r1
+	Z ret	
 	jmp	_strieq
 
 	.ends
@@ -133,6 +152,8 @@ str_len::
 	mov	r1,r0
 	mvzl	r2,0
 	mvzl	r4,0
+	sz	r0		; check NULL pointer
+	jz	p2_end
 p2_next:
 	ld	r3,r1
 	sz	r3
@@ -170,6 +191,8 @@ str_size::
 	mov	r1,r0
 	mvzl	r2,0
 	mvzl	r4,0
+	sz	r0		; check NULL pointer
+	jz	p2_end
 p2_next:
 	ld	r3,r1
 	plus	r4,1
@@ -199,6 +222,9 @@ p2_end:
 	;;      R1 char index
 	;; Out: R4 char at index, or 0
 str_getchar::
+	sz	r0		; check NULL pointer
+	Z mvzl	r4,0
+	Z ret
 	push	r1
 	push	r2
 	push	r3
@@ -247,6 +273,8 @@ gchar_ret:
 	;;      R2 new character
 	;; Out: -
 str_setchar::
+	sz	r0		; check NULL pointer
+	Z ret	
 	push	r1
 	push	r3
 	push	r5
