@@ -5,6 +5,15 @@
 	;;
 	
 
+	.seg	_lib_segment_character_fn
+_char_is_true::
+	sec
+	ret
+_char_is_false::
+	clc
+	ret
+	.ends
+	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_isdigit
@@ -14,15 +23,10 @@
 isdigit:
 	.global	isdigit
 	cmp	R0,'0'
-	ULT jmp	isd_false
+	ULT jmp	_char_is_false
 	cmp	R0,'9'
-	UGT jmp	isd_false
-isd_true:
-	sec
-	ret
-isd_false:
-	clc
-	ret
+	UGT jmp	_char_is_false
+	jmp _char_is_true
 	
 	.ends
 	
@@ -35,15 +39,26 @@ isd_false:
 	;; Out: F.C=1 lowercase char (a-z)
 islower::
 	cmp	r0,'a'
-	ULT jmp	isl_false
+	ULT jmp	_char_is_false
 	cmp	r0,'z'
-	UGT jmp	isl_false
-isl_true:
-	sec
-	ret
-isl_false:
-	clc
-	ret
+	UGT jmp	_char_is_false
+	jmp	_char_is_true
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_isupper
+
+	;; In : R0=char
+	;; Out: F.C=1 uppercase char (a-z)
+isupper::
+	cmp	r0,'A'
+	ULT jmp	_char_is_false
+	cmp	r0,'Z'
+	UGT jmp	_char_is_false
+	jmp	_char_is_true
 	
 	.ends
 	
