@@ -5,21 +5,18 @@
 	;; F.C=  switched       (R0:sw)
 	;;       restart_button ()
 	;;       restart_switch ()
+	;;       led_on         (R0:led)
+	;;       led_off        (R0:led)
+	;;       led_toggle     (R0:led)
+	;;       led_set        (R0:led, R1:val)
+	;; F.C=  led_get        (R0:led)
 	;; 
+
 	
-	.seg	_lib_segment_bsp
-
-last_btn:
-	ds	1
-last_sw:
-	ds	1
-last_btn_inited:
-	db	0
-last_sw_inited:	
-	db	0
-
+	.seg	_lib_segment_nr_to_mask
+	
 	;; Convert btn/sw number into bitmask
-nr_to_mask:
+_nr_to_mask::
 	push	r1
 	and	r0,0xfff0	; max nr is 15
 	mvzl	r1,1		; mask for nr==0
@@ -33,14 +30,102 @@ nr_to_mask_ret:
 	mov	r0,r1		; return mask in R0
 	pop	r1
 	ret
+
+	.ends
+
+
+	.seg	_lib_segment_led
+
+	;; In : R0 number of LED (0-15)
+	;; Out: -
+led_on::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	ld	r1,GPIO.LED
+	or	r1,r0
+	st	r1,GPIO.LED
+	pop	r1
+	pop	pc
+
+	;; In : R0 number of LED (0-15)
+	;; Out: -
+led_off::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	not	r0
+	ld	r1,GPIO.LED
+	and	r1,r0
+	st	r1,GPIO.LED
+	pop	r1
+	pop	pc
+
+	;; In : R0 number of LED (0-15)
+	;; Out: -
+led_toggle::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	ld	r1,GPIO.LED
+	xor	r1,r0
+	st	r1,GPIO.LED
+	pop	r1
+	pop	pc
+
+	;; In : R0 number of LED (0-15)
+	;;      R1 value (bool)
+	;; Out: -
+led_set::
+	push	lr
+	push	r1
+	push	r2
+	call	_nr_to_mask
+	sz	r1
+	NZ mov	r1,r0
+	not	r0
+	ld	r2,GPIO.LED
+	and	r2,r0
+	or	r2,r1
+	st	r2,GPIO.LED
+	pop	r2
+	pop	r1
+	pop	pc
+
+	;; In : R0 number of LED (0-15)
+	;; Out: F.C LED value
+led_get::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	ld	r1,GPIO.LED
+	btst	r1,r0
+	Z clc
+	NZ sec
+	pop	r1
+	pop	pc
 	
+	.ends
+
+	
+	.seg	_lib_segment_btn_sw
+
+last_btn:
+	ds	1
+last_sw:
+	ds	1
+last_btn_inited:
+	db	0
+last_sw_inited:	
+	db	0
+
 	;; Check button press
 	;; Input : R0= number of examined BTN (0-15)
 	;; Output: C=0 not pressed
 	;;         C=1 pressed
 pressed::
 	push	lr
-	call	nr_to_mask
+	call	_nr_to_mask
 	clc
 	call	pos_edge
 	pop	pc
@@ -53,7 +138,7 @@ pressed::
 	;;         C=1 switched off->on
 switched::
 	push	lr
-	call	nr_to_mask
+	call	_nr_to_mask
 	sec
 	call	pos_edge
 	pop	pc

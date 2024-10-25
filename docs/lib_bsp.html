@@ -117,6 +117,98 @@
       alaphelyzetbe állítása.</p>
 
     
+    <a name="led_on"><h3>led_on</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: number of LED (0-15)</span>
+	<span lang="hu">R0: LED sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A megadott szorszámú LED-et bekapcsolja.</p>
+
+    
+    <a name="led_off"><h3>led_off</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: number of LED (0-15)</span>
+	<span lang="hu">R0: LED sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A megadott szorszámú LED-et kikapcsolja.</p>
+
+    
+    <a name="led_toggle"><h3>led_toggle</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: number of LED (0-15)</span>
+	<span lang="hu">R0: LED sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A megadott szorszámú LED-et átkapcsolja.</p>
+
+    
+    <a name="led_set"><h3>led_set</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: number of LED (0-15), R1: value (bool)</span>
+	<span lang="hu">R0: LED sorszáma (0-15), R1: érték (bool)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A megadott szorszámú LED-et beállítja a megadott logikai érték
+      alapján: IGAZ esetén bekapcsolja, HAMIS esetén kikapcsolja.</p>
+
+    
+    <a name="led_get"><h3>led_get</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: number of LED (0-15)</span>
+	<span lang="hu">R0: LED sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if LED is ON</span>
+	<span lang="hu">Flag.C=1 ha a LED bekapcsolt</span>
+      </li>
+    </ul>
+
+    <p>A megadott szorszámú LED értéke alapján állítja be a C
+    jelzőbitet: 1 lesz, ha a LED be van kapcsolva.</p>
+
+    
     <hr>
   </body>
 </html>
