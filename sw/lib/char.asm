@@ -2,6 +2,13 @@
 
 	;; 
 	;; F.C=  isdigit (R0:char)
+	;; F.C=  islower (R0:char)
+	;; F.C=  isupper (R0:char)
+	;; F.C=  isalpha (R0:char)
+	;; F.C=  isalnum (R0:char)
+	;; F.C=  isblank (R0:char)
+	;; F.C=  isprint (R0:char)
+	;; F.C=  ispunct (R0:char)
 	;;
 	
 
@@ -93,4 +100,61 @@ isalnum::
 	pop	pc
 	
 	.ends
+
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_isblank
+
+	;; In : R0=char
+	;; Out: F.C=1 space || tab
+isblank::
+	cmp	r0,32
+	jz	_char_is_true
+	cmp	r0,7
+	jz	_char_is_true
+	jmp	_char_is_false
+
+	.ends
+
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_isprint
+
+	;; In : R0=char
+	;; Out: F.C=1 printable incl. space
+isprint::
+	cmp	r0,32
+	ULT jmp	_char_is_false
+	cmp	r0,126
+	UGT jmp	_char_is_false
+	jmp	_char_is_true
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_ispunct
+
+	;; In : R0=char
+	;; Out: F.C=1 33-47, 58-64, 91-96, 123-126
+	;;            !  /   :  @   [  `   {   }
+ispunct::
+	cmp	r0,32
+	ULE jmp	_char_is_false
+	cmp	r0,127
+	UGE jmp	_char_is_false
+	push	lr
+	call	isalnum
+	C jmp	isp_false
+	sec
+	pop	pc
+isp_false:
+	clc
+	pop	pc
+
+	.ends
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
