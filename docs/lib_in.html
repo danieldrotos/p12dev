@@ -3,27 +3,21 @@
   <script>
    const $htmlTag = document.querySelector("#html-tag")
    const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
+   const lvar= urlParams.get('lang');
    switch(lvar) {
      case "hu":
        $htmlTag.lang = "hu"
        $htmlTag.classList.add("hungarianLang")
        break
      default:
-       lvar= "en";
        $htmlTag.classList.add("englishLang")
        break
    }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
-    }
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="p12.css">
-    <title>p2223 function library</title>
+    <title>p2223 library: input functions</title>
   </head>
   
   <body>
@@ -32,116 +26,130 @@
     <a href="lib.html?lang=hu">HU</a>
     <a href="lib.html?lang=en">EN</a>
 
+
     <h1>
-      <psan lang="en">p2223 function library</psan>
-      <span lang="hu">p2223 függvény könyvtár</span>
-    </h1>
-
-    <p>A fejlesztőrendszerben a projekt alkalmazásának lefordítása
-    során a program kiegészül a rendszerben elérhető függvényekkel.</p>
-
-    <p>Ezeken túl a pmon monitorprogram függvényei is
-    hívhatók. Felhívjuk a figyelmet, hogy a hasonló célra szolgáló
-    monitor függvénynek és a könyvtári függvénynek a paraméterezése
-    eltérő lehet!</p>
-      
-    <h2>
-      <span lang="en">Output functions</span>
-      <span lang="hu">Kimeneti függvények</span>
-    </h2>
-
-    <!-- 
-    <a id="eprintf">tryit</a>
-    <script>document.getElementById('eprintf').href=lnk('out','eprintf');</script>
-    -->
-    
-    <table border="1">
-      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
-	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
-	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#putchar">putchar</a></td>
-	<td>(R0:chr)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#prints">prints</a></td>
-	<td>(R0:str)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#printsnl">printsnl</a></td>
-	<td>(R0:str)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#printh">printh</a></td>
-	<td>(R0:val, R1:sep_len)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#printd">printd</a></td>
-	<td>(R0:val)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#eprints">eprints</a></td>
-	<td>-</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#printf">printf</a></td>
-	<td>(R0:str, R1:par, ...)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_out.html#eprintf">eprintf</a></td>
-	<td>(R1:par, ...)</td>
-      </tr>
-    </table>
-    <!-- 
-	 <tr><td></td>
-	 <td><a href="lib_out.html#"></a></td>
-	 <td>(R0:str)</td>
-	 </tr>
-       -->
-    
-    <h2>
       <span lang="en">Input functions</span>
       <span lang="hu">Bemeneti függvények</span>
-    </h2>
+    </h1>
 
 
-    <table border="1">
-      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
-	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
-	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
-      </tr>
-      <tr><td>F.C:avail</td>
-	<td><a href="lib_in.html#input_avail">input_avail</a></td>
-	<td>()</td>
-      </tr>
-      <tr><td>R4:chr, F.C:avail</td>
-	<td><a href="lib_in.html#getchar">getchar</a></td>
-	<td>()</td>
-      </tr>
-      <tr><td>R4:chr</td>
-	<td><a href="lib_in.html#read">read</a></td>
-	<td>()</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_in.html#le_init">le_init</a></td>
-	<td>(R0:buf, R1:len)</td>
-      </tr>
-      <tr><td>-</td>
-	<td><a href="lib_in.html#le_start">le_start</a></td>
-	<td>()</td>
-      </tr>
-      <tr><td>F.C:ready</td>
-	<td><a href="lib_in.html#le_read">le_read</a></td>
-	<td>()</td>
-      </tr>
-    </table>
-    <!-- 
-	 <tr><td>R4:</td>
-	 <td><a href="lib_in.html#"></a></td>
-	 <td>()</td>
-	 </tr>
-       -->
+    <a name="input_avail"><h3>input_avail</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en"></span>
+	<span lang="hu"></span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if input is available</span>
+	<span lang="hu">Flag.C=1 ha van bemenő adat</span>
+      </li>
+    </ul>
+
+    <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy
+    van-e az UART-ban beolvasható vett karakter, ha igen, a flag
+    regiszter C bitje 1 lesz.</p>
+
+    
+    <a name="getchar"><h3>getchar</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1, R4=received character</span>
+	<span lang="hu">Flag.C=1, R4=beolvasott karakter</span>
+      </li>
+    </ul>
+
+    <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az
+    UART áramkörből.</p>
+
+    
+    <a name="read"><h3>read</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R4=received character</span>
+	<span lang="hu">R4=vett karakater</span>
+      </li>
+    </ul>
+
+    <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
+    karakterre, a vevő állapotát előzőleg az input_avail funkcióval
+    kell vizsgálni.</p>
+
+
+    <a name="le_init"><h3>le_init</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=buffer address, R1=buffer length</span>
+	<span lang="hu">R0=puffer címe, R1=puffer hossza</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A sor beolvasó függvény számára beállítja a beolvasáshoz
+    használandó puffer címét és méretét. A puffert üresre állítja, így
+    a sor beolvasása elkezdhető.</p>
+
+
+    <a name="le_start"><h3>le_start</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A sor beolvasó függvény által használt puffert kiüríti, így új
+    beolvasás kezdhető.</p>
+
+
+    <a name="le_read"><h3>le_read</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if line read is ready (ENTER pressed)</span>
+	<span lang="hu">Flag.C=1 ha a sor beolvasás kész (ENTER-t lenyomták)</span>
+      </li>
+    </ul>
+
+    <p>Megvizsgálja, hogy van-e beolvasható karakter, ha igen,
+    elhelyezi a sor pufferben, amíg az meg nem telik. Kezeli a
+    backspace törlő billentyűt. Ha a bevitel közben megnyomták az
+    ENTER-t, akkor a C flag-et 1-be állítja.</p>
 
 
     <h2>
@@ -150,26 +158,44 @@
     </h2>
 
 
-    <table border="1">
-      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
-	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
-	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
-      </tr>
-      <tr><td>F.C:digit</td>
-	<td><a href="lib_char.html#isdigit">isdigit</a></td>
-	<td>(R0:char)</td>
-      </tr>
-      <tr><td>F.C:lower</td>
-	<td><a href="lib_char.html#islower">islower</a></td>
-	<td>(R0:char)</td>
-      </tr>
-    </table>
-    <!-- 
-	 <tr><td>F.C:</td>
-	 <td><a href="lib_char.html#"></a></td>
-	 <td>(R0:char)</td>
-	 </tr>
-       -->
+    <h3>isdigit</h3>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=character</span>
+	<span lang="hu">R0=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if character is number</span>
+	<span lang="hu">Flag.C=1 ha a karakter számjegy</span>
+      </li>
+    </ul>
+
+    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
+    számjegy (0-9) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
+    lesz.</p>    
+
+
+    <h3>islower</h3>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=character</span>
+	<span lang="hu">R0=karakter</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if character is lowercase letter</span>
+	<span lang="hu">Flag.C=1 ha a karakter kibetű</span>
+      </li>
+    </ul>
+
+    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
+      kisbetű (a-z) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
+      lesz.</p>    
 
 
     <h2>
