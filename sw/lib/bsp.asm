@@ -18,7 +18,7 @@
 	;; Convert btn/sw number into bitmask
 _nr_to_mask::
 	push	r1
-	and	r0,0xfff0	; max nr is 15
+	and	r0,0xffe0	; max nr is 31
 	mvzl	r1,1		; mask for nr==0
 nr_to_mask_cyc:	
 	sz	r0		; is nr zero?
@@ -36,7 +36,7 @@ nr_to_mask_ret:
 
 	.seg	_lib_segment_led
 
-	;; In : R0 number of LED (0-15)
+	;; In : R0 number of LED (0-24)
 	;; Out: -
 led_on::
 	push	lr
@@ -48,7 +48,7 @@ led_on::
 	pop	r1
 	pop	pc
 
-	;; In : R0 number of LED (0-15)
+	;; In : R0 number of LED (0-24)
 	;; Out: -
 led_off::
 	push	lr
@@ -61,7 +61,7 @@ led_off::
 	pop	r1
 	pop	pc
 
-	;; In : R0 number of LED (0-15)
+	;; In : R0 number of LED (0-24)
 	;; Out: -
 led_toggle::
 	push	lr
@@ -73,7 +73,7 @@ led_toggle::
 	pop	r1
 	pop	pc
 
-	;; In : R0 number of LED (0-15)
+	;; In : R0 number of LED (0-24)
 	;;      R1 value (bool)
 	;; Out: -
 led_set::
@@ -92,7 +92,7 @@ led_set::
 	pop	r1
 	pop	pc
 
-	;; In : R0 number of LED (0-15)
+	;; In : R0 number of LED (0-24)
 	;; Out: F.C LED value
 led_get::
 	push	lr
