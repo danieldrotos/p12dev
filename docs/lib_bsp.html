@@ -122,8 +122,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-15)</span>
-	<span lang="hu">R0: LED sorszáma (0-15)</span>
+	<span lang="en">R0: number of LED (0-23)</span>
+	<span lang="hu">R0: LED sorszáma (0-23)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -132,7 +132,10 @@
       </li>
     </ul>
 
-    <p>A megadott szorszámú LED-et bekapcsolja.</p>
+    <p>A megadott szorszámú LED-et bekapcsolja. A Nexys4DDR és a
+    Boolean kártyákon csak 16 LED van. A LogSYS kártyán a 0-7 sorszámú
+    LED-ek zöldek, a 8-15 sorszámú LED-ek a 0-7 címkéjű piros LED-ek,
+    míg a 16-23 sorszámok a 0-7 címkéjű kék LED-ek.</p>
 
     
     <a name="led_off"><h3>led_off</h3></a>
@@ -140,8 +143,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-15)</span>
-	<span lang="hu">R0: LED sorszáma (0-15)</span>
+	<span lang="en">R0: number of LED (0-23)</span>
+	<span lang="hu">R0: LED sorszáma (0-23)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -150,7 +153,9 @@
       </li>
     </ul>
 
-    <p>A megadott szorszámú LED-et kikapcsolja.</p>
+    <p>A megadott szorszámú LED-et kikapcsolja. A LogSYS kártyán a 0-7
+    sorszámú LED-ek zöldek, a 8-15 sorszámú LED-ek a 0-7 címkéjű piros
+    LED-ek, míg a 16-23 sorszámok a 0-7 címkéjű kék LED-ek.</p>
 
     
     <a name="led_toggle"><h3>led_toggle</h3></a>
@@ -158,8 +163,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-15)</span>
-	<span lang="hu">R0: LED sorszáma (0-15)</span>
+	<span lang="en">R0: number of LED (0-23)</span>
+	<span lang="hu">R0: LED sorszáma (0-23)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -168,7 +173,9 @@
       </li>
     </ul>
 
-    <p>A megadott szorszámú LED-et átkapcsolja.</p>
+    <p>A megadott szorszámú LED-et átkapcsolja. A LogSYS kártyán a 0-7
+    sorszámú LED-ek zöldek, a 8-15 sorszámú LED-ek a 0-7 címkéjű piros
+    LED-ek, míg a 16-23 sorszámok a 0-7 címkéjű kék LED-ek.</p>
 
     
     <a name="led_set"><h3>led_set</h3></a>
@@ -176,8 +183,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-15), R1: value (bool)</span>
-	<span lang="hu">R0: LED sorszáma (0-15), R1: érték (bool)</span>
+	<span lang="en">R0: number of LED (0-23), R1: value (bool)</span>
+	<span lang="hu">R0: LED sorszáma (0-23), R1: érték (bool)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -187,7 +194,10 @@
     </ul>
 
     <p>A megadott szorszámú LED-et beállítja a megadott logikai érték
-      alapján: IGAZ esetén bekapcsolja, HAMIS esetén kikapcsolja.</p>
+      alapján: IGAZ esetén bekapcsolja, HAMIS esetén kikapcsolja. A
+      LogSYS kártyán a 0-7 sorszámú LED-ek zöldek, a 8-15 sorszámú
+      LED-ek a 0-7 címkéjű piros LED-ek, míg a 16-23 sorszámok a 0-7
+      címkéjű kék LED-ek.</p>
 
     
     <a name="led_get"><h3>led_get</h3></a>
@@ -195,8 +205,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-15)</span>
-	<span lang="hu">R0: LED sorszáma (0-15)</span>
+	<span lang="en">R0: number of LED (0-23)</span>
+	<span lang="hu">R0: LED sorszáma (0-23)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
@@ -206,7 +216,9 @@
     </ul>
 
     <p>A megadott szorszámú LED értéke alapján állítja be a C
-    jelzőbitet: 1 lesz, ha a LED be van kapcsolva.</p>
+    jelzőbitet: 1 lesz, ha a LED be van kapcsolva. A LogSYS kártyán a
+    0-7 sorszámú LED-ek zöldek, a 8-15 sorszámú LED-ek a 0-7 címkéjű
+    piros LED-ek, míg a 16-23 sorszámok a 0-7 címkéjű kék LED-ek.</p>
 
     
     <hr>
