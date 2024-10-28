@@ -127,8 +127,12 @@ tr_is_off:
 	;; Print welcome message
 	mvzl	r0,LF
 	call	putchar
+	rds	r0,sver
+	getbz	r1,r0,2
+	getbz	r2,r0,1
+	getbz	r3,r0,0
 	mvzl	r0,msg_start
-	call	printsnl
+	call	printf
 	;; Print addr if called from
 	ld	r0,called
 	sz	r0
@@ -2007,7 +2011,7 @@ reg14:		dd	0
 reg15:		dd	0
 regf:		dd	0
 	
-msg_start:	db	"PMonitor v1.0"
+msg_start:	db	"PMonitor v1.0 (cpu v%d.%d.%d)"
 msg_stopat:	db	"Stop at: "
 msg_BS:		db	8,32,8,0
 prompt:		db	":"
