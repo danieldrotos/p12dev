@@ -135,3 +135,4 @@ clean:
 	$(RM) hw/cpu2/*.asc hw/cpu2/*.cdb hw/cpu2/*.lst hw/cpu2/*.p2*
 	$(RM) hw/version.v
 	$(RM) docs/*bak docs/*~
+	$(RM) vivado*.jou vivado*.log
