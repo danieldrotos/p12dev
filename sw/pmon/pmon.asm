@@ -1,5 +1,8 @@
 	cpu	P2
 
+	version_main	=	1
+	version_sub	=	1
+	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
 	UART_CTRL	=	0xff41
@@ -128,9 +131,11 @@ tr_is_off:
 	mvzl	r0,LF
 	call	putchar
 	rds	r0,sver
-	getbz	r1,r0,2
-	getbz	r2,r0,1
-	getbz	r3,r0,0
+	mvzl	r1,version_main
+	mvzl	r2,version_sub
+	getbz	r3,r0,2
+	getbz	r4,r0,1
+	getbz	r5,r0,0
 	mvzl	r0,msg_start
 	call	printf
 	;; Print addr if called from
@@ -2011,7 +2016,7 @@ reg14:		dd	0
 reg15:		dd	0
 regf:		dd	0
 	
-msg_start:	db	"PMonitor v1.1 (cpu v%d.%d.%d)\n"
+msg_start:	db	"PMonitor v%d.%d (cpu v%d.%d.%d)\n"
 msg_stopat:	db	"Stop at: "
 msg_BS:		db	8,32,8,0
 prompt:		db	":"
