@@ -101,7 +101,7 @@ cold_start:
 	st	r0,regf		; FALGS= 0
 	mvzl	r0,0xf7ff	; R13= 0xf7ff
 	st	r0,reg13
-	jmp	common_start:	
+	jmp	common_start	
 common_start:
 	;; Setup STACK, flags
 	mvzl	sp,stack_end
