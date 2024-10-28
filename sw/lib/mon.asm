@@ -1,15 +1,18 @@
 	.proc	p2
 
 	;;
-	;;      monitor          ()
-	;; 	monitor_by_uart  ()
+	;;          monitor          ()
+	;; 	    monitor_by_uart  ()
+	;; R4:ver   monitor_version  ()
 	;;
+	
 	
 	.seg	_lib_segment_pmon
 
 _pm_callin		==	0xf000
 _pm_enter_by_uart	==	0xf001
-_pm_getchar		==	0xf002	
+_pm_getchar		==	0xf002
+_pm_version		==	0xf003	
 _pm_cold_start		==	0xf005
 _pm_strchr		==	0xf006
 _pm_streq		==	0xf007
@@ -35,5 +38,12 @@ monitor::
 
 monitor_by_uart::
 	jmp	_pm_enter_by_uart
+
+monitor_version::
+	push	r0
+	call	_pm_version
+	mov	r4,r0
+	pop	r0
+	ret
 	
 	.ends

@@ -29,7 +29,7 @@ the_begin:
 _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	jmp	getchar
-_f003:	ret
+_f003:	jmp	version
 _f004:	ret
 _f005:	jmp	cold_start
 _f006:	jmp	strchr
@@ -1986,6 +1986,15 @@ pesf:
 	pop	r2
 	pop	r0
 	ld	PC,reg2
+
+
+version:
+	push	r1
+	mvzl	r0,version_sub
+	mvzl	r1,version_main
+	putb	r0,r1,1
+	pop	r1
+	ret
 	
 	
 ;;; VARIABLES
