@@ -2011,7 +2011,7 @@ reg14:		dd	0
 reg15:		dd	0
 regf:		dd	0
 	
-msg_start:	db	"PMonitor v1.0 (cpu v%d.%d.%d)\n"
+msg_start:	db	"PMonitor v1.1 (cpu v%d.%d.%d)\n"
 msg_stopat:	db	"Stop at: "
 msg_BS:		db	8,32,8,0
 prompt:		db	":"
