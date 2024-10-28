@@ -229,7 +229,14 @@
     <p>A 0 sorszámú speciális regiszter a Flag regiszter, leírását
     lásd az Aritmetikai-logikai egység fejezetben.</p>
 
-    <h4>SFR[1] Feature register 1</h4>
+    <h4>SFR[1] Version register</h4>
+
+    <p>Csak olvasható regiszter, a processzor verziószámát
+    tartalmazza. A regiszter 3. bájtja mindig 0. A 2. bájt tartalmazza
+    a fő verzió számot, az 1. byte pedig az al verzió számot. A
+    0. bájt a kiadás sorszáma.</p>
+    
+    <h4>SFR[2] Feature register 1</h4>
 
     <p>Csak olvasható regiszter, 1 értékű bitjei azt jelzik, hogy
     egyes adott funkciók a processzorban rendelkezésre állnak-e.</p>
@@ -257,7 +264,7 @@
     a <a class="inst" href="#CES"><span class="call">CES</span></a> utasítást ismeri a
     processzor.</p>
     
-    <h4>SFR[2] Feature regiszter 2</h4>
+    <h4>SFR[3] Feature regiszter 2</h4>
 
     <p>Csak olvasható regiszter, későbbi fejlesztésekhez fenntartva,
     értéke 0.</p>
