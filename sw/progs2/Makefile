@@ -22,7 +22,8 @@ all: pmonitor lib \
 	rnd_test \
 	strtest.asc strtest.cdb \
 	dtoi_test \
-	bugtest
+	bugtest \
+	led.asc led.cdb
 
 
 pmonitor:

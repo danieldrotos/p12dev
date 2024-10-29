@@ -18,7 +18,7 @@
 	;; Convert btn/sw number into bitmask
 _nr_to_mask::
 	push	r1
-	and	r0,0xffe0	; max nr is 31
+	btst	r0,0x1f		; max nr is 31
 	mvzl	r1,1		; mask for nr==0
 nr_to_mask_cyc:	
 	sz	r0		; is nr zero?
