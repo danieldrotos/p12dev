@@ -40,10 +40,11 @@ monitor_by_uart::
 	jmp	_pm_enter_by_uart
 
 monitor_version::
+	push	lr
 	push	r0
 	call	_pm_version
 	mov	r4,r0
 	pop	r0
-	ret
+	pop	pc
 	
 	.ends
