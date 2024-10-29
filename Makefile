@@ -18,6 +18,7 @@ MODS		= hw/defs hw/hwconf hw/version \
 		    hw/computer/addrdec2 \
 		    hw/computer/memory \
 		    hw/computer/mems \
+		    hw/computer/reset_2btn \
 		    hw/cpu1/cpu1 \
 		      hw/cpu1/regm \
 		      hw/cpu1/adder \
