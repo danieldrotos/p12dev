@@ -118,7 +118,7 @@ hw/version.v: .version $(TOOLS)/tool.php
 
 
 
-clean_files	= *~ $(VCD) $(VVP) \
+clean_files	= *~ .cproject .project \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
 		*.stx \
 		hex2asc source.txt
@@ -131,9 +131,9 @@ clean:
 	$(MAKE) -C hw/implement clean
 	$(MAKE) -C sw/lib clean
 	$(RM) $(clean_files)
-	$(RM) computer/*~ cpu1/*~ cpu2/*~
-	$(RM) hw/computer/*~ hw/cpu1/*~ hw/cpu2/*~
-	$(RM) hw/cpu2/*.asc hw/cpu2/*.cdb hw/cpu2/*.lst hw/cpu2/*.p2*
-	$(RM) hw/version.v
-	$(RM) docs/*bak docs/*~
+	$(RM) ./computer/*~ ./cpu1/*~ ./cpu2/*~
+	$(RM) ./hw/computer/*~ ./hw/cpu1/*~ ./hw/cpu2/*~
+	$(RM) ./hw/cpu2/*.asc ./hw/cpu2/*.cdb ./hw/cpu2/*.lst ./hw/cpu2/*.p2*
+	$(RM) ./hw/version.v  $(VCD) $(VVP)
+	$(RM) ./docs/*bak ./docs/*~
 	$(RM) vivado*.jou vivado*.log
