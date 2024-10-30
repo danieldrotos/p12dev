@@ -97,12 +97,19 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         switches= SW;
      end
    
+   wire btn_res;
+   reset_2btn reset_by_btn(
+    .clk(f1MHz),
+    .b0(btn[0]),
+    .b1(btn[1]),
+    .res(btn_res)
+   );
    reg res_syncer;
    initial
      res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-	res_syncer<= RESET;
+	res_syncer<= RESET | btn_res;
      end
    assign res= res_syncer;
    
