@@ -21,8 +21,8 @@ module bool_top
    output wire TxD
    );
    
-   wire RESET= ~BTN[0];
-   wire [15:0] LEDS= LED;
+   wire           RESET;
+   wire [15:0]    LEDS= LED;
    wire 	      res;
 
    wire 	      f100MHz;
@@ -107,11 +107,18 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
      end
    
    reg res_syncer;
+   reset_2btn res_by_btn(
+    .clk(f1MHz),
+    .b0(btn[0]),
+    .b1(btn[1]),
+    .res(RESET)
+   );
+   //assign RESET= ~btn[0];
    initial
      res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-	res_syncer<= ~RESET;
+	res_syncer<= RESET;
      end
    assign res= res_syncer;
    
@@ -214,7 +221,8 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       .anh            (ANH)
       );
    
-   assign LEDS= portb[15:0];
+   assign LEDS[15:0]= portb[15:0];
+   //assign LEDS[15]= RESET;
    /*
 		{
 		 clk_stat,
