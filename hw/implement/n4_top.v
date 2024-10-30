@@ -132,12 +132,19 @@ assign JDa[4]= f1Hz;
         switches= SW;
      end
    
+   wire btn_res;
+   reset_2btn reset_by_btn(
+    .clk(f1MHz),
+    .b0(btnc),
+    .b1(btnd),
+    .res(btn_res)
+   );
    reg res_syncer;
    initial
      res_syncer= 1'd0;
    always @(posedge selected_clk)
      begin
-	res_syncer<= ~RESET;
+	res_syncer<= ~RESET | btn_res;
      end
    assign res= res_syncer;
    
