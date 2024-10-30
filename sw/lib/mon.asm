@@ -12,7 +12,8 @@
 _pm_callin		==	0xf000
 _pm_enter_by_uart	==	0xf001
 _pm_getchar		==	0xf002
-_pm_version		==	0xf003	
+_pm_version		==	0xf003
+_pm_itobcd		==	0xf004	
 _pm_cold_start		==	0xf005
 _pm_strchr		==	0xf006
 _pm_streq		==	0xf007

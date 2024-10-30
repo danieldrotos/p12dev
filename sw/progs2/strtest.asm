@@ -276,6 +276,23 @@ sc4:
 	sub	r1,s3
 	ces	eprintf
 	db	"word: %d byte: %d\n"
+
+	mvzl	r0,0
+	call	_pm_itobcd
+	mov	r1,r0
+	ces	eprintf
+	db	"0 bcd= %x\n"
+	mvzl	r0,1234
+	call	_pm_itobcd
+	mov	r1,r0
+	ces	eprintf
+	db	"1234 bcd= %x\n"
+	mvl	r0,99999999
+	mvh	r0,99999999
+	call	_pm_itobcd
+	mov	r1,r0
+	ces	eprintf
+	db	"99999999 bcd= %x\n"
 	
 	call	monitor
 

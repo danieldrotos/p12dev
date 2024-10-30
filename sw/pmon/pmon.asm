@@ -30,7 +30,7 @@ _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	jmp	getchar
 _f003:	jmp	version
-_f004:	ret
+_f004:	jmp	itobcd
 _f005:	jmp	cold_start
 _f006:	jmp	strchr
 _f007:	jmp	streq
@@ -1798,6 +1798,38 @@ itoa_divs:
 	dd	0
 	
 
+	;; Convert number to BCD
+	;; In : R0
+	;; Out: R0
+itobcd:
+	push	lr
+	push	r1
+	push	r2
+	cmp	r0,99999999
+	UGT jmp	itobcd_bad
+	call	itoa
+	mvzl	r0,0
+	mvzl	r1,itoa_buffer
+itobcd_cyc:
+	ld	r2,r1
+	sz	r2
+	jz	itobcd_ret
+	sub	r2,'0'
+	shl	r0
+	shl	r0
+	shl	r0
+	shl	r0
+	or	r0,r2
+	inc	r1
+	jmp	itobcd_cyc
+itobcd_bad:
+	mvzl	r0,0
+itobcd_ret:
+	pop	r2
+	pop	r1
+	pop	pc
+
+	
 	;; Print number in decimal
 	;; In : R0
 	;; Out: -

@@ -5,6 +5,7 @@ include $(PRJ)/sw/common.mk
 AW		?= 16
 
 OBJECTS		= \
+		std.p2o \
 		math.p2o \
 		str.p2o \
 		dev.p2o \
