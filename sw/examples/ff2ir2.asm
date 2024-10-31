@@ -1,31 +1,28 @@
 	.proc	p2
 	
 	leds	equ	0xff01
-	sw	equ	0xff10 ;0xd000
+	sw	equ	0xff10
 
-	ldl0	r0,sw
-	ldl0	r1,leds
-	ldl0	r3,1
 	ldl	r4,0x00010000
 	ldh	r4,0x00010000
 	ldl0	r10,1
-	st	r10,r1
+	st	r10,leds
 cikl:
-	ld	r12,r0
-	and	r12,r3
+	ld	r12,sw
+	and	r12,0x1
 	jnz	masik
 	
 egyik:
-	ld	r10,r1
+	ld	r10,leds
 	shl	r10
 	cmp	r10,r4
 	z1 ldl0	r10,1
-	st	r10,r1
+	st	r10,leds
 	jmp	cikl
 
 masik:
-	ld	r9,r1
+	ld	r9,leds
 	shr	r9
 	z ldl0	r9,0x8000
-	st	r9,r1
+	st	r9,leds
 	jmp	cikl

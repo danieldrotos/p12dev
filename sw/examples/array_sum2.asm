@@ -3,14 +3,14 @@
 ;;; egy 10 elemu tomb adatinak osszegzese
 
 adat_db	=	10		; az adatok szama
-porta	equ	0xff00		; kijelzo port cime
+;porta	equ	0xff00		; kijelzo port cime
 
 	org	0
 	mvzl	sp,verem_vege	; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez
 	mvzl	r1,eredmeny	; az eredmeny vizsgalata
 	ld	r0,r1		; betoltes
-	mvzl	r1,porta
+	mvzl	r1,GPIO.7SEG
 	st	r0,r1		; kiiras a kijelzon
 vege:	jmp	vege		; itt leall a program
 
@@ -31,7 +31,7 @@ cikl:	ld	r4,r1		; adat beolvasasa
 	st	r4,r1		; az eredmeny tarolasa
 
 	pop	pc		; visszateresi cim betoltese
-;	ret
+
 
 eredmeny:
 	ds	1		; hely az eredmenynek
@@ -49,4 +49,5 @@ adatok:	dd	123		; adatok
 
 	ds	200
 verem_vege:
+	db	0
 	

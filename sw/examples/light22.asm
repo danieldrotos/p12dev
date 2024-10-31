@@ -2,14 +2,12 @@
 	
 porta	equ	0xff00		; address of GPIO output
 
-	ldl0	r1,porta	; pointer to output
-
 start:	ldl0	r0,patterns	; start of table
 	
 cycl:	ld	r2,r0		; get one item
-	and	r2,r2		; check for 0
+	sz	r2		; check for 0
 	jz	start		; restart on zero item
-	st	r2,r1		; put item on display
+	st	r2,porta	; put item on display
 	inc	r0		; step ptr to next item
 	jmp	cycl		; go to get it
 	

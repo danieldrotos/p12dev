@@ -17,7 +17,7 @@ all: pmonitor lib \
 	ff2ir \
 	ff2ir2.asc ff2ir2.cdb \
 	light1 \
-	light12.asc libght12.cdb \
+	light12.asc light12.cdb \
 	light2 \
 	light22.asm light22.cdb \
 	poll \

@@ -44,4 +44,5 @@ Hello:	db	"Hello World!\n"
 
 	ds	0xff
 topof_stack:
+	db	0
 	

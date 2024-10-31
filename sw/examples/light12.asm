@@ -3,13 +3,12 @@
 out	equ	0xff00		; address of GPIO output
 over	=	0x00080000	; overflowed display value
 
-	ldl0	r0,out		; pointer to GPIO
 	ldl	r2,over		; constant to compare with
 	ldh	r2,over		;
 	
 first:	ldl0	r1,8		; first displayed pattern
 
-cycl:	st	r1,r0		; put pattern on GPIO
+cycl:	st	r1,out		; put pattern on GPIO
 	shl	r1		; calc next pattern
 	shl	r1		; by shifting it up
 	shl	r1		; by one digit of the display
