@@ -5,14 +5,14 @@
 adat_db	=	10		; az adatok szama
 ;porta	equ	0xff00		; kijelzo port cime
 
-	org	0
+	org	1
 	mvzl	sp,verem_vege	; stack pointer kezdoertek
 	call	szum		; szubrutin a muvelethez
 	mvzl	r1,eredmeny	; az eredmeny vizsgalata
 	ld	r0,r1		; betoltes
 	mvzl	r1,GPIO.7SEG
 	st	r0,r1		; kiiras a kijelzon
-vege:	jmp	vege		; itt leall a program
+vege:	call	monitor		; itt leall a program
 
 szum:	
 	push	lr		; visszateresi cim mentese
