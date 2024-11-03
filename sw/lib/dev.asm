@@ -48,6 +48,12 @@ GPIO.SW		==	0xff10	; GPIOJ.IDR
 
 	.ends
 
+	.seg	_lib_segment_brd_ctrl
+
+BRD_CTRL.ODR	==	0xfff0
+	
+	.ends
+
 	.seg	_lib_segment_regs_of_timer
 
 TIMER.CTRL	==	0xff30

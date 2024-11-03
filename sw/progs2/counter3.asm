@@ -46,8 +46,10 @@ cyc:
 	jmp	cyc
 	db	dummy
 	;db	cyc_belso
+real_start:
+	mvzl	r0,0x1234
+	st	r0,BRD_CTRL.ODR
 cyc:
-real_start:	
 	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,0			; number of checked button
 	call	pressed

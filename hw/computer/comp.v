@@ -11,8 +11,8 @@ module comp //(clk, reset, test_sel, test_out);
     )
    (
     // base signals
-    input wire 		    clk,
-    input wire 		    reset,
+    input wire		    clk,
+    input wire		    reset,
     // ports
     input wire [WIDTH-1:0]  PORTI,
     input wire [WIDTH-1:0]  PORTJ,
@@ -20,27 +20,28 @@ module comp //(clk, reset, test_sel, test_out);
     output wire [WIDTH-1:0] PORTB,
     output wire [WIDTH-1:0] PORTC,
     output wire [WIDTH-1:0] PORTD,
-    input wire 		    RxD,
-    output wire 	    TxD,
+    output wire [WIDTH-1:0] BRD_CTRL,
+    input wire		    RxD,
+    output wire		    TxD,
     
     // test the CPU
-    input wire [3:0] 	    test_sel,
+    input wire [3:0]	    test_sel,
     output wire [WIDTH-1:0] test_out,
-    input wire [3:0] 	    test_rsel,
+    input wire [3:0]	    test_rsel,
     output wire [WIDTH-1:0] test_reg,
-    output wire [2:0] 	    CLKstat,
+    output wire [2:0]	    CLKstat,
     //output wire [WIDTH-1:0] dummy
     output wire [WIDTH-1:0] ADDR,
     output wire [WIDTH-1:0] MDO,
     output wire [WIDTH-1:0] MDI,
-    output wire 	    MWE,
+    output wire		    MWE,
     output wire [WIDTH-1:0] tmr,
     output wire [WIDTH-1:0] ctr,
     output wire [WIDTH-1:0] arr,
-    output wire 	    ar_reached,
+    output wire		    ar_reached,
     
-    input wire 		    clk10m,
-    output wire [31:0] 	    irqs 
+    input wire		    clk10m,
+    output wire [31:0]	    irqs 
     );
   
    // Memory bus
@@ -52,6 +53,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire [WIDTH-1:0] 	    bus_porti_out;
    wire [WIDTH-1:0] 	    bus_portj_out;
    wire [WIDTH-1:0] 	    bus_portabcd_out;
+   wire [WIDTH-1:0]	    bus_brd_ctrl;
    wire [WIDTH-1:0] 	    bus_uart_out;
    wire [WIDTH-1:0]	    bus_simif_out;	    
    wire [WIDTH-1:0]	    bus_clock_out;
@@ -103,6 +105,7 @@ module comp //(clk, reset, test_sel, test_out);
    wire 		    cs_timer;    // 0xc000     0xff30
    wire 		    cs_uart;     // -          0xff40
    wire			    cs_clock;    // -          0xff50
+   wire			    cs_brd_ctrl; // -          0xfff0
    wire 		    cs_simif;    // 0xffff     0xffff
    wire [15:0] 		    cs_io;
 
@@ -140,7 +143,8 @@ module comp //(clk, reset, test_sel, test_out);
    assign cs_timer= cs_io[3];
    assign cs_uart= cs_io[4];
    assign cs_clock= cs_io[5];
-
+   assign cs_brd_ctrl= cs_io[15];
+   
    /*
    memory_1in_1out
      #(
@@ -232,6 +236,17 @@ module comp //(clk, reset, test_sel, test_out);
       .portd(PORTD)
       );
 
+   brd_ctrl #(.WIDTH(WIDTH)) board_control
+     (
+      .clk(clk),
+      .reset(reset),
+      .cs(cs_brd_ctrl),
+      .wen(bus_wen),
+      .din(bus_data_out),
+      .dout(bus_brd_ctrl),
+      .ctrl_out(BRD_CTRL)
+      );
+   
    uart io_uart
      (
       .clk(clk),
@@ -274,6 +289,7 @@ module comp //(clk, reset, test_sel, test_out);
        cs_porti?bus_porti_out:
        cs_portj?bus_portj_out:
        cs_portabcd?bus_portabcd_out:
+       cs_brd_ctrl?bus_brd_ctrl:
        cs_uart?bus_uart_out:
        cs_simif?bus_simif_out:
        cs_clock?bus_clock_out:

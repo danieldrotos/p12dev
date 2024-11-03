@@ -41,7 +41,7 @@ module tm
    reg [31:0]  btn= 0;
    reg [31:0]  sw= 0;
    wire [31:0] test_out, test_reg;
-   wire [31:0] porta, portb, portc, portd;
+   wire [31:0] porta, portb, portc, portd, brd_ctrl;
 
    // 1 instruction takes 8 ticks (4 clock period)
    always #1 clk= !clk;
@@ -112,6 +112,7 @@ module tm
       .PORTB(portb),
       .PORTC(portc),
       .PORTD(portd),
+      .BRD_CTRL(brd_ctrl),
       .test_sel(test_sel),
       .test_out(test_out),
       .test_rsel(test_rsel),

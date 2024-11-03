@@ -34,6 +34,7 @@ MODS		= hw/defs hw/hwconf hw/version \
                       hw/cpu2/putb \
 		      hw/cpu2/sfr \
 		    hw/computer/gpio_out4 \
+		    hw/computer/brd_ctrl \
 		    hw/computer/gpio_in \
 		    hw/computer/timer \
 		    hw/computer/simif \
