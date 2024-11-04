@@ -7,46 +7,49 @@
 
 module ls_top
   (
-   input wire 	      CLK,
-   input wire 	      RESET,
-   input wire [7:0]   SW,
-   input wire [3:0]   BTN,
-   output wire [7:0]  LEDR,
-   output wire [7:0]  LEDG,
-   output wire [7:0]  LEDB,
-   output wire [7:0]  SEG,
-   output wire [3:0]  AN,
+   input wire	     CLK,
+   input wire	     RESET,
+   input wire [7:0]  SW,
+   input wire [3:0]  BTN,
+   output wire [7:0] LEDR,
+   output wire [7:0] LEDG,
+   output wire [7:0] LEDB,
+   output wire [7:0] SEG,
+   output wire [3:0] AN,
    
-   input wire RxD,
-   output wire TxD
+   input wire	     RxD,
+   output wire	     TxD
    );
    
-   wire 	      res;
-
-   wire 	      f100MHz;
-   wire 	      f50MHz;
-   wire 	      f25MHz;
-   wire 	      f20MHz;
-   wire 	      f10MHz;
-   wire 	      f1MHz;
-   wire 	      f100kHz;
-   wire 	      f10kHz;
-   wire 	      f1kHz;
-   wire 	      f100Hz;
-   wire 	      f10Hz;
-   wire 	      f1Hz;
+   wire		     res;
    
-   reg [3:0]          btn;
-   reg [7:0] 	      switches;
+   wire		     f100MHz;
+   wire		     f50MHz;
+   wire		     f25MHz;
+   wire		     f20MHz;
+   wire		     f10MHz;
+   wire		     f1MHz;
+   wire		     f100kHz;
+   wire		     f10kHz;
+   wire		     f1kHz;
+   wire		     f100Hz;
+   wire		     f10Hz;
+   wire		     f1Hz;
    
-   wire [3:0] clk_select;
-   wire [3:0] display_select;
-   wire [3:0] test_reg_select;
-   wire [3:0] test_out_select;
+   reg [3:0]	     btn;
+   reg [7:0]	     switches;
+   
+   wire [31:0]	     brd_ctrl;
+   wire [3:0]	     clk_select;
+   wire [3:0]	     display_select;
+   wire [3:0]	     test_reg_select;
+   wire [3:0]	     test_out_select;
+   
+   wire		     display_by_comp= brd_ctrl[0];
    
    assign clk_select     = 4'd0;//switches[15:12];
    assign test_out_select= 4'd0;//switches[11: 8];
-   assign display_select = switches[ 7: 4];
+   assign display_select = display_by_comp?brd_ctrl[7:4]:switches[ 7: 4];
    assign test_reg_select= switches[ 3: 0];
    
    assign f100MHz= CLK;

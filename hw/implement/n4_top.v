@@ -7,25 +7,25 @@
 
 module n4_top
   (
-   input wire 	      CLK,
-   input wire 	      RESET,
+   input wire	      CLK,
+   input wire	      RESET,
    input wire [15:0]  SW,
-   input wire 	      BTNC,
-   input wire 	      BTNU,
-   input wire 	      BTND,
-   input wire 	      BTNL,
-   input wire 	      BTNR,
+   input wire	      BTNC,
+   input wire	      BTNU,
+   input wire	      BTND,
+   input wire	      BTNL,
+   input wire	      BTNR,
    output wire [15:0] LEDS,
    output wire [7:0]  seg,
    output wire [7:0]  an,
    
-   output wire [4:1] JCa,
+   output wire [4:1]  JCa,
    output wire [10:7] JCb,
-   output wire [4:1] JDa,
+   output wire [4:1]  JDa,
    output wire [10:7] JDb,
    
-   input wire RxD,
-   output wire TxD
+   input wire	      RxD,
+   output wire	      TxD
    );
    
    wire 	      res;
@@ -50,14 +50,17 @@ module n4_top
    reg 		      btnr;
    reg [15:0] 	      switches;
    
-   wire [3:0] clk_select;
-   wire [3:0] display_select;
-   wire [3:0] test_reg_select;
-   wire [3:0] test_out_select;
+   wire [31:0]	      brd_ctrl;
+   wire [3:0]	      clk_select;
+   wire [3:0]	      display_select;
+   wire [3:0]	      test_reg_select;
+   wire [3:0]	      test_out_select;
    
+   wire		      display_by_comp= brd_ctrl[0];
+
    assign clk_select     = switches[15:12];
    assign test_out_select= switches[11: 8];
-   assign display_select = switches[ 7: 4];
+   assign display_select = display_by_comp?brd_ctrl[7:4]:switches[ 7: 4];
    assign test_reg_select= switches[ 3: 0];
    
    assign f100MHz= CLK;
