@@ -195,6 +195,7 @@ assign JDa[4]= f1Hz;
       .PORTB          (portb),
       .PORTC          (portc),
       .PORTD          (portd),
+      .BRD_CTRL       (brd_ctrl),
       .RxD            (RxD),
       .TxD            (TxD),
       
@@ -230,7 +231,7 @@ assign JDa[4]= f1Hz;
         .in8(test_out),
         .in9(test_reg),
         .in10(0),
-        .in11(0),
+        .in11(brd_ctrl),
         .in12(irqs),
         .in13(mdi),
         .in14(mdo),

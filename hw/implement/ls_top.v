@@ -160,6 +160,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       .PORTB          (portb),
       .PORTC          (portc),
       .PORTD          (portd),
+      .BRD_CTRL       (brd_ctrl),
       .RxD            (RxD),
       .TxD            (TxD),
       
@@ -181,7 +182,6 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
       );
    
    wire [31:0] display_data;
-   wire [3:0]  display_sel;
    mux16 dspmx(
         .sel(display_select),
         .in0(porta),
@@ -195,7 +195,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         .in8(test_out),
         .in9(test_reg),
         .in10(0),
-        .in11(0),
+        .in11(brd_ctrl),
         .in12(irqs),
         .in13(mdi),
         .in14(mdo),

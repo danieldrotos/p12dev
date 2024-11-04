@@ -205,7 +205,7 @@ BUFG clkg(.I(sel_clk), .O(selected_clk));
         .in8(test_out),
         .in9(test_reg),
         .in10(0),
-        .in11(0),
+        .in11(brd_ctrl),
         .in12(irqs),
         .in13(mdi),
         .in14(mdo),
