@@ -23,7 +23,8 @@ all: pmonitor lib \
 	strtest.asc strtest.cdb \
 	dtoi_test.asc dtoi_test.cdb  \
 	bugtest.asc bugtest.cdb \
-	led.asc led.cdb
+	led.asc led.cdb \
+	printbin.asc printbin.cdb
 
 
 pmonitor:
@@ -67,6 +68,7 @@ bugtest.p2h: bugtest.asm $(PLIB)
 
 dtoi_test.p2h: dtoi_test.asm $(PLIB)
 
+printbin.p2h: printbin.asm $(LIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc
