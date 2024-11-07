@@ -52,20 +52,16 @@ real_start:
 cyc:
 	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,0			; number of checked button
-	call	pressed
-	C1 call	monitor
-	call	restart_btn
+	call	monitor_by_button
 	st	r10,GPIO.PORTA
 	st	r10,GPIO.PORTB
 	mov	r1,r10
 	mov	r2,r10
-	mvzl	r0,msgf
-	call	printf
+	ces	eprintf
+	db	"%x %d\n"
 	add	r10,1
 	jmp	cyc
 
-msgf:
-	db	"%x %d\n"
 	.ends			; main
 	
 ;	.seg	try_himem
