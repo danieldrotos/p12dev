@@ -7,6 +7,8 @@ $aw= 12;
 $as_size= 0;
 $chip_at= 0;
 $chip_size= false;
+$get_last= false;
+$limit= 0;
 
 if (isset($argv[0]))
 {
@@ -28,6 +30,15 @@ if (isset($argv[0]))
             $i++;
             $chip_size= intval($argv[$i], 0);
         }
+        else if ($argv[$i] == "-gl")
+        {
+            $get_last= true;
+        }
+        else if ($argv[$i] == "-l")
+        {
+            $i++;
+            $limit= intval($argv[$i], 0);
+        }
         else
             $fin[]= $argv[$i];
     }
@@ -46,6 +57,7 @@ if (count($fin)==0)
     exit(1);
 }
 //echo "reading $fin...\n";
+$max_a= 0;
 $src= '';
 foreach ($fin as $f)
 {
@@ -70,16 +82,33 @@ foreach ($fin as $f)
             $mem[$a]= $v;
             //echo "\n CC w1=$w1 w3=$w3 a=$a v=$v m={$mem[$a]}\n\n";
             //printf(" MM %08x %05x\n", $mem[$a], $a);
+            if ($a > $max_a)
+                $max_a= $a;
         }
     }
 }
 
-$last_a= $chip_at + $chip_size - 1;
-for ($a= $chip_at; $a <= $last_a; $a++)
+if ($get_last)
 {
-    printf("%08x", $mem[$a]);
-    //printf(" %05x", $a); echo " {$mem[$a]}";
-    echo "\n";
+    printf("%x\n", $max_a);
+}
+else
+{
+    $last_a= $chip_at + $chip_size - 1;
+    for ($a= $chip_at; $a <= $last_a; $a++)
+    {
+        printf("%08x", $mem[$a]);
+        //printf(" %05x", $a); echo " {$mem[$a]}";
+        echo "\n";
+    }
+}
+if ($limit > 0)
+{
+    if ($max_a >= $limit)
+    {
+        $s= sprintf("Memory overrun: %x >= %x\n", $max_a, $limit);
+        fwrite(STDERR, $s);
+    }
 }
 
 exit(0);

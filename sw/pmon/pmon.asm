@@ -2165,4 +2165,4 @@ ascii2seg:
 stack:
 	ds	0x40
 stack_end:
-	ds	1
+	dd	0
