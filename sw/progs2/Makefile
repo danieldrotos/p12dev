@@ -24,11 +24,12 @@ all: pmonitor lib \
 	dtoi_test.asc dtoi_test.cdb  \
 	bugtest.asc bugtest.cdb \
 	led.asc led.cdb \
-	printbin.asc printbin.cdb
+	printbin.asc printbin.cdb \
+	segmode.asc segmode.cdb
 
 
 pmonitor:
-	$(MAKE) -C $(PMON) pmon.p2h
+	$(MAKE) -C $(PMON) pmon_app
 
 lib:
 	$(MAKE) -C $(LIB) all
@@ -69,6 +70,8 @@ bugtest.p2h: bugtest.asm $(PLIB)
 dtoi_test.p2h: dtoi_test.asm $(PLIB)
 
 printbin.p2h: printbin.asm $(LIB)
+
+segmode.p2h: segmode.asm $(LIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

@@ -1,9 +1,10 @@
 	.proc	p2
 
 	;;
-	;;          monitor          ()
-	;; 	    monitor_by_uart  ()
-	;; R4:ver   monitor_version  ()
+	;;          monitor           ()
+	;; 	    monitor_by_uart   ()
+	;;          monitor_by_button (R0:btn)
+	;; R4:ver   monitor_version   ()
 	;;
 	
 	
@@ -32,14 +33,26 @@ _pm_pes			==	0xf012
 _pm_printd		==	0xf013
 _pm_printf		==	0xf014
 _pm_pesf		==	0xf015
-
+_pm_ascii2seg		==	0xf016
+	
 
 monitor::
 	jmp	_pm_callin
 
+	
 monitor_by_uart::
 	jmp	_pm_enter_by_uart
 
+	
+monitor_by_button::
+	push	lr
+	call	pressed
+	NC pop	pc
+	call	monitor
+	call	restart_button
+	pop	pc
+
+	
 monitor_version::
 	push	lr
 	push	r0

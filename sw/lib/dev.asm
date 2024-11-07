@@ -1,5 +1,6 @@
 	.proc	p2
 
+	
 	.seg	_lib_segment_regs_of_clock
 	
 CLOCK.CLOCK	==	0xff50
@@ -21,6 +22,7 @@ CLOCK.BCNT14	==	0xff5e
 CLOCK.BCNT15	==	0xff5f
 
 	.ends
+
 	
 	.seg	_lib_segment_regs_of_gpio
 
@@ -48,12 +50,7 @@ GPIO.SW		==	0xff10	; GPIOJ.IDR
 
 	.ends
 
-	.seg	_lib_segment_brd_ctrl
-
-BRD_CTRL.ODR	==	0xfff0
 	
-	.ends
-
 	.seg	_lib_segment_regs_of_timer
 
 TIMER.CTRL	==	0xff30
@@ -63,6 +60,7 @@ TIMER.STAT	==	0xff33
 
 	.ends
 
+	
 	.seg	_lib_segment_regs_of_uart
 
 UART.DR		==	0xff40
@@ -77,6 +75,14 @@ UART.SREG3	==	0xff4f
 
 	.ends
 
+
+	.seg	_lib_segment_brd_ctrl
+
+BRD_CTRL.OUT	==	0xfff0
+
+	.ends
+
+	
 	.seg	_lib_segment_regs_of_simif
 
 SIMIF.CMD_PAR	==	0xffff

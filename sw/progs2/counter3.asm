@@ -48,7 +48,7 @@ cyc:
 	;db	cyc_belso
 real_start:
 	mvzl	r0,0x1234
-	st	r0,BRD_CTRL.ODR
+	st	r0,BRD_CTRL.OUT
 cyc:
 	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,0			; number of checked button

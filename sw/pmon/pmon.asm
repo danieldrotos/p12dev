@@ -48,6 +48,7 @@ _f012:	jmp	pes
 _f013:	jmp	printd
 _f014:	jmp	printf
 _f015:	jmp	pesf
+_f016:	jmp	ascii2seg
 	
 enter_by_uart:
 	push	r0
@@ -2028,6 +2029,21 @@ version:
 	pop	r1
 	ret
 	
+
+	;; In : R0 ascii
+	;; Out: R4 segments
+ascii2seg:
+	push	r0
+	push	r1
+	shr	r0
+	shr	r0
+	mvzl	r1,ascii2seg_table
+	ld	r4,r0,r1
+	pop	r1
+	pop	r0
+	getbz	r4,r4,r0
+	ret
+	
 	
 ;;; VARIABLES
 ;;; ---------
@@ -2126,7 +2142,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 	dd	0
 
 
-ascii2seg:
+ascii2seg_table:
 	dd	0		; 00-03
 	dd	0		; 04-07
 	dd	0		; 08-0b
@@ -2138,7 +2154,7 @@ ascii2seg:
 	dd	0x00220000	; 20-23 SP ! " #
 	dd	0x02000000	; 24-27  $ % & '
 	dd	0x00000000	; 28-2b  ( ) * +
-	dd	0x00000000	; 2c-2f  , - . /
+	dd	0x00004000	; 2c-2f  , - . /
 	dd	0x4f5b063f	; 30-33  0 1 2 3
 	dd	0x277d6d66	; 34-37  4 5 6 7
 	dd	0x00006fff	; 38-3b  8 9 : ;
@@ -2146,20 +2162,20 @@ ascii2seg:
 	dd	0x397c7700	; 40-43  @ A B C
 	dd	0x3d71795e	; 44-47  D E F G
 	dd	0x001e3076	; 48-4b  H I J K
-	dd	0x3f003738	; 4c-4f  L M N O
+	dd	0x3f543738	; 4c-4f  L M N O
 	dd	0x6d500073	; 50-53  P Q R S
 	dd	0x00003e78	; 54-57  T U V W
 	dd	0x39006e00	; 58-5b  X Y Z [
 	dd	0x08000f00	; 5c-5f  \ ] ^ _
 	dd	0x587c7700	; 60-63  ` a b c
-	dd	0x5e79713d	; 64-67  d e f g
+	dd	0x3d71795e	; 64-67  d e f g
 	dd	0x001e0474	; 68-6b  h i j k
 	dd	0x5c540038	; 6c-6f  l m n o
 	dd	0x6d500073	; 70-73  p q r s
 	dd	0x00001c78	; 74-77  t u v w
 	dd	0x00000000	; 78-7b  x y z {
 	dd	0x00000000	; 7c-7f  | } ~ DEL
-	
+
 ;;; STACK
 ;;; -----
 stack:
