@@ -114,6 +114,10 @@ last_btn:
 	ds	1
 last_sw:
 	ds	1
+last_btn_down:
+	ds	1
+last_sw_down:
+	ds	1
 last_btn_inited:
 	db	0
 last_sw_inited:	
@@ -126,8 +130,11 @@ last_sw_inited:
 pressed::
 	push	lr
 	call	_nr_to_mask
+	push	r1
+	mvzl	r1,0
 	clc
-	call	pos_edge
+	call	edge_detect
+	pop	r1
 	pop	pc
 ;	ret
 
@@ -139,8 +146,11 @@ pressed::
 switched::
 	push	lr
 	call	_nr_to_mask
+	push	r1
+	mvzl	r1,0
 	sec
-	call	pos_edge
+	call	edge_detect
+	pop	r1
 	pop	pc
 ;	ret
 
@@ -148,16 +158,19 @@ switched::
 	;; Check button/sw press
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN/SW
+	;;        R1= 0=check for press 1=check for release
 	;;        C=0 check BTN
 	;;        C=1 check SW
 	;; Output: C=0 if not pressed, C=1 if pressed
-pos_edge:
+edge_detect:
 	push	lr
 	push	r1
 	push	r2
 	push	r3
 	push	r4
-	
+	push	r5
+
+	mov	r5,r1		; what edge to check
 	C jmp	init_sw
 init_btn:	
 	ld	r1,last_btn_inited
@@ -167,6 +180,7 @@ init_btn:
 	st	r1,last_btn_inited
 	ld	r1,GPIO.BTN
 	st	r1,last_btn
+	st	r1,last_btn_down
 	jmp	pressed_false
 init_sw:
 	ld	r1,last_sw_inited
@@ -176,18 +190,28 @@ init_sw:
 	st	r1,last_sw_inited
 	ld	r1,GPIO.SW
 	st	r1,last_sw
+	st	r1,last_sw_down
 	jmp	pressed_false
 pressed_inited:
 	;; R1 address of last
 	;; R2 address of port
-	NC mvzl	r1,last_btn
 	NC mvzl	r2,GPIO.BTN
-	C mvzl	r1,last_sw
 	C mvzl	r2,GPIO.SW
+	jc	ch_sw
+ch_btn:
+	sz	r5
+	Z mvzl	r1,last_btn
+	NZ mvzl	r1,last_btn_down
+ch_sw:
+	sz	r5
+	Z mvzl	r1,last_sw
+	NZ mvzl	r1,last_sw_down
+	
 	;; R3 value of last
 	;; r4 value of port
 	ld	r3,r1
 	ld	r4,r2
+	
 	and	r3,r0		; masked last
 	and	r4,r0		; masked port
 	cmp	r3,r4
@@ -197,14 +221,23 @@ pressed_inited:
 	and	r3,r0		; clear checked bit
 	or	r3,r4		; or with masked port
 	st	r3,r1		; store new last value
+	sz	r5
+	jnz	check_release
+check_push:
 	sz	r4		; check new port value
-	Z jmp	pressed_false
+	jz	pressed_false
+	jnz	pressed_true
+check_release:
+	sz	r4
+	jnz	pressed_false
+;	jz	pressed_true
 pressed_true:	
 	sec
 	jmp	pressed_end
 pressed_false:
 	clc
 pressed_end:
+	pop	r5
 	pop	r4
 	pop	r3
 	pop	r2
