@@ -2,7 +2,7 @@
 
 	;;
 	;; F.C=  btn_posedge    (R0:btn)
-	;; F.C=  released       (R0:btn)
+	;; F.C=  btn_negedge    (R0:btn)
 	;; F.C=  btn_get        (R0:btn)
 	;; F.C=  switched_on    (R0:sw)
 	;; F.C=  switched_off   (R0:sw)
@@ -150,7 +150,7 @@ btn_posedge::
 	;; Input : R0= number of examined BTN (0-15)
 	;; Output: C=0 not released
 	;;         C=1 released
-released::
+btn_negedge::
 	push	lr
 	call	_nr_to_mask
 	push	r1

@@ -122,11 +122,13 @@ prompt:
 btn_press:
 	push	lr
 	mvzl	r0,1		; nr of BTN[1]
-	call	pressed		; if pressed
+	call	btn_posedge	; if pressed
 	C call	monitor		; then go out to monitor
+	call	button_restart
 	mvzl	r0,0		; nr of SW[0]
 	call	switched
 	C call	monitor
+	call	switch_restart
 	pop	pc
 ;	ret
 

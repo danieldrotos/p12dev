@@ -16,7 +16,7 @@ cycle:
 	st	r0,posedge
 no1:
 	mvzl	r0,0
-	call	released
+	call	btn_negedge
 	jnc	no0
 
 	ld	r0,negedge
