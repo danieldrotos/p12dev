@@ -7,8 +7,8 @@
 	;; F.C=  sw_posedge     (R0:sw)
 	;; F.C=  sw_negedge     (R0:sw)
 	;; F.C=  sw_get         (R0:sw)
-	;;       restart_button ()
-	;;       restart_switch ()
+	;;       btn_restart    ()
+	;;       sw_restart     ()
 	;;       led_on         (R0:led)
 	;;       led_off        (R0:led)
 	;;       led_toggle     (R0:led)
@@ -114,7 +114,7 @@ led_get::
 	.ends
 
 	
-	.seg	_lib_segment_btn_sw
+	.seg	_lib_segment_edge
 
 last_btn:
 	ds	1
@@ -129,114 +129,15 @@ last_btn_inited:
 last_sw_inited:	
 	db	0
 
-	;; Check button press
-	;; Input : R0= number of examined BTN (0-15)
-	;; Output: C=0 not pressed
-	;;         C=1 pressed
-;pressed::
-btn_posedge::
-	push	lr
-	call	_nr_to_mask
-	push	r1
-	mvzl	r1,0
-	clc
-	call	edge_detect
-	pop	r1
-	pop	pc
-;	ret
-
 	
-	;; Check button release
-	;; Input : R0= number of examined BTN (0-15)
-	;; Output: C=0 not released
-	;;         C=1 released
-btn_negedge::
-	push	lr
-	call	_nr_to_mask
-	push	r1
-	mvzl	r1,1
-	clc
-	call	edge_detect
-	pop	r1
-	pop	pc
-;	ret
-
-	
-	;; Read actual state of a button
-	;; Input : R0= number of button (0-15)
-	;; Output: C=1 if btn is ON
-	;;         C=0 if btn is OFF
-btn_get::
-	push	lr
-	push	r1
-	call	_nr_to_mask
-	ld	r1,GPIO.BTN
-	and	r1,r0
-	Z clc
-	NZ sec
-	pop	r1
-	pop	pc
-
-
-	
-	;; Check pos edge on a switch
-	;; Input : R0= number of examined SW (0-15)
-	;; Output: C=0 not switched
-	;;         C=1 switched off->on
-sw_posedge::
-	push	lr
-	call	_nr_to_mask
-	push	r1
-	mvzl	r1,0
-	sec
-	call	edge_detect
-	pop	r1
-	pop	pc
-;	ret
-
-	
-	;; Check switch release
-	;; Input : R0= number of examined BTN (0-15)
-	;; Output: C=0 not released
-	;;         C=1 released
-sw_negedge::
-	push	lr
-	call	_nr_to_mask
-	push	r1
-	mvzl	r1,1
-	sec
-	call	edge_detect
-	pop	r1
-	pop	pc
-;	ret
-
-	
-	;; Read actual state of a switch
-	;; Input : R0= number of switch (0-15)
-	;; Output: C=1 if btn is ON
-	;;         C=0 if btn is OFF
-sw_get::
-	push	lr
-	push	r1
-	call	_nr_to_mask
-	ld	r1,GPIO.SW
-	and	r1,r0
-	Z clc
-	NZ sec
-	pop	r1
-	pop	pc
-
-
-
-
-	;; Check button/sw press
+		;; Check button/sw press
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN/SW
 	;;        R1= 0=check for press 1=check for release
 	;;        C=0 check BTN
 	;;        C=1 check SW
 	;; Output: C=0 if not pressed, C=1 if pressed
-edge_detect:
+_lib_edge_detect::
 	push	lr
 	push	r1
 	push	r2
@@ -319,21 +220,126 @@ pressed_end:
 	pop	pc
 ;	ret
 
-restart_btn::
-restart_button::
+
+btn_restart::
 	push	r1
 	ld	r1,GPIO.BTN
 	st	r1,last_btn
 	pop	r1
 	ret
 
-restart_sw::
-restart_switch::
+	
+sw_restart::
 	push	r1
 	ld	r1,GPIO.SW
 	st	r1,last_sw
 	pop	r1
 	ret
+
+	.ends
+
+
+	.seg	_lib_segment_btn
+		
+	;; Check button press
+	;; Input : R0= number of examined BTN (0-15)
+	;; Output: C=0 not pressed
+	;;         C=1 pressed
+;pressed::
+btn_posedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,0
+	clc
+	call	_lib_edge_detect
+	pop	r1
+	pop	pc
+;	ret
+
 	
+	;; Check button release
+	;; Input : R0= number of examined BTN (0-15)
+	;; Output: C=0 not released
+	;;         C=1 released
+btn_negedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,1
+	clc
+	call	_lib_edge_detect
+	pop	r1
+	pop	pc
+;	ret
+
+	
+	;; Read actual state of a button
+	;; Input : R0= number of button (0-15)
+	;; Output: C=1 if btn is ON
+	;;         C=0 if btn is OFF
+btn_get::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	ld	r1,GPIO.BTN
+	and	r1,r0
+	Z clc
+	NZ sec
+	pop	r1
+	pop	pc
+
+	.ends
+
+
+	.seg	_lib_segment_sw
+	
+	;; Check pos edge on a switch
+	;; Input : R0= number of examined SW (0-15)
+	;; Output: C=0 not switched
+	;;         C=1 switched off->on
+sw_posedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,0
+	sec
+	call	_lib_edge_detect
+	pop	r1
+	pop	pc
+;	ret
+
+	
+	;; Check switch release
+	;; Input : R0= number of examined BTN (0-15)
+	;; Output: C=0 not released
+	;;         C=1 released
+sw_negedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,1
+	sec
+	call	_lib_edge_detect
+	pop	r1
+	pop	pc
+;	ret
+
+	
+	;; Read actual state of a switch
+	;; Input : R0= number of switch (0-15)
+	;; Output: C=1 if btn is ON
+	;;         C=0 if btn is OFF
+sw_get::
+	push	lr
+	push	r1
+	call	_nr_to_mask
+	ld	r1,GPIO.SW
+	and	r1,r0
+	Z clc
+	NZ sec
+	pop	r1
+	pop	pc
+
 	.ends
 	
