@@ -59,7 +59,45 @@
     értéket adni.</p>
     
 
-    <a name="switched"><h3>switched</h3></a>
+    <a name="released"><h3>released</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=number of button (0-15)</span>
+	<span lang="hu">R0=nyomógomb sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if released</span>
+	<span lang="hu">Flag.C=1 ha elengedték</span>
+      </li>
+    </ul>
+
+    <p>Nyomógomb elengedésének vizsgálata. A függvény a gomb
+    elengedésének detektálása után egy meghíváskor fog igaz értéket
+    értéket adni.</p>
+    
+
+    <a name="button"><h3>button</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=number of button (0-15)</span>
+	<span lang="hu">R0=nyomógomb sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if button is ON</span>
+	<span lang="hu">Flag.C=1 ha nyomva van</span>
+      </li>
+    </ul>
+
+    <p>Nyomógomb aktuális állapotának lekérdezése.</p>
+    
+
+    <a name="switched_on"><h3>switched_on</h3></a>
     
     <ul>
       <li><span lang="en">Input(s):</span>
@@ -77,6 +115,44 @@
     <p>Kapcsoló bekapcsolásának vizsgálata.A függvény a kapcsoló
       bekapcsolásának detektálása után egy meghíváskor fog bekapcsolt
       értéket adni.</p>
+
+
+    <a name="switched_off"><h3>switched_off</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=number of switch (0-15)</span>
+	<span lang="hu">R0=kapcsoló sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if switch turned off</span>
+	<span lang="hu">Flag.C=1 ha a kapcsolót kikapcsolták</span>
+      </li>
+    </ul>
+
+    <p>Kapcsoló kikapcsolásának vizsgálata.A függvény a kapcsoló
+      kikapcsolásának detektálása után egy meghíváskor fog kikapcsolt
+      értéket adni.</p>
+
+
+    <a name="switch"><h3>switch</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=number of switch (0-15)</span>
+	<span lang="hu">R0=kapcsoló sorszáma (0-15)</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">Flag.C=1 if switch is on</span>
+	<span lang="hu">Flag.C=1 ha a kapcsoló fel van kapcsolva</span>
+      </li>
+    </ul>
+
+    <p>Kapcsoló aktuális értékének lekérdezése.</p>
 
 
     <a name="restart_button"><h3>restart_button</h3></a>
