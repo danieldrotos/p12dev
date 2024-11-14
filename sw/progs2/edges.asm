@@ -8,7 +8,7 @@
 	st	r0,negedge
 cycle:
 	mvzl	r0,0
-	call	pressed
+	call	btn_posedge
 	jnc	no1
 
 	ld	r0,posedge

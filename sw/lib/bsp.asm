@@ -1,7 +1,7 @@
 	.proc	p2
 
 	;;
-	;; F.C=  pressed        (R0:btn)
+	;; F.C=  btn_posedge    (R0:btn)
 	;; F.C=  released       (R0:btn)
 	;; F.C=  btn_get        (R0:btn)
 	;; F.C=  switched_on    (R0:sw)
@@ -133,7 +133,8 @@ last_sw_inited:
 	;; Input : R0= number of examined BTN (0-15)
 	;; Output: C=0 not pressed
 	;;         C=1 pressed
-pressed::
+;pressed::
+btn_posedge::
 	push	lr
 	call	_nr_to_mask
 	push	r1
