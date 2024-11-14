@@ -4,8 +4,8 @@
 	;; F.C=  btn_posedge    (R0:btn)
 	;; F.C=  btn_negedge    (R0:btn)
 	;; F.C=  btn_get        (R0:btn)
-	;; F.C=  switched_on    (R0:sw)
-	;; F.C=  switched_off   (R0:sw)
+	;; F.C=  sw_posedge     (R0:sw)
+	;; F.C=  sw_negedge     (R0:sw)
 	;; F.C=  sw_get         (R0:sw)
 	;;       restart_button ()
 	;;       restart_switch ()
@@ -161,7 +161,7 @@ btn_negedge::
 	pop	pc
 ;	ret
 
-
+	
 	;; Read actual state of a button
 	;; Input : R0= number of button (0-15)
 	;; Output: C=1 if btn is ON
@@ -177,6 +177,38 @@ btn_get::
 	pop	r1
 	pop	pc
 
+
+	
+	;; Check pos edge on a switch
+	;; Input : R0= number of examined SW (0-15)
+	;; Output: C=0 not switched
+	;;         C=1 switched off->on
+sw_posedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,0
+	sec
+	call	edge_detect
+	pop	r1
+	pop	pc
+;	ret
+
+	
+	;; Check switch release
+	;; Input : R0= number of examined BTN (0-15)
+	;; Output: C=0 not released
+	;;         C=1 released
+sw_negedge::
+	push	lr
+	call	_nr_to_mask
+	push	r1
+	mvzl	r1,1
+	sec
+	call	edge_detect
+	pop	r1
+	pop	pc
+;	ret
 
 	
 	;; Read actual state of a switch
@@ -195,23 +227,8 @@ sw_get::
 	pop	pc
 
 
-	
-	;; Check pos edge on a switch
-	;; Input : R0= number of examined SW (0-15)
-	;; Output: C=0 not switched
-	;;         C=1 switched off->on
-switched::
-	push	lr
-	call	_nr_to_mask
-	push	r1
-	mvzl	r1,0
-	sec
-	call	edge_detect
-	pop	r1
-	pop	pc
-;	ret
 
-	
+
 	;; Check button/sw press
 	;; ----------------------------------------------------------------
 	;; Input: R0= bit mask of examined BTN/SW

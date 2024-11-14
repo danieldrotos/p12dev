@@ -124,11 +124,11 @@ btn_press:
 	mvzl	r0,1		; nr of BTN[1]
 	call	btn_posedge	; if pressed
 	C call	monitor		; then go out to monitor
-	call	button_restart
+	call	restart_button
 	mvzl	r0,0		; nr of SW[0]
-	call	switched
+	call	sw_posedge
 	C call	monitor
-	call	switch_restart
+	call	restart_switch
 	pop	pc
 ;	ret
 
