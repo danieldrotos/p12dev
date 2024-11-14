@@ -3,10 +3,10 @@
 	;;
 	;; F.C=  pressed        (R0:btn)
 	;; F.C=  released       (R0:btn)
-	;; F.C=  button         (R0:btn)
+	;; F.C=  btn_get        (R0:btn)
 	;; F.C=  switched_on    (R0:sw)
 	;; F.C=  switched_off   (R0:sw)
-	;; F.C=  switch         (R0:sw)
+	;; F.C=  sw_get         (R0:sw)
 	;;       restart_button ()
 	;;       restart_switch ()
 	;;       led_on         (R0:led)
@@ -165,7 +165,7 @@ released::
 	;; Input : R0= number of button (0-15)
 	;; Output: C=1 if btn is ON
 	;;         C=0 if btn is OFF
-button::
+btn_get::
 	push	lr
 	push	r1
 	call	_nr_to_mask
@@ -182,7 +182,7 @@ button::
 	;; Input : R0= number of switch (0-15)
 	;; Output: C=1 if btn is ON
 	;;         C=0 if btn is OFF
-switch::
+sw_get::
 	push	lr
 	push	r1
 	call	_nr_to_mask

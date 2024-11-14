@@ -31,7 +31,7 @@ no0:
 	st	r0,GPIO.7SEG
 
 	mvzl	r0,0
-	call	button
+	call	btn_get
 	C mvzl	r0,1
 	NC mvzl	r0,0
 	st	r0,GPIO.LED
