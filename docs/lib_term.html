@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html id="html-tag" lang="en">
+  <script>
+   const $htmlTag = document.querySelector("#html-tag")
+   const urlParams = new URL(window.location.toLocaleString()).searchParams;
+   var lvar= urlParams.get('lang');
+   switch(lvar) {
+     case "hu":
+       $htmlTag.lang = "hu"
+       $htmlTag.classList.add("hungarianLang")
+       break
+     default:
+       lvar= "en";
+       $htmlTag.classList.add("englishLang")
+       break
+   }
+   function lnk(cath,fn)
+    {
+      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
+      return l;
+    }
+  </script>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="p12.css">
+    <title>p2223 library: terminal functions</title>
+  </head>
+  
+  <body>
+
+    <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
+    <a href="lib_term.html?lang=hu">HU</a>
+    <a href="lib_term.html?lang=en">EN</a>
+
+    
+    <h1>
+      <span lang="en">Terminal functions</span>
+      <span lang="hu">Terminál függvények</span>
+    </h1>
+
+    
+    <a name="tu_save_cursor"><h3>tu_save_cursor</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>Elmenti a kurzor aktuális pozícióját. Az elmentett pozícióba a
+    tu_restore_cursor függvénnyel lehet a kurzort vissza mozgatni.</p>
+
+    
+<!--
+    <a name=""><h3></h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0=</span>
+	<span lang="hu">R0=</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">R4=</span>
+	<span lang="hu">R4=</span>
+      </li>
+    </ul>
+
+    <p></p>
+-->
+    
+    <hr>
+  </body>
+</html>
