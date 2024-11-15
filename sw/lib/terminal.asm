@@ -13,6 +13,11 @@
 	;;      tu_go_down        (R0:n)
 	;;      tu_go             (R0:x1,R1:y1)
 	;;      tu_color          (R0:bg,R1:fg)
+	;;      tu_fg             (R0:fg)
+	;;      tu_bg             (R0:bg)
+	;;      tu_wob            ()
+	;;      tu_bow            ()
+	;;      tu_gob            ()
 	;;
 
 
@@ -139,7 +144,9 @@ _tu_fg_color:
 	;;      R1 fg 0-15, R1<0 do not change
 tu_color::
 	push	lr
-	push	r2
+	push	r0
+	push	r1
+	
 	sz	r1
 	S1 jmp	set_bg
 set_fg:
@@ -162,8 +169,58 @@ set_bg:
 	ces	eprintf
 	.db	"\e[%dm"
 end:
-	pop	r2
+	pop	r1
+	pop	r0
 	pop	pc
-	
+
+
+	;; In : R0 color 0-15
+tu_fg::
+	push	lr
+	push	r0
+	push	r1
+	mov	r1,r0
+	mvs	r0,-1
+	call	tu_color
+	pop	r1
+	pop	r0
+	pop	pc
+
+
+	;; In : R0 color 0-15
+tu_bg::
+	push	lr
+	push	r0
+	push	r1
+	mvs	r1,-1
+	call	tu_color
+	pop	r1
+	pop	r0
+	pop	pc
+
+
+	;; white on black
+tu_wob::
+	push	lr
+	ces	eprints
+	.db	"\e[37;40m"
+	pop	pc
+
+
+	;; black on white
+tu_bow::
+	push	lr
+	ces	eprints
+	.db	"\e[30;47m"
+	pop	pc
+
+
+	;; green on black
+tu_gob::
+	push	lr
+	ces	eprints
+	.db	"\e[32;40m"
+	pop	pc
+
 	.ends
 	
