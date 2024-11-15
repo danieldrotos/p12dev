@@ -26,7 +26,8 @@ all: pmonitor lib \
 	led.asc led.cdb \
 	printbin.asc printbin.cdb \
 	segmode.asc segmode.cdb \
-	edges.asc edges.cdb
+	edges.asc edges.cdb \
+	tudemo.asc tudemo.cdb
 
 
 pmonitor:
@@ -75,6 +76,8 @@ printbin.p2h: printbin.asm $(LIB)
 segmode.p2h: segmode.asm $(LIB)
 
 edges.p2h: edges.asm $(LIB)
+
+tudemo.p2h: tudemo.asm $(LIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc

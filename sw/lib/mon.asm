@@ -49,7 +49,7 @@ monitor_by_button::
 	call	btn_posedge
 	NC pop	pc
 	call	monitor
-	call	restart_button
+	call	btn_restart
 	pop	pc
 
 	
