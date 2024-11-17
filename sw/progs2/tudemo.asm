@@ -76,8 +76,8 @@ dsp:
 	mov	r0,r6
 	mov	r1,r7
 	call	tu_color
-	mov	r1,r6		; y= bg+5
-	add	r1,5
+	mov	r1,r6		; y= bg+7
+	add	r1,7
 	mov	r0,r7		; x= fg*4+10
 	mul	r0,4
 	add	r0,10

@@ -265,13 +265,21 @@
     kiírástól kezdve jutnak érvényre. A 0-7 közötti értékek a három
     alap szín (0.bit=piros, 1.bit=zöld, 2.bit=kék) keveréséből
     adódnak, a 8-15 közötti értékek ugyanezeket a színeket
-    eredményezik "nagy intenzitással". A konkrét színek az alkalmazott
-    terminal programtól függnek.</p>
+    eredményezik "nagy intenzitással". A megjelenített színek az
+    alkalmazott terminaál programtól függnek. Egyes programok esetén az
+    alkalmazott szín profil konfigurálható is lehet.</p>
 
     <p>Ha az előtér vagy a háttér szín paraméter negatív, akkor az a
       szín nem módosul.</p>
+
+    <p>Az alábbi ábrán láthatók a kiválasztható háttér és előtér szín
+      kombinációk. Az első hexadecimális számjegy a háttér színe, a
+      második az előtér színe.</p>
+
+    <p><img src="colors.png" border="0"></p>
     
 
+      
     <a name="tu_fg"><h3>tu_fg</h3></a>
 
     <ul>
@@ -288,8 +296,8 @@
     </ul>
 
     <p>Az előtér (betű) szín beállítása a következő kiírás számára. A
-    szín paramétert a tu_color függvénynél ismertetett módon kell
-    megadni.</p>
+      szín paramétert a <a href="#tu_color">tu_color</a> függvénynél
+      ismertetett módon kell megadni.</p>
 
 
     <a name="tu_bg"><h3>tu_bg</h3></a>
@@ -308,8 +316,8 @@
     </ul>
 
     <p>A háttér szín beállítása a következő kiírás számára. A szín
-    paramétert a tu_color függvénynél ismertetett módon kell
-    megadni.</p>
+      paramétert a <a href="#tu_color">tu_color</a> függvénynél
+      ismertetett módon kell megadni.</p>
 
 
     <a name="tu_wob"><h3>tu_wob</h3></a>
