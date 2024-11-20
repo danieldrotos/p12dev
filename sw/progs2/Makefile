@@ -27,7 +27,8 @@ all: pmonitor lib \
 	printbin.asc printbin.cdb \
 	segmode.asc segmode.cdb \
 	edges.asc edges.cdb \
-	tudemo.asc tudemo.cdb
+	tudemo.asc tudemo.cdb \
+	shootgame.asc shootgame.cdb
 
 
 pmonitor:
@@ -77,7 +78,7 @@ segmode.p2h: segmode.asm $(LIB)
 
 edges.p2h: edges.asm $(LIB)
 
-tudemo.p2h: tudemo.asm $(LIB)
+shootgame.p2h: shootgame.asm $(LIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc
