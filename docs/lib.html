@@ -319,19 +319,35 @@
 	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
       </tr>
       <tr><td>F.C:pressed</td>
-	<td><a href="lib_bsp.html#pressed">pressed</a></td>
+	<td><a href="lib_bsp.html#btn_posedge">btn_posedge</a></td>
 	<td>(R0:btn)</td>
       </tr>
-      <tr><td>F.C:switched</td>
-	<td><a href="lib_bsp.html#switched">switched</a></td>
+      <tr><td>F.C:released</td>
+	<td><a href="lib_bsp.html#btn_negedge">btn_negedge</a></td>
+	<td>(R0:btn)</td>
+      </tr>
+      <tr><td>F.C:value</td>
+	<td><a href="lib_bsp.html#btn_get">btn_get</a></td>
+	<td>(R0:btn)</td>
+      </tr>
+      <tr><td>F.C:switched_on</td>
+	<td><a href="lib_bsp.html#sw_posedge">sw_posedge</a></td>
+	<td>(R0:switch)</td>
+      </tr>
+      <tr><td>F.C:switched_off</td>
+	<td><a href="lib_bsp.html#sw_negedge">sw_negedge</a></td>
+	<td>(R0:switch)</td>
+      </tr>
+      <tr><td>F.C:value</td>
+	<td><a href="lib_bsp.html#sw_get">sw_get</a></td>
 	<td>(R0:switch)</td>
       </tr>
       <tr><td>-</td>
-	<td><a href="lib_bsp.html#restart_button">restart_button</a></td>
+	<td><a href="lib_bsp.html#btn_restart">btn_restart</a></td>
 	<td>()</td>
       </tr>
       <tr><td>-</td>
-	<td><a href="lib_bsp.html#restart_switch">restart_switch</a></td>
+	<td><a href="lib_bsp.html#sw_restart">sw_restart</a></td>
 	<td>()</td>
       </tr>
       <tr><td>-</td>
@@ -419,6 +435,96 @@
 	 <tr><td></td>
 	 <td><a href="lib_std.html#"></a></td>
 	 <td>()</td>
+	 </tr>
+       -->
+
+
+
+    
+    <h2>
+      <span lang="en">Terminal functions</span>
+      <span lang="hu">Terminál függvények</span>
+    </h2>
+
+
+    <table border="1">
+      <tr><th><span lang="hu">Kiemenet(ek)</span><span lang="en">Output(s)</span></th>
+	<th><span lang="hu">Függvény</span><span lang="en">Function</span></th>
+	<th><span lang="hu">Bemenet</span> <span lang="en">Input(s)</span></th>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_save_cursor">tu_save_cursor</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_restore_cursor">tu_restore_cursor</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_hide">tu_hide</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_show">tu_show</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_clear_screen">tu_clear_screen</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	 <td><a href="lib_term.html#tu_clear_char">tu_clear_char</a></td>
+	 <td>()</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_go_left">tu_go_left</a></td>
+	<td>(R0:n)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_go_right">tu_go_right</a></td>
+	<td>(R0:n)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_go_up">tu_go_up</a></td>
+	<td>(R0:n)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_go_down">tu_go_down</a></td>
+	<td>(R0:n)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_go">tu_go</a></td>
+	<td>(R0:n)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_color">tu_color</a></td>
+	<td>(R0:bg, R1:fg)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_fg">tu_fg</a></td>
+	<td>(R0:color)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_bg">tu_bg</a></td>
+	<td>(R0:color)</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_wob">tu_wob</a></td>
+	<td>()</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_bow">tu_bow</a></td>
+	<td>()</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_term.html#tu_gob">tu_gob</a></td>
+	<td>()</td>
+      </tr>
+    </table>
+    <!-- 
+	 <tr><td>-</td>
+	 <td><a href="lib_term.html#"></a></td>
+	 <td>(R0:n)</td>
 	 </tr>
        -->
 

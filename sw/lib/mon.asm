@@ -46,10 +46,10 @@ monitor_by_uart::
 	
 monitor_by_button::
 	push	lr
-	call	pressed
+	call	btn_posedge
 	NC pop	pc
 	call	monitor
-	call	restart_button
+	call	btn_restart
 	pop	pc
 
 	

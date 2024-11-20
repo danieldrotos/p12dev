@@ -19,7 +19,7 @@ ciklus:
 	Z call	ff_leptetes
 		
 	ldl0	r0,1
-	call	pressed
+	call	btn_posedge
 	NC jmp 	tovabb
 ; BTN1 megnyomodott
 ; run= !run

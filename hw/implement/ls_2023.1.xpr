@@ -4,7 +4,7 @@
 <!-- Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.                   -->
 <!-- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.   -->
 
-<Project Product="Vivado" Version="7" Minor="63" Path="C:/Users/aa000461/prj/p12dev/hw/implement/ls_2023.1.xpr">
+<Project Product="Vivado" Version="7" Minor="63" Path="/mhome/staff/drdani/prj/p12dev/hw/implement/ls_2023.1.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="1674eb9463374933aab0455684d79eab"/>
@@ -427,11 +427,14 @@
     <Simulator Name="Questa">
       <Option Name="Description" Val="Questa Advanced Simulator"/>
     </Simulator>
+    <Simulator Name="Xcelium">
+      <Option Name="Description" Val="Xcelium Parallel Simulator"/>
+    </Simulator>
+    <Simulator Name="VCS">
+      <Option Name="Description" Val="Verilog Compiler Simulator (VCS)"/>
+    </Simulator>
     <Simulator Name="Riviera">
       <Option Name="Description" Val="Riviera-PRO Simulator"/>
-    </Simulator>
-    <Simulator Name="ActiveHDL">
-      <Option Name="Description" Val="Active-HDL Simulator"/>
     </Simulator>
   </Simulators>
   <Runs Version="1" Minor="20">
@@ -445,7 +448,11 @@
       <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
       <RQSFiles/>
     </Run>
+<<<<<<< HEAD
     <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7k70tfbg676-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PPRDIR/viv_n4.srcs/utils_1/imports/impl_1" LaunchOptions="-jobs 12 " AutoRQSDir="$PPRDIR/viv_n4.srcs/utils_1/imports/impl_1">
+=======
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7k70tfbg676-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" IsChild="false" GenFullBitstream="true" AutoIncrementalDir="$PPRDIR/viv_n4.srcs/utils_1/imports/impl_1" LaunchOptions="-jobs 4 " AutoRQSDir="$PPRDIR/viv_n4.srcs/utils_1/imports/impl_1">
+>>>>>>> 6af903dbae74c6620d7c2e8557d20193333117b1
       <Strategy Version="1" Minor="2">
         <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2016"/>
         <Step Id="init_design"/>

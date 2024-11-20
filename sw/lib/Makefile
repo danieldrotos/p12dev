@@ -12,7 +12,8 @@ OBJECTS		= \
 		char.p2o \
 		inout.p2o \
 		mon.p2o \
-		bsp.p2o
+		bsp.p2o \
+		terminal.p2o
 
 
 all: lib

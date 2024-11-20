@@ -39,7 +39,7 @@ ffcnt	= 0xff52
 main_cycle:
 	;; Event 1: press of BTN[1]
 	ldl0	r0,1
-	call	pressed
+	call	btn_posedge
 	C call	monitor		; BTN1 pressed: back to monitor
 no_press:
 	;; Event 2: input on UART

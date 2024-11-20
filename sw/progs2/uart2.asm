@@ -63,7 +63,7 @@ main_cyc:
 	;jmp	main_cyc	; main cycle
 
 	ldl0	r0,1		; check btn[1]
-	call	pressed
+	call	btn_posedge
 	;; press btn[1]: BTND
 	C call	0xf000		; enter monitor
 
@@ -81,7 +81,7 @@ main_cyc:
 	call	send
 nochar:	
 	ldl0	r0,2
-	call	pressed
+	call	btn_posedge
 	NC jmp	nopress4
 	;; press btn[2]: BTNU
 	call	check_input
