@@ -2,21 +2,7 @@
 	.org	1
 	mvzl	sp,stack
 	call	init
-	jmp	main_cyc
-
-	
-;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	
-	.seg	variables
-pos::
-	.ds	1
-inited::
-	.dd	0
-bullets::
-	.ds	20
-nuof_bullets::
-	.ds	1
-	.ends
+	jmp	main_cycle
 
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -27,12 +13,12 @@ init::
 	;; init bullets
 	mvzl	r0,0
 	mvzl	r1,0
+	st	r1,nuof_bulls
 init_bullets:
-	st	r0,r1,bullets
+	st	r0,r1,bulls
 	inc	r1
 	cmp	r1,20
 	jnz	init_bullets
-	st	r1,nuof_bullets
 	;; start position of gun
 	mvzl	r0,36
 	st	r0,pos
@@ -49,22 +35,55 @@ init_bullets:
 	st	r0,inited
 	pop	pc
 	
-main_cyc::
+main_cycle::
 	call	input_avail
-	jnc	main_cyc
+	jnc	main_cycle
 	call	read
+
+	mvzl	r0,jump_table
+	mvzl	r2,0
+search_cycle:	
+	ld	r3,r2+,r0
+	sz	r3
+	jz	main_cycle
+	cmp	r3,r4
+	jz	search_find
+	plus	r2,1
+	jmp	search_cycle
+search_find:
+	ld	r3,r2,r0
+	call	r3,0
+	jmp	main_cycle
+	
 	cmp	r4,'a'
 	jnz	no_a
 	call	move_left
-	jmp	main_cyc
+	jmp	main_cycle
 no_a:
 	cmp	r4,'d'
 	jnz	no_d
 	call	move_right
-	jmp	main_cyc
+	jmp	main_cycle
 no_d:
-	jmp	main_cyc
+	jmp	main_cycle
 
+jump_table:
+	dd	'a'
+	dd	move_left
+	dd	'A'
+	dd	move_left
+	dd	'd'
+	dd	move_right
+	dd	'D'
+	dd	move_right
+	dd	0x20
+	dd	shoot
+	dd	10
+	dd	shoot
+	dd	13
+	dd	shoot
+	dd	0
+	
 	.ends
 
 	
@@ -74,6 +93,8 @@ no_d:
 	
 show_gun::
 	push	lr
+	mvzl	r0,7
+	call	tu_fg
 	ld	r0,pos
 	mvzl	r1,24
 	call	tu_go
@@ -102,13 +123,75 @@ move_right::
 	st	r0,pos
 	call	show_gun
 	pop	pc
-		
+
+shoot::
+	push	lr
+	ld	r0,nuof_bulls
+	cmp	r0,20
+	UGE pop	pc
+	mvzl	r0,0
+seb_cyc:
+	cmp	r0,20
+	EQ pop	pc
+	ld	r1,r0,bulls
+	getbz	r2,r0,0		; Check Y
+	sz	r2
+	NZ plus	r0,1
+	NZ jmp	seb_cyc
+seb_found:
+	mov	r10,r0
+	ld	r0,nuof_bulls
+	add	r0,1
+	st	r0,nuof_bulls
+	mvzl	r9,23
+	mvzl	r0,6
+	call	rand_max
+	add	r4,1
+	putb	r9,r4,2
+	ld	r0,pos
+	add	r0,2
+	putb	r9,r0,1
+	mvzl	r0,0
+	putb	r9,r0,3
+	st	r9,r10,bulls
+	mov	r0,r10
+	call	show_bull
+	pop	pc
+	
 	.ends
 
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	bullet_sergment
+
+	;; In : R0 bull index
+show_bull::
+	push	lr
+	ld	r10,r0,bulls
+	getbz	r0,r10,2
+	call	tu_fg
+	getbz	r0,r10,1
+	getbz	r1,r10,0
+	call	tu_go
+	mvzl	r0,'O'
+	call	putchar
+	pop	pc
+	
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	.seg	variables
+pos::
+	.ds	1
+inited::
+	.dd	0
+bulls::
+	.ds	20		; X color X Y
+nuof_bulls::
+	.ds	1
 	.ends
 
 	
