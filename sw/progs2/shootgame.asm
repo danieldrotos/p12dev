@@ -47,8 +47,8 @@ main_cycle::
 mc_input:
 	call	input_avail
 	jnc	main_cycle
+	
 	call	read
-
 	mvzl	r0,jump_table
 	mvzl	r2,0
 search_cycle:	
@@ -166,6 +166,7 @@ seb_found:
 	;; In : R0 bull index
 show_bull::
 	push	lr
+	push	r0
 	ld	r10,r0,bulls
 	getbz	r0,r10,2
 	call	tu_fg
@@ -174,33 +175,60 @@ show_bull::
 	call	tu_go
 	mvzl	r0,'O'
 	call	putchar
+	pop	r0
 	pop	pc
 
 	;; In : R0 bull index
+	;; Out: F.C gone out of screen
 move_bull::
 	push	lr
+	push	r0
 	mov	r10,r0
 	ld	r2,r10,bulls
+	getbz	r0,r2,1
+	getbz	r1,r2,0
+	call	tu_go
+	mvzl	r0,0x20
+	call	putchar
 	getbz	r1,r2,0
 	sub	r1,1
+	putb	r2,r1,0
+	st	r2,r10,bulls
 	cmp	r1,2
-	ULT jmp	mb_true
+	SLT jmp	mb_true
 	putb	r2,r1,0
 	st	r2,r10,bulls
 	mov	r0,r10
 	call	show_bull
-mb_false:	
+mb_false:
 	clc
-	pop	pc
+	jmp	mb_ret
 mb_true:
 	sec
+mb_ret:
+	pop	r0
 	pop	pc
 	
-	;;  In: R0 bull index
+	;; In : R0 bull index
 remove_bull::
 	push	lr
+	push	r0
+	mov	r10,r0
+	ld	r2,r10,bulls
+	getbz	r0,r2,1
+	getbz	r1,r2,0
+	call	tu_go
+	mvzl	r0,0x20
+	call	putchar
+	mvzl	r2,0
+	st	r2,r10,bulls
+	ld	r0,nuof_bulls
+	sub	r0,1
+	st	r0,nuof_bulls
+	pop	r0
 	pop	pc
-	
+
+	;; In : -
 move_bulls::
 	push	lr
 	mvzl	r0,100
@@ -211,13 +239,11 @@ mb_cycle:
 	getbz	r3,r2,0
 	sz	r3
 	jz	mv_next
-	push	r0
 	call	move_bull
-	pop	r0
 	C call	remove_bull
 mv_next:
-	add	r1,1
-	cmp	r1,20
+	add	r0,1
+	cmp	r0,20
 	jnz	mb_cycle
 	pop	pc
 	
