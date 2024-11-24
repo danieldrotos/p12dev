@@ -10,6 +10,12 @@
 	.seg	main_segment
 init::
 	push	lr
+	mvzl	r0,0
+	call	tu_bg
+	mvzl	r0,7
+	call	tu_fg
+	call	tu_clear_screen
+	call	tu_hide
 	;; init bullets
 	mvzl	r1,0
 	st	r1,nuof_bulls
@@ -37,6 +43,7 @@ init_bullets:
 	;; mark inited state
 	mvzl	r0,1
 	st	r0,inited
+	call	status
 	pop	pc
 	
 main::
@@ -81,6 +88,27 @@ jump_table:
 	dd	13
 	dd	shoot
 	dd	0
+
+
+status::
+	push	lr
+	push	r0
+	push	r1
+	mvzl	r0,1
+	mvzl	r1,7
+	call	tu_color
+	mvzl	r0,1
+	mvzl	r1,1
+	call	tu_go
+	ld	r1,pos
+	ld	r2,nuof_bulls
+	call	eprintf
+	.db	"p=%d  b=%d   "
+	mvzl	r0,0
+	call	tu_bg
+	pop	r1
+	pop	r0
+	pop	pc
 	
 	.ends
 
@@ -132,7 +160,7 @@ seb_cyc:
 	cmp	r0,20
 	EQ pop	pc
 	ld	r1,r0,bulls
-	getbz	r2,r0,0		; Check Y
+	getbz	r2,r1,0		; Check Y
 	sz	r2
 	NZ plus	r0,1
 	NZ jmp	seb_cyc
@@ -154,6 +182,7 @@ seb_found:
 	st	r9,r10,bulls
 	mov	r0,r10
 	call	show_bull
+	call	status
 	pop	pc
 	
 	.ends
@@ -223,6 +252,7 @@ remove_bull::
 	ld	r0,nuof_bulls
 	sub	r0,1
 	st	r0,nuof_bulls
+	call	status
 	pop	r0
 	pop	pc
 
