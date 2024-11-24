@@ -14,6 +14,10 @@ init::
 	mvzl	r0,0
 	mvzl	r1,0
 	st	r1,nuof_bulls
+	mvzl	r0,24999
+	st	r0,CLOCK.PRE
+	mvzl	r0,100
+	st	r0,CLOCK.BCNT2
 init_bullets:
 	st	r0,r1,bulls
 	inc	r1
@@ -36,6 +40,11 @@ init_bullets:
 	pop	pc
 	
 main_cycle::
+	ld	r0,CLOCK.BCNT2
+	sz	r0
+	jnz	mc_input
+	call	move_bulls
+mc_input:
 	call	input_avail
 	jnc	main_cycle
 	call	read
@@ -55,17 +64,6 @@ search_find:
 	call	r3,0
 	jmp	main_cycle
 	
-	cmp	r4,'a'
-	jnz	no_a
-	call	move_left
-	jmp	main_cycle
-no_a:
-	cmp	r4,'d'
-	jnz	no_d
-	call	move_right
-	jmp	main_cycle
-no_d:
-	jmp	main_cycle
 
 jump_table:
 	dd	'a'
@@ -176,6 +174,51 @@ show_bull::
 	call	tu_go
 	mvzl	r0,'O'
 	call	putchar
+	pop	pc
+
+	;; In : R0 bull index
+move_bull::
+	push	lr
+	mov	r10,r0
+	ld	r2,r10,bulls
+	getbz	r1,r2,0
+	sub	r1,1
+	cmp	r1,2
+	ULT jmp	mb_true
+	putb	r2,r1,0
+	st	r2,r10,bulls
+	mov	r0,r10
+	call	show_bull
+mb_false:	
+	clc
+	pop	pc
+mb_true:
+	sec
+	pop	pc
+	
+	;;  In: R0 bull index
+remove_bull::
+	push	lr
+	pop	pc
+	
+move_bulls::
+	push	lr
+	mvzl	r0,100
+	st	r0,CLOCK.BCNT2
+	mvzl	r0,0
+mb_cycle:
+	ld	r2,r0,bulls
+	getbz	r3,r2,0
+	sz	r3
+	jz	mv_next
+	push	r0
+	call	move_bull
+	pop	r0
+	C call	remove_bull
+mv_next:
+	add	r1,1
+	cmp	r1,20
+	jnz	mb_cycle
 	pop	pc
 	
 	.ends
