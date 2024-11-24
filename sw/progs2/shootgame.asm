@@ -2,7 +2,7 @@
 	.org	1
 	mvzl	sp,stack
 	call	init
-	jmp	main_cycle
+	jmp	main
 
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -11,13 +11,13 @@
 init::
 	push	lr
 	;; init bullets
-	mvzl	r0,0
 	mvzl	r1,0
 	st	r1,nuof_bulls
 	mvzl	r0,24999
 	st	r0,CLOCK.PRE
 	mvzl	r0,100
 	st	r0,CLOCK.BCNT2
+	mvzl	r0,0
 init_bullets:
 	st	r0,r1,bulls
 	inc	r1
@@ -39,14 +39,14 @@ init_bullets:
 	st	r0,inited
 	pop	pc
 	
-main_cycle::
+main::
 	ld	r0,CLOCK.BCNT2
 	sz	r0
 	jnz	mc_input
 	call	move_bulls
 mc_input:
 	call	input_avail
-	jnc	main_cycle
+	jnc	main
 	
 	call	read
 	mvzl	r0,jump_table
@@ -54,7 +54,7 @@ mc_input:
 search_cycle:	
 	ld	r3,r2+,r0
 	sz	r3
-	jz	main_cycle
+	jz	main
 	cmp	r3,r4
 	jz	search_find
 	plus	r2,1
@@ -62,7 +62,7 @@ search_cycle:
 search_find:
 	ld	r3,r2,r0
 	call	r3,0
-	jmp	main_cycle
+	jmp	main
 	
 
 jump_table:
@@ -167,11 +167,11 @@ seb_found:
 show_bull::
 	push	lr
 	push	r0
-	ld	r10,r0,bulls
-	getbz	r0,r10,2
+	ld	r2,r0,bulls
+	getbz	r0,r2,2
 	call	tu_fg
-	getbz	r0,r10,1
-	getbz	r1,r10,0
+	getbz	r0,r2,1
+	getbz	r1,r2,0
 	call	tu_go
 	mvzl	r0,'O'
 	call	putchar
@@ -196,8 +196,6 @@ move_bull::
 	st	r2,r10,bulls
 	cmp	r1,2
 	SLT jmp	mb_true
-	putb	r2,r1,0
-	st	r2,r10,bulls
 	mov	r0,r10
 	call	show_bull
 mb_false:
@@ -233,6 +231,9 @@ move_bulls::
 	push	lr
 	mvzl	r0,100
 	st	r0,CLOCK.BCNT2
+	ld	r0,nuof_bulls
+	sz	r0
+	Z pop	pc
 	mvzl	r0,0
 mb_cycle:
 	ld	r2,r0,bulls
@@ -257,10 +258,10 @@ pos::
 	.ds	1
 inited::
 	.dd	0
-bulls::
-	.ds	20		; X color X Y
 nuof_bulls::
 	.ds	1
+bulls::
+	.ds	20		; X color X Y
 	.ends
 
 	
