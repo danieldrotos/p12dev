@@ -35,6 +35,21 @@ init_ships:
 	inc	r1
 	cmp	r1,20
 	jnz	init_ships
+
+	;; init rows
+	mvzl	r1,0
+init_rows:
+	mvzl	r0,5
+	call	rand_max
+	mov	r3,r4
+	mvzl	r0,2
+	call	rand_max
+	sub	r4,1
+	putb	r3,r4,1
+	st	r3,r1,rows
+	inc	r1
+	cmp	r1,25
+	jnz	init_rows
 	
 	;; start position of gun
 	mvzl	r0,36
@@ -304,10 +319,16 @@ pos::
 	.ds	1
 inited::
 	.dd	0
+bull_speed::
+	.dd	100
+down_speed::
+	.dd	5000
+side_speed::
+	.dd	500
 nuof_bulls::
 	.ds	1
 bulls::
-	.ds	20		; X color X Y
+	.ds	20		; - color X Y
 nuof_ships::
 	.ds	1
 ships::
