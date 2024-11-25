@@ -44,9 +44,10 @@ init_rows:
 	mvzl	r0,5
 	call	rand_max
 	mov	r3,r4
-	mvzl	r0,2
+	mvzl	r0,1
 	call	rand_max
-	sub	r4,1
+	sz	r4
+	Z mvs	r4,-1
 	putb	r3,r4,1
 	st	r3,r1,rows
 	inc	r1
@@ -324,7 +325,25 @@ move_rows::
 	push	lr
 	ld	r0,side_speed
 	st	r0,CLOCK.BCNT3
-	
+	mvzl	r0,0
+mr_cyc:
+	ld	r8,r0,rows
+	getbz	r7,r8,0
+	inc	r7
+	putb	r8,r7,0
+	cmp	r7,5
+	ULE jmp	mr_next
+mr_ch:
+	getbs	r7,r8,1
+	mul	r7,-1
+	mvzl	r8,0
+	putb	r8,r7,1
+mr_next:
+	st	r8,r0,rows
+	inc	r0
+	cmp	r0,25
+	jnz	mr_cyc
+mr_ret:
 	pop	pc
 	
 	.ends
