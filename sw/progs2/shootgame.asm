@@ -15,7 +15,9 @@ init::
 	st	r0,CLOCK.PRE	; start clock
 	ld	r0,bull_speed		; bullet movement
 	st	r0,CLOCK.BCNT2
-
+	ld	r0,side_speed
+	st	r0,CLOCK.BCNT3
+	
 	;; init bullets
 	mvzl	r1,0
 	st	r1,nuof_bulls
@@ -73,12 +75,19 @@ init_rows:
 main::
 	ld	r0,CLOCK.BCNT2
 	sz	r0
-	jnz	mc_input
-	call	move_bulls
-mc_input:
+	Z call	move_bulls
+
+	ld	r0,CLOCK.BCNT3
+	sz	r0
+	Z call	move_rows
+
 	call	input_avail
-	jnc	main
-	
+	C call	handle_input
+
+	jmp	main
+
+handle_input::
+	push	lr
 	call	read
 	mvzl	r0,jump_table
 	mvzl	r2,0
@@ -93,7 +102,7 @@ search_cycle:
 search_find:
 	ld	r3,r2,r0
 	call	r3,0
-	jmp	main
+	pop	pc
 	
 
 jump_table:
@@ -162,6 +171,7 @@ move_left::
 	add	r0,-1
 	st	r0,pos
 	call	show_gun
+	call	status
 	pop	pc
 	
 move_right::
@@ -172,6 +182,7 @@ move_right::
 	add	r0,1
 	st	r0,pos
 	call	show_gun
+	call	status
 	pop	pc
 
 shoot::
@@ -308,6 +319,13 @@ mv_next:
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 	.seg	ship_segment
+
+move_rows::
+	push	lr
+	ld	r0,side_speed
+	st	r0,CLOCK.BCNT3
+	
+	pop	pc
 	
 	.ends
 
