@@ -109,6 +109,7 @@ c3:	shl	r4
 rand_max::
 	push	lr
 	push	r0
+	push	r1
 	push	r2
 	push	r5
 	
@@ -122,6 +123,7 @@ rand_max::
 	
 	pop	r5
 	pop	r2
+	pop	r1
 	pop	r0
 	pop	pc
 ;	ret
