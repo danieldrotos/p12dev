@@ -225,7 +225,7 @@ seb_found:
 
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-	.seg	bullet_sergment
+	.seg	bullet_segment
 
 	;; In : R0 bull index
 show_bull::
