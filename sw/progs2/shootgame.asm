@@ -13,7 +13,7 @@ init::
 
 	mvzl	r0,24999
 	st	r0,CLOCK.PRE	; start clock
-	mvzl	r0,100		; bullet movement
+	ld	r0,bull_speed		; bullet movement
 	st	r0,CLOCK.BCNT2
 
 	;; init bullets
@@ -283,7 +283,7 @@ remove_bull::
 	;; In : -
 move_bulls::
 	push	lr
-	mvzl	r0,100
+	ld	r0,bull_speed
 	st	r0,CLOCK.BCNT2
 	ld	r0,nuof_bulls
 	sz	r0
