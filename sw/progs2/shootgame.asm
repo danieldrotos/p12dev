@@ -10,25 +10,32 @@
 	.seg	main_segment
 init::
 	push	lr
-	mvzl	r0,0
-	call	tu_bg
-	mvzl	r0,7
-	call	tu_fg
-	call	tu_clear_screen
-	call	tu_hide
+
+	mvzl	r0,24999
+	st	r0,CLOCK.PRE	; start clock
+	mvzl	r0,100		; bullet movement
+	st	r0,CLOCK.BCNT2
+
 	;; init bullets
 	mvzl	r1,0
 	st	r1,nuof_bulls
-	mvzl	r0,24999
-	st	r0,CLOCK.PRE
-	mvzl	r0,100
-	st	r0,CLOCK.BCNT2
 	mvzl	r0,0
 init_bullets:
 	st	r0,r1,bulls
 	inc	r1
 	cmp	r1,20
 	jnz	init_bullets
+
+	;; init ships
+	mvzl	r1,0
+	st	r1,nuof_ships
+	mvzl	r0,0x0100
+init_ships:
+	st	r0,r1,ships
+	inc	r1
+	cmp	r1,20
+	jnz	init_ships
+	
 	;; start position of gun
 	mvzl	r0,36
 	st	r0,pos
@@ -38,8 +45,10 @@ init_bullets:
 	mvzl	r1,7
 	call	tu_color
 	call	tu_clear_screen
+	
 	;; show default objects
 	call	show_gun
+
 	;; mark inited state
 	mvzl	r0,1
 	st	r0,inited
@@ -280,6 +289,13 @@ mv_next:
 	
 	.ends
 
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	
+	.seg	ship_segment
+	
+	.ends
+
 	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
@@ -292,6 +308,12 @@ nuof_bulls::
 	.ds	1
 bulls::
 	.ds	20		; X color X Y
+nuof_ships::
+	.ds	1
+ships::
+	.ds	20		; hits:4,color:4 id:5,type:3 X Y
+rows::
+	.ds	25		; - - dir steps
 	.ends
 
 	
