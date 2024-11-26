@@ -71,8 +71,16 @@ init_rows:
 	mvzl	r0,1
 	st	r0,inited
 	call	status
-	pop	pc
+
+	;; test...
+	mvzl	r1,0x0502
+	mvh	r1,0x09100000
+	mvzl	r0,1
+	st	r1,r0,ships
+	call	show_ship
 	
+	pop	pc
+
 main::
 	ld	r0,CLOCK.BCNT2
 	sz	r0
@@ -321,6 +329,40 @@ mv_next:
 	
 	.seg	ship_segment
 
+	;; In : R0 index of ship
+show_ship::
+	push	lr
+	push	r0
+	ld	r10,r0,ships
+	getbz	r0,r10,1
+	getbz	r1,r10,0
+	call	tu_go
+	getbz	r0,r10,3
+	btst	r0,0xf
+	call	tu_fg
+	getbz	r1,r10,2
+	shr	r1
+	shr	r1
+	shr	r1
+	add	r1,'A'
+ss_s:	getbz	r0,r10,2
+	btst	r0,7
+	mul	r0,9
+	add	r0,ship_forms
+	call	printf
+	pop	r0
+	pop	pc
+
+ship_forms:
+	.db	" |-%c-| "
+	.db	" v-%c-V "
+	.db	" X-%c-X "
+	.db	" }-%c-{ "
+	.db	" ^-%c-^ "
+	.db	" O-%c-O "
+	.db	" ~_%c_~ "
+	.db	" (-%c-) "
+	
 move_rows::
 	push	lr
 	ld	r0,side_speed
