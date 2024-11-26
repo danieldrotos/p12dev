@@ -362,6 +362,24 @@ ship_forms:
 	.db	" O-%c-O "
 	.db	" ~_%c_~ "
 	.db	" (-%c-) "
+
+gen_ships::
+	push	lr
+	mvzl	r0,0
+gs_cyc:
+	cmp	r0,4
+	UGT jmp	gs_ret
+	ld	r1,nuof_ships
+	cmp	r1,20
+	UGE jmp	gs_ret
+	mvzl	r1,0
+gs_search:
+	ld	r2,r1,ships
+	zeb	r2
+	sz	r2
+	;; continue here...
+gs_ret:	
+	pop	pc
 	
 move_rows::
 	push	lr
