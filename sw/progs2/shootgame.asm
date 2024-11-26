@@ -73,11 +73,11 @@ init_rows:
 	call	status
 
 	;; test...
-	mvzl	r1,0x0502
-	mvh	r1,0x09100000
-	mvzl	r0,1
-	st	r1,r0,ships
-	call	show_ship
+	;mvzl	r1,0x0502
+	;mvh	r1,0x09270000
+	;mvzl	r0,1
+	;st	r1,r0,ships
+	;call	show_ship
 	
 	pop	pc
 
@@ -355,7 +355,7 @@ ss_s:	getbz	r0,r10,2
 
 ship_forms:
 	.db	" |-%c-| "
-	.db	" v-%c-V "
+	.db	" v-%c-v "
 	.db	" X-%c-X "
 	.db	" }-%c-{ "
 	.db	" ^-%c-^ "
