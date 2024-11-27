@@ -354,6 +354,39 @@ ss_s:	getbz	r0,r10,2
 	pop	r0
 	pop	pc
 
+	;; In : R0 ship index
+	;;      R1 delta X
+	;;      R2 delta Y
+move_ship::
+	push	lr
+	ld	r10,r0,ships
+	getbz	r4,r10,0	; R4:Y
+	sz	r4
+	Z pop	pc
+	add	r4,r2
+	getbz	r3,r10,1	; R3: X
+	add	r3,r1
+	cmp	r4,24
+	jnz	ms_not_bottom
+ms_bottom:
+ms_not_bottom:
+	sz	r2
+	jz	ms_noch_y
+mc_ch_y:
+	getb	r0,r10,1
+	getb	r1,r10,0
+	call	tu_go
+	ces	eprints
+	.db	"       "
+ms_noch_y:
+	putb	r10,r4,0
+	putb	r10,r3,1
+	st	r10,r0,ships
+	call	show_ship
+	jmp	ms_ret
+ms_ret:
+	pop	pc
+	
 ship_forms:
 	.db	" |-%c-| "
 	.db	" v-%c-v "
