@@ -359,10 +359,13 @@ ss_s:	getbz	r0,r10,2
 	;;      R2 delta Y
 move_ship::
 	push	lr
+	push	r0
+	push	r1
+	push	r2
 	ld	r10,r0,ships
 	getbz	r4,r10,0	; R4:Y
 	sz	r4
-	Z pop	pc
+	Z jmp	ms_ret
 	add	r4,r2
 	getbz	r3,r10,1	; R3: X
 	add	r3,r1
@@ -385,6 +388,9 @@ ms_noch_y:
 	call	show_ship
 	jmp	ms_ret
 ms_ret:
+	pop	r2
+	pop	r1
+	pop	r0
 	pop	pc
 	
 ship_forms:
