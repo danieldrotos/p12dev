@@ -462,7 +462,9 @@ gs_ret:
 	mvzl	r1,2
 	st	r10,r1,rows
 	pop	pc
-	
+
+move_nuof_row:
+	.ds	1
 move_rows::
 	push	lr
 	ld	r0,side_speed
@@ -483,6 +485,23 @@ mr_ch:
 	putb	r8,r7,1
 mr_next:
 	st	r8,r0,rows
+	;; move all ships in this row
+	getbs	r1,r8,1		; delta X
+	movzl	r2,0		; delta Y
+	push	r0
+	st	r0,move_nuof_row	; row nr (Y of ship)
+	mvzl	r0,0
+mr_mrcyc:
+	ld	r10,r0,ships
+	getbz	r8,r10,0
+	ld	r9,move_nuof_row
+	cmp	r8,r9
+	Z call	move_ship
+	inc	r0
+	cmp	r0,20
+	jnz	mr_mrcyc
+mr_mr_done:	
+	pop	r0
 	inc	r0
 	cmp	r0,25
 	jnz	mr_cyc
