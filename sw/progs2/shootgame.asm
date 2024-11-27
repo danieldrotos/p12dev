@@ -53,7 +53,7 @@ init_rows:
 	inc	r1
 	cmp	r1,25
 	jnz	init_rows
-	
+
 	;; start position of gun
 	mvzl	r0,36
 	st	r0,pos
@@ -66,6 +66,7 @@ init_rows:
 	
 	;; show default objects
 	call	show_gun
+	call	gen_ships
 
 	;; mark inited state
 	mvzl	r0,1
@@ -377,8 +378,56 @@ gs_search:
 	ld	r2,r1,ships
 	zeb	r2
 	sz	r2
-	;; continue here...
-gs_ret:	
+	jz	gs_found
+	inc	r1
+	cmp	r1,20
+	jz	gs_ret
+	jmp	gs_search
+gs_found:
+	push	r0
+	mvzl	r10,0x2		; Y
+	;mvzl	r0,50
+	;call	rand_max
+	;add	r4,15
+	;; X= 20+i*10
+	mov	r4,r1
+	mul	r4,10
+	add	r4,20
+	putb	r10,r4,1	; X
+	mvzl	r0,6
+	call	rand_max
+	add	r4,1
+	putb	r10,r4,3	; color
+	mvzl	r0,7
+	call	rand_max
+	mov	r9,r4		; type
+	mvzl	r0,'Z'
+	sub	r0,'A'
+	call	rand_max
+	shl	r4
+	shl	r4
+	shl	r4
+	or	r4,r9
+	putb	r10,r4,2	; id, type
+	st	r10,r1,ships
+	mov	r0,r1
+	call	show_ship
+	pop	r0
+	inc	r0
+	jmp	gs_cyc
+gs_ret:
+	;; regenerate row[2]
+	mvzl	r10,0
+	mvzl	r0,1
+	call	rand_max
+	sz	r4
+	Z mvs	r4,-1
+	putb	r10,r4,1
+	ld	r0,side_steps
+	call	rand_max
+	putb	r10,r4,0
+	mvzl	r1,2
+	st	r10,r1,rows
 	pop	pc
 	
 move_rows::
