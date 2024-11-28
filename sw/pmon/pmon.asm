@@ -1881,52 +1881,52 @@ printf_cyc:
 	;jnz	printf_notescape
 	jmp	printf_notescape
 	
-	inc	r3
-	cmp	r3,4
-	jnz	printf_l1
-printf_l2:
-	mvzl	r3,0
-	inc	r2
-	ld	r0,r2
-	sz	r0
-	jz	printf_ret
-printf_l1:
-	ld	r0,r2
-	getbz	r0,r0,r3
-	sz	r0
-	jz	printf_l2
+;; 	inc	r3
+;; 	cmp	r3,4
+;; 	jnz	printf_l1
+;; printf_l2:
+;; 	mvzl	r3,0
+;; 	inc	r2
+;; 	ld	r0,r2
+;; 	sz	r0
+;; 	jz	printf_ret
+;; printf_l1:
+;; 	ld	r0,r2
+;; 	getbz	r0,r0,r3
+;; 	sz	r0
+;; 	jz	printf_l2
 	
-	cmp	r0,'a'
-	Z mvzl	r0,7
-	Z jmp	printf_print
-	cmp	r0,'b'
-	Z mvzl	r0,8
-	Z jmp	printf_print
-	cmp	r0,'e'
-	Z mvzl	r0,0x1b
-	Z jmp	printf_print
-	cmp	r0,'f'
-	Z mvzl	r0,0xc
-	Z jmp	printf_print
-	cmp	r0,'n'
-	Z mvzl	r0,0xa
-	Z jmp	printf_print
-	cmp	r0,'r'
-	Z mvzl	r0,0xd
-	Z jmp	printf_print
-	cmp	r0,'t'
-	Z mvzl	r0,9
-	Z jmp	printf_print
-	cmp	r0,'v'
-	Z mvzl	r0,0xb
-	Z jmp	printf_print
-	cmp	r0,0x5c
-	Z jmp	printf_print
-	cmp	r0,'0'
-	Z mvzl	r0,0
-	Z jmp	printf_print
+;; 	cmp	r0,'a'
+;; 	Z mvzl	r0,7
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'b'
+;; 	Z mvzl	r0,8
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'e'
+;; 	Z mvzl	r0,0x1b
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'f'
+;; 	Z mvzl	r0,0xc
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'n'
+;; 	Z mvzl	r0,0xa
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'r'
+;; 	Z mvzl	r0,0xd
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'t'
+;; 	Z mvzl	r0,9
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'v'
+;; 	Z mvzl	r0,0xb
+;; 	Z jmp	printf_print
+;; 	cmp	r0,0x5c
+;; 	Z jmp	printf_print
+;; 	cmp	r0,'0'
+;; 	Z mvzl	r0,0
+;; 	Z jmp	printf_print
 	
-	jmp	printf_print
+;; 	jmp	printf_print
 	
 printf_notescape:	
 	cmp	r0,'%'		; is it a format char?
