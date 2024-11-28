@@ -1851,6 +1851,7 @@ printf:
 	push	lr
 	push	r0
 	push	r1
+	push	r2
 	push	r3
 	
 	st	r1,reg1
@@ -1877,9 +1878,10 @@ printf_cyc:
 	sz	r0		; is it null?
 	jz	printf_nextword	; no more non-nulls
 
-	cmp	r0,'\\'
-	jnz	printf_notescape
-
+	;cmp	r0,'\\'
+	;jnz	printf_notescape
+	jmp	printf_notescape
+	
 	inc	r3
 	cmp	r3,4
 	jnz	printf_l1
@@ -2002,7 +2004,18 @@ printf_nextword:
 	jmp	printf_cyc
 	
 printf_ret:
+	ld	r12,reg12
+	ld	r11,reg11
+	ld	r10,reg10
+	ld	r9,reg9
+	ld	r8,reg8
+	ld	r7,reg7
+	ld	r6,reg6
+	ld	r5,reg5
+	ld	r4,reg4
+	
 	pop	r3
+	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
