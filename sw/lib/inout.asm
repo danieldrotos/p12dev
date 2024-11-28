@@ -57,7 +57,9 @@ eprints::
 
 	.seg	_lib_segment_printf
 printf::
-	jmp	_pm_printf
+	;push	r2
+	call	_pm_printf
+	;pop	r2
 	.ends
 
 

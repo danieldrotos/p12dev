@@ -1968,6 +1968,8 @@ printf_x:
 	inc	r1
 	push	r1
 	mvzl	r1,0
+
+
 	call	print_vhex
 	pop	r1
 	jmp	printf_next
