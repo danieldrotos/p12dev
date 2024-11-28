@@ -394,7 +394,7 @@ ms_ret:
 	pop	pc
 	
 ship_forms:
-	.db	" |-%c-| "
+	.db	" /-%c-\\ "
 	.db	" v-%c-v "
 	.db	" X-%c-X "
 	.db	" }-%c-{ "

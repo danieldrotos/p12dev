@@ -1851,7 +1851,6 @@ printf:
 	push	lr
 	push	r0
 	push	r1
-	push	r2
 	push	r3
 	
 	st	r1,reg1
@@ -2015,7 +2014,6 @@ printf_ret:
 	ld	r4,reg4
 	
 	pop	r3
-	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
