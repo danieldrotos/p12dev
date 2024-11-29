@@ -78,6 +78,8 @@ segmode.p2h: segmode.asm $(LIB)
 
 edges.p2h: edges.asm $(LIB)
 
+tudemo.p2h: tudemo.asm $(LIB)
+
 shootgame.p2h: shootgame.asm $(LIB)
 
 clean:
