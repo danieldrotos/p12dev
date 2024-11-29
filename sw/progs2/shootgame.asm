@@ -162,6 +162,8 @@ status::
 	
 show_gun::
 	push	lr
+	push	r0
+	push	r1
 	mvzl	r0,7
 	call	tu_fg
 	ld	r0,pos
@@ -171,6 +173,8 @@ show_gun::
 	mvzl	r1,7
 	call	eprints
 	.db	" -^- "
+	pop	r1
+	pop	r0
 	pop	pc
 	
 move_left::
@@ -241,6 +245,8 @@ seb_found:
 show_bull::
 	push	lr
 	push	r0
+	push	r1
+	push	r2
 	ld	r2,r0,bulls
 	getbz	r0,r2,2
 	call	tu_fg
@@ -249,6 +255,8 @@ show_bull::
 	call	tu_go
 	mvzl	r0,'O'
 	call	putchar
+	pop	r2
+	pop	r1
 	pop	r0
 	pop	pc
 
@@ -257,6 +265,9 @@ show_bull::
 move_bull::
 	push	lr
 	push	r0
+	push	r1
+	push	r2
+	push	r10
 	mov	r10,r0
 	ld	r2,r10,bulls
 	getbz	r0,r2,1
@@ -278,6 +289,9 @@ mb_false:
 mb_true:
 	sec
 mb_ret:
+	pop	r10
+	pop	r2
+	pop	r1
 	pop	r0
 	pop	pc
 	
@@ -285,6 +299,9 @@ mb_ret:
 remove_bull::
 	push	lr
 	push	r0
+	push	r1
+	push	r2
+	push	r10
 	mov	r10,r0
 	ld	r2,r10,bulls
 	getbz	r0,r2,1
@@ -298,6 +315,9 @@ remove_bull::
 	sub	r0,1
 	st	r0,nuof_bulls
 	call	status
+	pop	r10
+	pop	r2
+	pop	r1
 	pop	r0
 	pop	pc
 
@@ -334,6 +354,8 @@ mv_next:
 show_ship::
 	push	lr
 	push	r0
+	push	r1
+	push	r10
 	ld	r10,r0,ships
 	getbz	r0,r10,1
 	getbz	r1,r10,0
@@ -351,6 +373,8 @@ ss_s:	getbz	r0,r10,2
 	mul	r0,9
 	add	r0,ship_forms
 	call	printf
+	pop	r10
+	pop	r1
 	pop	r0
 	pop	pc
 
@@ -362,6 +386,9 @@ move_ship::
 	push	r0
 	push	r1
 	push	r2
+	push	r3
+	push	r4
+	push	r10
 	ld	r10,r0,ships
 	getbz	r4,r10,0	; R4:Y
 	sz	r4
@@ -388,6 +415,9 @@ ms_noch_y:
 	call	show_ship
 	jmp	ms_ret
 ms_ret:
+	pop	r10
+	pop	r4
+	pop	r3
 	pop	r2
 	pop	r1
 	pop	r0
@@ -529,6 +559,7 @@ side_speed::	.dd	500
 side_steps::	.dd	10
 nuof_bulls::	.ds	1
 bulls::		.ds	20		; - color X Y
+.ds 1
 nuof_ships::	.ds	1
 ships::		.ds	20		; hits:4,color:4 id:5,type:3 X Y
 rows::		.ds	25		; - - dir steps
