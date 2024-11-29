@@ -150,6 +150,7 @@ packed_test:
 	C mvzl	r0,resp
 	NC mvzl	r0,resu
 	mvzl	r1,scu
+call_printf:
 	call	printf
 
 	mvzl	r0,scp

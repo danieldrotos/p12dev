@@ -57,9 +57,11 @@ eprints::
 
 	.seg	_lib_segment_printf
 printf::
-	;push	r2
+	push	lr
+	push	r2
 	call	_pm_printf
-	;pop	r2
+	pop	r2
+	pop	pc
 	.ends
 
 
