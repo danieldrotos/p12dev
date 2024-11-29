@@ -1596,10 +1596,10 @@ prints_done:
 	;; -----------------------------------
 	;; IN : - 
 	;; OUT: -
-pes_ret_to:	dd	0
+;pes_ret_to:	dd	0
 	
 pes:
-	push	lr
+	;push	lr
 	push	r0
 	push	r1
 	push	r2
@@ -1621,14 +1621,16 @@ pes_byte:
 	jnz	pes_byte
 	jmp	pes_next
 pes_done:
-	st	r1,pes_ret_to
+	;st	r1,pes_ret_to
+	mov	LR,r1
 	pop	r3
 	pop	r2
 	pop	r1
 	pop	r0
-	pop	lr
-	ld	pc,pes_ret_to
-
+	;pop	lr
+	;ld	pc,pes_ret_to
+	ret
+	
 
 	;; Print string and append a NL
 	;; ----------------------------
@@ -2028,10 +2030,10 @@ pesf:
 	mov	r0,LR
 	call	printf
 	inc	r2
-	st	r2,reg2
+	mov	LR,r2
 	pop	r2
 	pop	r0
-	ld	PC,reg2
+	ret
 
 
 version:
