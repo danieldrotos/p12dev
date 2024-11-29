@@ -15,6 +15,7 @@ c1:
 	mov	r1,r9
 	mov	r2,r4
 	mov	r3,r4
+call_pesf:
 	ces	eprintf
 	.db	"s1[%d]= %c,%d\n"
 	inc	r9
