@@ -393,12 +393,14 @@ move_ship::
 	getbz	r4,r10,0	; R4:Y
 	sz	r4
 	Z jmp	ms_ret
+ms_ok:
 	add	r4,r2
 	getbz	r3,r10,1	; R3: X
 	add	r3,r1
 	cmp	r4,24
 	jnz	ms_not_bottom
 ms_bottom:
+	;; TODO
 ms_not_bottom:
 	sz	r2
 	jz	ms_noch_y

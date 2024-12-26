@@ -16,6 +16,7 @@ i=0
 P=$(pwd)
 while [ ! -f ${P}/.version -a $i -lt 10 ]; do
     P=${P}/..
+    i=$(($i+1))
 done
 echo P=$P
 PMON=${P}/sw/pmon
