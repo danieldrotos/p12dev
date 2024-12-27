@@ -388,8 +388,10 @@ move_ship::
 	push	r2
 	push	r3
 	push	r4
+	push	r5
 	push	r10
-	ld	r10,r0,ships
+	mov	r5,r0		; orig ship nr
+	ld	r10,r5,ships
 	getbz	r4,r10,0	; R4:Y
 	sz	r4
 	Z jmp	ms_ret
@@ -400,24 +402,25 @@ ms_ok:
 	cmp	r4,24
 	jnz	ms_not_bottom
 ms_bottom:
-	;; TODO
+	;; TODO: remove ship
 ms_not_bottom:
 	sz	r2
-	jz	ms_noch_y
+	jz	ms_ready
 mc_ch_y:
-	getb	r0,r10,1
-	getb	r1,r10,0
+	getb	r0,r10,1	; orig X
+	getb	r1,r10,0	; orig Y
 	call	tu_go
 	ces	eprints
 	.db	"       "
-ms_noch_y:
-	putb	r10,r4,0
-	putb	r10,r3,1
-	st	r10,r0,ships
+ms_ready:
+	putb	r10,r4,0	; new Y
+	putb	r10,r3,1	; new X
+	st	r10,r5,ships	; store new ship
+	mov	r0,r5
 	call	show_ship
-	jmp	ms_ret
 ms_ret:
 	pop	r10
+	pop	r5
 	pop	r4
 	pop	r3
 	pop	r2
@@ -507,41 +510,40 @@ move_rows::
 	push	lr
 	ld	r0,side_speed
 	st	r0,CLOCK.BCNT3
-	mvzl	r0,0
+	mvzl	r3,0		; row nr
 mr_cyc:
-	ld	r8,r0,rows
-	getbz	r7,r8,0
-	inc	r7
-	putb	r8,r7,0
-	ld	r6,side_steps
+	ld	r8,r3,rows	; pick row
+	getbz	r7,r8,0		; get steps
+	inc	r7		; inc steps
+	putb	r8,r7,0		; put back incremented steps
+	ld	r6,side_steps	; is it over limit?
 	cmp	r7,r6
 	ULE jmp	mr_next
 mr_ch:
-	getbs	r7,r8,1
-	mul	r7,-1
-	mvzl	r8,0
+	getbs	r7,r8,1		; revers direction
+	neg	r7
+	mvzl	r8,0		; and clear steps
 	putb	r8,r7,1
 mr_next:
-	st	r8,r0,rows
+	st	r8,r3,rows	; store changed row
 	;; move all ships in this row
 	getbs	r1,r8,1		; delta X
 	movzl	r2,0		; delta Y
-	push	r0
-	st	r0,move_nuof_row	; row nr (Y of ship)
-	mvzl	r0,0
+	mvzl	r0,0		; ship nr
 mr_mrcyc:
-	ld	r10,r0,ships
-	getbz	r8,r10,0
-	ld	r9,move_nuof_row
-	cmp	r8,r9
+	ld	r10,r0,ships	; pick a ship
+	getbz	r8,r10,0	; check its Y
+	sz	r8		; is it valid?
+	jz	mr_noship
+	cmp	r8,r3		; compare row and Y
 	Z call	move_ship
-	inc	r0
+mr_noship:
+	inc	r0		; next ship
 	cmp	r0,20
 	jnz	mr_mrcyc
 mr_mr_done:	
-	pop	r0
-	inc	r0
-	cmp	r0,25
+	inc	r3		; go to next row
+	cmp	r3,25		; is there any more?
 	jnz	mr_cyc
 mr_ret:
 	pop	pc
