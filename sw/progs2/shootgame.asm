@@ -504,8 +504,6 @@ gs_ret:
 	st	r10,r1,rows
 	pop	pc
 
-move_nuof_row:
-	.ds	1
 move_rows::
 	push	lr
 	ld	r0,side_speed
@@ -518,13 +516,13 @@ mr_cyc:
 	putb	r8,r7,0		; put back incremented steps
 	ld	r6,side_steps	; is it over limit?
 	cmp	r7,r6
-	ULE jmp	mr_next
-mr_ch:
+	ULE jmp	mr_noch_dir
+mr_ch_dir:
 	getbs	r7,r8,1		; revers direction
 	neg	r7
 	mvzl	r8,0		; and clear steps
 	putb	r8,r7,1
-mr_next:
+mr_noch_dir:
 	st	r8,r3,rows	; store changed row
 	;; move all ships in this row
 	getbs	r1,r8,1		; delta X
@@ -532,10 +530,11 @@ mr_next:
 	mvzl	r0,0		; ship nr
 mr_mrcyc:
 	ld	r10,r0,ships	; pick a ship
-	getbz	r8,r10,0	; check its Y
-	sz	r8		; is it valid?
+	getbz	r5,r10,0	; check its Y
+	sz	r5		; is it valid?
 	jz	mr_noship
-	cmp	r8,r3		; compare row and Y
+mr_ship:
+	cmp	r5,r3		; compare row and Y
 	Z call	move_ship
 mr_noship:
 	inc	r0		; next ship
