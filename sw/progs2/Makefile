@@ -1,3 +1,5 @@
+MYAPP		= shootgame
+
 PRJ		= ../..
 
 include $(PRJ)/sw/common.mk
@@ -30,6 +32,7 @@ all: pmonitor lib \
 	tudemo.asc tudemo.cdb \
 	shootgame.asc shootgame.cdb
 
+app: $(MYAPP)
 
 pmonitor:
 	$(MAKE) -C $(PMON) pmon_app
@@ -72,15 +75,18 @@ bugtest.p2h: bugtest.asm $(PLIB)
 
 dtoi_test.p2h: dtoi_test.asm $(PLIB)
 
-printbin.p2h: printbin.asm $(LIB)
+printbin.p2h: printbin.asm $(PLIB)
 
-segmode.p2h: segmode.asm $(LIB)
+segmode.p2h: segmode.asm $(PLIB)
 
-edges.p2h: edges.asm $(LIB)
+edges.p2h: edges.asm $(PLIB)
 
-tudemo.p2h: tudemo.asm $(LIB)
+tudemo.p2h: tudemo.asm $(PLIB)
 
-shootgame.p2h: shootgame.asm $(LIB)
+shootgame.p2h: shootgame.asm $(PLIB)
+
+shootgame: pmonitor lib shootgame.p2h
+	$(ISS) $@
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc
