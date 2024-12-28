@@ -1184,6 +1184,7 @@ function proc_asm_line($l)
     $icode= 0;
     $label= false;
     $cond= false;
+    $words= 0;
     if (($w= strtok($l, " \t")) === false)
     {
         debug("proc_asm_line; no words found in line $lnr");
@@ -1199,7 +1200,7 @@ function proc_asm_line($l)
     while ($w !== false)
     {
         $W= strtoupper($w);
-        debug("proc_asm_line; lnr=$lnr w=$w");
+        debug("proc_asm_line; lnr=$lnr w=$w words=$words");
         
         if (($n= is_label($w)) !== false)
         {
@@ -1542,6 +1543,7 @@ function proc_asm_line($l)
         
         else if (($inst= is_inst($W)) !== false)
         {
+            $words++;
             $icode= $icode | $inst['icode'];
             debug("proc_asm_line; lnr=$lnr INST= ".sprintf("%08x",$icode)." in segment ".print_r($segment,true));
             mk_mem($addr, $icode);
@@ -1555,15 +1557,28 @@ function proc_asm_line($l)
             $ok= true;
             break;
         }
+
+        else
+        {
+            $words++;
+        }
         
         $prew= $w;
         $w= strtok($par_sep);
         if (($w!==false) && ($w[0]==';'))
+        {
+            if (($words > 0) && ($inst == false))
+                ddie("Unrecognizable instruction");
             return;
+        }
     }
     debug(sprintf("first word precessed, addr=%x",$addr));
     if (($prew != '') && ($ok === false))
         ddie("Unknown instruction ($w)");
+    if (($words > 0) && ($inst == false))
+    {
+        ddie("Missing instruction");
+    }
     if ($inst === false)
     {
         debug("Instructionless line");
