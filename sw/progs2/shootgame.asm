@@ -526,7 +526,7 @@ mr_noch_dir:
 	st	r8,r3,rows	; store changed row
 	;; move all ships in this row
 	getbs	r1,r8,1		; delta X
-	movzl	r2,0		; delta Y
+	mvzl	r2,0		; delta Y
 	mvzl	r0,0		; ship nr
 mr_mrcyc:
 	ld	r10,r0,ships	; pick a ship
@@ -535,6 +535,7 @@ mr_mrcyc:
 	jz	mr_noship
 mr_ship:
 	cmp	r5,r3		; compare row and Y
+mr_mv_ship:
 	Z call	move_ship
 mr_noship:
 	inc	r0		; next ship
