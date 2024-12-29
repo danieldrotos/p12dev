@@ -154,7 +154,7 @@ status::
 	ld	r1,pos
 	ld	r2,nuof_bulls
 	ld	r3,nuof_ships
-	call	eprintf
+	ces	eprintf
 	.db	"p=%d  b=%d  s=%d   "
 	mvzl	r0,0
 	call	tu_bg
@@ -182,7 +182,7 @@ show_gun::
 	call	tu_go
 	mvzl	r0,0
 	mvzl	r1,7
-	call	eprints
+	ces	eprints
 	.db	" -^- "
 	pop	r1
 	pop	r0
@@ -468,7 +468,7 @@ remove_ship::
 	sz	r1
 	jz	rs_ret
 	call	tu_go
-	call	eprints
+	ces	eprints
 	.db	"      "
 	mvzl	r0,0x100
 	st	r0,r5,ships
@@ -505,7 +505,7 @@ ms_ok:
 	getbz	r3,r10,1	; R3: X
 	add	r3,r1
 	cmp	r4,24
-	jnz	ms_not_bottom
+	ULT jmp	ms_not_bottom
 ms_bottom:
 	;; TODO: check collision
 	mov	r0,r5
@@ -698,7 +698,7 @@ md_mrcyc:
 pos::		.ds	1
 inited::	.dd	0
 bull_speed::	.dd	100
-down_speed::	.dd	5000
+down_speed::	.dd	1000
 side_speed::	.dd	500
 side_steps::	.dd	10
 nuof_bulls::	.ds	1
