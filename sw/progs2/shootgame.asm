@@ -137,6 +137,7 @@ status::
 	push	lr
 	push	r0
 	push	r1
+	push	r2
 	mvzl	r0,1
 	mvzl	r1,7
 	call	tu_color
@@ -149,6 +150,7 @@ status::
 	.db	"p=%d  b=%d   "
 	mvzl	r0,0
 	call	tu_bg
+	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
@@ -282,6 +284,8 @@ move_bull::
 	cmp	r1,2
 	SLT jmp	mb_true
 	mov	r0,r10
+	call	check_hit
+	C jmp	mb_false
 	call	show_bull
 mb_false:
 	clc
@@ -306,6 +310,8 @@ remove_bull::
 	ld	r2,r10,bulls
 	getbz	r0,r2,1
 	getbz	r1,r2,0
+	sz	r1
+	jz	rb_ret
 	call	tu_go
 	mvzl	r0,0x20
 	call	putchar
@@ -315,12 +321,69 @@ remove_bull::
 	sub	r0,1
 	st	r0,nuof_bulls
 	call	status
+rb_ret:
 	pop	r10
 	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
 
+	;; In : R0 bull index
+	;; Out: F.C true if bull removed (hit a ship)
+check_hit::
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	push	r5
+	push	r9
+	push	r10
+	mov	r5,r0		; org bull index
+	ld	r10,r5,bulls	; bull
+	getbz	r2,r10,0	; bull.Y
+	sz	r2
+	jz	ch_ret
+	mvzl	r4,0		; ship index
+ch_cyc:
+	ld	r9,r4,ships
+	getbz	r3,r9,0		; ship.Y
+	sz	r3		; is it valid?
+	jz	ch_next
+	cmp	r2,r3		; compare Y
+	jnz	ch_next
+	getbz	r3,r9,1		; ship.X
+	getbz	r1,r10,1	; bull.X
+	cmp	r1,r3
+	ULE jmp	ch_next
+	add	r3,5
+	cmp	r1,r3
+	UGT jmp	ch_next
+ch_hit:
+	mov	r0,r5
+	call	remove_bull
+	mov	r0,r4
+	call	remove_ship
+	call	status
+	sec
+	jmp	ch_ret
+ch_next:
+	inc	r4
+	cmp	r4,20
+	jnz	ch_cyc
+	clc
+ch_ret:
+	pop	r10
+	pop	r9
+	pop	r5
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
+	
 	;; In : -
 move_bulls::
 	push	lr
@@ -359,6 +422,8 @@ show_ship::
 	ld	r10,r0,ships
 	getbz	r0,r10,1
 	getbz	r1,r10,0
+	sz	r1
+	jz	ss_ret
 	call	tu_go
 	getbz	r0,r10,3
 	btst	r0,0xf
@@ -373,11 +438,42 @@ ss_s:	getbz	r0,r10,2
 	mul	r0,9
 	add	r0,ship_forms
 	call	printf
+ss_ret:
 	pop	r10
 	pop	r1
 	pop	r0
 	pop	pc
 
+	;; In : R0 ship index
+remove_ship::
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r5
+	push	r10
+	mov	r5,r0
+	ld	r10,r5,ships
+	getbz	r0,r10,1
+	getbz	r1,r10,0
+	sz	r1
+	jz	rs_ret
+	call	tu_go
+	call	eprints
+	.db	"      "
+	mvzl	r0,0x100
+	st	r0,r5,ships
+	ld	r0,nuof_ships
+	dec	r0
+	st	r0,nuof_ships
+rs_ret:
+	pop	r10
+	pop	r5
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
+	
 	;; In : R0 ship index
 	;;      R1 delta X
 	;;      R2 delta Y
@@ -486,6 +582,9 @@ gs_found:
 	st	r10,r1,ships
 	mov	r0,r1
 	call	show_ship
+	ld	r0,nuof_ships
+	inc	r0
+	st	r0,nuof_ships
 	pop	r0
 	inc	r0
 	jmp	gs_cyc
