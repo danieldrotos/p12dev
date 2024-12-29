@@ -138,6 +138,7 @@ status::
 	push	r0
 	push	r1
 	push	r2
+	push	r3
 	mvzl	r0,1
 	mvzl	r1,7
 	call	tu_color
@@ -146,10 +147,12 @@ status::
 	call	tu_go
 	ld	r1,pos
 	ld	r2,nuof_bulls
+	ld	r3,nuof_ships
 	call	eprintf
-	.db	"p=%d  b=%d   "
+	.db	"p=%d  b=%d  s=%d   "
 	mvzl	r0,0
 	call	tu_bg
+	pop	r3
 	pop	r2
 	pop	r1
 	pop	r0
