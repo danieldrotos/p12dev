@@ -567,12 +567,12 @@ gs_search:
 	jmp	gs_search
 gs_found:
 	push	r0
-	mvzl	r10,0x2		; Y
+	mvzl	r10,0x2		; Y=2
 	;mvzl	r0,50
 	;call	rand_max
 	;add	r4,15
-	;; X= 20+i*10
-	mov	r4,r1
+	;; X= 20+i*10 where i=0..4
+	mov	r4,r0
 	mul	r4,10
 	add	r4,20
 	putb	r10,r4,1	; X
@@ -686,6 +686,7 @@ md_mrcyc:
 	inc	r0		; next ship
 	cmp	r0,20
 	jnz	md_mrcyc
+	call	gen_ships
 	pop	pc
 	
 	.ends
