@@ -11,6 +11,11 @@
 init::
 	push	lr
 
+	;; main variable
+	mvzl	r0,1
+	st	r0,state
+
+	;; clocks
 	mvzl	r0,24999
 	st	r0,CLOCK.PRE		; start clock
 	ld	r0,bull_speed		; bullet movement
