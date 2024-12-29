@@ -12,11 +12,13 @@ init::
 	push	lr
 
 	mvzl	r0,24999
-	st	r0,CLOCK.PRE	; start clock
+	st	r0,CLOCK.PRE		; start clock
 	ld	r0,bull_speed		; bullet movement
 	st	r0,CLOCK.BCNT2
 	ld	r0,side_speed
 	st	r0,CLOCK.BCNT3
+	ld	r0,down_speed
+	st	r0,CLOCK.BCNT4
 	
 	;; init bullets
 	mvzl	r1,0
@@ -90,6 +92,10 @@ main::
 	ld	r0,CLOCK.BCNT3
 	sz	r0
 	Z call	move_rows
+
+	ld	r0,CLOCK.BCNT4
+	sz	r0
+	Z call	move_down
 
 	call	input_avail
 	C call	handle_input
@@ -501,7 +507,10 @@ ms_ok:
 	cmp	r4,24
 	jnz	ms_not_bottom
 ms_bottom:
-	;; TODO: remove ship
+	;; TODO: check collision
+	mov	r0,r5
+	call	remove_ship
+	jmp	ms_ret
 ms_not_bottom:
 	sz	r2
 	jz	ms_ready
@@ -606,11 +615,14 @@ gs_ret:
 	st	r10,r1,rows
 	pop	pc
 
+	;; Move every rows horizontaly
+	;; Inverz direction after 'side_steps' steps
+	;; Moves all ships left/right by one position
 move_rows::
 	push	lr
 	ld	r0,side_speed
 	st	r0,CLOCK.BCNT3
-	mvzl	r3,0		; row nr
+	mvzl	r3,2		; row nr: 2..23
 mr_cyc:
 	ld	r8,r3,rows	; pick row
 	getbz	r7,r8,0		; get steps
@@ -645,9 +657,35 @@ mr_noship:
 	jnz	mr_mrcyc
 mr_mr_done:	
 	inc	r3		; go to next row
-	cmp	r3,25		; is there any more?
-	jnz	mr_cyc
+	cmp	r3,23		; is there any more?
+	ULE jmp	mr_cyc
 mr_ret:
+	pop	pc
+
+move_down::
+	push	lr
+	ld	r0,down_speed
+	st	r0,CLOCK.BCNT4
+	mvzl	r0,24		; idx of last row
+	mvzl	r1,23
+	mvzl	r3,rows
+md_cyc:
+	ld	r2,r1--,r3
+	st	r2,r0--,r3
+	sz	r1
+	jnz	md_cyc
+	;; move all ships down
+	mvzl	r1,0		; delta X
+	mvzl	r2,1		; delta Y
+	mvzl	r0,0		; ship nr
+md_mrcyc:
+	ld	r10,r0,ships	; pick a ship
+	getbz	r5,r10,0	; check its Y
+	sz	r5		; is it valid?
+	NZ call	move_ship
+	inc	r0		; next ship
+	cmp	r0,20
+	jnz	md_mrcyc
 	pop	pc
 	
 	.ends
