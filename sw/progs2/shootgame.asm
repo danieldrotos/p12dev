@@ -85,6 +85,14 @@ init_rows:
 	pop	pc
 
 main::
+	ld	r0,state
+	cmp	r0,1
+	Z jmp	main_run
+	cmp	r0,2
+	Z jmp	main_over
+	jmp	main
+	
+main_run:	
 	ld	r0,CLOCK.BCNT2
 	sz	r0
 	Z call	move_bulls
@@ -100,8 +108,41 @@ main::
 	call	input_avail
 	C call	handle_input
 
+	ld	r0,state
+	cmp	r0,2
+	jnz	main
+main_game_over:
+	mvzl	r0,2
+	mvzl	r1,7
+	call	tu_color
+	mvzl	r0,20
+	mvzl	r1,10
+	call	tu_go
+	mvzl	r0,go_l1
+	call	prints
+	mvzl	r0,20
+	mvzl	r1,11
+	call	tu_go
+	mvzl	r0,go_l2
+	call	prints
+	mvzl	r0,20
+	mvzl	r1,12
+	call	tu_go
+	mvzl	r0,go_l3
+	call	prints
 	jmp	main
-
+	
+go_l1:	.db	"                            "
+go_l2:	.db	"         GAME OVER          "
+go_l3:	.db	"                            "
+	
+main_over:
+	call	input_avail
+	jnc	main
+	call	read
+	call	init
+	jmp	main
+	
 handle_input::
 	push	lr
 	call	read
@@ -507,7 +548,21 @@ ms_ok:
 	cmp	r4,24
 	ULT jmp	ms_not_bottom
 ms_bottom:
-	;; TODO: check collision
+	;; check collision
+	ld	r0,pos
+	add	r0,1
+	mov	r1,r3
+	add	r1,5
+	cmp	r1,r0
+	ULT jmp	ms_no_coll
+	add	r0,2
+	sub	r1,4
+	cmp	r1,r0
+	UGT jmp	ms_no_coll
+ms_collision:
+	mvzl	r0,2
+	st	r0,state
+ms_no_coll:	
 	mov	r0,r5
 	call	remove_ship
 	jmp	ms_ret
@@ -695,7 +750,8 @@ md_mrcyc:
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 	.seg	variables
-	
+
+state::		.dd	1
 pos::		.ds	1
 inited::	.dd	0
 bull_speed::	.dd	100
