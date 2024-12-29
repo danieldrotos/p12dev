@@ -112,21 +112,21 @@ main_run:
 	cmp	r0,2
 	jnz	main
 main_game_over:
-	mvzl	r0,2
-	mvzl	r1,7
+	mvzl	r0,1
+	mvzl	r1,0xf
 	call	tu_color
-	mvzl	r0,20
-	mvzl	r1,10
+	mvzl	r0,26
+	mvzl	r1,11
 	call	tu_go
 	mvzl	r0,go_l1
 	call	prints
-	mvzl	r0,20
-	mvzl	r1,11
+	mvzl	r0,26
+	mvzl	r1,12
 	call	tu_go
 	mvzl	r0,go_l2
 	call	prints
-	mvzl	r0,20
-	mvzl	r1,12
+	mvzl	r0,26
+	mvzl	r1,13
 	call	tu_go
 	mvzl	r0,go_l3
 	call	prints
@@ -140,6 +140,12 @@ main_over:
 	call	input_avail
 	jnc	main
 	call	read
+	cmp	r4,10
+	jz	mo_out
+	cmp	r4,13
+	jz	mo_out
+	jmp	main
+mo_out:	
 	call	init
 	jmp	main
 	
