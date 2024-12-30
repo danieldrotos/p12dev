@@ -14,7 +14,10 @@ init::
 	;; main variable
 	mvzl	r0,1
 	st	r0,state
-
+	mvzl	r0,0
+	st	r0,points
+	st	r0,misses
+	
 	;; clocks
 	mvzl	r0,24999
 	st	r0,CLOCK.PRE		; start clock
@@ -210,6 +213,13 @@ status::
 	.db	"p=%d  b=%d  s=%d   "
 	mvzl	r0,0
 	call	tu_bg
+	mvzl	r0,50,
+	mvzl	r1,1
+	call	tu_go
+	ld	r1,points
+	ld	r2,misses
+	ces	eprintf
+	.db	"P=%d M=%d "
 	pop	r3
 	pop	r2
 	pop	r1
@@ -425,6 +435,7 @@ ch_hit:
 	mov	r0,r5
 	call	remove_bull
 	mov	r0,r4
+	call	hit_ship
 	call	remove_ship
 	call	status
 	sec
@@ -575,6 +586,7 @@ ms_collision:
 	st	r0,state
 ms_no_coll:	
 	mov	r0,r5
+	call	miss_ship
 	call	remove_ship
 	jmp	ms_ret
 ms_not_bottom:
@@ -754,6 +766,33 @@ md_mrcyc:
 	jnz	md_mrcyc
 	call	gen_ships
 	pop	pc
+
+	;; In : R0 ship index
+hit_ship::
+	push	lr
+	push	r0
+	push	r1
+	ld	r0,r0,ships	; pick ship
+	getbz	r0,r0,2		; get type,id byte
+	shr	r0		; select type
+	shr	r0
+	shr	r0
+	ld	r1,points	; add type to points
+	add	r1,r0
+	st	r1,points
+	pop	r1
+	pop	r0
+	pop	pc
+
+	;; In : R0 ship index
+miss_ship::
+	push	lr
+	push	r0
+	ld	r0,misses
+	inc	r0
+	st	r0,misses
+	pop	r0
+	pop	pc
 	
 	.ends
 
@@ -762,7 +801,9 @@ md_mrcyc:
 	
 	.seg	variables
 
-state::		.dd	1
+state::		.ds	1
+points::	.ds	1
+misses::	.ds	1
 pos::		.ds	1
 inited::	.dd	0
 bull_speed::	.dd	100
