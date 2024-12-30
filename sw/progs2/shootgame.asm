@@ -740,6 +740,7 @@ mr_mr_done:
 mr_ret:
 	pop	pc
 
+	;; Move all raws down by one
 move_down::
 	push	lr
 	ld	r0,down_speed
@@ -765,6 +766,7 @@ md_mrcyc:
 	cmp	r0,20
 	jnz	md_mrcyc
 	call	gen_ships
+	call	status
 	pop	pc
 
 	;; In : R0 ship index
