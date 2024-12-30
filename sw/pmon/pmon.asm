@@ -1,7 +1,7 @@
 	cpu	P2
 
 	version_main	=	1
-	version_sub	=	2
+	version_sub	=	3
 	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
@@ -129,6 +129,10 @@ tr_is_off:
 	st	r1,UART_CTRL
 
 	;; Print welcome message
+	ces	pes
+	.db	"\e[?25h"
+	ces	pes
+	.db	"\e[40;37m"
 	mvzl	r0,LF
 	call	putchar
 	rds	r0,sver
