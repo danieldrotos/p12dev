@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.9a -->
+<!-- CreationDate: 2025-01-05 18:42:19 -->
+<!-- Magnification: 1.05 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="548pt" height="306pt"
+	viewBox="2051 2238 8696 4855">
+<g fill="none">
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="2520" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">0</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">1</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="2880" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">2</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3060" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">3</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3240" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">4</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3420" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">5</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3600" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">6</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3780" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">7</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="3960" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">8</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="4140" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">9</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="4320" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">10</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="4500" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">11</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="4680" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">12</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="4860" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">13</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="5040" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">14</text>
+<!-- Text -->
+<text xml:space="preserve" x="4635" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">15</text>
+<!-- Line -->
+<polygon points=" 4905,5220 4905,2430 4590,2250 4590,5400"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polygon points=" 4365,6345 4365,5805 4095,5625 4095,6525"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="4140" y="6300" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">1</text>
+<!-- Text -->
+<text xml:space="preserve" x="4140" y="5940" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">0</text>
+<!-- Line -->
+<polygon points=" 7110,4230 7110,3690 6840,3510 6840,4410"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="6885" y="3780" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">0</text>
+<!-- Text -->
+<text xml:space="preserve" x="6885" y="4230" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">1</text>
+<!-- Line -->
+<rect x="5535" y="3150" width="675" height="675"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="5850" y="3690" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">7seg</text>
+<!-- Text -->
+<text xml:space="preserve" x="5850" y="3465" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">bin</text>
+<!-- Circle -->
+<circle cx="7965" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 7695,4185 7875,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7695,3960 7875,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7694,3735 7875,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7920,3943 7920,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7920,4185 7920,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7651,4183 7651,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 7650,3943 7650,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="8340" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 8070,4185 8250,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8070,3960 8250,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8069,3735 8250,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8295,3943 8295,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8295,4185 8295,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8026,4183 8026,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8025,3943 8025,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="9105" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 8835,4185 9015,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8835,3960 9015,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8834,3735 9015,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9060,3943 9060,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9060,4185 9060,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8791,4183 8791,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8790,3943 8790,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="8724" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 8454,4185 8634,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8454,3960 8634,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8453,3735 8634,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8679,3943 8679,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8679,4185 8679,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8410,4183 8410,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 8409,3943 8409,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="9585" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 9315,4185 9495,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9315,3960 9495,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9314,3735 9495,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9540,3943 9540,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9540,4185 9540,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9271,4183 9271,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9270,3943 9270,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="9960" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 9690,4185 9870,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9690,3960 9870,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9689,3735 9870,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9915,3943 9915,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9915,4185 9915,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9646,4183 9646,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 9645,3943 9645,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="10725" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 10455,4185 10635,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10455,3960 10635,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10454,3735 10635,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10680,3943 10680,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10680,4185 10680,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10411,4183 10411,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10410,3943 10410,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Circle -->
+<circle cx="10344" cy="4185" r="14" fill="#ff0000"
+	stroke="#ff0000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 10074,4185 10254,4185"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10074,3960 10254,3960"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10073,3735 10254,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10299,3943 10299,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10299,4185 10299,3977"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10030,4183 10030,3975"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 10029,3943 10029,3735"
+	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 4365,6075 4770,6075 4770,5310"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4230,6435 4230,6840"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4095,5895 3600,5895"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4095,6255 3600,6255"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,2475 4365,2475"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,2655 4365,2655"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,2835 4365,2835"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3015 4365,3015"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3195 4365,3195"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3375 4365,3375"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3555 4365,3555"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3735 4365,3735"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,3915 4365,3915"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4095 4365,4095"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4275 4365,4275"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4455 4365,4455"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4635 4365,4635"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4815 4365,4815"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,4995 4365,4995"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4590,5175 4365,5175"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6840,3735 6210,3735"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4905,3735 5535,3735"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6975,4320 6975,4680"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6840,4185 5580,4185 5355,4185"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp0">
+	<path clip-rule="evenodd" d="M 2051,2238 H 10747 V 7093 H 2051 z
+		M 7423,3930 7543,3960 7423,3990 7567,3967 7567,3953z"/>
+</clipPath>
+</defs>
+<polyline points=" 7110,3960 7560,3960" clip-path="url(#cp0)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 7560,3960 -->
+<polyline points=" 7423,3930 7543,3960 7423,3990"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Text -->
+<text xml:space="preserve" x="4230" y="7020" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">BRD_CTRL.OUT[0]</text>
+<!-- Text -->
+<text xml:space="preserve" x="4005" y="5805" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">SW[7:4]</text>
+<!-- Text -->
+<text xml:space="preserve" x="4005" y="6165" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">BRD_CTRL.OUT[7:4]</text>
+<!-- Text -->
+<text xml:space="preserve" x="4860" y="5760" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">SELECT</text>
+<!-- Text -->
+<text xml:space="preserve" x="6975" y="4950" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">SELECT==10</text>
+<!-- Text -->
+<text xml:space="preserve" x="6660" y="4095" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">PORTC,PORTD</text>
+<!-- Text -->
+<text xml:space="preserve" x="4320" y="2520" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="end">PORTA</text>
+</g>
+</svg>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.9a -->
-<!-- CreationDate: 2025-01-05 15:29:07 -->
+<!-- CreationDate: 2025-01-05 18:03:54 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="547pt" height="312pt"
-	viewBox="1684 2214 8675 4953">
+	width="597pt" height="312pt"
+	viewBox="888 2214 9471 4953">
 <g fill="none">
 <!-- Line -->
 <rect x="7965" y="5490" width="1215" height="675" fill="#00d1d1"
@@ -115,7 +115,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp0">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 3868,4830 3988,4860 3868,4890 4012,4867 4012,4853z"/>
 </clipPath>
 </defs>
@@ -136,7 +136,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp1">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 3868,5325 3988,5355 3868,5385 4012,5362 4012,5348z"/>
 </clipPath>
 </defs>
@@ -169,7 +169,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp2">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7468,3615 7588,3645 7468,3675 7612,3652 7612,3638z
 		M 3868,5325 3988,5355 3868,5385 4012,5362 4012,5348z"/>
 </clipPath>
@@ -182,7 +182,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp3">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 6478,4605 6598,4635 6478,4665 6622,4642 6622,4628z
 		M 3868,5325 3988,5355 3868,5385 4012,5362 4012,5348z"/>
 </clipPath>
@@ -195,7 +195,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp4">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 6478,5100 6598,5130 6478,5160 6622,5137 6622,5123z
 		M 3868,5325 3988,5355 3868,5385 4012,5362 4012,5348z"/>
 </clipPath>
@@ -208,7 +208,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp5">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7828,5640 7948,5670 7828,5700 7972,5677 7972,5663z
 		M 3868,5325 3988,5355 3868,5385 4012,5362 4012,5348z"/>
 </clipPath>
@@ -221,7 +221,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp6">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7828,5640 7948,5670 7828,5700 7972,5677 7972,5663z
 		M 3868,5775 3988,5805 3868,5835 4012,5812 4012,5798z"/>
 </clipPath>
@@ -234,7 +234,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp7">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 9673,5775 9793,5805 9673,5835 9817,5812 9817,5798z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -253,7 +253,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp8">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 6945,4314 6966,4356 6924,4335 6975,4375 6985,4365z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -269,7 +269,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp9">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 8143,3390 8263,3420 8143,3450 8287,3427 8287,3413z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -282,7 +282,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp10">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7770,2923 7740,3043 7710,2923 7733,3067 7747,3067z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -295,7 +295,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp11">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7468,3075 7588,3105 7468,3135 7612,3112 7612,3098z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -308,7 +308,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp12">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 7468,3345 7588,3375 7468,3405 7612,3382 7612,3368z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
@@ -321,28 +321,101 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp13">
-	<path clip-rule="evenodd" d="M 1684,2214 H 10359 V 7167 H 1684 z
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
 		M 3868,3840 3988,3870 3868,3900 4012,3877 4012,3863z
 		M 9317,5835 9197,5805 9317,5775 9173,5798 9173,5812z"/>
 </clipPath>
 </defs>
-<polyline points=" 3375,5355 3375,3870 4005,3870" clip-path="url(#cp13)"
+<polyline points=" 3690,4860 3690,3870 4005,3870" clip-path="url(#cp13)"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Forward arrow to point 4005,3870 -->
 <polyline points=" 3868,3840 3988,3870 3868,3900"
 	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp14">
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
+		M 3868,3840 3988,3870 3868,3900 4012,3877 4012,3863z
+		M 3868,2760 3988,2790 3868,2820 4012,2797 4012,2783z"/>
+</clipPath>
+</defs>
+<polyline points=" 4005,2790 3150,2790" clip-path="url(#cp14)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Backward arrow to point 4005,2790 -->
+<polyline points=" 3868,2760 3988,2790 3868,2820"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp15">
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
+		M 3868,3840 3988,3870 3868,3900 4012,3877 4012,3863z
+		M 2383,2760 2503,2790 2383,2820 2527,2797 2527,2783z"/>
+</clipPath>
+</defs>
+<polyline points=" 2520,2790 1530,2790" clip-path="url(#cp15)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Backward arrow to point 2520,2790 -->
+<polyline points=" 2383,2760 2503,2790 2383,2820"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<rect x="2520" y="2565" width="630" height="450"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 2745,2790 2925,2790"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2822" y="2718" width="17" height="17"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2823" y="2839" width="17" height="17"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="900" y="2565" width="630" height="450"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="2790" y="3240" width="675" height="495"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp16">
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
+		M 3868,3345 3988,3375 3868,3405 4012,3382 4012,3368z
+		M 2383,2760 2503,2790 2383,2820 2527,2797 2527,2783z"/>
+</clipPath>
+</defs>
+<polyline points=" 3465,3375 4005,3375" clip-path="url(#cp16)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 4005,3375 -->
+<polyline points=" 3868,3345 3988,3375 3868,3405"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp17">
+	<path clip-rule="evenodd" d="M 888,2214 H 10359 V 7167 H 888 z
+		M 3868,3345 3988,3375 3868,3405 4012,3382 4012,3368z
+		M 3255,3872 3285,3752 3315,3872 3292,3728 3278,3728z"/>
+</clipPath>
+</defs>
+<polyline points=" 3285,3735 3285,5355" clip-path="url(#cp17)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Backward arrow to point 3285,3735 -->
+<polyline points=" 3255,3872 3285,3752 3315,3872"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<polyline points=" 2790,3465 2205,3465"
+	stroke="#000000" stroke-width="8px" stroke-dasharray="40 40"/>
 <!-- Text -->
-<text xml:space="preserve" x="4095" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">GPIOI</text>
+<text xml:space="preserve" x="4095" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">PORTI</text>
 <!-- Text -->
-<text xml:space="preserve" x="4095" y="5415" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">GPIOJ</text>
+<text xml:space="preserve" x="4095" y="5415" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">PORTJ</text>
 <!-- Text -->
-<text xml:space="preserve" x="6120" y="3690" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">GPIOA</text>
+<text xml:space="preserve" x="6120" y="3690" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">PORTA</text>
 <!-- Text -->
-<text xml:space="preserve" x="6120" y="4200" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">GPIOB</text>
+<text xml:space="preserve" x="6120" y="4200" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">PORTB</text>
 <!-- Text -->
-<text xml:space="preserve" x="6120" y="4710" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">GPIOC</text>
+<text xml:space="preserve" x="6120" y="4710" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">PORTC</text>
 <!-- Text -->
-<text xml:space="preserve" x="6120" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">GPIOD</text>
+<text xml:space="preserve" x="6120" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">PORTD</text>
 <!-- Text -->
 <text xml:space="preserve" x="6120" y="5730" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">TxD</text>
 <!-- Text -->
@@ -369,5 +442,19 @@
 <text xml:space="preserve" x="6120" y="3195" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">TEST</text>
 <!-- Text -->
 <text xml:space="preserve" x="4095" y="3960" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">TEST_SEL</text>
+<!-- Text -->
+<text xml:space="preserve" x="4095" y="2835" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">CLK</text>
+<!-- Text -->
+<text xml:space="preserve" x="2025" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">100 MHz</text>
+<!-- Text -->
+<text xml:space="preserve" x="3555" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">25 Mhz</text>
+<!-- Text -->
+<text xml:space="preserve" x="1215" y="2835" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">Oszc</text>
+<!-- Text -->
+<text xml:space="preserve" x="4095" y="3420" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">RESET</text>
+<!-- Text -->
+<text xml:space="preserve" x="2160" y="3510" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">CPU RESET</text>
+<!-- Text -->
+<text xml:space="preserve" x="3240" y="4095" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">BTN[1:0]</text>
 </g>
 </svg>
