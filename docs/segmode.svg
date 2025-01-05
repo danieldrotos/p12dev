@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.9a -->
-<!-- CreationDate: 2025-01-05 19:44:11 -->
+<!-- CreationDate: 2025-01-05 20:00:40 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="288pt" height="169pt"
-	viewBox="6176 3721 4565 2679">
+	width="327pt" height="242pt"
+	viewBox="5588 2574 5179 3826">
 <g fill="none">
 <!-- Circle -->
 <circle cx="8418" cy="4391" r="20" fill="#ff0000"
@@ -223,6 +223,36 @@
 <!-- Line -->
 <polyline points=" 6357,4048 6357,3754"
 	stroke="#ff0000" stroke-width="30px" stroke-linecap="round"/>
+<!-- Line -->
+<polyline points=" 5940,3375 5940,4500 6300,4500"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 5940,3375 10755,3375 10755,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 10170,3375 10170,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 9630,3375 9630,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 9090,3375 9090,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 8505,3375 8505,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 7875,3375 7875,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 7335,3375 7335,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6795,3375 6795,3465"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 5940,3690 6030,3690"
+	stroke="#000000" stroke-width="8px"/>
 <!-- Text -->
 <text xml:space="preserve" x="6570" y="4590" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[7:0]</text>
 <!-- Text -->
@@ -232,7 +262,7 @@
 <!-- Text -->
 <text xml:space="preserve" x="8145" y="4590" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[31:24]</text>
 <!-- Text -->
-<text xml:space="preserve" x="9630" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">PORTC</text>
+<text xml:space="preserve" x="9630" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">PORTD</text>
 <!-- Text -->
 <text xml:space="preserve" x="10440" y="4590" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[31:24]</text>
 <!-- Text -->
@@ -242,7 +272,7 @@
 <!-- Text -->
 <text xml:space="preserve" x="8865" y="4590" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[7:0]</text>
 <!-- Text -->
-<text xml:space="preserve" x="7335" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">PORTD</text>
+<text xml:space="preserve" x="7335" y="4905" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">PORTC</text>
 <!-- Text -->
 <text xml:space="preserve" x="7020" y="5625" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="start">[1]</text>
 <!-- Text -->
@@ -259,5 +289,29 @@
 <text xml:space="preserve" x="6705" y="5760" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[6]</text>
 <!-- Text -->
 <text xml:space="preserve" x="6705" y="6210" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="133" text-anchor="middle">[3]</text>
+<!-- Text -->
+<text xml:space="preserve" x="6570" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">0</text>
+<!-- Text -->
+<text xml:space="preserve" x="7605" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">2</text>
+<!-- Text -->
+<text xml:space="preserve" x="8190" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">3</text>
+<!-- Text -->
+<text xml:space="preserve" x="8865" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">4</text>
+<!-- Text -->
+<text xml:space="preserve" x="9405" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">5</text>
+<!-- Text -->
+<text xml:space="preserve" x="9945" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">6</text>
+<!-- Text -->
+<text xml:space="preserve" x="10485" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">7</text>
+<!-- Text -->
+<text xml:space="preserve" x="7110" y="3600" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">1</text>
+<!-- Text -->
+<text xml:space="preserve" x="5940" y="2745" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">Kijelző karakterpozíciók:</text>
+<!-- Text -->
+<text xml:space="preserve" x="6165" y="4140" fill="#008f00" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">0</text>
+<!-- Text -->
+<text xml:space="preserve" x="8550" y="3195" fill="#0000ff" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">oszlop</text>
+<!-- Text -->
+<text xml:space="preserve" x="5850" y="4140" fill="#008f00" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">sor</text>
 </g>
 </svg>
