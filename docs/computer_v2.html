@@ -1,0 +1,1182 @@
+<p>Mikroszámítógép v2</p>
+
+<p>A mikroprocesszort kiegészítve néhány alkatrésszel,
+mikroszámítógépet alakítunk ki.</p>
+
+<p><img title="" src="computer.png" alt="" /></p>
+
+<p>A processzort memóriával, GPIO áramkörökkel, időzítővel és UART-al,
+az eszközöket összekötő buszt pedig címdekóderrel egészítjük ki. A clk
+bemenet a számítógép, egyúttal a CPU órajele is. Az FPGA
+megvalósításban a clk bemenetre 25 MHz frekvenciájú órajelet
+kötünk.</p>
+
+<h1>Memória</h1>
+
+<p>A processzor memória illesztőjére kapcsolódó memória fogja tárolni
+a futtatott programot, valamint a feldolgozott adatokat. A memóriát az
+FPGA-n alakítjuk ki, a lefordított program kódját pedig beillesztjük
+az alkatrészbe.</p>
+
+<p>A memória kapacitása kártyától függően 64, vagy 128 Kszó, a
+címzéshez így 16, vagy 17 bitre van szükség. Minden szó 32 bites.</p>
+
+<h1>GPIO</h1>
+
+<p>A külvilággal való kapcsolattartást a memória illesztőre kapcsolt
+GPIO (General Purpose Input Output) áramkörök valósítják meg.</p>
+
+<h2>Kimenetek</h2>
+
+<p>A kimeneti kivezetéseket egy négy regiszterből álló “memória”
+valósítja meg, amelyből mind a négy regiszter kimenetei ki vannak
+vezetve. A számítógép kimenetei a PORTA, PORTB, PORTC, PORTD nevet
+viselik, és a GPIO kimeneti adatregiszterének (ODR) értéke jelenik meg
+rajtuk. A regiszterek tartalma írható (memória írás utasítással),
+valamint vissza is olvasható a tartalmuk.</p>
+
+<p>A 4 regiszter 4 egymást követő címen található, a kezdőcímet a
+címdekóder határozza meg:</p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Offszet</p>
+</td>
+<td>
+<p>Port</p>
+</td>
+<td>
+<p>GPIO regiszter</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0</p>
+</td>
+<td>
+<p>PORTA</p>
+</td>
+<td>
+<p>GPIOA.ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1</p>
+</td>
+<td>
+<p>PORTB</p>
+</td>
+<td>
+<p>GPIOB.ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>2</p>
+</td>
+<td>
+<p>PORTC</p>
+</td>
+<td>
+<p>GPIOC.ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>3</p>
+</td>
+<td>
+<p>PORTD</p>
+</td>
+<td>
+<p>GPIOD.ODR</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<h2>Bemenetek</h2>
+
+<p>Bemenetként szintén regisztert használunk. A regiszter olvasásakor
+a bemeneti vezetékek állapota eltárolódik a regiszterben (mintavétel),
+a processzor ennek a tartalmát fogja megkapni. A bemeneti GPIO
+áramkörben egy regiszter van, így egy 32 bites bemenő adathoz lehet
+vele hozzáférni. A számítógépben két ilyen áramkört kapcsolunk a
+buszra, így két bemeneti portot kapunk:</p>
+
+<table>
+<tbody>
+<tr>
+<td>
+<p>Port</p>
+</td>
+<td>
+<p>GPIO regiszter</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>PORTI</p>
+</td>
+<td>
+<p>GPIOI.IDR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>PORTJ</p>
+</td>
+<td>
+<p>GPIOJ.IDR</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<h1>Időzítő</h1>
+
+<p>Az időzítő egy 32 bites bináris előre számlálót tartalmaz, amely a
+számítógéptől független órajellel léptethető. Az FPGA megvalósításnál
+1 MHz-es órajelet használunk, míg a verilog szimulációban az időzítő
+
+  <math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mrow>
+      <mfrac>
+	<mi>
+	  <msub>
+	    <mi>f</mi>
+	    <mi>CPU</mi>
+	  </msub>
+	</mi>
+	<mi>20</mi>
+      </mfrac>
+    </mrow>
+  </math>
+
+  frekvenciájú órajelet kap. A
+számlálás ki, illetve bekapcsolható, nullától egy beállítható
+végértékig tart, melynek az elérése után a számláló nullázódik. A
+végérték elérését a túlcsordulás kimenet 1 értékűvé válása jelzi, a
+kimenetet szoftverből kell törölni, törlésig 1 marad.</p>
+
+<h2>Az időzítő regiszterei</h2>
+
+<h3>CTRL, control</h3>
+
+<p>Offszet: 0</p>
+<p>Kezdőérték: 0</p>
+
+<p>A regiszter tartalma vezérli a számláló működését.</p>
+
+<ul>
+
+  <li>CTRL[0]: EN, enable. Ha a bit értéke 1, a számláló bekapcsol, ha
+  a bit értéke 0, a számláló megáll.</li>
+
+  <li>CTRL[1]: IEN, interrupt enable. H a bit értéke 1, az áramkör irq
+    kivezetése 1 lesz túlcsordulás esetén.</li>
+  
+  <li>CTRL[31:2]: reserved. Nem használt bitek.</li>
+  
+</ul>
+
+<h3>AR, auto-reload</h3>
+
+<p>Offszet: 1</p>
+<p>Kezdőérték: 0</p>
+
+<p>A regiszter a számlálás végértékét állítja be. Amikor a számláló
+értéke az AR regiszter tartalmával egyezik, a túlcsordulás kimenet 1
+lesz, a számláló a következő lépéskor nullázódik.</p>
+
+<h3>CNTR, counter</h3>
+
+<p>Offszet: 2</p>
+<p>Kezdőérték: 0</p>
+
+<p>A számláló aktuális értékét tartalmazó regiszter. Írás művelettel a
+számláló értéke megváltoztatható.</p>
+
+<h3>STAT, status</h3>
+
+<p>Offszet: 3</p>
+<p>Kezdőérték: 2</p>
+
+<p>Az időzítő állapotáról tartalmaz információt.</p>
+
+<ul>
+
+  <li>STAT[0]: EN, enable. A CTRL[0] bit értéke, csak olvasható.</li>
+  
+<li>STAT[1]: OVF, overflow, read-only. Olvasás esetén a túlcsordulási
+állapot értékét kapjuk. A túlcsordulás akkor vált 1-re, amikor a
+számláló értéke egyezővé válik az AR regiszter értékével.</li>
+
+<li>STAT[1]: RSTO, reset overflow, write-only. Írás művelet esetén
+ennek a bitnek az 1 értékűre való írásával tudjuk törölni a
+túlcsordulás állapotot.</li>
+
+</ul>
+
+<h1>UART</h1>
+
+<p>Univerzális aszinkron soros adó- vevő áramkör. Az áramkör vevő
+oldala egy 16 elemű belső FIFO-val van ellátva, amely kiolvasás előtt
+az utolsó 15 vett adatot tudja tárolni.</p>
+
+<h3>DR, data register</h3>
+
+<p>Offszet: 0</p>
+<p>Kezdőérték: 0</p>
+
+<p>8 bites adat regiszter, írása elindítja a küldő műveletet. Olvasása
+a FIFO legrégebbi tárolt karakterét adja. Olvasáskor a [31:8] bitek
+értéke 0 lesz.</p>
+
+<h3>CTRL, control</h3>
+
+<p>Offset: 1</p>
+<p>Kezdőérték: 0</p>
+
+<ul>
+
+  <li>CTRL[0]: RXEN, receive enable. Vevő áramkör engedélyezése, a
+  vétel funkció bekapcsolása. 1 értéke a vevőt bekapcsolja, 0 értéke a
+    vevőt kikapcsolja.</li>
+  
+<li>CTRL[1]: TXEN, transmit enable. Küldő áramkör engedélyezése, a
+küldés funkció bekapcsolása. 1 értéke a küldést engedélyezi, 0 értéke
+a küldést tiltja.</li>
+
+</ul>
+
+<h3>RSTAT, receive status</h3>
+
+<p>Offszet: 2</p>
+<p>Kezdőérték: 0</p>
+
+<p>Csak olvasható regiszter, a vevő áramkör állapotáról tartalmaz
+információt.</p>
+
+<ul>
+
+  <li>RSTAT[0]: RNE, receiver not empty. A bit 1 értékű, ha a vevő
+  áramkör egy byte-ot vett és a FIFO nem üres. Az adat regiszter
+  kiolvasása a bitet 0 értékre állítja, amennyiben az olvasás a FIFO
+    utolsó adatát olvasta ki.</li>
+  
+  <li>RSTAT[1]: BREAK, break received. A bit 1 értékű, ha van vett
+    karakter, és az 0.</li>
+  
+  <li>RSTAT[2]: RX_VALID, 1 értéke azt jelzi, hogy a vevő shift
+regiszter kimenetén vett adat található.</li>
+
+  <li>RSTAT[4]: FIFO_EMPTY, 1, ha a vevő FIFO üres (az RNE bit
+  értékének negáltja).</li>
+
+  <li>RSTAT[5]: FIFO_FULL, 1, ha a vevő FIFO megtelt. Ha olvasással
+  nem távolítunk el adatot a FIFO-ból, akkor a további vett adatok
+  elvesznek.</li>
+
+  <li>RSTAT[23:16]: FIFO_WADDR, a FIFO buffer következő üres helyének
+  címe.</li>
+
+  <li>RSTAT[31:24]: FIFO_RADDR, a FIFO-ban legrégebben eltárolt adat
+    címe.</li>
+  
+</ul>
+
+<h3>TSTAT, transmit status</h3>
+
+<p>Offszet: 3</p>
+<p>Kezdőérték: 1</p>
+
+<p>Csak olvasható regiszter, a küldő áramkör állapotáról tartalmaz
+információt.</p>
+
+<ul>
+
+  <li>TSTAT[0]: TC transmit complete. A bit 1 értékű, ha a küldő üres,
+  és nem végez adattovábbítást. Az adat regiszter írásával elindított
+    küldés törli a bit értékét.</li>
+  
+</ul>
+
+<h3>CPB, cycles per bit</h3>
+
+<p>Offszet: 4</p>
+<p>Kezdőérték: 216</p>
+
+<p>Írható és olvasható regiszter, amelynek az értéke a bit továbbítás
+sebességét állítja be (jelelési sebesség). A tartalma azt adja meg,
+hogy 1 bit továbbításának az ideje mennyi, az áramkörre kapcsolt
+órajel periódusainak a számában. Az átvitel sebessége:</p>
+
+<p><img src="images/image2.svg" alt="" /></p>
+
+<p>ahol az fCLK az áramkör bemenetére kötött órajel frekvenciája. 25
+MHz-es órajel esetén a 216-os kezdőérték ~115200 baud sebességet
+eredményez.</p>
+
+<h1>Board Control</h1>
+
+<p>A periféria regisztereivel a számítógép kimeneti portjainak
+felhasználási módja vezérelhető.</p>
+
+<h3>OUT, output control</h3>
+
+<p>Offszet: 0<br />Kezdőérték: 0</p>
+
+<ul>
+
+  <li>OUT[0] DISPLAY_BY_COMP: 0 érték esetén a hétszegmenses kijelzőn
+  megjelenő értéket a [7:4] kapcsolók választják ki, 1 esetén pedig az
+  OUT regiszter [7:4] bitjei.</li>
+
+  <li>OUT[7:4]: DISPLAY_SELECT: a hétszegmenses kijelzőn megjelenő
+  értéket választják ki, akkor ha az DISPLAY_BY_COMP bit 1
+  értékű.</li>
+
+</ul>
+
+<p>A kimeneti portok (PORTA.PORTD) felhasználását vezérli. Hatása csak
+az FPGA megvalósítások esetén van.</p>
+
+<h1>Szimulátor felület</h1>
+
+<p>Ez a periféria szövegek kiírására használható, abban az esetben, ha
+szimuláljuk az áramkör viselkedését egy verilog szimulátorral. A
+perifériának egy regisztere van. A regiszterbe először egy parancsot,
+majd egy paramétert kell a szoftvernek írnia. Ha a parancs értéke ‘p’
+(112, 0x70), akkor a második, paraméter értéket az illesztő ASCII
+kódnak tekinti, és a kódnak megfelelő betűt kiírja a szimulátor
+felületére.</p>
+
+<h1>Clock, óra</h1>
+
+<p>A periféria egy 32 bites előre számlálót tartalmaz, amelynek a
+működési frekvenciája (vagyis a lépések közötti idő) egy előosztó
+segítségével beállítható.</p>
+
+<p>Ezen kívül még 14 darab 32 bites hátra számlálót is használhatunk,
+amlyeknek a frekvenciája az óra számlálóéval egyezik meg. Ezek a
+számlálók csak akkor lépnek, ha nem nulla az értékük, a 0 elérésekor a
+számlálás leáll.</p>
+
+<h3>CLOCK, clock value</h3>
+
+<p>Offszet: 0<br />Kezdőérték: 0</p>
+
+<p>A regiszter az óra számláló értékét tartalmazza, írható és
+olvasható.</p>
+
+<h3>PRE, pre-divider value</h3>
+
+<p>Offszet: 1<br />Kezdőérték: 0</p>
+
+<p>A PRE regiszter értéke határozza meg az óra működési frekvenciáját,
+két lépés között CNT+1 bemeneti órajel telik el:</p>
+
+<p><img src="images/image3.svg" alt="" /></p>
+
+<p>Ha a rendszer órajele 25 MHz, ahhoz, hogy az óra 1 ms időnként
+lépjen egyet, az előosztó regiszter értékét 24999-re kell állítani. Az
+óra csak akkor működik, ha a PRE nem 0 értékű, így 0-ra állítással az
+óra megállítható.</p>
+
+<h3>BCNT2…BCNT15, backward counters</h3>
+
+<p>Offszet: 2…15<br />Kezdőérték: 0</p>
+
+<p>Hátra számlálók, amelyeknek a működési frekvenciája az óra
+regiszterével egyezik. A számlálók csak akkor lépnek, ha nem 0 az
+értékük. A 0 elérésekor az egyes számlálók megállnak.</p>
+
+<h1>FPGA megvalósítás</h1>
+
+<p>A számítógéphez az FPGA kártyán elérhető eszközök vannak hozzákötve
+megfelelő illesztő áramkörökön keresztül.</p>
+
+<p><img title="" src="images/image8.svg" alt="" /></p>
+
+<p>A felhasznált kártyákon az oszcillátor 100 MHz-es órajelet állít
+elő. Ez egy osztón keresztül állítja elő a számítógép 25 MHz-es
+órajelét.</p>
+
+<p>A bemeneti eszközök (BTN nyomógombok, SW kapcsolók) illesztésére
+pergésmentesítő áramkört alkalmazunk.</p>
+
+<p>A kimeneti eszközök a kártyák LED-jei és hétszegmenses kijelzői. A
+kijelző multiplex meghajtást igényel, ezt egy több üzemmódban is
+használható kódátalakító működteti. A megjelenített adatok a
+számítógép különböző kimeneteiről érkezhetnek, ezek közül egy
+multiplexer választja ki a megjelenített értéket.</p>
+
+<p>A számítógéppel az UART periférián keresztül kommunikálhatunk,
+amely a kártya UART-USB átalakítóján keresztül érhető el.</p>
+
+<h2>A számítógép alaphelyzetbe állítása</h2>
+
+<p>A CPU reset-elése elvégezhető a kártya CPU reset nyomógombjával, ha
+a kártya rendelkezik vele.</p>
+
+<p>Másik módszer, a BTN[1] nyomógomb (Nexys4DDR kártyán BTND) nyomva
+tartása közben a BTN[0] gomb (Nexys4DDR kártyán a BTNC) megnyomása. Ez
+a módszer csak a BTN[0] egyszeri megnyomásakor működik. A következő
+reset előállításához a BTN[1] gombot fel kell engedni, majd újra
+nyomva tartva lehet a BTN[0] megnyomásával reset-elni.</p>
+
+<h2>Kijelző</h2>
+
+<p>A hétszegmenses kijelző egy 32 bites szám értékét tudja
+megjeleníteni hexadecimális számrendszerben. A kijelzőn 16 különféle
+érték jeleníthető meg, ezeket a SW[7:4] kapcsolókon beállított bináris
+(0-15) értékkel, vagy a BRD_CTRL periféria OUT regiszterének [7:4]
+bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
+
+<p><img title="" src="images/image7.svg" alt="" /></p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>SW[7:4] vagy BRD_CTRL.OUT[7:4]</p>
+</td>
+<td>
+<p>Megjelenített érték</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0000 (0)</p>
+</td>
+<td>
+<p>PORTA</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0001 (1)</p>
+</td>
+<td>
+<p>PORTB</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0010 (2)</p>
+</td>
+<td>
+<p>PORTC</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0011 (3)</p>
+</td>
+<td>
+<p>PORTD</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0100 (4)</p>
+</td>
+<td>
+<p>A CPU órajelével léptetett 32 bites bináris számláló értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0101 (5)</p>
+</td>
+<td>
+<p>Az időzítő AR regiszterének az értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0110 (6)</p>
+</td>
+<td>
+<p>Az időzítő CNTR regiszterének az értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0111 (7)</p>
+</td>
+<td>
+<p>Az időzítő CTRL regiszterének az értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1000 (8)</p>
+</td>
+<td>
+<p>A CPU teszt kimenetének az értéke (*)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1001 (9)</p>
+</td>
+<td>
+<p>A CPU kiválasztott regiszterének az értéke (**)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1010 (10)</p>
+</td>
+<td>
+<p>A kijelző direkt meghajtása (szegmens mód) a GPIOC, GPIOD kimenetekkel (***)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1011 (11)</p>
+</td>
+<td>
+<p>0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1100 (12)</p>
+</td>
+<td>
+<p>A processzor megszakításkérő bemeneteire kötött értékek (jelenleg nem használt)</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1101 (13)</p>
+</td>
+<td>
+<p>A CPU adatbusz bemeneteinek értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1110 (14)</p>
+</td>
+<td>
+<p>A CPU adatbusz kimeneteinek értéke</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>1111 (15)</p>
+</td>
+<td>
+<p>A CPU címbusz értéke</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<p>(*) A SW[11:8] kapcsolókon beállított 4 bites bináris érték
+választja ki, hogy a CPU teszt kimenetein milyen értékek jelenjenek
+meg (P2 CPU esetén nincs megvalósítva).</p>
+
+<p>(**) A SW[3:0] kapcsolókon beállított 4 bites bináris érték (0-15)
+választja ki, hogy a CPU melyik regiszterének az értéke jelenjen meg a
+kijelzőn.</p>
+
+<p>(***) A GPIOD 32 bitje a kijelző 0-3 számjegyének 32 LED-jét
+vezérli (4-7 karakterpozíciók), míg a GPIOC 32 bitje a kijelző 4-7
+számjegyének (0-3 karakterpozíciók) LED-jeit működteti.</p>
+
+<h3>Szegmens mód</h3>
+
+<p>Amennyiben a kijelzendő adatként a 10-es sorszámú van kiválasztva,
+a kijelző meghajtó szegmens üzemmódban működik, ebben az esetben az
+adatot a PORTD és PORTC kimenetek szolgáltatják.</p>
+
+<p><img title="" src="images/image6.svg" alt="" /></p>
+
+<h1>Címdekóder, memória térkép</h1>
+
+<p>A számítógépbe 128 kszó RAM memória van beépítve, amely alapvetően
+az első 128k címen érhető el. Az első 64k utolsó 256 címe esetén
+azonban a címdekóder nem a memóriát, hanem helyette az IO áramköröket
+választja ki. Az IO áramkörök tehát a 0xFF00-0xFFFF tartományon belül
+használhatók. Az egyes perifériák regisztereinek kezdőcímét a memória
+térkép rajzáról olvashatjuk le.</p>
+
+<p>A RAM első 65280 szó, és a második 64 kszó méretű területén
+tárolhatók a felhasználói program és annak adatai. A 0xF000-0xFEFF
+memóriaterület kezdőértékként a PMon nevű monitorprogram kódját
+tartalmazza, míg a 0 címen egy vezérlésátadó utasítás van, amely
+bekapcsoláskor elindítja a monitort.</p>
+
+<p>A monitor segítségével megvizsgálhatjuk, módosíthatjuk a memória
+tartalmát, beállíthatjuk a felhasználói program számára a
+regisztereket, valamint az UART-on keresztül betölthetjük a memóriába
+a felhasználói programot. A monitor egy parancssoros felhasználói
+felülettel (CLI) rendelkezik, amelyet az UART-on keresztül
+használhatunk, 115200,N,8,1 beállításokkal.</p>
+
+<p><img title="" src="images/image4.svg" alt="" /></p>
+
+<h3>IO áramkörök regisztereinek címei</h3>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Cím</p>
+</td>
+<td>
+<p>Periféria</p>
+</td>
+<td>
+<p>Regiszter</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFFFF</p>
+</td>
+<td>
+<p>SIMIF</p>
+</td>
+<td>
+<p>CMD_PAR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFFF0</p>
+</td>
+<td>
+<p>BRD_CTRL</p>
+</td>
+<td>
+<p>OUT</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF5F</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+<td>
+<p>BCNT15</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>…</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+<td>
+<p>BCNT…</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF52</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+<td>
+<p>BCNT2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF51</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+<td>
+<p>PRE</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF50</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+<td>
+<p>CLOCK</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF4F</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>SREG3</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF4E</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>SREG2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF4D</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>SREG1</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF4C</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>SREG0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF44</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>CPB</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF43</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>TSTAT</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF42</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>RSTAT</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF41</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>CTRL</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF40</p>
+</td>
+<td>
+<p>UART</p>
+</td>
+<td>
+<p>DR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF33</p>
+</td>
+<td>
+<p>TIMER</p>
+</td>
+<td>
+<p>STAT</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF32</p>
+</td>
+<td>
+<p>TIMER</p>
+</td>
+<td>
+<p>CNTR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF31</p>
+</td>
+<td>
+<p>TIMER</p>
+</td>
+<td>
+<p>AR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF30</p>
+</td>
+<td>
+<p>TIMER</p>
+</td>
+<td>
+<p>CTRL</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF20</p>
+</td>
+<td>
+<p>GPIOI</p>
+</td>
+<td>
+<p>IDR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF10</p>
+</td>
+<td>
+<p>GPIOJ</p>
+</td>
+<td>
+<p>IDR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF03</p>
+</td>
+<td>
+<p>GPIOD</p>
+</td>
+<td>
+<p>ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF02</p>
+</td>
+<td>
+<p>GPIOC</p>
+</td>
+<td>
+<p>ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF01</p>
+</td>
+<td>
+<p>GPIOB</p>
+</td>
+<td>
+<p>ODR</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>0xFF00</p>
+</td>
+<td>
+<p>GPIOA</p>
+</td>
+<td>
+<p>ODR</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<h1>Megvalósítás a Nexys4DDR kártyával</h1>
+
+<p>A kártya dokumentációja elérhető
+a <a href="https://www.google.com/url?q=http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr&amp;sa=D&amp;source=editors&amp;ust=1736174083516501&amp;usg=AOvVaw3p5KwD_jxaIifUQgVcG_fS">http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr</a> címen.</p>
+
+<p>A kártya egy CPU RESET gombot, valamint 5 nyomógombot és 16
+kapcsolót tartalmaz, a kimeneti jeleket 16 LED-en és egy 8 digites
+hétszegmenses kijelzőn lehet megjeleníteni.</p>
+
+<p>A számítógép órajele 25 MHz.</p>
+
+<h2>Nexys4DDR bemenetek</h2>
+
+<p>A kapcsolók és nyomógombok pergésmentesítettek.</p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Kapcsoló/nyomógomb</p>
+</td>
+<td>
+<p>Számítógép port</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTNC</p>
+</td>
+<td>
+<p>PORTI[0]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTND</p>
+</td>
+<td>
+<p>PORTI[1]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTNU</p>
+</td>
+<td>
+<p>PORTI[2]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTNR</p>
+</td>
+<td>
+<p>PORTI[3]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTNL</p>
+</td>
+<td>
+<p>PORTI[4]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SW[15:0]</p>
+</td>
+<td>
+<p>PORTJ[15:0]</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<p>A PORTI és PORTJ fel nem használt bitjeire 0 van bekötve.</p>
+
+<p>A kártya CPU RESET feliratú nyomógombját használhatjuk a számítógép
+alapállapotba állítására.</p>
+
+<h2>Nexys4DDR kimenetek</h2>
+
+<p>A számítógép PORTB[15:0] kimenetei a kártya 16 LED-jére vannak
+bekötve.</p>
+
+<h2>Nexys4DDR memória</h2>
+
+<p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
+címdekóder fejezetben ismertetett térképpel.</p>
+
+<h1>Megvalósítás a Boolean kártyával</h1>
+
+<p>A kártya dokumentációja elérhető
+a <a href="https://www.google.com/url?q=http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean&amp;sa=D&amp;source=editors&amp;ust=1736174083519952&amp;usg=AOvVaw21EDE5W_kzlKMuKxxb0hYV">http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean</a> címen.</p>
+
+<p>A kártya 4 nyomógombot, 16 kapcsolót, valamint 16 LED-et és egy 8
+  digites hét szegmenses kijelzőt tartalmaz.</p>
+
+<p>A számítógép órajele 25 MHz.</p>
+
+<p>A kapcsolók, LED-ek és a hétszegmenses kijelző bekötése megegyezik
+a Nexy4DDR kártyán megvalósított áramkörével. A nyomógombok és
+kapcsolók pergésmentesítettek.</p>
+
+<h2>Boolean bemenetek</h2>
+
+<p>A kártya 16 kapcsolóval és 4 nyomógombbal rendelkezik, mivel
+azonban a CPU RESET számára nincs rajta dedikált nyomógomb, ezért a
+fent említett 2 nyomógombos módszer használható a CPU
+újraindítására.</p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Nyomógomb/kapcsoló</p>
+</td>
+<td>
+<p>Számítógép port</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SW[15:0]</p>
+</td>
+<td>
+<p>PORTJ[15:0]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTN[3:0]</p>
+</td>
+<td>
+<p>PORTI[3:0]</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<h2>Boolean kimenetek</h2>
+
+<p>A számítógép PORTB[15:0] kimenetei a kártya 16 LED-jére vannak
+bekötve.</p>
+
+<h2>Boolean memória</h2>
+
+<p>A számítógépben 64 kszó memória található, amely a 0-0xFFFF címeken
+érhető el. A címdekóder fejezetben látható térképhez képest az a
+különbség, hogy a 0x10000-0x1FFFF címeken nincs beépített memória.</p>
+
+<h1>Megvalósítás a LogSys kártyával</h1>
+
+<p>A kártya dokumentációja elérhető
+a <a href="https://www.google.com/url?q=http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys&amp;sa=D&amp;source=editors&amp;ust=1736174083521609&amp;usg=AOvVaw3SDbBtB8KRIwdNz_l5J4T2">http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys</a> címen.</p>
+
+<p>A kártya egy RST, valamint négy általános nyomógombot és 8
+kapcsolót tartalmaz. A kimeneti eszközök nyolc darab 3 színű LED és
+egy négy digites hétszegmenses kijelző.</p>
+
+<p>A számítógép órajele 25 MHz.</p>
+
+<h2>LogSys bemenetek</h2>
+
+<p>A nyomógombok és kapcsolók pergésmentesítettek.</p>
+
+<p>A számítógép az RST nyomógombbal állítható alaphelyzetbe.</p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Nyomógomb/kapcsoló</p>
+</td>
+<td>
+<p>Számítógép port</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>SW[7:0]</p>
+</td>
+<td>
+<p>PORTJ[7:0]</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>BTN[[0]</p>
+</td>
+<td>
+<p>PORTI[3:0]</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<h2>LogSys kimenetek</h2>
+
+<p>Az LD0..LD7 LED-ek mindegyike három színű, vagyis egy zöld, egy kék
+és egy piros LED-et is tartalmaz. A számítógép PORTB[23:0] kimenetei
+segítségével működtethetők a LED-ek:</p>
+
+<table>
+<thead>
+<tr>
+<td>
+<p>Syámítógép port</p>
+</td>
+<td>
+<p>LED</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>PORTB[7:0]</p>
+</td>
+<td>
+<p>ZÖLD7 .. ZÖLD0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>PORTB[15:8]</p>
+</td>
+<td>
+<p>PIROS7 .. PIROS0</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>PORTB[23:16]</p>
+</td>
+<td>
+<p>KÉK7 .. KÉK0</p>
+</td>
+</tr>
+</thead>
+</table>
+
+<p>A hétszegmenses kijelzőn megjelenő érték a SW[7:4] kapcsolókon
+beállított 4 bites bináris kód segítségével választható ki. Mivel a
+kijelző csak 4 digites, ezért a kiválasztott adatnak csak az alsó 16
+bitje jelenik meg. Szegmens mód esetén (SW[7:4]==10), a PORTC
+kimenetek határozzák meg a kijelző 32 LEDjének az állapotát, a PORTD
+kimenetek nincsenek hatással a kijelzőre.</p>
+
+<h2>LogSys memória</h2>
+
+<p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
+címdekóder fejezetben ismertetett térképpel.</p>
