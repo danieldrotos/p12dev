@@ -106,12 +106,8 @@ buszra, így két bemeneti portot kapunk:</p>
 
 <table border=1>
 <tr>
-<th>
-<p>Port</p>
-</th>
-<th>
-<p>GPIO regiszter</p>
-</th>
+<th>Port</th>
+<th>GPIO regiszter</th>
 </tr>
 <tr>
 <td>PORTI</td>
@@ -449,12 +445,8 @@ bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
 
 <table border=1>
 <tr>
-<th>
-<p>SW[7:4] vagy BRD_CTRL.OUT[7:4]</p>
-</th>
-<th>
-<p>Megjelenített érték</p>
-</th>
+<th>SW[7:4] vagy BRD_CTRL.OUT[7:4]</th>
+<th>Megjelenített érték</th>
 </tr>
 <tr>
 <td>0000 (0)</td>
@@ -570,142 +562,136 @@ használhatunk, 115200,N,8,1 beállításokkal.</p>
 
 <table border=1>
 <tr>
-<th>
-<p>Cím</p>
-</th>
-<th>
-<p>Periféria</p>
-</th>
-<th>
-<p>Regiszter</p>
-</th>
+<th>Cím</th>
+<th>Periféria</th>
+<th>Regiszter</th>
 </tr>
-<tr>
+<tr bgcolor="c9daf8">
 <td>0xFFFF</td>
 <td>SIMIF</td>
 <td>CMD_PAR</td>
 </tr>
-<tr>
+<tr bgcolor="ead1dc">
 <td>0xFFF0</td>
 <td>BRD_CTRL</td>
 <td>OUT</td>
 </tr>
-<tr>
+<tr bgcolor="fce5cd">
 <td>0xFF5F</td>
 <td>CLOCK</td>
 <td>BCNT15</td>
 </tr>
-<tr>
+<tr  bgcolor="fce5cd">
 <td>…</td>
 <td>CLOCK</td>
 <td>BCNT…</td>
 </tr>
-<tr>
+<tr  bgcolor="fce5cd">
 <td>0xFF52</td>
 <td>CLOCK</td>
 <td>BCNT2</td>
 </tr>
-<tr>
+<tr  bgcolor="fce5cd">
 <td>0xFF51</td>
 <td>CLOCK</td>
 <td>PRE</td>
 </tr>
-<tr>
+<tr  bgcolor="fce5cd">
 <td>0xFF50</td>
 <td>CLOCK</td>
 <td>CLOCK</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF4F</td>
 <td>UART</td>
 <td>SREG3</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF4E</td>
 <td>UART</td>
 <td>SREG2</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF4D</td>
 <td>UART</td>
 <td>SREG1</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF4C</td>
 <td>UART</td>
 <td>SREG0</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF44</td>
 <td>UART</td>
 <td>CPB</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF43</td>
 <td>UART</td>
 <td>TSTAT</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF42</td>
 <td>UART</td>
 <td>RSTAT</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF41</td>
 <td>UART</td>
 <td>CTRL</td>
 </tr>
-<tr>
+<tr  bgcolor="f9cb9c">
 <td>0xFF40</td>
 <td>UART</td>
 <td>DR</td>
 </tr>
-<tr>
+<tr  bgcolor="b7b7b7">
 <td>0xFF33</td>
 <td>TIMER</td>
 <td>STAT</td>
 </tr>
-<tr>
+<tr  bgcolor="b7b7b7">
 <td>0xFF32</td>
 <td>TIMER</td>
 <td>CNTR</td>
 </tr>
-<tr>
+<tr  bgcolor="b7b7b7">
 <td>0xFF31</td>
 <td>TIMER</td>
 <td>AR</td>
 </tr>
-<tr>
+<tr  bgcolor="b7b7b7">
 <td>0xFF30</td>
 <td>TIMER</td>
 <td>CTRL</td>
 </tr>
-<tr>
+<tr  bgcolor="b6d7a8">
 <td>0xFF20</td>
 <td>GPIOI</td>
 <td>IDR</td>
 </tr>
-<tr>
+<tr  bgcolor="ffe599">
 <td>0xFF10</td>
 <td>GPIOJ</td>
 <td>IDR</td>
 </tr>
-<tr>
+<tr  bgcolor="ead1dc">
 <td>0xFF03</td>
 <td>GPIOD</td>
 <td>ODR</td>
 </tr>
-<tr>
+<tr  bgcolor="ead1dc">
 <td>0xFF02</td>
 <td>GPIOC</td>
 <td>ODR</td>
 </tr>
-<tr>
+<tr  bgcolor="ead1dc">
 <td>0xFF01</td>
 <td>GPIOB</td>
 <td>ODR</td>
 </tr>
-<tr>
+<tr  bgcolor="ead1dc">
 <td>0xFF00</td>
 <td>GPIOA</td>
 <td>ODR</td>
@@ -729,12 +715,8 @@ hétszegmenses kijelzőn lehet megjeleníteni.</p>
 
 <table border=1>
 <tr>
-<th>
-<p>Kapcsoló/nyomógomb</p>
-</th>
-<th>
-<p>Számítógép port</p>
-</th>
+<th>Kapcsoló/nyomógomb</th>
+<th>Számítógép port</th>
 </tr>
 <tr>
 <td>BTNC</td>
@@ -800,12 +782,8 @@ fent említett 2 nyomógombos módszer használható a CPU
 
 <table border=1>
 <tr>
-<th>
-<p>Nyomógomb/kapcsoló</p>
-</th>
-<th>
-<p>Számítógép port</p>
-</th>
+<th>Nyomógomb/kapcsoló</th>
+<th>Számítógép port</th>
 </tr>
 <tr>
 <td>SW[15:0]</td>
@@ -847,12 +825,8 @@ egy négy digites hétszegmenses kijelző.</p>
 
 <table border=1>
 <tr>
-<th>
-<p>Nyomógomb/kapcsoló</p>
-</th>
-<th>
-<p>Számítógép port</p>
-</th>
+<th>Nyomógomb/kapcsoló</th>
+<th>Számítógép port</th>
 </tr>
 <tr>
 <td>SW[7:0]</td>
@@ -872,12 +846,8 @@ segítségével működtethetők a LED-ek:</p>
 
 <table border=1>
 <tr>
-<th>
-<p>Számítógép port</p>
-</th>
-<th>
-<p>LED</p>
-</th>
+<th>Számítógép port</th>
+<th>LED</th>
 </tr>
 <tr>
 <td>PORTB[7:0]</td>
