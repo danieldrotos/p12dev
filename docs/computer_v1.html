@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html id="html-tag" lang="en">
+  <script>
+   const $htmlTag = document.querySelector("#html-tag")
+   const urlParams = new URL(window.location.toLocaleString()).searchParams;
+   const lvar= urlParams.get('lang');
+   switch(lvar) {
+     case "hu":
+       $htmlTag.lang = "hu"
+       $htmlTag.classList.add("hungarianLang")
+       break
+     default:
+       $htmlTag.classList.add("englishLang")
+       break
+   }
+  </script>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="p12.css">
+    <title>Computer v2</title>
+  </head>
+
+<body>
+
+  <p>
+    <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
+    <a href="computer_v1.html?lang=hu">HU</a>
+    <a href="computer_v1.html?lang=en">EN</a>
+  </p>
+
+<h1>Mikroszámítógép v1</h1>
+    
+  <p>A mikroprocesszort kiegészítve néhány alkatrésszel,
+    mikroszámítógépet alakítunk ki.</p>
+
+  <p>A processzort memóriával, GPIO áramkörökkel, az eszközöket
+    összekötő buszt pedig címdekóderrel egészítjük ki.</p>
+
+  <h1>Memória</h1>
+
+  <p>A processzor memória illesztőjére (MA, MDI, MDO, MWE)
+    kapcsolódó memória alkatrész fogja tárolni a futtatott programot,
+    valamint a feldolgozott adatokat. A memóriát az FPGA-n alakítjuk
+    ki, a lefordított program kódját pedig beillesztjük az
+    alkatrészbe. Ez azt jelenti, hogy a program megváltoztatásakor a
+    memória alkatrészt újra el kell készíteni.</p>
+
+    <p>A memória kapacitása 512 szó, a címzéshez így 9 cím bitre van
+      szükség. Minden szó 32 bites.</p>
+    
+    <h2>GPIO</h2>
+    
+  <p>A külvilággal való kapcsolattartást a memória illesztőre
+    kapcsolt GPIO (General Purpose Input Output) áramkörök
+    valósítják meg.</p>
+  
+  <h3>Kimenetek</h3>
+  
+  <p>A kimeneti kivezetéseket egy 4 regiszterből álló “memória”
+    valósítja meg, amelyből mind a 4 regiszter kimenetei ki vannak
+    vezetve. Ezek a PORTA, PORTB, PORTC, PORTD nevet viselik. A
+    regiszterek tartalma írható (memória írás utasítással), valamint
+    vissza is olvasható a tartalmuk.</p>
+  
+  <p>A 4 regiszter 4 egymást követő címen található, a kezdőcímet a
+    címdekóder határozza meg:</p>
+  
+<table border=1>
+<tr>
+<td>Offszet</td>
+</td>
+<td>Port</td>
+</tr>
+<tr>
+<td>0</td>
+<td>PORTA</td>
+</tr>
+<tr>
+<td>1</td>
+<td>PORTB</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PORTC</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PORTD</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Bemenetek</h3>
+
+<p>Bemenetként szintén regisztert használunk. A regiszter olvasásakor
+a bemeneti vezetékek állapota eltárolódik a regiszterben (mintavétel),
+a processzor ennek a tartalmát fogja megkapni. A bemeneti GPIO
+áramkörben egy regiszter van, így egy 32 bites bemenő adathoz lehet
+vele hozzáférni. A számítógépben két ilyen áramkört kapcsolunk a
+buszra, így két bemeneti portot kapunk (PORTI, PORTJ).</p>
+
+<h2>Címdekóder</h2>
+
+<p>A címdekóder a processzor cím kimenetének ADDR[15:12] kivezetéseit
+használja, így 64 Ki szó tartományban 4 Ki szavas szeleteket választ
+szét, egy kimenete egy 4 Ki szavas cím tartományban lesz aktív. Az
+eszközök a következő címeken lesznek elérhetők:</p>
+
+<table border=1>
+<tr>
+<td>Cím tartomány</td>
+<td>Eszköz</td>
+</tr>
+<tr>
+<td>0x0000 0000 - 0x0000 0fff</td>
+<td>Memóra</td>
+</tr>
+<tr>
+<td>0x0000 d000 - 0x0000 dfff</td>
+<td>Bemeneti port: PORTJ</td>
+</tr>
+<tr>
+<td>0x0000 e000 - 0x0000 efff</td>
+<td>Bemeneti port: PORTI</td>
+</tr>
+<tr>
+<td>0x0000 f000 - 0x0000 ffff</td>
+<td>Kimeneti portok:<br />0xf000: PORTA<br />0xf001: PORTB<br />0xf002: PORTC<br />0xf003: PORTD</td>
+</tr>
+</table>
+
+<p>Mivel a felsőbb helyi értékű cím bitek a dekódolásban nem vesznek
+részt, az eszközök a további 64 Ki szavas tartományokban is
+megjelennek.</p>
+
+<h2>Diagnosztika</h2>
+
+<p>A CPU tesztelésre használható ki- és bemenetei a számítógépben is
+hozzáférhetőek. A TRS bemetekre adott 4 bites kód által meghatározott
+adatok megjelennek a TR és a TREG kimeneteken (részletesen lásd a
+mikroprocesszor leírásában).</p>
+
+</body>
+</html>
