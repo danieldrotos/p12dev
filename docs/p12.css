@@ -40,6 +40,8 @@ samp {
 
 table { border-collapse: collapse; }
 
+td, th { padding: 5px; }
+
 tt { font-family: monospace }
 
 .mov, .call, .mem, .alu1, .alu2 {

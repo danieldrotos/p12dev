@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.9 -->
+<!-- CreationDate: 2025-01-07 08:34:03 -->
+<!-- Magnification: 1.05 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="318pt" height="345pt"
+	viewBox="2227 3813 5040 5469">
+<desc>encoding: UTF-8</desc>
+<g fill="none">
+<!-- Line -->
+<rect x="3240" y="6165" width="1080" height="1260" fill="#ffbfbf"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3240" y="7425" width="1080" height="405" fill="#87cfff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3240" y="7830" width="1080" height="1305" fill="#ffbfbf"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,7425 4770,3825"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,7830 4770,7830"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="7830" width="1440" height="945"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,8235 4770,8775"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="7515" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="6885" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="6570" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="6255" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6210,6255 6210,4140"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="5940" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4770,4140 4770,6255"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="3825" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="8955" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,9000 4770,8955"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4320,9135 4770,9270"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="7200" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4770" y="4140" width="1440" height="315"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="6345" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x1 FFFF</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="7395" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x1 0000</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="7605" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x0 FFFF</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="7815" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x0 FF00</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="8025" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x0 FEFF</text>
+<!-- Text -->
+<text xml:space="preserve" x="3780" y="6930" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">64 k RAM</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="8280" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x0 F000</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="7740" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">GPIO A,B,C,D</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="7425" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">GPIOJ</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="6795" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">TIMER</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="6525" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">UART</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="7470" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF10</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="7155" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF20</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="6840" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF30</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="6525" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF40</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="6210" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF50</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="7785" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FF00</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="6210" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">CLOCK</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">SIMIF</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="8100" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">PMon</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="8317" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">monitor</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="8534" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">program</text>
+<!-- Text -->
+<text xml:space="preserve" x="3735" y="7695" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">256 IO</text>
+<!-- Text -->
+<text xml:space="preserve" x="3735" y="8640" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">65280</text>
+<!-- Text -->
+<text xml:space="preserve" x="3735" y="8820" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">RAM</text>
+<!-- Text -->
+<text xml:space="preserve" x="3195" y="9135" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="end">0x0 0000</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="9180" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">PMon start</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="7110" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">GPIOI</text>
+<!-- Text -->
+<text xml:space="preserve" x="5490" y="4365" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="144" text-anchor="middle">BRD_CTRL</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="4410" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FFF0</text>
+<!-- Text -->
+<text xml:space="preserve" x="6300" y="4095" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="144" text-anchor="start">0x0 FFFF</text>
+<!-- Line -->
+<rect x="3240" y="7830" width="1080" height="405" fill="#ffa1a1"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3240" y="9000" width="1080" height="135" fill="#ffa1a1"
+	stroke="#000000" stroke-width="8px"/>
+</g>
+</svg>

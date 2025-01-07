@@ -22,10 +22,27 @@
 
   <body>
 
+    <p>
     <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
     <a href="computer_v2.html?lang=hu">HU</a>
     <a href="computer_v2.html?lang=en">EN</a>
-    
+    </p>
+
+    <p>
+      Perifériák: 
+    <a href="#gpio">GPIO</a> |
+    <a href="#timer">Időzítő</a> |
+    <a href="#uart">UART</a> |
+    <a href="#brd_ctrl">Board Control</a> |
+    <a href="#clock">Óra</a>
+    </p>
+
+    <p>
+      FPGA megvalósítás:
+      <a href="#nexys4ddr">Nexys4DDR</a> |
+      <a href="#boolean">Boolean</a> |
+      <a href="#logsys">LogSys</a>
+    </p>
  
     <h1>Mikroszámítógép v2</h1>
 
@@ -35,10 +52,11 @@ mikroszámítógépet alakítunk ki.</p>
 <p><img title="" src="computer.png" alt="" /></p>
 
 <p>A processzort memóriával, GPIO áramkörökkel, időzítővel és UART-al,
-az eszközöket összekötő buszt pedig címdekóderrel egészítjük ki. A clk
-bemenet a számítógép, egyúttal a CPU órajele is. Az FPGA
-megvalósításban a clk bemenetre 25 MHz frekvenciájú órajelet
-kötünk.</p>
+  az eszközöket összekötő buszt
+  pedig <a href="#mem_map">címdekóderrel</a> egészítjük ki. A clk
+  bemenet a számítógép, egyúttal a CPU órajele is. Az FPGA
+  megvalósításban a clk bemenetre 25 MHz frekvenciájú órajelet
+  kötünk.</p>
 
 <h1>Memória</h1>
 
@@ -50,7 +68,7 @@ az alkatrészbe.</p>
 <p>A memória kapacitása kártyától függően 64, vagy 128 Kszó, a
 címzéshez így 16, vagy 17 bitre van szükség. Minden szó 32 bites.</p>
 
-<h1>GPIO</h1>
+<a name="gpio"><h1>GPIO</h1></a>
 
 <p>A külvilággal való kapcsolattartást a memória illesztőre kapcsolt
 GPIO (General Purpose Input Output) áramkörök valósítják meg.</p>
@@ -65,7 +83,7 @@ rajtuk. A regiszterek tartalma írható (memória írás utasítással),
 valamint vissza is olvasható a tartalmuk.</p>
 
 <p>A 4 regiszter 4 egymást követő címen található, a kezdőcímet a
-címdekóder határozza meg:</p>
+<a href="#mem_map">címdekóder</a> határozza meg:</p>
 
 <table border=1>
 <tr>
@@ -119,7 +137,8 @@ buszra, így két bemeneti portot kapunk:</p>
 </tr>
 </table>
 
-<h1>Időzítő</h1>
+
+<a name="timer"><h1>Időzítő</h1></a>
 
 <p>Az időzítő egy 32 bites bináris előre számlálót tartalmaz, amely a
 számítógéptől független órajellel léptethető. Az FPGA megvalósításnál
@@ -147,8 +166,8 @@ kimenetet szoftverből kell törölni, törlésig 1 marad.</p>
 
 <h3>CTRL, control</h3>
 
-<p>Offszet: 0</p>
-<p>Kezdőérték: 0</p>
+<p>Offszet: 0<br>
+Kezdőérték: 0</p>
 
 <p>A regiszter tartalma vezérli a számláló működését.</p>
 
@@ -166,8 +185,8 @@ kimenetet szoftverből kell törölni, törlésig 1 marad.</p>
 
 <h3>AR, auto-reload</h3>
 
-<p>Offszet: 1</p>
-<p>Kezdőérték: 0</p>
+<p>Offszet: 1<br>
+Kezdőérték: 0</p>
 
 <p>A regiszter a számlálás végértékét állítja be. Amikor a számláló
 értéke az AR regiszter tartalmával egyezik, a túlcsordulás kimenet 1
@@ -175,16 +194,16 @@ lesz, a számláló a következő lépéskor nullázódik.</p>
 
 <h3>CNTR, counter</h3>
 
-<p>Offszet: 2</p>
-<p>Kezdőérték: 0</p>
+<p>Offszet: 2<br>
+Kezdőérték: 0</p>
 
 <p>A számláló aktuális értékét tartalmazó regiszter. Írás művelettel a
 számláló értéke megváltoztatható.</p>
 
 <h3>STAT, status</h3>
 
-<p>Offszet: 3</p>
-<p>Kezdőérték: 2</p>
+<p>Offszet: 3<br>
+Kezdőérték: 2</p>
 
 <p>Az időzítő állapotáról tartalmaz információt.</p>
 
@@ -202,7 +221,8 @@ túlcsordulás állapotot.</li>
 
 </ul>
 
-<h1>UART</h1>
+
+<a name="uart"><h1>UART</h1></a>
 
 <p>Univerzális aszinkron soros adó- vevő áramkör. Az áramkör vevő
 oldala egy 16 elemű belső FIFO-val van ellátva, amely kiolvasás előtt
@@ -210,8 +230,8 @@ az utolsó 15 vett adatot tudja tárolni.</p>
 
 <h3>DR, data register</h3>
 
-<p>Offszet: 0</p>
-<p>Kezdőérték: 0</p>
+<p>Offszet: 0<br>
+Kezdőérték: 0</p>
 
 <p>8 bites adat regiszter, írása elindítja a küldő műveletet. Olvasása
 a FIFO legrégebbi tárolt karakterét adja. Olvasáskor a [31:8] bitek
@@ -236,8 +256,8 @@ a küldést tiltja.</li>
 
 <h3>RSTAT, receive status</h3>
 
-<p>Offszet: 2</p>
-<p>Kezdőérték: 0</p>
+<p>Offszet: 2<br>
+Kezdőérték: 0</p>
 
 <p>Csak olvasható regiszter, a vevő áramkör állapotáról tartalmaz
 információt.</p>
@@ -272,8 +292,8 @@ regiszter kimenetén vett adat található.</li>
 
 <h3>TSTAT, transmit status</h3>
 
-<p>Offszet: 3</p>
-<p>Kezdőérték: 1</p>
+<p>Offszet: 3<br>
+Kezdőérték: 1</p>
 
 <p>Csak olvasható regiszter, a küldő áramkör állapotáról tartalmaz
 információt.</p>
@@ -288,8 +308,8 @@ információt.</p>
 
 <h3>CPB, cycles per bit</h3>
 
-<p>Offszet: 4</p>
-<p>Kezdőérték: 216</p>
+<p>Offszet: 4<br>
+Kezdőérték: 216</p>
 
 <p>Írható és olvasható regiszter, amelynek az értéke a bit továbbítás
 sebességét állítja be (jelelési sebesség). A tartalma azt adja meg,
@@ -314,14 +334,16 @@ hogy 1 bit továbbításának az ideje mennyi, az áramkörre kapcsolt
 MHz-es órajel esetén a 216-os kezdőérték ~115200 baud sebességet
 eredményez.</p>
 
-<h1>Board Control</h1>
+
+<a name="brd_ctrl"><h1>Board Control</h1></a>
 
 <p>A periféria regisztereivel a számítógép kimeneti portjainak
 felhasználási módja vezérelhető.</p>
 
 <h3>OUT, output control</h3>
 
-<p>Offszet: 0<br />Kezdőérték: 0</p>
+    <p>Offszet: 0<br>
+      Kezdőérték: 0</p>
 
 <ul>
 
@@ -338,7 +360,8 @@ felhasználási módja vezérelhető.</p>
 <p>A kimeneti portok (PORTA.PORTD) felhasználását vezérli. Hatása csak
 az FPGA megvalósítások esetén van.</p>
 
-<h1>Szimulátor felület</h1>
+
+<a name="simif"><h1>Szimulátor felület</h1></a>
 
 <p>Ez a periféria szövegek kiírására használható, abban az esetben, ha
 szimuláljuk az áramkör viselkedését egy verilog szimulátorral. A
@@ -359,16 +382,19 @@ amlyeknek a frekvenciája az óra számlálóéval egyezik meg. Ezek a
 számlálók csak akkor lépnek, ha nem nulla az értékük, a 0 elérésekor a
 számlálás leáll.</p>
 
-<h3>CLOCK, clock value</h3>
 
-<p>Offszet: 0<br />Kezdőérték: 0</p>
+<a name="clock"><h3>CLOCK, clock value</h3></a>
+
+    <p>Offszet: 0<br>
+      Kezdőérték: 0</p>
 
 <p>A regiszter az óra számláló értékét tartalmazza, írható és
 olvasható.</p>
 
 <h3>PRE, pre-divider value</h3>
 
-<p>Offszet: 1<br />Kezdőérték: 0</p>
+    <p>Offszet: 1<br>
+      Kezdőérték: 0</p>
 
 <p>A PRE regiszter értéke határozza meg az óra működési frekvenciáját,
 két lépés között CNT+1 bemeneti órajel telik el:</p>
@@ -393,11 +419,13 @@ lépjen egyet, az előosztó regiszter értékét 24999-re kell állítani. Az
 
 <h3>BCNT2…BCNT15, backward counters</h3>
 
-<p>Offszet: 2…15<br />Kezdőérték: 0</p>
+    <p>Offszet: 2…15<br>
+      Kezdőérték: 0</p>
 
 <p>Hátra számlálók, amelyeknek a működési frekvenciája az óra
 regiszterével egyezik. A számlálók csak akkor lépnek, ha nem 0 az
 értékük. A 0 elérésekor az egyes számlálók megállnak.</p>
+
 
 <h1>FPGA megvalósítás</h1>
 
@@ -534,7 +562,8 @@ adatot a PORTD és PORTC kimenetek szolgáltatják.</p>
 
 <p><img title="" src="segmode.svg" alt="" /></p>
 
-<h1>Címdekóder, memória térkép</h1>
+
+<a name="mem_map"><h1>Címdekóder, memória térkép</h1></a>
 
 <p>A számítógépbe 128 kszó RAM memória van beépítve, amely alapvetően
 az első 128k címen érhető el. Az első 64k utolsó 256 címe esetén
@@ -560,7 +589,7 @@ használhatunk, 115200,N,8,1 beállításokkal.</p>
 
 <h3>IO áramkörök regisztereinek címei</h3>
 
-<table border=1>
+<table border=1 width=600px>
 <tr>
 <th>Cím</th>
 <th>Periféria</th>
@@ -698,7 +727,8 @@ használhatunk, 115200,N,8,1 beállításokkal.</p>
 </tr>
 </table>
 
-<h1>Megvalósítás a Nexys4DDR kártyával</h1>
+
+<a name="nexys4ddr"><h1>Megvalósítás a Nexys4DDR kártyával</h1></a>
 
 <p>A kártya dokumentációja elérhető
 a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr">http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr</a> címen.</p>
@@ -757,9 +787,11 @@ bekötve.</p>
 <h2>Nexys4DDR memória</h2>
 
 <p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
-címdekóder fejezetben ismertetett térképpel.</p>
+  <a href="#mem_map">címdekóder fejezetben</a> ismertetett
+  térképpel.</p>
 
-<h1>Megvalósítás a Boolean kártyával</h1>
+
+<a name="boolean"><h1>Megvalósítás a Boolean kártyával</h1></a>
 
 <p>A kártya dokumentációja elérhető
 a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean">http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean</a> címen.</p>
@@ -803,10 +835,12 @@ bekötve.</p>
 <h2>Boolean memória</h2>
 
 <p>A számítógépben 64 kszó memória található, amely a 0-0xFFFF címeken
-érhető el. A címdekóder fejezetben látható térképhez képest az a
-különbség, hogy a 0x10000-0x1FFFF címeken nincs beépített memória.</p>
+  érhető el. A <a href="#mem_map">címdekóder fejezetben</a> látható
+  térképhez képest az a különbség, hogy a 0x10000-0x1FFFF címeken
+  nincs beépített memória.</p>
 
-<h1>Megvalósítás a LogSys kártyával</h1>
+
+<a name="logsys"><h1>Megvalósítás a LogSys kártyával</h1></a>
 
 <p>A kártya dokumentációja elérhető
 a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys">http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys</a> címen.</p>
@@ -873,7 +907,8 @@ kimenetek nincsenek hatással a kijelzőre.</p>
 <h2>LogSys memória</h2>
 
 <p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
-címdekóder fejezetben ismertetett térképpel.</p>
+  <a href="#mem_map">címdekóder fejezetben</a> ismertetett
+  térképpel.</p>
 
 <hr>
 
