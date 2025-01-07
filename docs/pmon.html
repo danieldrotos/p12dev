@@ -77,24 +77,22 @@ egy _ jel van.</p>
 <p>Kiírja a használható parancsok listáját és a szükséges, illetve
   lehetséges paramétereket.</p>
 
-<table>
-<tr>
-<td>PMonitor v1.1 (cpu: v2.2.7)</p>
-<p>:help </p>
-<p>m[em] addr [val]  Get/set memory </p>
-<p>d[ump] start end  Dump memory content </p>
-<p>l[oad]            Load hex file to memory </p>
-<p>g[o]|run [addr]   Run from address </p>
-<p>r[eg[s]]          Print registers </p>
-<p>rX [val]          Get/set RX </p>
-<p>sp [val]          Get/set R13 </p>
-<p>lr [val]          Get/set R14 </p>
-<p>pc [val]          Get/set R15 </p>
-<p>f [val]           Get/set flags </p>
-<p>h[elp],?          Help</p>
-<p>: </td>
-</tr>
-</table>
+<samp>
+PMonitor v1.1 (cpu: v2.2.7)
+:help
+m[em] addr [val]  Get/set memory
+d[ump] start end  Dump memory content
+l[oad]            Load hex file to memory
+g[o]|run [addr]   Run from address
+r[eg[s]]          Print registers
+rX [val]          Get/set RX
+sp [val]          Get/set R13
+lr [val]          Get/set R14
+pc [val]          Get/set R15
+f [val]           Get/set flags
+h[elp],?          Help
+:
+</samp>
 
 
 <h3>m[em] addr [val]</h3>
@@ -102,21 +100,17 @@ egy _ jel van.</p>
 <p>Memória egy adott című rekeszének vizsgálata, vagy módosítása. Az
 első paraméter a vizsgált rekesz címe (hexadecimálisan). Ha a második
 paramétert nem adjuk meg, akkor a parancs a megadott című szót írja ki
-(a címmel együtt), ha megadjuk a második paramétert, akkor először  az
+(a címmel együtt), ha megadjuk a második paramétert, akkor először  az
 érték a memóriába kerül, majd ezután íródik ki (a már módosított)
 memória tartalom.</p>
 
-<table>
-<tbody>
-<tr>
-<td>:m 1</p>
-<p>0000_0001 01D2_0093 </p>
-<p>:m 1 deadbeef </p>
-<p>0000_0001 DEAD_BEEF</p>
-<p>:</td>
-</tr>
-</tbody>
-</table>
+<samp>
+:m 1
+0000_0001 01D2_0093
+:m 1 deadbeef
+0000_0001 DEAD_BEEF
+:
+</samp>
 
 
 <h3>d[ump] start [end]</h3>
@@ -125,37 +119,33 @@ memória tartalom.</p>
 kötelező megadni. Ha a vég címet nem adjuk meg, akkor 17 egymás utáni
 szó értéke íródik ki.</p>
 
-<table>
-<tbody>
-<tr>
-<td>:d 10 </p>
-<p>0000_0010 0000_000A </p>
-<p>0000_0011 0000_0000 </p>
-<p>0000_0012 01A4_0001 </p>
-<p>0000_0013 01F2_0003 </p>
-<p>0000_0014 0000_0000 </p>
-<p>0000_0015 0DED_0000 </p>
-<p>0000_0016 0D1D_0000 </p>
-<p>0000_0017 0D2D_0000 </p>
-<p>0000_0018 0D3D_0000 </p>
-<p>0000_0019 0710_0014 </p>
-<p>0000_001A 0720_FF20 </p>
-<p>0000_001B 001F_0000 </p>
-<p>0000_001C 002F_0000 </p>
-<p>0000_001D 0018_0200 </p>
-<p>0000_001E 11F2_0029 </p>
-<p>0000_001F 0710_0014 </p>
-<p>0000_0020 0030_0000 </p>
-<p>:d 10 14 </p>
-<p>0000_0010 0000_000A </p>
-<p>0000_0011 0000_0000 </p>
-<p>0000_0012 01A4_0001 </p>
-<p>0000_0013 01F2_0003 </p>
-<p>0000_0014 0000_0000 </p>
-<p>:</td>
-</tr>
-</tbody>
-</table>
+<samp>
+:d 10
+0000_0010 0000_000A
+0000_0011 0000_0000
+0000_0012 01A4_0001
+0000_0013 01F2_0003
+0000_0014 0000_0000
+0000_0015 0DED_0000
+0000_0016 0D1D_0000
+0000_0017 0D2D_0000
+0000_0018 0D3D_0000
+0000_0019 0710_0014
+0000_001A 0720_FF20
+0000_001B 001F_0000
+0000_001C 002F_0000
+0000_001D 0018_0200
+0000_001E 11F2_0029
+0000_001F 0710_0014
+0000_0020 0030_0000
+:d 10 14
+0000_0010 0000_000A
+0000_0011 0000_0000
+0000_0012 01A4_0001
+0000_0013 01F2_0003
+0000_0014 0000_0000
+:
+</samp>
 
 
 <h3>l[oad]</h3>
@@ -202,57 +192,49 @@ program visszatér a monitorhoz a megfelelő szubrutin hívással. Az első
 sor arról tájékoztat, hogy ilyen mentés történt-e már, vagy még
 nem:</p>
 
-<table>
-<tbody>
-<tr>
-<td>:r </p>
-<p>Monitor not called by user </p>
-<p>R0  0000_0000 </p>
-<p>R1  0000_0000 </p>
-<p>R2  0000_0000 </p>
-<p>R3  0000_0000 </p>
-<p>R4  0000_0000 </p>
-<p>R5  0000_0000 </p>
-<p>R6  0000_0000 </p>
-<p>R7  0000_0000 </p>
-<p>R8  0000_0000 </p>
-<p>R9  0000_0000 </p>
-<p>R10 0000_0000 </p>
-<p>R11 0000_0000 </p>
-<p>R12 0000_0000 </p>
-<p>SP  0000_F7FF </p>
-<p>LR  0000_0000 </p>
-<p>PC  0000_0000 </p>
-<p>F   0000_0000 </p>
-<p>U0 P0 O0 Z0 C0 S0 </p>
-<p>:</td>
-</tr>
-</tbody>
-</table>
+<samp>
+:r
+Monitor not called by user
+R0  0000_0000
+R1  0000_0000
+R2  0000_0000
+R3  0000_0000
+R4  0000_0000
+R5  0000_0000
+R6  0000_0000
+R7  0000_0000
+R8  0000_0000
+R9  0000_0000
+R10 0000_0000
+R11 0000_0000
+R12 0000_0000
+SP  0000_F7FF
+LR  0000_0000
+PC  0000_0000
+F   0000_0000
+U0 P0 O0 Z0 C0 S0
+:
+</samp>
 
 <p>Az utolsó sorban az egyes flag bitek értéke egyenként is látható. A
 monitor hívása után:</p>
 
-<table>
-<tbody>
-<tr>
-<td>PMonitor v1.1 (cpu: v2.2.7)</p>
-<p>Stop at: 0000_0004 </p>
-<p>:r </p>
-<p>Monitor called from: 0000_0004 </p>
-<p>R0  0000_0000 </p>
-<p>R1  0000_F5E7 </p>
-<p>R2  0000_0012 </p>
-<p>...</p>
-<p>SP  0000_0093 </p>
-<p>LR  0000_0004 </p>
-<p>PC  0000_0004 </p>
-<p>F   0000_0000 </p>
-<p>U0 P0 O0 Z0 C0 S0 </p>
-<p>: </td>
-</tr>
-</tbody>
-</table>
+<samp>
+PMonitor v1.1 (cpu: v2.2.7)
+Stop at: 0000_0004
+:r
+Monitor called from: 0000_0004
+R0  0000_0000
+R1  0000_F5E7
+R2  0000_0012
+...
+SP  0000_0093
+LR  0000_0004
+PC  0000_0004
+F   0000_0000
+U0 P0 O0 Z0 C0 S0
+:
+</samp>
 
 <p>A PC és az LR a hívás helyét követő utasításra mutat, ahonnan a
 felhasználói program folytatható. Ettől a címtől a programot a
@@ -266,17 +248,13 @@ számokat használhatunk, az r13 helyett írhatunk sp nevet, az r14
 helyett lr-t, míg az r15 helyett a pc név is használható. A f név a
 Flag regiszter elmentett értékének kezelésére szolgál.</p>
 
-<table>
-<tbody>
-<tr>
-<td>:r10 </p>
-<p>R10 0000_00D8 </p>
-<p>:r10 ab_45 </p>
-<p>R10 0000_AB45 </p>
-<p>: </td>
-</tr>
-</tbody>
-</table>
+<samp>
+:r10
+R10 0000_00D8
+:r10 ab_45
+R10 0000_AB45
+:
+</samp>
 
 <h2>Monitor szolgáltatások</h2>
 
@@ -325,8 +303,9 @@ pedig az al verziószámot.</p>
 
 <h4>0xf006 pm_strchr</h4>
 
-<p>Karakter első előfordulásának keresése egy szövegben. Bemenő
-paraméterek:</p>
+  <p>Karakter első előfordulásának keresése egy szövegben.</p>
+
+  <p>Bemenő paraméterek:</p>
 
 <ul>
 <li>R0 keresett karakter</li>
@@ -345,7 +324,9 @@ esetén), vagy 0, ha nincs találat.</li>
 <h4>0xf007 pm_streq</h4>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
-számítanak. Bemenő paraméterek:</p>
+  számítanak.</p>
+
+<p>Bemenő paraméterek:</p>
 
 <ul>
 <li>R0, R1 az összehasonlítandó sztringek címei</li>
@@ -360,13 +341,15 @@ számítanak. Bemenő paraméterek:</p>
 <h4>0xf00c pm_strieq</h4>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
-számítanak. Bemenő paraméterek:</p>
+  számítanak.</p>
+
+<p>Bemenő paraméterek:</p>
 
 <ul>
 <li>R0, R1 az összehasonlítandó sztringek címei</li>
 </ul>
 
-<p> Eredmény:</p>
+<p> Eredmény:</p>
 
 <ul>
 <li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
@@ -375,7 +358,9 @@ számítanak. Bemenő paraméterek:</p>
 <h4>0xf009 pm_hexchar2value</h4>
 
 <p>Egy hexadecimális számjegy karakter kódjának szám értékre való
-átalakítása. Bemenet:</p>
+  átalakítása.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 karakter ASCII kódja</li>
@@ -391,7 +376,9 @@ számítanak. Bemenő paraméterek:</p>
 <h4>0xf00a pm_value2hexchar</h4>
 
 <p>Egy 0-15 közötti számérték átalakítása a megfelelő hexadecimális
-számjegy ASCII kódjára. Bemenet:</p>
+  számjegy ASCII kódjára.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 átalakítandó számérték. A szubrutin a regiszter 31:4 bitjeit
@@ -412,7 +399,9 @@ számértékké. A szövegben kis- és nagybetűk is használhatók (a-f, A-F),
 a tagolásra használt . (pont) vagy _ (aláhúzás) karakterek figyelmen
 kívül maradnak. Érvénytelen karakter esetén a feldolgozás megáll, az
 eredmény az addig feldolgozott sztring részletnek megfelelő
-lesz. Bemenet:</p>
+  lesz.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 a sztring kezdőcíme</li>
@@ -471,7 +460,9 @@ vizsgálni. Nincs bemenő paramétere.</p>
 <p>Egy karakter kiírása a terminálra (küldése UART-on). A szubrutin
 először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
 előző karakter küldése befejeződjön. Ezután átadja a küldendő
-karaktert az UART-nak. Bemenet:</p>
+  karaktert az UART-nak.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 a küldendő karakter értéke (8 bites adat)</li>
@@ -481,7 +472,9 @@ karaktert az UART-nak. Bemenet:</p>
 
 <p>Egy 0 végződésű karaktertömb (sztring) kiírása a terminálra. A
 szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
-szekvenciák nem használhatók. Bemenet:</p>
+  szekvenciák nem használhatók.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 sztring címe.</li>
@@ -490,7 +483,9 @@ szekvenciák nem használhatók. Bemenet:</p>
 <h4>0xf010 pm_printsnl</h4>
 
 <p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
-a terminálra. Escape szekvenciák nem használhatók. Bemenet:</p>
+  a terminálra. Escape szekvenciák nem használhatók.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 sztring címe.</li>
@@ -501,7 +496,9 @@ a terminálra. Escape szekvenciák nem használhatók. Bemenet:</p>
 <p>Egy 32 bites érték kiírása a terminálon hexadecimális
 számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
 számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
-értékek nagybetűvel íródnak ki. Bemenet:</p>
+  értékek nagybetűvel íródnak ki.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 számérték</li>
@@ -512,7 +509,9 @@ számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
 
 <p>Egy 32 bites, előjel nélküli (bináris) szám kiírása a terminálra
 tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
-nullák nélkül. Bemenet:</p>
+  nullák nélkül.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 számérték</li>
@@ -526,19 +525,15 @@ utasítás után kell lennie. A szubrutin a sztring záró nullája utáni
 címre fog visszatérni. A funkciónak sem bemeneti, sem kimeneti
 paraméterei nincsenek. Helyes használatára egy példa:</p>
 
-<table>
-<tbody>
-<tr>
-<td>pm_pes  equ     0xf012</p>
-<p> </p>
-<p>        nop</p>
-<p>        call    pm_pes</p>
-<p>        db      ”Hello World”</p>
-<p>        mvzl    r0,12</p>
-<p>        ...</td>
-</tr>
-</tbody>
-</table>
+<samp>
+pm_pes  equ     0xf012
+
+        nop</p>
+        call    pm_pes
+        db      ”Hello World”
+        mvzl    r0,12
+        ...
+</samp>
 
 <p>A sztringet a CALL-t követő DB direktívával kell létrehozni, kettős
 idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
@@ -549,7 +544,9 @@ idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
 formázó utasítások (% jellel kezdve), amelyek egy adat megfelelő
 formátumban való kiírását eredményezik. Az adatokat az R1..R12
 regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
-szubrutin, amennyi formázó utasítás van a szövegben. Bemenetek:</p>
+  szubrutin, amennyi formázó utasítás van a szövegben.</p>
+
+<p>Bemenetek:</p>
 
 <ul>
 <li>R0 a formátum szöveg címe.</li>
@@ -558,12 +555,11 @@ szubrutin, amennyi formázó utasítás van a szövegben. Bemenetek:</p>
 
 <p>A szubrutin által kezelt formázó utasítások a következők:</p>
 
-<table>
-<thead>
+<table border=1>
 <tr>
-<td>Utasítás</td>
-<td>Formátum</td>
-<td>Példa, megjegyzés</td>
+<th>Utasítás</th>
+<th>Formátum</th>
+<th>Példa, megjegyzés</th>
 </tr>
 <tr>
 <td>%%</td>
@@ -590,7 +586,6 @@ szubrutin, amennyi formázó utasítás van a szövegben. Bemenetek:</p>
 <td>Karakter</td>
 <td>az adat regiszterben lévő ASCII kódot írja ki</td>
 </tr>
-</thead>
 </table>
 
 <h4>0xf015 pm_pesf</h4>
@@ -600,21 +595,17 @@ formázó szövegnek közvetlenül a CALL utasítás után kell lennie, a
 további paraméterek a printf szubrutinéval egyeznek (ez a funkció az
 R0 regiszterben nem vár bemenő adatot).</p>
 
-<table>
-<tbody>
-<tr>
-<td>UART_CPB = 0xff44</p>
-<p>pm_pesf  = 0xf015</p>
-<p> </p>
-<p>         ld      r1,UART_CPB</p>
-<p>         mov     r2,r1</p>
-<p>         call    pm_pesf</p>
-<p>         db      ”Uart cpb= %d (0x%x)\n”</p>
-<p>         nop</p>
-<p>         ...</td>
-</tr>
-</tbody>
-</table>
+<samp>
+UART_CPB = 0xff44
+pm_pesf  = 0xf015
+
+         ld      r1,UART_CPB
+         mov     r2,r1
+         call    pm_pesf
+         db      ”Uart cpb= %d (0x%x)\n”
+         nop
+         ...
+</samp>
 
 <h3>Egyéb függvények</h3>
 
@@ -627,7 +618,9 @@ eredmény az R0 regiszterben keletkezik.</p>
 <h4>0xf016 pm_ascii2seg</h4>
 
 <p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
-karakter kijelzőn való megjelenítéséhez használhatunk. Bemenet:</p>
+  karakter kijelzőn való megjelenítéséhez használhatunk.</p>
+
+<p>Bemenet:</p>
 
 <ul>
 <li>R0 ASCII kód</li>
