@@ -38,7 +38,9 @@ samp {
   white-space: pre;
 }
 
-table { border-collapse: collapse; }
+table {
+    border-collapse: collapse;
+}
 
 td, th { padding: 5px; }
 

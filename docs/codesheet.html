@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html id="html-tag" lang="en">
+  <script>
+   const $htmlTag = document.querySelector("#html-tag")
+   const urlParams = new URL(window.location.toLocaleString()).searchParams;
+   const lvar= urlParams.get('lang');
+   switch(lvar) {
+     case "hu":
+       $htmlTag.lang = "hu"
+       $htmlTag.classList.add("hungarianLang")
+       break
+     default:
+       $htmlTag.classList.add("englishLang")
+       break
+   }
+  </script>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="p12.css">
+    <title>p1516/p2223 assembler: p2as</title>
+  </head>
+
+  <body>
+
+  <style>
+    table {
+	border: 1px solid #d0d0d0;
+	border-collapse: collapsed;
+    }
+    td, th {
+	padding: 2px;
+    }
+  </style>
+
+  <font size=-1>
+    
+  <table border=1>
+<tr>
+<th> </th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+<th>F</th>
+<th>G</th>
+<th>H</th>
+<th>I</th>
+<th>J</th>
+<th>K</th>
+</tr>
+<tr>
+<th>
+<div>1</div>
+</th>
+<td> </td>
+<td>31-28</td>
+<td>27-24</td>
+<td>23-20</td>
+<td>19-16</td>
+<td>15-12</td>
+<td>11-8</td>
+<td>7-4</td>
+<td>3-0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>2</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>3</div>
+</th>
+<td>ALU</td>
+<td>cond</td>
+<td><tt><b>000&nbsp;0</b></tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>op</b></tt></td>
+<td><tt>----</tt></td>
+<td><tt>Rb</tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>ALU Rd,Rb</tt></td>
+<td>2op, reg</td>
+</tr>
+<tr>
+<th>
+<div>4</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>000&nbsp;1</b></tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>op</b></tt></td>
+<td><tt>#16</tt></td>
+<td><tt>#16</tt></td>
+<td><tt>#16</tt></td>
+<td><tt>#16</tt></td>
+<td><tt>ALU Rd,#16</tt></td>
+<td>2op, #</td>
+</tr>
+<tr>
+<th>
+<div>5</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>001&nbsp;-</b></tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>op</b></tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>ALU Rd</tt></td>
+<td>1op</td>
+</tr>
+<tr>
+<th>
+<div>6</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>7</div>
+</th>
+<td>CALL</td>
+<td>cond</td>
+<td><tt><b>010&nbsp;0</b></tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>CALL abs(u24)</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>8</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>010&nbsp;1</b></tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>CALL Rd,s20</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>9</div>
+</th>
+<td>CES</td>
+<td><tt>1111</tt></td>
+<td><tt><b>010&nbsp;0</b></tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>u24</tt></td>
+<td><tt>CES abs(u24)</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>10</div>
+</th>
+<td> </td>
+<td><tt>1111</tt></td>
+<td><b>010&nbsp;1</b><tt></tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>s20</tt></td>
+<td><tt>CES Rd,s20</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>11</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>12</div>
+</th>
+<td>LD/ST</td>
+<td>cond</td>
+<td><tt><b>100</b>&nbsp;W</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>Ra</tt></td>
+<td><tt>UP--</tt></td>
+<td><t>Rb</t></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>ST Rd,+-Ra+-,Rb</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>13</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>101</b>&nbsp;W</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>Ra</tt></td>
+<td><tt>UP--</tt></td>
+<td><tt>Rb</tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>LD Rd,+-Ra+-,Rb</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>14</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>110</b>&nbsp;W</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>Ra</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>ST Rd,*Ra,s16</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>15</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>111</b>&nbsp;W</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt>Ra</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>s16</tt></td>
+<td><tt>LD Rd,*Ra,s16</tt></td>
+<td>!U,!P</td>
+</tr>
+<tr>
+<th>
+<div>16</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>17</div>
+</th>
+<td>EXT</td>
+<td>cond</td>
+<td><tt><b>011</b>&nbsp;L</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>0000</b></tt></td>
+<td><tt>u16</tt></td>
+<td><tt>u16</tt></td>
+<td><tt>u16</tt></td>
+<td><tt>u16</tt></td>
+<td><tt>LD/ST Rd,direct</tt></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>18</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>011</b>&nbsp;P</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>0001</b></tt></td>
+<td><tt>0ES-</tt></td>
+<td><tt>Rb</tt></td>
+<td><tt>----</tt></td>
+<td><tt>Ri</tt></td>
+<td>
+<tt>PUTB/GETB{SZ} Rd,Rb,Ri</tt>
+</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>19</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>011</b>&nbsp;P</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>0001</b></tt></td>
+<td><tt>1ES-</tt></td>
+<td><tt>Rb</tt></td>
+<td><tt>----</tt></td>
+<td><tt>--u2</tt></td>
+<td>
+  <tt>PUTB/GETB{SZ} Rd,Rb,u2</tt>
+</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>20</div>
+</th>
+<td> </td>
+<td>cond</td>
+<td><tt><b>011</b>&nbsp;W</tt></td>
+<td><tt>Rd</tt></td>
+<td><tt><b>0010</b></tt></td>
+<td><tt>----</tt></td>
+<td><tt>Rb</tt></td>
+<td><tt>----</tt></td>
+<td><tt>----</tt></td>
+<td><tt>RDS/WRS Rd,Rb<</tt>/td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>21</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>22</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>23</div>
+</th>
+<td> </td>
+<td>
+W=1 write-back Ra<br>with +/-1 value
+</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>
+<div>U=1 Up:<br>Ra= Ra+1</div>
+</td>
+<td> </td>
+<td> </td>
+<td>
+<div>P=1 Pre: change Ra<br>before use</div>
+</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>24</div>
+</th>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>25</div>
+</th>
+<td> </td>
+<td> </td>
+<td>op</td>
+<td> </td>
+<td><b>ALU R</b></td>
+<td><b>ALU #</b></td>
+<td><b>ALU 1op</b></td>
+<td> </td>
+<td></td>
+<td><b>Flags</b></td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>26</div>
+</th>
+<td> </td>
+<td>0 always</td>
+<td>0</td>
+<td><tt>W-[----]</tt></td>
+<td><tt>MOV</tt></td>
+<td><tt>MVL&nbsp;&nbsp;#u16 W-</pre></td>
+<td><tt>ZEB</tt></td>
+<td><tt>W-[----]</tt></td>
+<td></td>
+<td>UP OZCS</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>27</div>
+</th>
+<td>op1==op2</td>
+<td>1 EQ</td>
+<td>1</td>
+<td><tt>--[----]</tt></td>
+<td><tt></tt></td>
+<td><tt>MVH&nbsp;&nbsp;#u16 W-</tt></td>
+<td><tt>ZEW</tt></td>
+<td><tt>W-[----]</tt></td>
+<td></td>
+<td>01 S Sign</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>28</div>
+</th>
+<td>op1!=op2</td>
+<td>2 NE</td>
+<td>2</td>
+<td><tt>--[----]</tt></td>
+<td><tt></tt></td>
+<td><tt>MVZL&nbsp;#u16 W-</tt></td>
+<td><tt>SEB</tt></td>
+<td><tt>W-[----]</tt></td>
+<td>
+</td>
+<td>02 C Carry/Borrow</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>29</div>
+</th>
+<td>u1&gt;=u2</td>
+<td>3 CS, HS</td>
+<td>3</td>
+<td><tt>W-[----]</tt></td>
+<td><tt>SED</tt></td>
+<td><tt>MVS&nbsp;&nbsp;#s16 W-</tt></td>
+<td><tt>SEW</tt></td>
+<td><tt>W-[----]</tt></td>
+<td></td>
+<td>04 Z Zero</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>30</div>
+</th>
+<td>u1&lt;u2</td>
+<td>4 CC, LO</td>
+<td>4</td>
+<td><tt>WF[OZCS]</tt></td>
+<td><tt>ADD</tt></td>
+<td><tt>ADD&nbsp;&nbsp;#s16</tt></td>
+<td><tt>NOT</tt></td>
+<td><tt>WF[-Z-S]</tt></td>
+<td></td>
+<td>08 O Overflow</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>31</div>
+</th>
+<td>S==1</td>
+<td>5 MI</td>
+<td>5</td>
+<td><tt>WF[OZCS]</tt></td>
+<td><tt>ADC</tt></td>
+<td><tt>ADC&nbsp;&nbsp;#s16</tt></td>
+<td><tt>NEG</tt></td>
+<td><tt>WF[OZCS]</tt></td>
+<td>
+</td>
+<td>10 P Pre/Post for LD/ST #offset</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>32</div>
+</th>
+<td>S==0</td>
+<td>6 PL</td>
+<td>6</td>
+<td><tt>WF[OZCS]</tt></td>
+<td><tt>SUB</tt></td>
+<td><tt>SUB&nbsp;&nbsp;#s16</tt></td>
+<td><tt>ROR</tt></td>
+<td><tt>WF[-ZCS]</tt></td>
+<td>
+</td>
+<td>20 U Up/Down for LD/ST #offset</td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>33</div>
+</th>
+<td>O==1</td>
+<td>7 VS</td>
+<td>7</td>
+<td><tt>WF[OZCS]</tt></td>
+<td><tt>SBB</tt></td>
+<td><tt>SBB&nbsp;&nbsp;#s16</tt></td>
+<td><tt>ROL</tt></td>
+<td><tt>WF[-ZCS]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>34</div>
+</th>
+<td>O==0</td>
+<td>8 VC</td>
+<td>8</td>
+<td><tt>-F[OZCS]</tt></td>
+<td><tt>CMP</tt></td>
+<td><tt>CMP&nbsp;&nbsp;#s16</tt></td>
+<td><tt>SHL</tt></td>
+<td><tt>WF[-ZCS]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>35</div>
+</th>
+<td>u1&gt;u2</td>
+<td>9 HI</td>
+<td>9</td>
+<td><tt>WF[-Z-S]</tt></td>
+<td><tt>MUL</tt></td>
+<td><tt>MUL&nbsp;&nbsp;#s16</tt></td>
+<td><tt>SHR</tt></td>
+<td><tt>WF[-ZCS]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>36</div>
+</th>
+<td>u1&lt;=u2</td>
+<td>10 LS</td>
+<td>10</td>
+<td><tt>W-[----]</tt></td>
+<td><tt>PLUS</tt></td>
+<td><tt>PLUS&nbsp;#s16</tt></td>
+<td><tt>SHA</tt></td>
+<td><tt>WF[-ZCS]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>37</div>
+</th>
+<td>s1&gt;=s2</td>
+<td>11 GE</td>
+<td>11</td>
+<td><tt>WF[-Z-S]</tt></td>
+<td><tt>BTST</tt></td>
+<td><tt>BTST&nbsp;#u16</tt></td>
+<td><tt>SZ</tt></td>
+<td><tt>-F[-Z-S]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>38</div>
+</th>
+<td>s1&lt;s2</td>
+<td>12 LT</td>
+<td>12</td>
+<td><tt>-F[-Z-S]</tt></td>
+<td><tt>TEST</tt></td>
+<td><tt>TEST&nbsp;#u16</tt></td>
+<td><tt>SEC</tt></td>
+<td><tt>-F[--C-]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>39</div>
+</th>
+<td>s1&gt;s2</td>
+<td>13 GT</td>
+<td>13</td>
+<td><tt>WF[-Z-S]</tt></td>
+<td><tt>OR</tt></td>
+<td><tt>OR&nbsp;&nbsp;&nbsp;#u16</tt></td>
+<td><tt>CLC</tt></td>
+<td><tt>-F[--C-]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>40</div>
+</th>
+<td>s1&lt;=s2</td>
+<td>14 LE</td>
+<td>14</td>
+<td><tt>WF[-Z-S]</tt></td>
+<td><tt>XOR</tt></td>
+<td><tt>XOR&nbsp;&nbsp;#u16</tt></td>
+<td><tt>GETF</tt></td>
+<td><tt>W-[----]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<th>
+<div>41</div>
+</th>
+<td> </td>
+<td>15 uncond</td>
+<td>15</td>
+<td><tt>WF[-Z-S]</tt></td>
+<td><tt>AND</tt></td>
+<td><tt>AND&nbsp;&nbsp;#o16</tt></td>
+<td><tt>SETF</tt></td>
+<td><tt>-F[OZCS]</tt></td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+</table>
+
+  </font>
+  
+  </body>
+</html>
