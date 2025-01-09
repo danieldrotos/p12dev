@@ -153,7 +153,8 @@
     
 
     <p>A mikroprocesszor egy RISC felépítésű (load/store), Neumann
-      architektúrájú, 32 bites szoft processzor, amelyet FPGA-val
+      architektúrájú, 32 bites szoft processzor,
+      amelyet <a href="computer_v2.html#fpga">FPGA-val</a>
       valósíthatunk meg.</p>
     
     <p><img src="cpu_block.png" alt="cpu_block" /></p>
@@ -234,19 +235,21 @@
       hozzáférni, ezek között vannak írható és olvasható, illetve csak
       olvasható típusú regiszterek is. A speciális regisztereket
       az <a class="inst" href="#RDS"><span class="mov">RDS</span></a>
-      és <a class="inst" href="#WRS"><span class="mov">WRS</span></a> utasításokkal
-      lehet kezelni. Az <a class="inst" href="#RDS"><span class="mov">RDS</span></a>
-      használható a regiszter kiolvasására, ugyanis ez az utasítás a
-      megadott speciális regisztert egy általános regiszterbe másolja
-      át. Az írható speciális regiszterek
-      a <a class="inst" href="#WRS"><span class="mov">WRS</span></a> utasítással
+      és <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
+      utasításokkal lehet kezelni. Az <a class="inst"
+      href="#RDS"><span class="mov">RDS</span></a> használható a
+      regiszter kiolvasására, ugyanis ez az utasítás a megadott
+      speciális regisztert egy általános regiszterbe másolja át. Az
+      írható speciális regiszterek a <a class="inst"
+      href="#WRS"><span class="mov">WRS</span></a> utasítással
       módosíthatók, amely az egyik általános regisztert a megadott
       speciális regiszterbe másolja.</p>
 
     <h4>SFR[0] Flag register</h4>
 
-    <p>A 0 sorszámú speciális regiszter a Flag regiszter, leírását
-    lásd az Aritmetikai-logikai egység fejezetben.</p>
+    <p>A 0 sorszámú speciális regiszter a <a href="#flag">Flag
+      regiszter</a>, leírását lásd
+      az <a href="#alu">Aritmetikai-logikai egység</a> fejezetben.</p>
 
     <h4>SFR[1] Version register</h4>
 
@@ -291,7 +294,8 @@
     <p>A 3..15 sorszámú regiszterek nincsenek megvalósítva, a
     sorszámok a későbbi fejlesztésekhez vannak fenntartva.</p>
 
-    <h2>Aritmetikai-logikai egység</h2>
+    
+    <a name="alu"><h2>Aritmetikai-logikai egység</h2></a>
     
     <p>Az adat manipulációs műveleteket az ALU végzi, amely 32 bites
     egész (előjeles és előjel nélküli) adatokkal tud műveleteket
@@ -321,7 +325,7 @@
       <b>flag_en</b> és a <b>wb_en</b> kimenetek azt mutatják, hogy az
       utasítás módosítja-e a flag, illetve az eredmény regisztert.</p>
     
-    <h3>FLAG regiszter</h3>
+    <a name="flag"><h3>FLAG regiszter</h3></a>
 
     <p>Az aritmetikai egység a műveletek eredményének jellemzőit a
     FLAG regiszterben tárolja el. Ez a regiszter nem része az
@@ -357,10 +361,11 @@
     <h4>Up flag (U), Pre flag (P)</h4>
 
     <p>U: a Flag regiszter 5. bitje (Flag[5]). P: a Flag regiszter
-    4. bitje
-    (Flag[4]). Az <a class="inst" href="#LD"><span class="mem">LD</span></a>/<a class="inst" href="#ST"><span class="mem">ST</span></a>
-    utasítások konstans eltolású indexelt címzési módja esetén a
-    báziscím regiszter megváltoztatási módját határozzák meg.</p>
+    4. bitje (Flag[4]). Az <a class="inst"
+    href="#LD"><span class="mem">LD</span></a>/<a class="inst"
+    href="#ST"><span class="mem">ST</span></a> utasítások konstans
+    eltolású indexelt címzési módja esetén a báziscím regiszter
+    megváltoztatási módját határozzák meg.</p>
 
     <h2>Utasítások</h2>
 
@@ -369,23 +374,26 @@
     csoportjai a következők:</p>
 
     <ul>
-      <li>Szubrutinhívás
-      (<a class="inst" href="#CALL"><span class="call">CALL</span></a>). A
+      <li>Szubrutinhívás (<a class="inst"
+      href="#CALL"><span class="call">CALL</span></a>). A
       szubrutinhívás olyan vezérlésátadás, amely a PC (R15) értékét
       elmenti az LR (R14) regiszterbe. A memóriába való mentés a
       programozó feladata.</li>
       
-      <li>Memória művelet
-      (<a class="inst" href="#LD"><span class="mem">LD</span></a>, <a class="inst" href="#ST"><span class="mem">ST</span></a>). A
-      memória és a regiszterek közötti adatátvitelt valósítják
-      meg. Többféle címzésmóddal használhatóak.</li>
+      <li>Memória művelet (<a class="inst"
+      href="#LD"><span class="mem">LD</span></a>, <a class="inst"
+      href="#ST"><span class="mem">ST</span></a>). A memória és a
+      regiszterek közötti adatátvitelt valósítják meg. Többféle
+      címzésmóddal használhatóak.</li>
 
-      <li>Aritmetikai, logikai utasítások
-      (<a class="inst" href="#ADD"><span class="alu2">ADD</span></a>, <a class="inst" href="#SUB"><span class="alu2">SUB</span></a>, <a class="inst" href="#MOV"><span class="mov">MOV</span></a>,
-      stb.). Különféle adatfeldolgozási, regiszter manipulációs
-      műveletet végeznek, amelynek az eredménye egy megadott
-      regiszterben (és a FLAG regiszterben) tárolódik. Vannak egy és
-      két operandusú műveletek, ahol a két operandusúak esetében a
+      <li>Aritmetikai, logikai utasítások (<a class="inst"
+      href="#ADD"><span class="alu2">ADD</span></a>, <a class="inst"
+      href="#SUB"><span class="alu2">SUB</span></a>, <a class="inst"
+      href="#MOV"><span class="mov">MOV</span></a>, stb.). Különféle
+      adatfeldolgozási, regiszter manipulációs műveletet végeznek,
+      amelynek az eredménye egy megadott regiszterben (és
+      a <a href="#flag">FLAG regiszterben</a>) tárolódik. Vannak egy
+      és két operandusú műveletek, ahol a két operandusúak esetében a
       második operandus regiszter vagy konstans lehet.</li>
 
     </ul>
@@ -400,250 +408,116 @@
 
     <table border="1">
       <tr>
-	<td>
-	  Kód
-	</td>
-	<td>
-	  Feltétel
-	</td>
-	<td>
-	  Flag
-	</td>
-	<td>
-	  Működés pl. összehasonlítás esetén
-	</td>
+	<td>Kód</td>
+	<td>Feltétel</td>
+	<td>Flag</td>
+	<td>Működés pl. összehasonlítás esetén</td>
       </tr>
       <tr>
-	<td>
-	  0
-	</td>
-	<td>
-	  AL
-	</td>
-	<td>
-	  -
-	</td>
-	<td>
-	  Mindig igaz, az utasítás a Flag-ek értékétől függetlenül
+	<td>0</td>
+	<td>AL</td>
+	<td>-</td>
+	<td>Mindig igaz, az utasítás a Flag-ek értékétől függetlenül
 	végrehajtódik</td>
       </tr>
       <tr>
-	<td>
-	  1
-	</td>
-	<td>
-	  EQ
-	</td>
-	<td>
-	  Z=1
-	</td>
-	<td>
-	  op1 == op2 (equal)
-	</td>
+	<td>1</td>
+	<td>EQ</td>
+	<td>Z=1</td>
+	<td>op1 == op2 (equal)</td>
       </tr>
       <tr>
-	<td>
-	  2
-	</td>
-	<td>
-	  NE
-	</td>
-	<td>
-	  Z=0
-	</td>
-	<td>
-	  op1 != op2 (not equal)
-	</td>
+	<td>2</td>
+	<td>NE</td>
+	<td>Z=0</td>
+	<td>op1 != op2 (not equal)</td>
       </tr>
       <tr>
-	<td>
-	  3
-	</td>
-	<td>
-	  CS, HS
-	</td>
-	<td>
-	  C=1
-	</td>
-	<td>
-	  op1 &gt;= op2 (unsigned higher or same)
-	</td>
+	<td>3</td>
+	<td>CS, HS</td>
+	<td>C=1</td>
+	<td>op1 &gt;= op2 (unsigned higher or same)</td>
       </tr>
       <tr>
-	<td>
-	  4
-	</td>
-	<td>
-	  CC, LO
-	</td>
-	<td>
-	  C=0
-	</td>
-	<td>
-	  op1 &lt; op2 (unsigned lower)
-	</td>
+	<td>4</td>
+	<td>CC, LO</td>
+	<td>C=0</td>
+	<td>op1 &lt; op2 (unsigned lower)</td>
       </tr>
       <tr>
-	<td>
-	  5
-	</td>
-	<td>
-	  MI
-	</td>
-	<td>
-	  S=1
-	</td>
-	<td>
-	  negatív eredmény (signed)
-	</td>
+	<td>5</td>
+	<td>MI</td>
+	<td>S=1</td>
+	<td>negatív eredmény (signed)</td>
       </tr>
       <tr>
-	<td>
-	  6
-	</td>
-	<td>
-	  PL
-	</td>
-	<td>
-	  S=0
-	</td>
-	<td>
-	  pozitív eredmény (signed)
-	</td>
+	<td>6</td>
+	<td>PL</td>
+	<td>S=0</td>
+	<td>pozitív eredmény (signed)</td>
       </tr>
       <tr>
-	<td>
-	  7
-	</td>
-	<td>
-	  VS
-	</td>
-	<td>
-	  O=1
-	</td>
-	<td>
-	  van túlcsordulás (signed)
-	</td>
+	<td>7</td>
+	<td>VS</td>
+	<td>O=1</td>
+	<td>van túlcsordulás (signed)</td>
       </tr>
       <tr>
-	<td>
-	  8
-	</td>
-	<td>
-	  VC
-	</td>
-	<td>
-	  O=0
-	</td>
-	<td>
-	  nincs túlcsordulás (signed)
-	</td>
+	<td>8</td>
+	<td>VC</td>
+	<td>O=0</td>
+	<td>nincs túlcsordulás (signed)</td>
       </tr>
       <tr>
-	<td>
-	  9
-	</td>
-	<td>
-	  HI
-	</td>
-	<td>
-	  C=1 &amp;&amp; Z=0
-	</td>
-	<td>
-	  op1 &gt; op2 (unsigned higher)
-	</td>
+	<td>9</td>
+	<td>HI</td>
+	<td>C=1 &amp;&amp; Z=0</td>
+	<td>op1 &gt; op2 (unsigned higher)</td>
       </tr>
       <tr>
-	<td>
-	  10
-	</td>
-	<td>
-	  LS
-	</td>
-	<td>
-	  C=0 || Z=1
-	</td>
-	<td>
-	  op1 &lt;= op2 (unsigned lower or same)
-	</td>
+	<td>10</td>
+	<td>LS</td>
+	<td>C=0 || Z=1</td>
+	<td>op1 &lt;= op2 (unsigned lower or same)</td>
       </tr>
       <tr>
-	<td>
-	  11
-	</td>
-	<td>
-	  GE
-	</td>
-	<td>
-	  S==O
-	</td>
-	<td>
-	  op1 &gt;= op2 (signed greater than or equal)
-	</td>
+	<td>11</td>
+	<td>GE</td>
+	<td>S==O</td>
+	<td>op1 &gt;= op2 (signed greater than or equal)</td>
       </tr>
       <tr>
-	<td>
-	  12
-	</td>
-	<td>
-	  LT
-	</td>
-	<td>
-	  S!=O
-	</td>
-	<td>
-	  op1 &lt; op2 (signed less than)
-	</td>
+	<td>12</td>
+	<td>LT</td>
+	<td>S!=O</td>
+	<td>op1 &lt; op2 (signed less than)</td>
       </tr>
       <tr>
-	<td>
-	  13
-	</td>
-	<td>
-	  GT
-	</td>
-	<td>
-	  Z=0 &amp;&amp;  S==O
-	</td>
-	<td>
-	  op1 &gt; op2 (signed greater than)
-	</td>
+	<td>13</td>
+	<td>GT</td>
+	<td>Z=0 &amp;&amp;  S==O</td>
+	<td>op1 &gt; op2 (signed greater than)</td>
       </tr>
       <tr>
-	<td>
-	  14
-	</td>
-	<td>
-	  LE
-	</td>
-	<td>
-	  Z=1 || S!=O
-	</td>
-	<td>
-	  op1 &lt;= op2 (signed less than or equal)
-	</td>
+	<td>14</td>
+	<td>LE</td>
+	<td>Z=1 || S!=O</td>
+	<td>op1 &lt;= op2 (signed less than or equal)</td>
       </tr>
       <tr>
-	<td>
-	  15
-	</td>
-	<td>
-	  -
-	</td>
-	<td>
-	  -
-	</td>
-	<td>
-	  Feltétel nélküli utasítás, jelenleg nem használt, az
-	  utasításkészlet bővítésre fenntartva
-	</td>
+	<td>15</td>
+	<td>-</td>
+	<td>-</td>
+	<td>Feltétel nélküli utasítás, jelenleg nem használt, az
+	  utasításkészlet bővítésre fenntartva</td>
       </tr>
     </table>
+
     
     <h3>Vezérlésátadás</h3>
     
-    <p>Szubrutinhívásra
-    a <a class="inst" href="#CALL"><span class="call">CALL</span></a> utasítást lehet
+    <p>Szubrutinhívásra a <a class="inst"
+    href="#CALL"><span class="call">CALL</span></a> utasítást lehet
     használni, amely a PC-t (R15) elmenti az LR-ben (R14). Ha a
     szubrutin nem hív más rutinokat, akkor nincs más teendő. Ellenkező
     esetben az LR értékét a memóriában kialakított verem
@@ -654,13 +528,15 @@
     kivételével bármelyik regiszter használható.</p>
     
     <p>Ugró utasítások nincsenek az utasítás készletben, bármely
-      utasítás ugrást végez (beleértve
-      az <a class="inst" href="#LD"><span class="mem">LD</span></a> utasítást is),
+      utasítás ugrást végez (beleértve az <a class="inst"
+      href="#LD"><span class="mem">LD</span></a> utasítást is),
       amelynek az R15 a cél regisztere, ahol az eredménye
       tárolódik. Mivel minden utasítás lehet feltételes, így külön
       feltételes vezérlésátadó utasításokra sincs szükség.</p>
+
     
     <h1>Utasítások</h1>
+
     
     <h3>Adatmozgatás</h3>
     
@@ -668,32 +544,16 @@
     
     <table border="1">
       <tr>
-	<td>
-	  GETB
-	</td>
-	<td>
-	  Rd,Rb,Ri
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.000-.Rb .----.Ri</span>
-	</td>
-	<td>
-	  i= Ri[1:0]<br />Rd[7:0]= Rb[i*8+7:i*8]
-	</td>
+	<td>GETB</td>
+	<td>Rd,Rb,Ri</td>
+	<td><span id="inst">COND.0110.Rd  .0001.000-.Rb .----.Ri</span></td>
+	<td>i= Ri[1:0]<br />Rd[7:0]= Rb[i*8+7:i*8]</td>
       </tr>
       <tr>
-	<td>
-	  GETB
-	</td>
-	<td>
-	  Rd,Rb,u2
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.100-.Rb .----.--u2</span>
-	</td>
-	<td>
-	  Rd[7:0]= Rb[u2*8+7:u2*8]
-	</td>
+	<td>GETB</td>
+	<td>Rd,Rb,u2</td>
+	<td><span id="inst">COND.0110.Rd  .0001.100-.Rb .----.--u2</span></td>
+	<td>Rd[7:0]= Rb[u2*8+7:u2*8]</td>
       </tr>
     </table>
 
@@ -707,34 +567,17 @@
     <a name="GETBS"><h1>GETBS get byte from register, sign extended</h1></a>
 
     <table border="1">
-      
       <tr>
-	<td>
-	  GETBS
-	</td>
-	<td>
-	  Rd,Rb,Ri
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.011-.Rb .----.Ri</span>
-	</td>
-	<td>
-	  i= Ri[1:0]<br />Rd= sex(Rb[i*8+7:i*8])
-	</td>
+	<td>GETBS</td>
+	<td>Rd,Rb,Ri</td>
+	<td><span id="inst">COND.0110.Rd  .0001.011-.Rb .----.Ri</span></td>
+	<td>i= Ri[1:0]<br />Rd= sex(Rb[i*8+7:i*8])</td>
       </tr>
       <tr>
-	<td>
-	  GETBS
-	</td>
-	<td>
-	  Rd,Rb,u2
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.111-.Rb .----.--u2</span>
-	</td>
-	<td>
-	  Rd=sex(Rb[u2*8+7:u2*8])
-	</td>
+	<td>GETBS</td>
+	<td>Rd,Rb,u2</td>
+	<td><span id="inst">COND.0110.Rd  .0001.111-.Rb .----.--u2</span></td>
+	<td>Rd=sex(Rb[u2*8+7:u2*8])</td>
       </tr>
       
     </table>
@@ -750,36 +593,18 @@
     <a name="GETBZ"><h1>GETBZ get byte from register, zero extended</h1></a>
 
     <table border="1">
-      
       <tr>
-	<td>
-	  GETBZ
-	</td>
-	<td>
-	  Rd,Rb,Ri
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.010-.Rb .----.Ri</span>
-	</td>
-	<td>
-	  i= Ri[1:0]<br />Rd= zex(Rb[i*8+7:i*8])
-	</td>
+	<td>GETBZ</td>
+	<td>Rd,Rb,Ri</td>
+	<td><span id="inst">COND.0110.Rd  .0001.010-.Rb .----.Ri</span></td>
+	<td>i= Ri[1:0]<br />Rd= zex(Rb[i*8+7:i*8])</td>
       </tr>
       <tr>
-	<td>
-	  GETBZ
-	</td>
-	<td>
-	  Rd,Rb,u2
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0001.110-.Rb .----.--u2</span>
-	</td>
-	<td>
-	  Rd= zex(Rb[u2*8+7:u2*8])
-	</td>
+	<td>GETBZ</td>
+	<td>Rd,Rb,u2</td>
+	<td><span id="inst">COND.0110.Rd  .0001.110-.Rb .----.--u2</span></td>
+	<td>Rd= zex(Rb[u2*8+7:u2*8])</td>
       </tr>
-      
     </table>
     
     <p>Az utasítás az Rb regiszter kiválasztott bájtját az Rd
@@ -795,9 +620,7 @@
       <tr>
 	<td>MOV</td>
 	<td>Rd,Rb</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0000.----.Rb  .----.----</span>
-	</td>
+	<td><span id="inst">COND.0000.Rd  .0000.----.Rb  .----.----</span></td>
 	<td>Rd= Rb</td>
       </tr>
     </table>
@@ -808,22 +631,12 @@
     <a name="MVH"><h1>MVH load immediate into high</h1></a>
 
     <table border="1">
-  
       <tr>
-	<td>
-	  MVH
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0001.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd[31:16]= u16
-	</td>
+	<td>MVH</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .0001.u16 .u16 .u16 .u16</span></td>
+	<td>Rd[31:16]= u16</td>
       </tr>
-      
     </table>
     
     <p>Az utasítás egy regiszter konstanssal való feltöltésére
@@ -835,22 +648,12 @@
     <a name="MVL"><h1>MVL load immediate into low</h1></a>
 
     <table border="1">
-      
       <tr>
-	<td>
-	  MVL
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0000.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd[15:0]= u16
-	</td>
+	<td>MVL</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .0000.u16 .u16 .u16 .u16</span></td>
+	<td>Rd[15:0]= u16</td>
       </tr>
-      
     </table>
     
     <p>Az utasítás egy regiszter konstanssal való feltöltésére
@@ -862,22 +665,12 @@
     <a name="MVS"><h1>MVS load sign extended 16 bit immediate</h1></a>
     
     <table border="1">
-      
       <tr>
-	<td>
-	  MVS
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0011.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd= sex(s16)
-	</td>
+	<td>MVS</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .0011.s16 .s16 .s16 .s16</span></td>
+	<td>Rd= sex(s16)</td>
       </tr>
-      
     </table>
     
     <p>Az utasítás egy regiszter konstanssal való feltöltésére
@@ -889,22 +682,12 @@
     <a name="MVZL"><h1>MVZL load zero extended 16 bit immediate</h1></a>
     
     <table border="1">
-      
       <tr>
-	<td>
-	  MVZL
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0010.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd= zex(u16)
-	</td>
+	<td>MVZL</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .0010.u16 .u16 .u16 .u16</span></td>
+	<td>Rd= zex(u16)</td>
       </tr>
-      
     </table>
     
     <p>Az utasítás egy regiszter konstanssal való feltöltésére
@@ -916,34 +699,17 @@
     <a name="PUTB"><h1>PUTB set one byte of a register</h1></a>
     
     <table border="1">
-      
       <tr>
-	<td>
-	  PUTB
-	</td>
-	<td>
-	  Rd,Rb,Ri
-	</td>
-	<td>
-	  <span id="inst">COND.0111.Rd  .0001.0---.Rb  .----.Ri</span>
-	</td>
-	<td>
-	  i=Ri[1:0]<br />Rd[i*8+7:i*8]=Rb[7:0]
-	</td>
+	<td>PUTB</td>
+	<td>Rd,Rb,Ri</td>
+	<td><span id="inst">COND.0111.Rd  .0001.0---.Rb  .----.Ri</span></td>
+	<td>i=Ri[1:0]<br />Rd[i*8+7:i*8]=Rb[7:0]</td>
       </tr>
       <tr>
-	<td>
-	  PUTB
-	</td>
-	<td>
-	  Rd,Rb,u2
-	</td>
-	<td>
-	  <span id="inst">COND.0111.Rd  .0001.0---.Rb  .----.--u2</span>
-	</td>
-	<td>
-	  Rd[u2*8+7:u2*8]=Rb[7:0]
-	</td>
+	<td>PUTB</td>
+	<td>Rd,Rb,u2</td>
+	<td><span id="inst">COND.0111.Rd  .0001.0---.Rb  .----.--u2</span></td>
+	<td>Rd[u2*8+7:u2*8]=Rb[7:0]</td>
       </tr>
       
     </table>
@@ -960,18 +726,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  RDS
-	</td>
-	<td>
-	  Rd,Rs
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0010.----.Rs  .----.----</span>
-	</td>
-	<td>
-	  Rd= Rs
-	</td>
+	<td>RDS</td>
+	<td>Rd,Rs</td>
+	<td><span id="inst">COND.0110.Rd  .0010.----.Rs  .----.----</span></td>
+	<td>Rd= Rs</td>
       </tr>
       
     </table>
@@ -984,18 +742,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SEB
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0010.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd= sex(Rd[7:0])
-	</td>
+	<td>SEB</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0010.----.----.----.----</span></td>
+	<td>Rd= sex(Rd[7:0])</td>
       </tr>
       
     </table>
@@ -1010,18 +760,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SED
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0011.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= sex(Rb)
-	</td>
+	<td>SED</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .0011.----.Rb  .----.----</span></td>
+	<td>Rd= sex(Rb)</td>
       </tr>
       
     </table>
@@ -1037,18 +779,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SEB
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0011.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd= sex(Rd[15:0])
-	</td>
+	<td>SEB</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0011.----.----.----.----</span></td>
+	<td>Rd= sex(Rd[15:0])</td>
       </tr>
       
     </table>
@@ -1063,18 +797,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  WRS
-	</td>
-	<td>
-	  Rd,Rs
-	</td>
-	<td>
-	  <span id="inst">COND.0111.Rd  .0010.----.Rs  .----.----</span>
-	</td>
-	<td>
-	  Rs= Rd
-	</td>
+	<td>WRS</td>
+	<td>Rd,Rs</td>
+	<td><span id="inst">COND.0111.Rd  .0010.----.Rs  .----.----</span></td>
+	<td>Rs= Rd</td>
       </tr>
       
     </table>
@@ -1087,18 +813,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ZEB
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0000.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd= zex(Rd[7:0])
-	</td>
+	<td>ZEB</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0000.----.----.----.----</span></td>
+	<td>Rd= zex(Rd[7:0])</td>
       </tr>
       
     </table>
@@ -1113,18 +831,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ZEW
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0001.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd= zex(Rd[15:0])
-	</td>
+	<td>ZEW</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0001.----.----.----.----</span></td>
+	<td>Rd= zex(Rd[15:0])</td>
       </tr>
       
     </table>
@@ -1140,32 +850,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  CALL
-	</td>
-	<td>
-	  u24
-	</td>
-	<td>
-	  <span id="inst">COND.0100.u24 .u24 .u24 .u24 .u24 .u24</span>
-	</td>
-	<td>
-	  R14= R15<br />R15= zex(u24)
-	</td>
+	<td>CALL</td>
+	<td>u24</td>
+	<td><span id="inst">COND.0100.u24 .u24 .u24 .u24 .u24 .u24</span></td>
+	<td>R14= R15<br />R15= zex(u24)</td>
       </tr>
       <tr>
-	<td>
-	  CALL
-	</td>
-	<td>
-	  Rd,s20
-	</td>
-	<td>
-	  <span id="inst">COND.0101.Rd  .s20 .s20 .s20 .s20 .s20</span>
-	</td>
-	<td>
-	  R14= R15<br />R15= Rd+sex(s20)
-	</td>
+	<td>CALL</td>
+	<td>Rd,s20</td>
+	<td><span id="inst">COND.0101.Rd  .s20 .s20 .s20 .s20 .s20</span></td>
+	<td>R14= R15<br />R15= Rd+sex(s20)</td>
       </tr>
       
     </table>
@@ -1199,32 +893,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  CALL
-	</td>
-	<td>
-	  u24
-	</td>
-	<td>
-	  <span id="inst">1111.0100.u24 .u24 .u24 .u24 .u24 .u24</span>
-	</td>
-	<td>
-	  R14= R15<br />R15= zex(u24)
-	</td>
+	<td>CALL</td>
+	<td>u24</td>
+	<td><span id="inst">1111.0100.u24 .u24 .u24 .u24 .u24 .u24</span></td>
+	<td>R14= R15<br />R15= zex(u24)</td>
       </tr>
       <tr>
-	<td>
-	  CALL
-	</td>
-	<td>
-	  Rd,s20
-	</td>
-	<td>
-	  <span id="inst">1111.0101.Rd  .s20 .s20 .s20 .s20 .s20</span>
-	</td>
-	<td>
-	  R14= R15<br />R15= Rd+sex(s20)
-	</td>
+	<td>CALL</td>
+	<td>Rd,s20</td>
+	<td><span id="inst">1111.0101.Rd  .s20 .s20 .s20 .s20 .s20</span></td>
+	<td>R14= R15<br />R15= Rd+sex(s20)</td>
       </tr>
       
     </table>
@@ -1249,116 +927,52 @@
     <table border="1">
       
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0111.Rd  .0000.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd= M[zex(u16)]
-	</td>
+	<td>LD</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0111.Rd  .0000.u16 .u16 .u16 .u16</span></td>
+	<td>Rd= M[zex(u16)]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1010.Rd  .Ra  .----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= M[Ra+Rb]
-	</td>
+	<td>LD</td>
+	<td>Rd,Ra,Rb</td>
+	<td><span id="inst">COND.1010.Rd  .Ra  .----.Rb  .----.----</span></td>
+	<td>Rd= M[Ra+Rb]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,Ra+,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1011.Rd  .Ra  .10--.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= M[(Ra++)+Rb]
-	</td>
+	<td>LD</td>
+	<td>Rd,Ra+,Rb</td>
+	<td><span id="inst">COND.1011.Rd  .Ra  .10--.Rb  .----.----</span></td>
+	<td>Rd= M[(Ra++)+Rb]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,Ra-,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1011.Rd  .Ra  .00--.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= M[(Ra--)+Rb]
-	</td>
+	<td>LD</td>
+	<td>Rd,Ra-,Rb</td>
+	<td><span id="inst">COND.1011.Rd  .Ra  .00--.Rb  .----.----</span></td>
+	<td>Rd= M[(Ra--)+Rb]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,+Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1011.Rd  .Ra  .11--.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= M[(++Ra)+Rb]
-	</td>
+	<td>LD</td>
+	<td>Rd,+Ra,Rb</td>
+	<td><span id="inst">COND.1011.Rd  .Ra  .11--.Rb  .----.----</span></td>
+	<td>Rd= M[(++Ra)+Rb]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,-Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1011.Rd  .Ra  .01--.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= M[(--Ra)+Rb]
-	</td>
+	<td>LD</td>
+	<td>Rd,-Ra,Rb</td>
+	<td><span id="inst">COND.1011.Rd  .Ra  .01--.Rb  .----.----</span></td>
+	<td>Rd= M[(--Ra)+Rb]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,Ra,s16
-	</td>
-	<td>
-	  <span id="inst">COND.1110.Rd  .Ra  .s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd= M[Ra+sex(s16)]
-	</td>
+	<td>LD</td>
+	<td>Rd,Ra,s16</td>
+	<td><span id="inst">COND.1110.Rd  .Ra  .s16 .s16 .s16 .s16</span></td>
+	<td>Rd= M[Ra+sex(s16)]</td>
       </tr>
       <tr>
-	<td>
-	  LD
-	</td>
-	<td>
-	  Rd,*Ra,s16
-	</td>
-	<td>
-	  <span id="inst">COND.1111.Rd  .Ra  .s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd= M[(*Ra)+sex(s16)]
-	</td>
+	<td>LD</td>
+	<td>Rd,*Ra,s16</td>
+	<td><span id="inst">COND.1111.Rd  .Ra  .s16 .s16 .s16 .s16</span></td>
+	<td>Rd= M[(*Ra)+sex(s16)]</td>
       </tr>
       
     </table>
@@ -1388,59 +1002,29 @@
     <table border="1">
       <thead>
 	<tr>
-	  <td>
-	    U
-	  </td>
-	  <td>
-	    P
-	  </td>
-	  <td>
-	    Ra módosítása: *Ra
-	  </td>
+	  <td>U</td>
+	  <td>P</td>
+	  <td>Ra módosítása: *Ra</td>
 	</tr>
 	<tr>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    pre-increment: ++Ra
-	  </td>
+	  <td>0</td>
+	  <td>0</td>
+	  <td>pre-increment: ++Ra</td>
 	</tr>
 	<tr>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    post-increment: Ra++
-	  </td>
+	  <td>0</td>
+	  <td>1</td>
+	  <td>post-increment: Ra++</td>
 	</tr>
 	<tr>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    pre-decrement: --Ra
-	  </td>
+	  <td>1</td>
+	  <td>0</td>
+	  <td>pre-decrement: --Ra</td>
 	</tr>
 	<tr>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    post-decrement: Ra--
-	  </td>
+	  <td>1</td>
+	  <td>1</td>
+	  <td>post-decrement: Ra--</td>
 	</tr>
       </thead>
     </table>
@@ -1450,116 +1034,52 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0110.Rd  .0000.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  M[zex(u16)]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0110.Rd  .0000.u16 .u16 .u16 .u16</span></td>
+	<td>M[zex(u16)]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1000.Rd  .Ra  .----.Rb  .----.----</span>
-	</td>
-	<td>
-	  M[Ra+Rb]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,Ra,Rb</td>
+	<td><span id="inst">COND.1000.Rd  .Ra  .----.Rb  .----.----</span></td>
+	<td>M[Ra+Rb]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,Ra+,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1001.Rd  .Ra  .10--.Rb  .----.----</span>
-	</td>
-	<td>
-	  M[(Ra++)+Rb]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,Ra+,Rb</td>
+	<td><span id="inst">COND.1001.Rd  .Ra  .10--.Rb  .----.----</span></td>
+	<td>M[(Ra++)+Rb]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,Ra-,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1001.Rd  .Ra  .00--.Rb  .----.----</span>
-	</td>
-	<td>
-	  M[(Ra--)+Rb]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,Ra-,Rb</td>
+	<td><span id="inst">COND.1001.Rd  .Ra  .00--.Rb  .----.----</span></td>
+	<td>M[(Ra--)+Rb]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,+Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1001.Rd  .Ra  .11--.Rb  .----.----</span>
-	</td>
-	<td>
-	  M[(++Ra)+Rb]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,+Ra,Rb</td>
+	<td><span id="inst">COND.1001.Rd  .Ra  .11--.Rb  .----.----</span></td>
+	<td>M[(++Ra)+Rb]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,-Ra,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.1001.Rd  .Ra  .01--.Rb  .----.----</span>
-	</td>
-	<td>
-	  M[(--Ra)+Rb]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,-Ra,Rb</td>
+	<td><span id="inst">COND.1001.Rd  .Ra  .01--.Rb  .----.----</span></td>
+	<td>M[(--Ra)+Rb]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,Ra,s16
-	</td>
-	<td>
-	  <span id="inst">COND.1100.Rd  .Ra  .s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  M[Ra+sex(s16)]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,Ra,s16</td>
+	<td><span id="inst">COND.1100.Rd  .Ra  .s16 .s16 .s16 .s16</span></td>
+	<td>M[Ra+sex(s16)]= Rd</td>
       </tr>
       <tr>
-	<td>
-	  ST
-	</td>
-	<td>
-	  Rd,*Ra,s16
-	</td>
-	<td>
-	  <span id="inst">COND.1101.Rd  .Ra  .s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  M[(*Ra)+sex(s16)]= Rd
-	</td>
+	<td>ST</td>
+	<td>Rd,*Ra,s16</td>
+	<td><span id="inst">COND.1101.Rd  .Ra  .s16 .s16 .s16 .s16</span></td>
+	<td>M[(*Ra)+sex(s16)]= Rd</td>
       </tr>
       
     </table>
@@ -1587,59 +1107,29 @@
     <table border="1">
       <thead>
 	<tr>
-	  <td>
-	    U
-	  </td>
-	  <td>
-	    P
-	  </td>
-	  <td>
-	    Ra módosítása: *Ra
-	  </td>
+	  <td>U</td>
+	  <td>P</td>
+	  <td>Ra módosítása: *Ra</td>
 	</tr>
 	<tr>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    post-decrement: Ra--
-	  </td>
+	  <td>0</td>
+	  <td>0</td>
+	  <td>post-decrement: Ra--</td>
 	</tr>
 	<tr>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    pre-decrement: --Ra
-	  </td>
+	  <td>0</td>
+	  <td>1</td>
+	  <td>pre-decrement: --Ra</td>
 	</tr>
 	<tr>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    0
-	  </td>
-	  <td>
-	    post-increment: Ra++
-	  </td>
+	  <td>1</td>
+	  <td>0</td>
+	  <td>post-increment: Ra++</td>
 	</tr>
 	<tr>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    1
-	  </td>
-	  <td>
-	    pre-increment: ++Ra
-	  </td>
+	  <td>1</td>
+	  <td>1</td>
+	  <td>pre-increment: ++Ra</td>
 	</tr>
       </thead>
     </table>
@@ -1651,32 +1141,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ADC
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0101.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + Rb + C
-	</td>
+	<td>ADC</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .0101.----.Rb  .----.----</span></td>
+	<td>Rd,F[OZCS]= Rd + Rb + C</td>
       </tr>
       <tr>
-	<td>
-	  ADC
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0101.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + sex(s16) + C
-	</td>
+	<td>ADC</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .0101.s16 .s16 .s16 .s16</span></td>
+	<td>Rd,F[OZCS]= Rd + sex(s16) + C</td>
       </tr>
       
     </table>
@@ -1691,32 +1165,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ADD
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0100.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + Rb
-	</td>
+	<td>ADD</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .0100.----.Rb  .----.----</span></td>
+	<td>Rd,F[OZCS]= Rd + Rb</td>
       </tr>
       <tr>
-	<td>
-	  ADD
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0100.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd,F[OZCS]= Rd + sex(s16)
-	</td>
+	<td>ADD</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .0100.s16 .s16 .s16 .s16</span></td>
+	<td>Rd,F[OZCS]= Rd + sex(s16)</td>
       </tr>
       
     </table>
@@ -1731,32 +1189,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  AND
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1111.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd &amp; Rb
-	</td>
+	<td>AND</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1111.----.Rb  .----.----</span></td>
+	<td>Rd,F[ZS]= Rd &amp; Rb</td>
       </tr>
       <tr>
-	<td>
-	  AND
-	</td>
-	<td>
-	  Rd,o16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1111.o16 .o16 .o16 .o16</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd &amp; oex(o16)
-	</td>
+	<td>AND</td>
+	<td>Rd,o16</td>
+	<td><span id="inst">COND.0001.Rd  .1111.o16 .o16 .o16 .o16</span></td>
+	<td>Rd,F[ZS]= Rd &amp; oex(o16)</td>
       </tr>
       
     </table>
@@ -1774,32 +1216,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  BTST
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1011.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd &amp; Rb
-	</td>
+	<td>BTST</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1011.----.Rb  .----.----</span></td>
+	<td>Rd,F[ZS]= Rd &amp; Rb</td>
       </tr>
       <tr>
-	<td>
-	  BTST
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1011.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd &amp; zex(u16)
-	</td>
+	<td>BTST</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .1011.u16 .u16 .u16 .u16</span></td>
+	<td>Rd,F[ZS]= Rd &amp; zex(u16)</td>
       </tr>
       
     </table>
@@ -1818,16 +1244,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  CLC
-	</td>
-	<td> - </td>
-	<td>
-	  <span id="inst">COND.0010.----.1101.----.----.----.----</span>
-	</td>
-	<td>
-	  F[C]= 0
-	</td>
+	<td>CLC</td>
+	<td>- </td>
+	<td><span id="inst">COND.0010.----.1101.----.----.----.----</span></td>
+	<td>F[C]= 0</td>
       </tr>
       
     </table>
@@ -1840,32 +1260,18 @@
     <table border="1">
       
       <tr valign="bottom">
-	<td>
-	  CMP
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1000.----.Rb  .----.----</span>
-	</td>
+	<td>CMP</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1000.----.Rb  .----.----</span></td>
 	<td style="padding-top:5px">
-	  F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1
-	</td>
+	  F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1</td>
       </tr>
       <tr valign="bottom">
-	<td>
-	  CMP
-	</td>
-	<td>
-	  Rd,s16
-	</td>
+	<td>CMP</td>
+	<td>Rd,s16</td>
 	<td style="padding-top:5px">
-	  <span id="inst">COND.0001.Rd  .1000.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + 1
-	</td>
+	  <span id="inst">COND.0001.Rd  .1000.s16 .s16 .s16 .s16</span></td>
+	<td>F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + 1</td>
       </tr>
       
     </table>
@@ -1882,18 +1288,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  GETF
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1110.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd= F[UPOZCS]
-	</td>
+	<td>GETF</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1110.----.----.----.----</span></td>
+	<td>Rd= F[UPOZCS]</td>
       </tr>
       
     </table>
@@ -1910,32 +1308,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  MUL
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1001.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd * Rb
-	</td>
+	<td>MUL</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1001.----.Rb  .----.----</span></td>
+	<td>Rd,F[ZS]= Rd * Rb</td>
       </tr>
       <tr>
-	<td>
-	  MUL
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1001.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd * sex(Rb)
-	</td>
+	<td>MUL</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .1001.s16 .s16 .s16 .s16</span></td>
+	<td>Rd,F[ZS]= Rd * sex(Rb)</td>
       </tr>
       
     </table>
@@ -1950,18 +1332,11 @@
     <table border="1">
       
       <tr valign="bottom">
-	<td>
-	  NEG
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0101.----.----.----.----</span>
-	</td>
+	<td>NEG</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0101.----.----.----.----</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[OZCS]= <span style="text-decoration:overline;">Rd</span> + 1
-	</td>
+	  Rd,F[OZCS]= <span style="text-decoration:overline;">Rd</span> + 1</td>
       </tr>
       
     </table>
@@ -1977,18 +1352,11 @@
     <table border="1">
       
       <tr valign="bottom">
-	<td>
-	  NOT
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0100.----.----.----.----</span>
-	</td>
+	<td>NOT</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0100.----.----.----.----</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[ZS]= <span style="text-decoration:overline;">Rd</span>
-	</td>
+	  Rd,F[ZS]= <span style="text-decoration:overline;">Rd</span></td>
       </tr>
       
     </table>
@@ -2002,32 +1370,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  OR
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1101.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd | Rb
-	</td>
+	<td>OR</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1101.----.Rb  .----.----</span></td>
+	<td>Rd,F[ZS]= Rd | Rb</td>
       </tr>
       <tr>
-	<td>
-	  OR
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1101.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd | zex(u16)
-	</td>
+	<td>OR</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .1101.u16 .u16 .u16 .u16</span></td>
+	<td>Rd,F[ZS]= Rd | zex(u16)</td>
       </tr>
       
     </table>
@@ -2045,32 +1397,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  PLUS
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1010.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd= Rd + Rb
-	</td>
+	<td>PLUS</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1010.----.Rb  .----.----</span></td>
+	<td>Rd= Rd + Rb</td>
       </tr>
       <tr>
-	<td>
-	  PLUS
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1010.s16 .s16 .s16 .s16</span>
-	</td>
-	<td>
-	  Rd= Rd + sex(s16)
-	</td>
+	<td>PLUS</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .1010.s16 .s16 .s16 .s16</span></td>
+	<td>Rd= Rd + sex(s16)</td>
       </tr>
       
     </table>
@@ -2087,18 +1423,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ROL
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0111.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd,F[CZS]= rol(C,Rd)
-	</td>
+	<td>ROL</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0111.----.----.----.----</span></td>
+	<td>Rd,F[CZS]= rol(C,Rd)</td>
       </tr>
       
     </table>
@@ -2115,18 +1443,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  ROR
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .0110.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd,F[CZS]= ror(Rd,C)
-	</td>
+	<td>ROR</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .0110.----.----.----.----</span></td>
+	<td>Rd,F[CZS]= ror(Rd,C)</td>
       </tr>
       
     </table>
@@ -2143,32 +1463,18 @@
     <table border="1">
       
       <tr valign="bottom">
-	<td>
-	  SBB
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0111.----.Rb  .----.----</span>
-	</td>
+	<td>SBB</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .0111.----.Rb  .----.----</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + C
-	</td>
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + C</td>
       </tr>
       <tr valign="bottom">
-	<td>
-	  SBB
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0111.s16 .s16 .s16 .s16</span>
-	</td>
+	<td>SBB</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .0111.s16 .s16 .s16 .s16</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + C
-	</td>
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + C</td>
       </tr>
       
     </table>
@@ -2187,16 +1493,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SEC
-	</td>
+	<td>SEC</td>
 	<td> </td>
-	<td>
-	  <span id="inst">COND.0010.----.1100.----.----.----.----</span>
-	</td>
-	<td>
-	  F[C]= 1
-	</td>
+	<td><span id="inst">COND.0010.----.1100.----.----.----.----</span></td>
+	<td>F[C]= 1</td>
       </tr>
       
     </table>
@@ -2209,18 +1509,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SETF
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1111.----.----.----.----</span>
-	</td>
-	<td>
-	  F[UPOZCS]= Rd
-	</td>
+	<td>SETF</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1111.----.----.----.----</span></td>
+	<td>F[UPOZCS]= Rd</td>
       </tr>
       
     </table>
@@ -2237,18 +1529,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SHA
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1010.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZCS]= sha(Rd)
-	</td>
+	<td>SHA</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1010.----.----.----.----</span></td>
+	<td>Rd,F[ZCS]= sha(Rd)</td>
       </tr>
       
     </table>
@@ -2266,18 +1550,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SHL
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1000.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZCS]= shl(Rd)
-	</td>
+	<td>SHL</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1000.----.----.----.----</span></td>
+	<td>Rd,F[ZCS]= shl(Rd)</td>
       </tr>
       
     </table>
@@ -2293,18 +1569,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SHR
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1001.----.----.----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZCS]= shr(Rd)
-	</td>
+	<td>SHR</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1001.----.----.----.----</span></td>
+	<td>Rd,F[ZCS]= shr(Rd)</td>
       </tr>
       
     </table>
@@ -2321,32 +1589,18 @@
     <table border="1">
       
       <tr valign="bottom">
-	<td>
-	  SUB
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .0110.----.Rb  .----.----</span>
-	</td>
+	<td>SUB</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .0110.----.Rb  .----.----</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1
-	</td>
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">Rb</span> + 1</td>
       </tr>
       <tr valign="bottom">
-	<td>
-	  SUB
-	</td>
-	<td>
-	  Rd,s16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .0110.s16 .s16 .s16 .s16</span>
-	</td>
+	<td>SUB</td>
+	<td>Rd,s16</td>
+	<td><span id="inst">COND.0001.Rd  .0110.s16 .s16 .s16 .s16</span></td>
 	<td style="padding-top:5px">
-	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + 1
-	</td>
+	  Rd,F[OZCS]= Rd + <span style="text-decoration:overline;">sex(s16)</span> + 1</td>
       </tr>
       
     </table>
@@ -2365,18 +1619,10 @@
     <table border="1">
       
       <tr>
-	<td>
-	  SZ
-	</td>
-	<td>
-	  Rd
-	</td>
-	<td>
-	  <span id="inst">COND.0010.Rd  .1011.----.----.----.----</span>
-	</td>
-	<td>
-	  F[ZS]= Rd
-	</td>
+	<td>SZ</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1011.----.----.----.----</span></td>
+	<td>F[ZS]= Rd</td>
       </tr>
       
     </table>
@@ -2392,32 +1638,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  TEST
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1100.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  F[ZS]= Rd &amp; Rb
-	</td>
+	<td>TEST</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1100.----.Rb  .----.----</span></td>
+	<td>F[ZS]= Rd &amp; Rb</td>
       </tr>
       <tr>
-	<td>
-	  TEST
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1100.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  F[ZS]= Rd &amp; zex(u16)
-	</td>
+	<td>TEST</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .1100.u16 .u16 .u16 .u16</span></td>
+	<td>F[ZS]= Rd &amp; zex(u16)</td>
       </tr>
       
     </table>
@@ -2438,32 +1668,16 @@
     <table border="1">
       
       <tr>
-	<td>
-	  XOR
-	</td>
-	<td>
-	  Rd,Rb
-	</td>
-	<td>
-	  <span id="inst">COND.0000.Rd  .1110.----.Rb  .----.----</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd ^ Rb
-	</td>
+	<td>XOR</td>
+	<td>Rd,Rb</td>
+	<td><span id="inst">COND.0000.Rd  .1110.----.Rb  .----.----</span></td>
+	<td>Rd,F[ZS]= Rd ^ Rb</td>
       </tr>
       <tr>
-	<td>
-	  XOR
-	</td>
-	<td>
-	  Rd,u16
-	</td>
-	<td>
-	  <span id="inst">COND.0001.Rd  .1110.u16 .u16 .u16 .u16</span>
-	</td>
-	<td>
-	  Rd,F[ZS]= Rd ^ zex(u16)
-	</td>
+	<td>XOR</td>
+	<td>Rd,u16</td>
+	<td><span id="inst">COND.0001.Rd  .1110.u16 .u16 .u16 .u16</span></td>
+	<td>Rd,F[ZS]= Rd ^ zex(u16)</td>
       </tr>
       
     </table>
