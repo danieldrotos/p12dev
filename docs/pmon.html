@@ -52,20 +52,25 @@
   
 <p>A monitor program egy egyszerű firmware, amely lehetővé teszi az
 alkalmazói programnak a betöltését a számítógép memóriájába. Mivel a
-PMon a p2223 CPU utasításait felhasználva íródott, és a felhasználóval
-az UART periférián keresztül tartja a kapcsolatot, ezért csak a p2223
-típusú CPU-t tartalmazó, v2 típusú számítógépen használható.</p>
+PMon a <a href="p2223.html">p2223 CPU</a> utasításait felhasználva
+íródott, és a felhasználóval
+az <a href="computer_v2.html#uart">UART</a> periférián keresztül
+tartja a kapcsolatot, ezért csak a <a href="p2223.html">p2223 típusú
+CPU</a>-t tartalmazó, <a href="computer_v2.html">v2 típusú
+számítógépen</a> használható.</p>
 
 <h2>Felhasználói felület</h2>
 
-<p>A számítógép UART perifériájához az FPGA kártyán egy USB-UART
-  átalakító van kapcsolva, amelynek az USB portját összeköthetjük egy
-  PC-vel. Az átalakító a PC operációs rendszere számára egy VCP
-  (Virtual COM Port) eszközként látszik, amely aszinkron soros
-  perifériaként használható. A PC-n indítsunk el egy terminál emulátor
-  programot (pl. TeraTerm, putty, stb.) és nyissuk meg az FPGA kártya
-  csatlakoztatásakor létrejövő COM portot. Állítsuk be a 115200,N,8,1
-  paramétereket.</p>
+    <p>A számítógép <a href="computer_v2.html#uart">UART</a>
+      perifériájához az <a href="computer_v2.html#fpga">FPGA
+      kártyán</a> egy USB-UART átalakító van kapcsolva, amelynek az
+      USB portját összeköthetjük egy PC-vel. Az átalakító a PC
+      operációs rendszere számára egy VCP (Virtual COM Port)
+      eszközként látszik, amely aszinkron soros perifériaként
+      használható. A PC-n indítsunk el egy terminál emulátor programot
+      (pl. TeraTerm, putty, stb.) és nyissuk meg az FPGA kártya
+      csatlakoztatásakor létrejövő COM portot. Állítsuk be a
+      115200,N,8,1 paramétereket.</p>
 
   <p><img title="" src="vcp.svg" alt="" /></p>
 
@@ -91,7 +96,7 @@ egy _ jel van.</p>
 
   <h2>Parancsok</h2>
 
-  <h3>h[elp],?</h3>
+  <a name="cmd_help"><h3>h[elp],?</h3></a>
   
 <p>Kiírja a használható parancsok listáját és a szükséges, illetve
   lehetséges paramétereket.</p>
@@ -114,7 +119,7 @@ h[elp],?          Help
 </samp>
 
 
-<h3>m[em] addr [val]</h3>
+<a name="cmd_mem"><h3>m[em] addr [val]</h3></a>
 
 <p>Memória egy adott című rekeszének vizsgálata, vagy módosítása. Az
 első paraméter a vizsgált rekesz címe (hexadecimálisan). Ha a második
@@ -132,7 +137,7 @@ memória tartalom.</p>
 </samp>
 
 
-<h3>d[ump] start [end]</h3>
+<a name="cmd_dump"><h3>d[ump] start [end]</h3></a>
 
 <p>Egy adott memóriaterület tartalmát listázza ki. A kezdőcímet
 kötelező megadni. Ha a vég címet nem adjuk meg, akkor 17 egymás utáni
@@ -167,7 +172,7 @@ szó értéke íródik ki.</p>
 </samp>
 
 
-<h3>l[oad]</h3>
+<a name="cmd_load"><h3>l[oad]</h3></a>
 
 <p>Lefordított alkalmazói program betöltése a memóriába. A parancsnak
 nincs paramétere, a betöltéshez szükséges adatok a lefordított fájlban
@@ -194,7 +199,8 @@ megjelenik a monitor promptja:</p>
 
 <p><img title="" src="teraterm_sent.png" alt="" /></p>
 
-<h3>g[o],run [addr]</h3>
+
+<a name="cmd_go"><h3>g[o],run [addr]</h3></a>
 
 <p>Ez a parancs a felhasználói programot indítja el a megadott
 címtől. Ha a program visszalép a monitorhoz a megfelelő szubrutin
@@ -202,7 +208,8 @@ meghívásával, akkor ettől a ponttól a programot lehet folytatni. Ehhez
 nem kell megadni a go parancsnak paramétert. Ez a módszer nem működik,
 ha még nem volt átlépés a programról a monitorra.</p>
 
-<h3>r[eg[s]]</h3>
+
+<a name="cmd_reg"><h3>r[eg[s]]</h3></a>
 
 <p>Kiírja azokat a regiszter értékeket, amelyeket a program betölt a
 go parancs hatására a felhasználói program indítása előtt. Ezeket az
@@ -259,7 +266,8 @@ U0 P0 O0 Z0 C0 S0
 felhasználói program folytatható. Ettől a címtől a programot a
 paraméter nélküli go parancs kiadásával folytathatjuk.</p>
 
-<h3>rX|sp|lr|pc|f [val]</h3>
+
+<a name="cmd_regs"><h3>rX|sp|lr|pc|f [val]</h3></a>
 
 <p>Az egyes regiszterek elmentett értékeit megjelenítő, illetve
 megváltoztató parancsok. A regiszter névben (rX) 0 és 15 közötti
@@ -275,6 +283,7 @@ R10 0000_AB45
 :
 </samp>
 
+
 <h2>Monitor szolgáltatások</h2>
 
 <p>A monitor programban található egyes szubrutinok a felhasználói
@@ -287,9 +296,11 @@ használt regisztereken, és a Flag regiszteren kívül egyéb
 regisztereket nem módosítanak, az esetleges ettől eltérő eseteket
 külön jelezzük.</p>
 
-<h3>A monitor meghívása</h3>
 
-<h4>0xf005 pm_cold_start</h4>
+<a name="fn_monitor"><h3>A monitor meghívása</h3></a>
+
+
+<a name="pm_cold_start"><h4>0xf005 pm_cold_start</h4></a>
 
 <p>Végleges kilépés az alkalmazói programból a monitor
 újraindításával. Kezdeti értékre állítja a monitor állapotát, így a
@@ -297,13 +308,15 @@ felhasználói program a paraméterek nélküli go paranccsal nem
 folytatható. Ezt a funkciót szubrutinhívás mellett ugró utasításokkal
 is meghívhatjuk. A funkciónak nincsenek paraméterei.</p>
 
-<h4>0xf000 pm_callin</h4>
+
+<a name="pm_callin"><h4>0xf000 pm_callin</h4></a>
 
 <p>Visszatérés a monitor programba a felhasználó program állapotának
 az elmentésével. Ezután a program folytatható a paraméter nélküli go
 paranccsal. A funkciónak nincsenek paraméterei.</p>
 
-<h4>0xf001 pm_enter_by_uart</h4>
+
+<a name="pm_enter_by_uart"><h4>0xf001 pm_enter_by_uart</h4></a>
 
 <p>Feltételes visszatérés a monitor programhoz. A szubrutin ellenőrzi,
 hogy van-e olvasható vett karakter az UART áramkörben. Ha igen,
@@ -312,15 +325,18 @@ monitorhoz. Olyan program esetében használhatjuk, amely nem végez adat
 beolvasást a terminálról az UART-on keresztül. A funkciónak nincsenek
 paraméterei.</p>
 
-<h4>0xf003 pm_version</h4>
+
+<a name="pm_version"><h4>0xf003 pm_version</h4></a>
 
 <p>A monitor program verziószámának lekérdezése. A függvény az R0
 regiszter 1. bájtjában helyezi el a fő verziószámot, a 0. bájtban
 pedig az al verziószámot.</p>
 
-<h3>Sztring kezelés</h3>
 
-<h4>0xf006 pm_strchr</h4>
+<a name="fn_string"><h3>Sztring kezelés</h3></a>
+
+
+<a name="pm_strchr"><h4>0xf006 pm_strchr</h4></a>
 
   <p>Karakter első előfordulásának keresése egy szövegben.</p>
 
@@ -340,7 +356,8 @@ esetén), vagy 0, ha nincs találat.</li>
 <li>F.C találat esetén 1, egyébként 0</li>
 </ul>
 
-<h4>0xf007 pm_streq</h4>
+
+<a name="pm_streq"><h4>0xf007 pm_streq</h4></a>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
   számítanak.</p>
@@ -357,7 +374,8 @@ esetén), vagy 0, ha nincs találat.</li>
 <li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
 </ul>
 
-<h4>0xf00c pm_strieq</h4>
+
+<a name="pm_strieq"><h4>0xf00c pm_strieq</h4></a>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
   számítanak.</p>
@@ -374,7 +392,8 @@ esetén), vagy 0, ha nincs találat.</li>
 <li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
 </ul>
 
-<h4>0xf009 pm_hexchar2value</h4>
+
+<a name="pm_hexchar2value"><h4>0xf009 pm_hexchar2value</h4></a>
 
 <p>Egy hexadecimális számjegy karakter kódjának szám értékre való
   átalakítása.</p>
@@ -392,7 +411,8 @@ esetén), vagy 0, ha nincs találat.</li>
 <li>F.C értéke 1, ha a karakter hexa karakter volt, egyébként 0</li>
 </ul>
 
-<h4>0xf00a pm_value2hexchar</h4>
+
+<a name="pm_value2hexchar"><h4>0xf00a pm_value2hexchar</h4></a>
 
 <p>Egy 0-15 közötti számérték átalakítása a megfelelő hexadecimális
   számjegy ASCII kódjára.</p>
@@ -411,7 +431,8 @@ nullázza.</li>
 kisbetűre (a-f) alakítja.</li>
 </ul>
 
-<h4>0xf00b pm_htoi</h4>
+
+<a name="pm_htoi"><h4>0xf00b pm_htoi</h4></a>
 
 <p>Hexadecimális szám jegyeit tartalmazó sztring átalakítása
 számértékké. A szövegben kis- és nagybetűk is használhatók (a-f, A-F),
@@ -434,9 +455,11 @@ eredmény az addig feldolgozott sztring részletnek megfelelő
 egyébként 0.</li>
 </ul>
 
-<h3>Bemeneti adatok kezelése</h3>
 
-<h4>0xf008 pm_check_uart</h4>
+<a name="fn_input"><h3>Bemeneti adatok kezelése</h3></a>
+
+
+<a name="pm_check_uart"><h4>0xf008 pm_check_uart</h4></a>
 
 <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
 UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
@@ -448,11 +471,13 @@ paramétere.</p>
 <li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
 </ul>
 
-<h4>0xf00d pm_read</h4>
+
+<a name="pm_read"><h4>0xf00d pm_read</h4></a>
 
 <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
-karakterre, a vevő állapotát előzőleg a check_uart funkcióval kell
-vizsgálni. Nincs bemenő paramétere.</p>
+  karakterre, a vevő állapotát előzőleg
+  a <a href="#pm_check_uart">pm_check_uart</a> funkcióval kell
+  vizsgálni. Nincs bemenő paramétere.</p>
 
 <p>Eredmény:</p>
 
@@ -460,7 +485,8 @@ vizsgálni. Nincs bemenő paramétere.</p>
 <li>R0 a legrégebben vett karakter értéke.</li>
 </ul>
 
-<h4>0xf002 pm_getchar</h4>
+
+<a name="pm_getchar"><h4>0xf002 pm_getchar</h4></a>
 
 <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az UART
 áramkörből.</p>
@@ -472,9 +498,11 @@ vizsgálni. Nincs bemenő paramétere.</p>
 <li>R0 a beérkezett karakter kódja.</li>
 </ul>
 
-<h3>Kimenet előállítása a terminálon</h3>
 
-<h4>0xf00e pm_putchar</h4>
+<a name="fn_output"><h3>Kimenet előállítása a terminálon</h3></a>
+
+
+<a name="pm_putchar"><h4>0xf00e pm_putchar</h4></a>
 
 <p>Egy karakter kiírása a terminálra (küldése UART-on). A szubrutin
 először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
@@ -487,7 +515,8 @@ előző karakter küldése befejeződjön. Ezután átadja a küldendő
 <li>R0 a küldendő karakter értéke (8 bites adat)</li>
 </ul>
 
-<h4>0xf00f pm_prints</h4>
+
+<a name="pm_prints"><h4>0xf00f pm_prints</h4></a>
 
 <p>Egy 0 végződésű karaktertömb (sztring) kiírása a terminálra. A
 szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
@@ -499,7 +528,8 @@ szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
 <li>R0 sztring címe.</li>
 </ul>
 
-<h4>0xf010 pm_printsnl</h4>
+
+<a name="pm_printsnl"><h4>0xf010 pm_printsnl</h4></a>
 
 <p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
   a terminálra. Escape szekvenciák nem használhatók.</p>
@@ -510,7 +540,8 @@ szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
 <li>R0 sztring címe.</li>
 </ul>
 
-<h4>0xf011 pm_print_vhex</h4>
+
+<a name="pm_print_vhex"><h4>0xf011 pm_print_vhex</h4></a>
 
 <p>Egy 32 bites érték kiírása a terminálon hexadecimális
 számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
@@ -524,7 +555,8 @@ számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
 <li>R1 két tagolás jel között kiíródó jegyek száma</li>
 </ul>
 
-<h4>0xf013 pm_printd</h4>
+
+<a name="pm_printd"><h4>0xf013 pm_printd</h4></a>
 
 <p>Egy 32 bites, előjel nélküli (bináris) szám kiírása a terminálra
 tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
@@ -536,7 +568,8 @@ tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
 <li>R0 számérték</li>
 </ul>
 
-<h4>0xf012 pm_pes</h4>
+
+<a name="pm_pes"><h4>0xf012 pm_pes</h4></a>
 
 <p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
 sztringnek a program kódjában közvetlenül a szubrutint meghívó CALL
@@ -557,7 +590,8 @@ pm_pes  equ     0xf012
 <p>A sztringet a CALL-t követő DB direktívával kell létrehozni, kettős
 idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
 
-<h4>0xf014 pm_printf</h4>
+
+<a name="pm_printf"><h4>0xf014 pm_printf</h4></a>
 
 <p>Formázott szöveg kiírása a terminálra. A szövegben elhelyezhetők
 formázó utasítások (% jellel kezdve), amelyek egy adat megfelelő
@@ -607,7 +641,8 @@ regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
 </tr>
 </table>
 
-<h4>0xf015 pm_pesf</h4>
+
+<a name="pm_pesf"><h4>0xf015 pm_pesf</h4></a>
 
 <p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
 formázó szövegnek közvetlenül a CALL utasítás után kell lennie, a
@@ -626,15 +661,18 @@ pm_pesf  = 0xf015
          ...
 </samp>
 
-<h3>Egyéb függvények</h3>
 
-<h4>0xf004 pm_itobcd</h4>
+<a name="fn_other"><h3>Egyéb függvények</h3></a>
+
+
+<a name="pm_itobcd"><h4>0xf004 pm_itobcd</h4></a>
 
 <p>Előjel nélküli bináris kódolású szám átalakítása BCD kódolásúra. Az
 R0 regiszterben megadott bemeneti adat maximum 99999999 lehet, az
 eredmény az R0 regiszterben keletkezik.</p>
 
-<h4>0xf016 pm_ascii2seg</h4>
+
+<a name="pm_ascii2seg"><h4>0xf016 pm_ascii2seg</h4></a>
 
 <p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
   karakter kijelzőn való megjelenítéséhez használhatunk.</p>
@@ -655,6 +693,7 @@ eredmény az R0 regiszterben keletkezik.</p>
 ezek esetében a kimenet 0 lesz. Néhány esetben a kis- és a
 nagybetűkhöz ugyanazt az eredményt kapjuk (pl e, E), ha csak a
 karakter egyik formája jeleníthető meg.</p>
+
 
 <h1>Melléklet</h1>
 

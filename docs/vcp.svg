@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.9a -->
+<!-- CreationDate: 2025-01-09 16:17:13 -->
+<!-- Magnification: 1.05 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="464pt" height="251pt"
+	viewBox="3048 3183 7359 3984">
+<g fill="none">
+<!-- Line -->
+<polygon points=" 3780,5850 4095,3960 6165,3960 6480,5850" fill="#ffe0e0"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="3780" y="5940" width="2700" height="855" fill="#ffe0e0"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4185" y="4140" width="1890" height="1530" rx="105" fill="#0000ff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4545" y="6120" width="1170" height="495" rx="105" fill="#ffff00"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="4365" y="4500" width="1485" height="765" fill="#ffffff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polygon points=" 3780,6840 3060,7155 7200,7155 6480,6840" fill="#ffe0e0"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="9360" y="3195" width="1035" height="900" fill="#00d1d1"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="6480" y="6120" width="225" height="495"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp0">
+	<path clip-rule="evenodd" d="M 3048,3183 H 10407 V 7167 H 3048 z
+		M 9137,3540 9017,3510 9137,3480 8993,3503 8993,3517z"/>
+</clipPath>
+</defs>
+<polyline points=" 9000,3510 9360,3510" clip-path="url(#cp0)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Backward arrow to point 9000,3510 -->
+<polyline points=" 9137,3540 9017,3510 9137,3480"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp1">
+	<path clip-rule="evenodd" d="M 3048,3183 H 10407 V 7167 H 3048 z
+		M 9223,3705 9343,3735 9223,3765 9367,3742 9367,3728z
+		M 9137,3540 9017,3510 9137,3480 8993,3503 8993,3517z"/>
+</clipPath>
+</defs>
+<polyline points=" 9000,3735 9360,3735" clip-path="url(#cp1)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 9360,3735 -->
+<polyline points=" 9223,3705 9343,3735 9223,3765"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp2">
+	<path clip-rule="evenodd" d="M 3048,3183 H 10407 V 7167 H 3048 z
+		M 5160,5983 5130,6103 5100,5983 5123,6127 5137,6127z
+		M 5100,5402 5130,5282 5160,5402 5137,5258 5123,5258z"/>
+</clipPath>
+</defs>
+<polyline points=" 5130,5265 5130,6120" clip-path="url(#cp2)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 5130,6120 -->
+<polyline points=" 5160,5983 5130,6103 5100,5983"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Backward arrow to point 5130,5265 -->
+<polyline points=" 5100,5402 5130,5282 5160,5402"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<defs>
+<clipPath id="cp3">
+	<path clip-rule="evenodd" d="M 3048,3183 H 10407 V 7167 H 3048 z
+		M 6343,6315 6463,6345 6343,6375 6487,6352 6487,6338z
+		M 5852,6375 5732,6345 5852,6315 5708,6338 5708,6352z"/>
+</clipPath>
+</defs>
+<polyline points=" 5715,6345 6480,6345" clip-path="url(#cp3)"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Forward arrow to point 6480,6345 -->
+<polyline points=" 6343,6315 6463,6345 6343,6375"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Backward arrow to point 5715,6345 -->
+<polyline points=" 5852,6375 5732,6345 5852,6315"
+	stroke="#000000" stroke-width="8px" stroke-miterlimit="8"/>
+<!-- Line -->
+<polyline points=" 4365,4635 5850,4635"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 4500,4635 4500,4500"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 5715,4635 5715,4500"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 5580,4635 5580,4500"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="8055" y="3195" width="720" height="900" fill="#87cfff"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="7830" y="3375" width="225" height="495"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<rect x="8775" y="3330" width="225" height="630"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
+<polyline points=" 6705,6390 6706,6390 6709,6390 6717,6389 6732,6388 6753,6386 6779,6383 6808,6379
+ 6839,6374 6870,6368 6899,6361 6926,6354 6950,6345 6971,6335 6989,6324 7005,6312
+ 7019,6297 7032,6281 7043,6263 7051,6246 7058,6228 7065,6208 7071,6187 7076,6164
+ 7081,6140 7085,6114 7089,6087 7092,6059 7094,6031 7095,6001 7096,5972 7096,5942
+ 7096,5913 7095,5884 7093,5856 7091,5828 7088,5802 7085,5777 7081,5753 7077,5730
+ 7073,5708 7067,5684 7061,5662 7055,5640 7048,5619 7040,5598 7033,5577 7025,5557
+ 7016,5536 7008,5517 7000,5497 6991,5478 6983,5460 6976,5442 6968,5424 6962,5407
+ 6955,5390 6950,5374 6945,5358 6941,5341 6938,5325 6935,5308 6933,5291 6931,5273
+ 6931,5255 6932,5236 6933,5216 6935,5196 6939,5175 6943,5155 6949,5134 6955,5114
+ 6963,5094 6972,5075 6981,5056 6992,5039 7003,5022 7015,5006 7029,4991 7043,4978
+ 7058,4965 7072,4954 7088,4944 7104,4934 7122,4924 7140,4915 7160,4905 7181,4896
+ 7202,4887 7225,4878 7247,4870 7271,4861 7294,4852 7317,4844 7340,4835 7363,4827
+ 7385,4818 7406,4809 7426,4800 7446,4791 7465,4782 7483,4773 7500,4763 7517,4752
+ 7533,4741 7548,4729 7563,4716 7577,4703 7591,4688 7603,4674 7615,4658 7626,4642
+ 7636,4626 7644,4609 7652,4593 7657,4576 7662,4559 7665,4543 7666,4527 7666,4511
+ 7664,4496 7661,4481 7656,4467 7650,4453 7643,4440 7633,4427 7622,4414 7610,4401
+ 7596,4389 7580,4376 7563,4363 7543,4349 7523,4336 7501,4322 7478,4308 7454,4294
+ 7430,4280 7405,4266 7379,4251 7354,4237 7328,4222 7303,4208 7279,4193 7254,4178
+ 7231,4163 7208,4148 7185,4133 7164,4118 7144,4102 7124,4086 7104,4069 7084,4052
+ 7065,4034 7046,4016 7027,3996 7009,3977 6991,3957 6975,3937 6959,3917 6945,3897
+ 6932,3877 6920,3858 6910,3839 6901,3821 6894,3803 6888,3786 6884,3770 6882,3754
+ 6881,3740 6882,3726 6885,3713 6890,3699 6896,3686 6905,3673 6916,3661 6928,3650
+ 6943,3639 6959,3629 6976,3619 6996,3610 7016,3602 7038,3594 7060,3587 7083,3581
+ 7106,3576 7130,3572 7153,3568 7176,3566 7199,3564 7221,3562 7242,3562 7263,3562
+ 7283,3563 7306,3564 7329,3566 7352,3570 7375,3574 7397,3578 7419,3583 7440,3589
+ 7462,3595 7482,3601 7502,3607 7521,3614 7539,3619 7556,3625 7572,3630 7587,3635
+ 7601,3639 7615,3642 7628,3645 7643,3647 7659,3648 7675,3648 7691,3646 7709,3642
+ 7728,3638 7748,3631 7768,3624 7788,3617 7805,3610 7818,3605 7826,3602 7829,3600
+ 7830,3600"
+	stroke="#000000" stroke-width="30px" stroke-linejoin="bevel"/>
+<!-- Line -->
+<polyline points=" 4500,4230 4499,4230 4494,4230 4484,4231 4467,4232 4447,4233 4427,4235 4408,4238
+ 4391,4241 4378,4244 4367,4248 4358,4254 4350,4260 4344,4268 4338,4277 4334,4288
+ 4331,4301 4328,4318 4325,4337 4323,4357 4322,4377 4321,4394 4320,4404 4320,4409
+ 4320,4410"
+	stroke="#ffffff" stroke-width="45px" stroke-linejoin="bevel" stroke-linecap="round"/>
+<!-- Text -->
+<text xml:space="preserve" x="5130" y="6435" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">VCP</text>
+<!-- Text -->
+<text xml:space="preserve" x="4410" y="6210" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">OS</text>
+<!-- Text -->
+<text xml:space="preserve" x="9855" y="3735" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">FPGA</text>
+<!-- Text -->
+<g transform="translate(6660,6390) rotate(-90)" >
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
+</g><!-- Text -->
+<g transform="translate(8010,3645) rotate(-90)" >
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
+</g><!-- Text -->
+<g transform="translate(8955,3645) rotate(-90)" >
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">UART</text>
+</g><!-- Text -->
+<text xml:space="preserve" x="4860" y="4860" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">TeraTerm</text>
+</g>
+</svg>
