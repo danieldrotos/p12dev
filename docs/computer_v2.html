@@ -67,19 +67,22 @@
 
     <h1>Mikroszámítógép v2</h1>
 
-<p>A mikroprocesszort kiegészítve néhány alkatrésszel,
-mikroszámítógépet alakítunk ki.</p>
+<p>A <a href="p2223.html">mikroprocesszort</a> kiegészítve néhány
+alkatrésszel, mikroszámítógépet alakítunk ki.</p>
 
 <p><img title="" src="computer.png" alt="" /></p>
 
-<p>A processzort memóriával, GPIO áramkörökkel, időzítővel és UART-al,
-  az eszközöket összekötő buszt
+    <p>A
+  processzort <a href="#memory">memóriával</a>, <a href="#gpio">GPIO
+  áramkörökkel</a>, <a href="#clock">órával</a>, <a href="#timer">időzítővel</a>
+  és <a href="#uart">UART</a>-al, az eszközöket összekötő buszt
   pedig <a href="#mem_map">címdekóderrel</a> egészítjük ki. A clk
   bemenet a számítógép, egyúttal a CPU órajele is. Az FPGA
   megvalósításban a clk bemenetre 25 MHz frekvenciájú órajelet
   kötünk.</p>
 
-<h1>Memória</h1>
+
+<a name="memory"><h1>Memória</h1></a>
 
 <p>A processzor memória illesztőjére kapcsolódó memória fogja tárolni
 a futtatott programot, valamint a feldolgozott adatokat. A memóriát az
@@ -471,7 +474,8 @@ multiplexer választja ki a megjelenített értéket.</p>
 <p>A számítógéppel az UART periférián keresztül kommunikálhatunk,
 amely a kártya UART-USB átalakítóján keresztül érhető el.</p>
 
-<h2>A számítógép alaphelyzetbe állítása</h2>
+
+<a name="reset"><h2>A számítógép alaphelyzetbe állítása</h2></a>
 
 <p>A CPU reset-elése elvégezhető a kártya CPU reset nyomógombjával, ha
 a kártya rendelkezik vele.</p>
@@ -487,8 +491,8 @@ nyomva tartva lehet a BTN[0] megnyomásával reset-elni.</p>
 <p>A hétszegmenses kijelző egy 32 bites szám értékét tudja
 megjeleníteni hexadecimális számrendszerben. A kijelzőn 16 különféle
 érték jeleníthető meg, ezeket a SW[7:4] kapcsolókon beállított bináris
-(0-15) értékkel, vagy a BRD_CTRL periféria OUT regiszterének [7:4]
-bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
+(0-15) értékkel, vagy a <a href="#brd_ctrl">BRD_CTRL periféria</a> OUT
+regiszterének [7:4] bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
 
 <p><img title="" src="display.svg" alt="" /></p>
 
@@ -539,7 +543,8 @@ bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
 </tr>
 <tr>
 <td>1010 (10)</td>
-<td>A kijelző direkt meghajtása (szegmens mód) a GPIOC, GPIOD kimenetekkel (***)</td>
+<td>A kijelző direkt meghajtása (szegmens mód) a PORTC, PORTD
+kimenetekkel (***)</td>
 </tr>
 <tr>
 <td>1011 (11)</td>
@@ -547,7 +552,8 @@ bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
 </tr>
 <tr>
 <td>1100 (12)</td>
-<td>A processzor megszakításkérő bemeneteire kötött értékek (jelenleg nem használt)</td>
+<td>A processzor megszakításkérő bemeneteire kötött értékek (jelenleg
+nem használt)</td>
 </tr>
 <tr>
 <td>1101 (13)</td>
@@ -571,8 +577,8 @@ meg (P2 CPU esetén nincs megvalósítva).</p>
 választja ki, hogy a CPU melyik regiszterének az értéke jelenjen meg a
 kijelzőn.</p>
 
-<p>(***) A GPIOD 32 bitje a kijelző 0-3 számjegyének 32 LED-jét
-vezérli (4-7 karakterpozíciók), míg a GPIOC 32 bitje a kijelző 4-7
+<p>(***) A PORTD 32 bitje a kijelző 0-3 számjegyének 32 LED-jét
+vezérli (4-7 karakterpozíciók), míg a PORTC 32 bitje a kijelző 4-7
 számjegyének (0-3 karakterpozíciók) LED-jeit működteti.</p>
 
 <h3>Szegmens mód</h3>
@@ -601,10 +607,11 @@ bekapcsoláskor elindítja a monitort.</p>
 
 <p>A monitor segítségével megvizsgálhatjuk, módosíthatjuk a memória
 tartalmát, beállíthatjuk a felhasználói program számára a
-regisztereket, valamint az UART-on keresztül betölthetjük a memóriába
-a felhasználói programot. A monitor egy parancssoros felhasználói
-felülettel (CLI) rendelkezik, amelyet az UART-on keresztül
-használhatunk, 115200,N,8,1 beállításokkal.</p>
+regisztereket, valamint az <a href="#uart">UART</a>-on keresztül
+betölthetjük a memóriába a felhasználói programot. A monitor egy
+parancssoros felhasználói felülettel (CLI) rendelkezik, amelyet
+az <a href="#uart">UART</a>-on keresztül használhatunk, 115200,N,8,1
+beállításokkal.</p>
 
 <p><img title="" src="mem_map.svg" alt="" /></p>
 
@@ -830,8 +837,8 @@ kapcsolók pergésmentesítettek.</p>
 
 <p>A kártya 16 kapcsolóval és 4 nyomógombbal rendelkezik, mivel
 azonban a CPU RESET számára nincs rajta dedikált nyomógomb, ezért a
-fent említett 2 nyomógombos módszer használható a CPU
-újraindítására.</p>
+fent említett <a href="#reset">2 nyomógombos módszer</a> használható a
+CPU újraindítására.</p>
 
 <table border=1>
 <tr>
