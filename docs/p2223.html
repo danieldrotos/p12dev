@@ -41,9 +41,10 @@
 
     <hr>
     
-    <p>
-    Adatmozgatás:
-      <a class="inst" href="#MOV"><span class="mov">MOV</span></a>
+   
+      <table border=0>
+      <tr><td><a href="#move_group">Adatmozgatás</a>:</td>
+      <td><a class="inst" href="#MOV"><span class="mov">MOV</span></a>
     <a class="inst" href="#MVH"><span class="mov">MVH</span></a>
     <a class="inst" href="#MVL"><span class="mov">MVL</span></a>
     <a class="inst" href="#MVS"><span class="mov">MVS</span></a>
@@ -57,19 +58,24 @@
     <a class="inst" href="#GETBS"><span class="mov">GETBS</span></a>
     <a class="inst" href="#GETBZ"><span class="mov">GETBZ</span></a>
     <a class="inst" href="#PUTB"><span class="mov">PUTB</span></a>
+    <a class="inst" href="#GETF"><span class="mov">GETF</span></a>
+    <a class="inst" href="#SETF"><span class="mov">SETF</span></a>
     <a class="inst" href="#RDS"><span class="mov">RDS</span></a>
     <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
-
-    Szubrutinhívás:
-    <a class="inst" href="#CALL"><span class="call">CALL</span></a>
+      </td></tr>
+      
+    <tr><td><a href="#call_group">Szubrutinhívás</a>:</td>
+    <td><a class="inst" href="#CALL"><span class="call">CALL</span></a>
     <a class="inst" href="#CES"><span class="call">CES</span></a>
-
-    Memória:
-    <a class="inst" href="#LD"><span class="mem">LD</span></a>
+    </td></tr>
+    
+    <tr><td><a href="#mem_group">Memória</a>:</td>
+    <td><a class="inst" href="#LD"><span class="mem">LD</span></a>
     <a class="inst" href="#ST"><span class="mem">ST</span></a>
-
-    Aritmetika:
-    <a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
+    </td></tr>
+    
+    <tr><td><a href="#alu_group">Aritmetika</a>:</td>
+    <td><a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
     <a class="inst" href="#ADC"><span class="alu2">ADC</span></a>
     <a class="inst" href="#PLUS"><span class="alu2">PLUS</span></a>
     <a class="inst" href="#SUB"><span class="alu2">SUB</span></a>
@@ -92,7 +98,8 @@
     <a class="inst" href="#SZ"><span class="alu1">SZ</span></a>
     <a class="inst" href="#SEC"><span class="alu1">SEC</span></a>
     <a class="inst" href="#CLC"><span class="alu1">CLC</span></a>
-    </p>
+    </td></tr>
+    </table>
     
     
     <p>
@@ -108,6 +115,7 @@
       <a class="inst" href="#GETB"><span class="mov">GETB</span></a>
       <a class="inst" href="#GETBS"><span class="mov">GETBS</span></a>
       <a class="inst" href="#GETBZ"><span class="mov">GETBZ</span></a>
+      <a class="inst" href="#GETF"><span class="mov">GETF</span></a>
       <a class="inst" href="#LD"><span class="mem">LD</span></a>
       <a class="inst" href="#MOV"><span class="mov">MOV</span></a>
       <a class="inst" href="#MUL"><span class="alu2">MUL</span></a>
@@ -127,6 +135,7 @@
       <a class="inst" href="#SEB"><span class="mov">SEB</span></a>
       <a class="inst" href="#SEC"><span class="alu1">SEC</span></a>
       <a class="inst" href="#SED"><span class="mov">SED</span></a>
+      <a class="inst" href="#SETF"><span class="mov">SETF</span></a>
       <a class="inst" href="#SEW"><span class="mov">SEW</span></a>
       <a class="inst" href="#SHA"><span class="alu1">SHA</span></a>
       <a class="inst" href="#SHL"><span class="alu1">SHL</span></a>
@@ -229,7 +238,7 @@
       felhasználható. A programok megírásakor az R13 regisztert
       használtuk SP-ként.</p>
 
-    <h3>Egyéb speciális regiszterek</h3>
+    <a name="sfr"><h3>Egyéb speciális regiszterek</h3></a>
 
     <p>A processzoron belül 16 speciális regiszterhez lehet
       hozzáférni, ezek között vannak írható és olvasható, illetve csak
@@ -538,7 +547,7 @@
     <h1>Utasítások</h1>
 
     
-    <h3>Adatmozgatás</h3>
+    <a name="move_group"><h3>Adatmozgatás</h3></a>
     
     <a name="GETB"><h1>GETB get byte from register</h1></a>
     
@@ -613,6 +622,24 @@
       kiválasztani, vagy az Ri regiszter értékével, vagy egy 2 bites
       konstanssal. Ha az Ri-vel választunk, akkor a processzor a
       regiszternek csak az alsó két bitjét használja.</p>
+
+    <a name="GETF"><h1>GETF get flags</h1></a>
+    
+    <table border="1">
+      <tr>
+	<td>GETF</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1110.----.----.----.----</span></td>
+	<td>Rd= F[UPOZCS]</td>
+      </tr>
+    </table>
+    
+    <p>Az utasítás átmásolja a Flag regiszter értékét (beleértve az U
+      és P biteket is) a megadott Rd regiszterbe. A jelzőbitek a Flag
+      regiszter 0-5 bitjeit foglalják el, a regiszter azonban 8
+      bites. A 6-7 bitek tetszőleges 2 bites érték tárolására
+      használhatók. Az utasítás a Flag tartalmát az Rd[7:0] bitekbe
+      másolja, az Rd[31:8] bitek 0 értéket kapnak.</p>
 
     <a name="MOV"><h1>MOV copy register to register</h1></a>
 
@@ -734,8 +761,8 @@
       
     </table>
     
-    <p>Az Rs sorszámú speciális regiszter kiolvasása és átmásolása az
-    Rd regiszterbe.</p>
+    <p>Az Rs sorszámú <a href="#sfr">speciális regiszter</a>
+    kiolvasása és átmásolása az Rd regiszterbe.</p>
     
     <a name="SEB"><h1>SEB sign extend byte</h1></a>
     
@@ -792,6 +819,24 @@
       eredményt tárolja az Rd regiszterben (felülíródik). A Flag
       regiszter nem változik.</p>
 
+    <a name="SETF"><h1>SETF copy register to flag register</h1></a>
+    
+    <table border="1">
+      <tr>
+	<td>SETF</td>
+	<td>Rd</td>
+	<td><span id="inst">COND.0010.Rd  .1111.----.----.----.----</span></td>
+	<td>F[UPOZCS]= Rd</td>
+      </tr>
+    </table>
+    
+    <p>Az utasítás az Rd regiszter értékét a Flag regiszterbe
+      másolja. A használt Flag bitek a regiszter 0-5 bitjeit foglalják
+      el, de a regiszter 8 bites. A 6-7 bitek tetszőleges 2 bites
+      érték tárolására használhatók, vagyis a műveletben az Rd[7:0]
+      bitjei kerülnek a Flag regiszterbe, az Rd[31:8] bitek figyelmen
+      kívül maradnak.</p>
+
     <a name="WRS"><h1>WRS write special register</h1></a>
     
     <table border="1">
@@ -805,8 +850,8 @@
       
     </table>
     
-    <p>Az Rd regiszter átmásolása az Rs sorszámú speciális
-    regiszterbe.</p>
+    <p>Az Rd regiszter átmásolása az Rs sorszámú <a href="#sfr">speciális
+	regiszterbe</a>.</p>
 
     <a name="ZEB"><h1>ZEB zero extend byte</h1></a>
     
@@ -842,8 +887,9 @@
     <p>Az Rd[15:0] bitjein lévő 16 bites adat 0 kiterjesztése 32
       bitesre. Az eredmény az Rd regiszterbe kerül (felülíródik). Az
       utasítás a Flag regisztert nem módosítja.</p>
+
     
-    <h3>Szubrutinhívás</h3>
+    <a name="call_group"><h3>Szubrutinhívás</h3></a>
     
     <a name="CALL"><h1>CALL call subroutine</h1></a>
     
@@ -907,20 +953,22 @@
       
     </table>
     
-    <p>Az utasítás működése megegyezik
-      a <a class="inst" href="#CALL"><span class="call">CALL</span></a> utasítással,
-      azonban feltételt nem lehet megadni, a szubrutinhívás feltétel
-      nélkül megtörténik. Az utasítást abban az esetben célszerű
-      használni, amikor a hívás utasítás után közvetlenül egy
-      beágyazott sztring van a memóriában, amely a szubrutin
-      paramétere. Az ilyen szubrutinok nem a hívás utáni, hanem a
-      sztring utáni utasításra térnek
-      vissza. A <a class="inst" href="#CES"><span class="call">CES</span></a> utasítás
+    <p>Az utasítás működése megegyezik a <a class="inst"
+      href="#CALL"><span class="call">CALL</span></a> utasítással,
+      azonban feltételt nem lehet megadni, a
+      szubrutinhívás <b>feltétel nélkül</b> megtörténik. Az utasítást
+      abban az esetben célszerű használni, amikor a hívás utasítás
+      után közvetlenül egy beágyazott sztring van a memóriában, amely
+      a szubrutin paramétere. Az ilyen szubrutinok nem a hívás utáni,
+      hanem a sztring utáni utasításra térnek
+      vissza. A <a class="inst"
+      href="#CES"><span class="call">CES</span></a> utasítás
       használata segíti a szimulátort a visszatérési cím
       megállapításában, hogy a szubrutin a next paranccsal
       lefuttatható legyen.</p>
 
-    <h3>Memória kezelés</h3>
+    
+    <a name="mem_group"><h3>Memória kezelés</h3></a>
     
     <a name="LD"><h1>LD load memory to register</h1></a>
     
@@ -1133,8 +1181,9 @@
 	</tr>
       </thead>
     </table>
+
     
-    <h3>Aritmetikai, logikai műveletek</h3>
+    <a name="alu_group"><h3>Aritmetikai, logikai műveletek</h3></a>
     
     <a name="ADC"><h1>ADC add with carry</h1></a>
     
@@ -1283,26 +1332,6 @@
       regisztere (Rd) változatlan marad, csak a Flag regiszter
       aritmetikai bitjei módosulnak.</p>
     
-    <a name="GETF"><h1>GETF get flags</h1></a>
-    
-    <table border="1">
-      
-      <tr>
-	<td>GETF</td>
-	<td>Rd</td>
-	<td><span id="inst">COND.0010.Rd  .1110.----.----.----.----</span></td>
-	<td>Rd= F[UPOZCS]</td>
-      </tr>
-      
-    </table>
-    
-    <p>Az utasítás átmásolja a Flag regiszter értékét (beleértve az U
-      és P biteket is) a megadott Rd regiszterbe. A jelzőbitek a Flag
-      regiszter 0-5 bitjeit foglalják el, a regiszter azonban 8
-      bites. A 6-7 bitek tetszőleges 2 bites érték tárolására
-      használhatók. Az utasítás a Flag tartalmát az Rd[7:0] bitekbe
-      másolja, az Rd[31:8] bitek 0 értéket kapnak.</p>
-
     <a name="MUL"><h1>MUL multiply</h1></a>
     
     <table border="1">
@@ -1504,26 +1533,6 @@
     <p>Az utasítás a C Flag bitet 1 értékűre állítja. Más hatása
     nincs.</p>
     
-    <a name="SETF"><h1>SETF copy register to flag register</h1></a>
-    
-    <table border="1">
-      
-      <tr>
-	<td>SETF</td>
-	<td>Rd</td>
-	<td><span id="inst">COND.0010.Rd  .1111.----.----.----.----</span></td>
-	<td>F[UPOZCS]= Rd</td>
-      </tr>
-      
-    </table>
-    
-    <p>Az utasítás az Rd regiszter értékét a Flag regiszterbe
-      másolja. A használt Flag bitek a regiszter 0-5 bitjeit foglalják
-      el, de a regiszter 8 bites. A 6-7 bitek tetszőleges 2 bites
-      érték tárolására használhatók, vagyis a műveletben az Rd[7:0]
-      bitjei kerülnek a Flag regiszterbe, az Rd[31:8] bitek figyelmen
-      kívül maradnak.</p>
-
     <a name="SHA"><h1>SHA arithmetic (signed) shift right</h1></a>
     
     <table border="1">

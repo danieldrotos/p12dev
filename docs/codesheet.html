@@ -104,7 +104,7 @@
 <th>
 <div>3</div>
 </th>
-<td>ALU</td>
+<td><a href="p2223.html#alu_group">ALU</a></td>
 <td>cond</td>
 <td><tt><b>000&nbsp;0</b></tt></td>
 <td><tt>Rd</tt></td>
@@ -168,7 +168,7 @@
 <th>
 <div>7</div>
 </th>
-<td>CALL</td>
+<td><a href="p2223.html#call_group">CALL</a></td>
 <td>cond</td>
 <td><tt><b>010&nbsp;0</b></tt></td>
 <td><tt>u24</tt></td>
@@ -177,7 +177,7 @@
 <td><tt>u24</tt></td>
 <td><tt>u24</tt></td>
 <td><tt>u24</tt></td>
-<td><tt>CALL abs(u24)</tt></td>
+<td><tt><a href="p2223.html#CALL"><tt>CALL</tt></a> abs(u24)</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -193,14 +193,14 @@
 <td><tt>s20</tt></td>
 <td><tt>s20</tt></td>
 <td><tt>s20</tt></td>
-<td><tt>CALL Rd,s20</tt></td>
+<td><tt><a href="p2223.html#CALL"><tt>CALL</tt></a> Rd,s20</tt></td>
 <td> </td>
 </tr>
 <tr>
 <th>
 <div>9</div>
 </th>
-<td>CES</td>
+<td><a href="p2223.html#CES">CES</a></td>
 <td><tt>1111</tt></td>
 <td><tt><b>010&nbsp;0</b></tt></td>
 <td><tt>u24</tt></td>
@@ -209,7 +209,7 @@
 <td><tt>u24</tt></td>
 <td><tt>u24</tt></td>
 <td><tt>u24</tt></td>
-<td><tt>CES abs(u24)</tt></td>
+<td><tt><a href="p2223.html#CES"><tt>CES</tt></a> abs(u24)</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -225,7 +225,7 @@
 <td><tt>s20</tt></td>
 <td><tt>s20</tt></td>
 <td><tt>s20</tt></td>
-<td><tt>CES Rd,s20</tt></td>
+<td><tt><a href="p2223.html#CES"><tt>CES</tt></a> Rd,s20</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -248,7 +248,7 @@
 <th>
 <div>12</div>
 </th>
-<td>LD/ST</td>
+<td><a href="p2223.html#mem_group">LD/ST</a></td>
 <td>cond</td>
 <td><tt><b>100</b>&nbsp;W</tt></td>
 <td><tt>Rd</tt></td>
@@ -257,7 +257,7 @@
 <td><t>Rb</t></td>
 <td><tt>----</tt></td>
 <td><tt>----</tt></td>
-<td><tt>ST Rd,+-Ra+-,Rb</tt></td>
+<td><tt><a href="p2223.html#ST"><tt>ST</tt></a> Rd,+-Ra+-,Rb</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -273,7 +273,7 @@
 <td><tt>Rb</tt></td>
 <td><tt>----</tt></td>
 <td><tt>----</tt></td>
-<td><tt>LD Rd,+-Ra+-,Rb</tt></td>
+<td><tt><a href="p2223.html#LD"><tt>LD</tt></a> Rd,+-Ra+-,Rb</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -289,7 +289,7 @@
 <td><tt>s16</tt></td>
 <td><tt>s16</tt></td>
 <td><tt>s16</tt></td>
-<td><tt>ST Rd,*Ra,s16</tt></td>
+<td><tt><a href="p2223.html#ST"><tt>ST</tt></a> Rd,*Ra,s16</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -305,7 +305,7 @@
 <td><tt>s16</tt></td>
 <td><tt>s16</tt></td>
 <td><tt>s16</tt></td>
-<td><tt>LD Rd,*Ra,s16</tt></td>
+<td><tt><a href="p2223.html#LD"><tt>LD</tt></a> Rd,*Ra,s16</tt></td>
 <td>!U,!P</td>
 </tr>
 <tr>
@@ -337,7 +337,7 @@
 <td><tt>u16</tt></td>
 <td><tt>u16</tt></td>
 <td><tt>u16</tt></td>
-<td><tt>LD/ST Rd,direct</tt></td>
+<td><tt><a href="p2223.html#LD"><tt>LD</tt></a>/<a href="p2223.html#ST"><tt>ST</tt></a> Rd,direct</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -354,7 +354,7 @@
 <td><tt>----</tt></td>
 <td><tt>Ri</tt></td>
 <td>
-<tt>PUTB/GETB{SZ} Rd,Rb,Ri</tt>
+  <tt><a href="p2223.html#PUTB"><tt>PUTB</tt></a>/<a href="p2223.html#GETB"><tt>GETB</tt></a>{<a href="p2223.html#GETBS"><tt>S</tt></a><a href="p2223.html#GETBZ"><tt>Z</tt></a>} Rd,Rb,Ri</tt>
 </td>
 <td> </td>
 </tr>
@@ -372,7 +372,7 @@
 <td><tt>----</tt></td>
 <td><tt>--u2</tt></td>
 <td>
-  <tt>PUTB/GETB{SZ} Rd,Rb,u2</tt>
+  <tt><a href="p2223.html#PUTB"><tt>PUTB</tt></a>/<a href="p2223.html#GETB"><tt>GETB</tt></a>{<a href="p2223.html#GETBS"><tt>S</tt></a><a href="p2223.html#GETBZ"><tt>Z</tt></a>} Rd,Rb,u2</tt>
 </td>
 <td> </td>
 </tr>
@@ -389,7 +389,7 @@
 <td><tt>Rb</tt></td>
 <td><tt>----</tt></td>
 <td><tt>----</tt></td>
-<td><tt>RDS/WRS Rd,Rb<</tt>/td>
+<td><tt><a href="p2223.html#RDS"><tt>RDS</tt></a>/<a href="p2223.html#WRS"><tt>WRS</tt></a> Rd,Rb</tt></td>
 <td> </td>
 </tr>
 <tr>
@@ -475,7 +475,7 @@ W=1 write-back Ra<br>with +/-1 value
 <td><b>ALU 1op</b></td>
 <td> </td>
 <td></td>
-<td><b>Flags</b></td>
+<td><a href="p2223.html#flag"><b>Flags</b></a></td>
 <td> </td>
 </tr>
 <tr>
@@ -486,9 +486,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>0 always</td>
 <td>0</td>
 <td><tt>W-[----]</tt></td>
-<td><tt>MOV</tt></td>
-<td><tt>MVL&nbsp;&nbsp;#u16 W-</pre></td>
-<td><tt>ZEB</tt></td>
+<td><a href="p2223.html#MOV"><tt>MOV</tt></a></td>
+<td><tt><a href="p2223.html#MVL"><tt>MVL</tt></a>&nbsp;&nbsp;#u16 W-</tt></td>
+<td><a href="p2223.html#ZEB"><tt>ZEB</tt></a></td>
 <td><tt>W-[----]</tt></td>
 <td></td>
 <td>UP OZCS</td>
@@ -503,8 +503,8 @@ W=1 write-back Ra<br>with +/-1 value
 <td>1</td>
 <td><tt>--[----]</tt></td>
 <td><tt></tt></td>
-<td><tt>MVH&nbsp;&nbsp;#u16 W-</tt></td>
-<td><tt>ZEW</tt></td>
+<td><tt><a href="p2223.html#MVH"><tt>MVH</tt></a>&nbsp;&nbsp;#u16 W-</tt></td>
+<td><a href="p2223.html#ZEW"><tt>ZEW</tt></a></td>
 <td><tt>W-[----]</tt></td>
 <td></td>
 <td>01 S Sign</td>
@@ -519,8 +519,8 @@ W=1 write-back Ra<br>with +/-1 value
 <td>2</td>
 <td><tt>--[----]</tt></td>
 <td><tt></tt></td>
-<td><tt>MVZL&nbsp;#u16 W-</tt></td>
-<td><tt>SEB</tt></td>
+<td><tt><a href="p2223.html#MVZL"><tt>MVZL</tt></a>&nbsp;#u16 W-</tt></td>
+<td><a href="p2223.html#SEB"><tt>SEB</tt></a></td>
 <td><tt>W-[----]</tt></td>
 <td>
 </td>
@@ -535,9 +535,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>3 CS, HS</td>
 <td>3</td>
 <td><tt>W-[----]</tt></td>
-<td><tt>SED</tt></td>
-<td><tt>MVS&nbsp;&nbsp;#s16 W-</tt></td>
-<td><tt>SEW</tt></td>
+<td><a href="p2223.html#SED"><tt>SED</tt></a></td>
+<td><tt><a href="p2223.html#MVS"><tt>MVS</tt></a>&nbsp;&nbsp;#s16 W-</tt></td>
+<td><a href="p2223.html#SEW"><tt>SEW</tt></a></td>
 <td><tt>W-[----]</tt></td>
 <td></td>
 <td>04 Z Zero</td>
@@ -551,9 +551,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>4 CC, LO</td>
 <td>4</td>
 <td><tt>WF[OZCS]</tt></td>
-<td><tt>ADD</tt></td>
-<td><tt>ADD&nbsp;&nbsp;#s16</tt></td>
-<td><tt>NOT</tt></td>
+<td><a href="p2223.html#ADD"><tt>ADD</tt></a></td>
+<td><tt><a href="p2223.html#ADD"><tt>ADD</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#NOT"><tt>NOT</tt></a></td>
 <td><tt>WF[-Z-S]</tt></td>
 <td></td>
 <td>08 O Overflow</td>
@@ -567,9 +567,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>5 MI</td>
 <td>5</td>
 <td><tt>WF[OZCS]</tt></td>
-<td><tt>ADC</tt></td>
-<td><tt>ADC&nbsp;&nbsp;#s16</tt></td>
-<td><tt>NEG</tt></td>
+<td><a href="p2223.html#ADC"><tt>ADC</tt></a></td>
+<td><tt><a href="p2223.html#ADC"><tt>ADC</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#NEG"><tt>NEG</tt></a></td>
 <td><tt>WF[OZCS]</tt></td>
 <td>
 </td>
@@ -584,9 +584,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>6 PL</td>
 <td>6</td>
 <td><tt>WF[OZCS]</tt></td>
-<td><tt>SUB</tt></td>
-<td><tt>SUB&nbsp;&nbsp;#s16</tt></td>
-<td><tt>ROR</tt></td>
+<td><a href="p2223.html#SUB"><tt>SUB</tt></a></td>
+<td><tt><a href="p2223.html#SUB"><tt>SUB</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#ROR"><tt>ROR</tt></a></td>
 <td><tt>WF[-ZCS]</tt></td>
 <td>
 </td>
@@ -601,9 +601,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>7 VS</td>
 <td>7</td>
 <td><tt>WF[OZCS]</tt></td>
-<td><tt>SBB</tt></td>
-<td><tt>SBB&nbsp;&nbsp;#s16</tt></td>
-<td><tt>ROL</tt></td>
+<td><a href="p2223.html#SBB"><tt>SBB</tt></a></td>
+<td><tt><a href="p2223.html#SBB"><tt>SBB</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#ROL"><tt>ROL</tt></a></td>
 <td><tt>WF[-ZCS]</tt></td>
 <td> </td>
 <td> </td>
@@ -617,9 +617,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>8 VC</td>
 <td>8</td>
 <td><tt>-F[OZCS]</tt></td>
-<td><tt>CMP</tt></td>
-<td><tt>CMP&nbsp;&nbsp;#s16</tt></td>
-<td><tt>SHL</tt></td>
+<td><a href="p2223.html#CMP"><tt>CMP</tt></a></td>
+<td><tt><a href="p2223.html#CMP"><tt>CMP</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#SHL"><tt>SHL</tt></a></td>
 <td><tt>WF[-ZCS]</tt></td>
 <td> </td>
 <td> </td>
@@ -633,9 +633,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>9 HI</td>
 <td>9</td>
 <td><tt>WF[-Z-S]</tt></td>
-<td><tt>MUL</tt></td>
-<td><tt>MUL&nbsp;&nbsp;#s16</tt></td>
-<td><tt>SHR</tt></td>
+<td><a href="p2223.html#MUL"><tt>MUL</tt></a></td>
+<td><tt><a href="p2223.html#MUL"><tt>MUL</tt></a>&nbsp;&nbsp;#s16</tt></td>
+<td><a href="p2223.html#SHR"><tt>SHR</tt></a></td>
 <td><tt>WF[-ZCS]</tt></td>
 <td> </td>
 <td> </td>
@@ -649,9 +649,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>10 LS</td>
 <td>10</td>
 <td><tt>W-[----]</tt></td>
-<td><tt>PLUS</tt></td>
-<td><tt>PLUS&nbsp;#s16</tt></td>
-<td><tt>SHA</tt></td>
+<td><a href="p2223.html#PLUS"><tt>PLUS</tt></a></td>
+<td><tt><a href="p2223.html#PLUS"><tt>PLUS</tt></a>&nbsp;#s16</tt></td>
+<td><a href="p2223.html#SHA"><tt>SHA</tt></a></td>
 <td><tt>WF[-ZCS]</tt></td>
 <td> </td>
 <td> </td>
@@ -665,9 +665,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>11 GE</td>
 <td>11</td>
 <td><tt>WF[-Z-S]</tt></td>
-<td><tt>BTST</tt></td>
-<td><tt>BTST&nbsp;#u16</tt></td>
-<td><tt>SZ</tt></td>
+<td><a href="p2223.html#BTST"><tt>BTST</tt></a></td>
+<td><tt><a href="p2223.html#BTST"><tt>BTST</tt></a>&nbsp;#u16</tt></td>
+<td><a href="p2223.html#SZ"><tt>SZ</tt></a></td>
 <td><tt>-F[-Z-S]</tt></td>
 <td> </td>
 <td> </td>
@@ -681,9 +681,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>12 LT</td>
 <td>12</td>
 <td><tt>-F[-Z-S]</tt></td>
-<td><tt>TEST</tt></td>
-<td><tt>TEST&nbsp;#u16</tt></td>
-<td><tt>SEC</tt></td>
+<td><a href="p2223.html#TEST"><tt>TEST</tt></a></td>
+<td><tt><a href="p2223.html#TEST"><tt>TEST</tt></a>&nbsp;#u16</tt></td>
+<td><a href="p2223.html#SEC"><tt>SEC</tt></a></td>
 <td><tt>-F[--C-]</tt></td>
 <td> </td>
 <td> </td>
@@ -697,9 +697,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>13 GT</td>
 <td>13</td>
 <td><tt>WF[-Z-S]</tt></td>
-<td><tt>OR</tt></td>
-<td><tt>OR&nbsp;&nbsp;&nbsp;#u16</tt></td>
-<td><tt>CLC</tt></td>
+<td><a href="p2223.html#OR"><tt>OR</tt></a></td>
+<td><tt><a href="p2223.html#OR"><tt>OR</tt></a>&nbsp;&nbsp;&nbsp;#u16</tt></td>
+<td><a href="p2223.html#CLC"><tt>CLC</tt></a></td>
 <td><tt>-F[--C-]</tt></td>
 <td> </td>
 <td> </td>
@@ -713,9 +713,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>14 LE</td>
 <td>14</td>
 <td><tt>WF[-Z-S]</tt></td>
-<td><tt>XOR</tt></td>
-<td><tt>XOR&nbsp;&nbsp;#u16</tt></td>
-<td><tt>GETF</tt></td>
+<td><a href="p2223.html#XOR"><tt>XOR</tt></a></td>
+<td><tt><a href="p2223.html#XOR"><tt>XOR</tt></a>&nbsp;&nbsp;#u16</tt></td>
+<td><a href="p2223.html#GETF"><tt>GETF</tt></a></td>
 <td><tt>W-[----]</tt></td>
 <td> </td>
 <td> </td>
@@ -729,9 +729,9 @@ W=1 write-back Ra<br>with +/-1 value
 <td>15 uncond</td>
 <td>15</td>
 <td><tt>WF[-Z-S]</tt></td>
-<td><tt>AND</tt></td>
-<td><tt>AND&nbsp;&nbsp;#o16</tt></td>
-<td><tt>SETF</tt></td>
+<td><a href="p2223.html#AND"><tt>AND</tt></a></td>
+<td><tt><a href="p2223.html#AND"><tt>AND</tt></a>&nbsp;&nbsp;#o16</tt></td>
+<td><a href="p2223.html#SETF"><tt>SETF</tt></a></td>
 <td><tt>-F[OZCS]</tt></td>
 <td> </td>
 <td> </td>
