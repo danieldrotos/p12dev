@@ -39,6 +39,8 @@
       <span lang="en">Library</span></a>
     </p>
 
+    <hr>
+    
     <p>
     <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
     <a href="devenv.html?lang=hu">HU</a>
@@ -56,14 +58,17 @@
       fejlesztőrendszer. A csomag tartalmazza a hardver leírását
       Verilog HDL nyelven, valamint a szoftver fejlesztéshez szükséges
       eszközöket. A kész rendszer szimulálható hardver, vagy utasítás
-      szinten, illetve megvalósítható különféle FPGA kártyákon.</span>
+      szinten, illetve megvalósítható
+      különféle <a href="computer_v2.html#fpga">FPGA
+      kártyákon</a>.</span>
 
-    <span lang="en">Computers built with the p1516 and p2223 processors
-      are programmed and used with the p12dev development system. A
-      package contains the hardware description in Verilog HDL and the
-      tools for software development. The finished system can be
-      simulated at hardware or instruction level, or implemented on
-      various FPGA boards.</span>
+    <span lang="en">Computers built with the p1516 and p2223
+      processors are programmed and used with the p12dev development
+      system. A package contains the hardware description in Verilog
+      HDL and the tools for software development. The finished system
+      can be simulated at hardware or instruction level, or
+      implemented on various <a href="computer_v2.html#fpga">FPGA
+      boards</a>.</span>
     </p>
     
     <h2>
@@ -72,21 +77,21 @@
     </h2>
 
     <p>
-    <span lang="hu">Töltsük le a csomagot tartalmazó ZIP fájlt (p12dev-X.Y.Z.zip) a
-      következő címről:</span>
+    <span lang="hu">Töltsük le a csomagot tartalmazó ZIP fájlt
+      (p12dev-X.Y.Z.zip) a következő címről:</span>
 
-    <span lang="en">Download the ZIP file containing the package (p12dev.zip)
-      from the following address:</span>
+    <span lang="en">Download the ZIP file containing the package
+      (p12dev.zip) from the following address:</span>
     </p>
     
     <p><a href="https://github.com/danieldrotos/p12dev/releases/latest">https://github.com/danieldrotos/p12dev/releases/latest</a></p>
 
     <p>
-    <span lang="hu">majd csomagoljuk ki egy tetszőleges könyvtárba, ezzel a
-      telepítés kész.</span>
+    <span lang="hu">majd csomagoljuk ki egy tetszőleges könyvtárba,
+      ezzel a telepítés kész.</span>
     
-    <span lang="en">then unpack it into a directory of your choice, the
-      installation is now complete.</span>
+    <span lang="en">then unpack it into a directory of your choice,
+      the installation is now complete.</span>
     </p>
 
     
@@ -99,8 +104,8 @@
     <span lang="hu">A fejlesztőrendszer használatához szükséges egyéb
       szoftverek a következők:</span>
     
-    <span lang="en">Following softwares are required to use the development
-      system:</span>
+    <span lang="en">Following softwares are required to use the
+      development system:</span>
     </p>
     
     <ul>
@@ -119,17 +124,18 @@
 
     <p>
     <span lang="hu">Mivel a rendszerre való fejlesztési folyamat
-      alapvetően assembly nyelvű szoftver fejlesztésből áll, célszerű
-      lehet egy olyan szövegszerkesztőt is telepíteni (pl. egy IDE
-      szoftvert), amely ehhez megfelelő támogatást nyújt
+      alapvetően <a href="asm.html">assembly nyelvű</a> szoftver
+      fejlesztésből áll, célszerű lehet egy olyan szövegszerkesztőt is
+      telepíteni (pl. egy IDE szoftvert), amely ehhez megfelelő
+      támogatást nyújt
       (pl. <a href="https://code.visualstudio.com/download">VS-Code</a>,
       <a href="https://www.codeblocks.org/">CodeBlocks</a>, <a href="https://www.geany.org/">Geany</a>,
       stb.).</span>
     
     <span lang="en">Since the process of developing a system is
-      essentially assembly software development, it may be appropriate
-      to use a text editor (or an IDE) that has good support for such
-      a development
+      essentially <a href="asm.html">assembly</a> software
+      development, it may be appropriate to use a text editor (or an
+      IDE) that has good support for such a development
       (e.g. <a href="https://code.visualstudio.com/download">VS-Code</a>, <a href="https://www.codeblocks.org/">CodeBlocks</a>, <a href="https://www.geany.org/">Geany</a>,
       etc.).</span>
     </p>
@@ -143,12 +149,13 @@
     <p>
     <span lang="hu">Egy szövegszerkesztővel nyissuk meg a
       fejlesztőrendszer könyvtárban található prj.mk nevű fájlt, és
-      írjuk be a projektünk assembly nyelvű forrását tartalmazó fájl
-      nevét:</span>
+      írjuk be a projektünk <a href="asm.html">assembly</a> nyelvű
+      forrását tartalmazó fájl nevét:</span>
 
-    <span lang="en">Look for the prj.mk file in the root directory of the
-      development system and open it with a text editor. Enter the
-      name of your assembly source file, like:</span>
+    <span lang="en">Look for the prj.mk file in the root directory of
+      the development system and open it with a text editor. Enter the
+      name of your <a href="asm.html">assembly</a> source file,
+      like:</span>
     </p>
     
     <p><samp>PRG = sw/progs2/counter3</samp></p>
@@ -186,10 +193,12 @@
 
     <p>
       <span lang="hu">A rendszer felépítését és a futtatás módját
-	befolyásoló paraméterek két külön fájlban találhatók: <b>prj.mk</b> és <b>hw/hwconf.v</b>.</span>
+	befolyásoló paraméterek két külön fájlban
+	találhatók: <b>prj.mk</b> és <b>hw/hwconf.v</b>.</span>
       
-      <span lang="en">Parameters affecting the system architecture and the way
-	it runs are in two separate files: <b>prj.mk</b> and <b>hw/hwconf.v</b>.</span>
+      <span lang="en">Parameters affecting the system architecture and
+	the way it runs are in two separate files: <b>prj.mk</b>
+	and <b>hw/hwconf.v</b>.</span>
     </p>
 
     
@@ -212,13 +221,16 @@
 
     <p>
     <span lang="hu">A paraméter a hw/hwconf.v fájlban található. Az
-      értéke az adja meg, hogy a számítógépbe p1516, vagy p2223 típusú
-      CPU kerüljön-e. A p1516 CPU használatához az értéket 1-re, míg a
-      p2223-hoz 2-re kell állítani.</span>
+      értéke az adja meg, hogy a
+      számítógépbe <a href="p1516.html">p1516</a>,
+      vagy <a href="p2223.html">p2223</a> típusú CPU kerüljön-e. A
+      p1516 CPU használatához az értéket 1-re, míg a p2223-hoz 2-re
+      kell állítani.</span>
 
-    <span lang="en">Parameter is in hw/hwconf.v file. It specifies type
-      of the CPU included in the computer. Value 1 selects p1516 type
-      of CPU while value 2 selects p2223.</span>
+    <span lang="en">Parameter is in hw/hwconf.v file. It specifies
+      type of the CPU included in the computer. Value 1
+      selects <a href="p1516.html">p1516</a> type of CPU while value 2
+      selects <a href="p2223.html">p2223</a>.</span>
     </p>
 
     
@@ -227,13 +239,17 @@
     <p>
     <span lang="hu">A paraméter a hw/hwconf.v fájlban található. Az
       értéke a rendszerbe kerülő számítógép (computer) típusát adja
-      meg. A v1 típusú számítógép használatához az értéket 1-re, míg a
-      v2 típushoz 2-re kell állítani.</span>
+      meg. A <a href="computer_v1.html">v1 típusú számítógép</a>
+      használatához az értéket 1-re, míg a
+      <a href="computer_v2.html">v2 típushoz</a> 2-re kell
+      állítani.</span>
 
-    <span lange="en">Parameter is in hw/hwconf.v file. Value of this
-      parameter selects type of the computer. Type v1 computer can be
-      selected by set this parameter to 1. Value of 2 selects type
-      v2. Please note, that type v1 is now obsolete.</span>
+    <span lang="en">Parameter is in hw/hwconf.v file. Value of this
+      parameter selects type of the
+      computer. Type <a href="computer_v1.html">v1 computer</a> can be
+      selected by set this parameter to 1. Value of 2
+      selects <a href="computer_v2.html">type v2</a>. Please note,
+      that type v1 is now obsolete.</span>
     </p>
     
 
@@ -245,13 +261,16 @@
 	bitekben. A memória kapacitása így 2<sup>AW</sup> szó (minden
 	szó 32 bit) lesz. Alapértelmezés szerinti értéke 17, ami 128
 	Kszó memóriát eredményez, ez a legnagyobb felhasználható méret
-	az implementációhoz használt FPGA kártyák esetében.</span>
+	az implementációhoz
+	használt <a href="computer_v2.html@fpga">FPGA kártyák</a>
+	esetében.</span>
       
       <span lang="en">Parameter is in hw/hwconf.v file. Value of this
-	parameter specifies the width of the address bus of memory that
-	is connected to the CPU. The capacity of the memory will be 2<sup>AW</sup> word. Use
-	of value 17 defines 128 Kword memory which reflects the memory
-	size available on FPGA boards.</span>
+	parameter specifies the width of the address bus of memory
+	that is connected to the CPU. The capacity of the memory will
+	be 2<sup>AW</sup> word. Use of value 17 defines 128 Kword
+	memory which reflects the memory size available
+	on <a href="computer_v2.html@fpga">FPGA boards</a>.</span>
     </p>
     
     
@@ -261,23 +280,28 @@
     </h3>
 
     <p>
-      <span lang="hu">A p2223 processzoros, v2 típusú számítógépnek a
-	memóriájába be van töltve a PMon monitor program. Ez lehetővé
+      <span lang="hu">A <a href="p2223.html">p2223
+	processzoros</a>, <a href="computer_v2.html">v2 típusú
+	számítógépnek</a> a memóriájába be van töltve
+	a <a href="pmon.html">PMon monitor</a> program. Ez lehetővé
 	teszi a gép kezelését akkor is, ha nem töltünk be felhasználói
-	programot, illetve biztosítja a felhasználói program cseréjét. A
-	PMon elindulását a memória 0 címén található JMP 0xf03c utasítás
-	biztosítja (kódja: 0x01f2f03c). A monitor helyett a felhasználói
-	programmal is indíthatjuk a gépet, ha a szoftvert úgy írjuk meg,
-	hogy az első utasítása a 0 címre kerüljön:</span>
+	programot, illetve biztosítja a felhasználói program
+	cseréjét. A PMon elindulását a memória 0 címén található JMP
+	0xf03c utasítás biztosítja (kódja: 0x01f2f03c). A monitor
+	helyett a felhasználói programmal is indíthatjuk a gépet, ha a
+	szoftvert úgy írjuk meg, hogy az első utasítása a 0 címre
+	kerüljön:</span>
 
-      <span lang="en">PMon monitor program is already loaded into computer
-	memory if you use v2 type of computer with p2223 processor. This
-	allows you to operate the computer when no user program is
-	loaded, and makes possible to load in new user program. PMon is
-	started by a JMP 0xf03c instruction located at address 0 (code
-	of it is 0x01f2f03c). You can start the machine with the user
-	program instead, if you overwrite the JMP at 0 with your
-	program's code by placing it at 0 with the following directive:</span>
+      <span lang="en"><a href="pmon.html">PMon monitor</a> program is
+	already loaded into computer memory if you
+	use <a href="computer_v2.html">v2 type of computer</a>
+	with <a href="p2223.html">p2223 processor</a>. This allows you
+	to operate the computer when no user program is loaded, and
+	makes possible to load in new user program. PMon is started by
+	a JMP 0xf03c instruction located at address 0 (code of it is
+	0x01f2f03c). You can start the machine with the user program
+	instead, if you overwrite the JMP at 0 with your program's
+	code by placing it at 0 with the following directive:</span>
     </p>
     
     <p><samp>.org 0</samp></p>
@@ -709,17 +733,27 @@ set con boolean</samp></p>
     
     <span lang="hu">
       <ul>
-	<li>n4_top.bit fájlt használjuk a Nexys4-DDR kártyához,</li>
-	<li>bool_top.bit fájlt a Boolean kártyához, illetve a</li>
-	<li>ls_top.bit fájlt a LogSys kártyához.</li>
+	<li>n4_top.bit fájlt használjuk
+	a <a href="computer_v2.html#nexys4ddr">Nexys4-DDR
+	kártyához</a>,</li>
+	<li>bool_top.bit fájlt
+	a <a href="computer_v2.html#boolean">Boolean kártyához</a>,
+	illetve a</li>
+	<li>ls_top.bit fájlt
+	a <a href="computer_v2.html#logsys">LogSys kártyához</a>.</li>
       </ul>
     </span>
     
     <span lang="en">
       <ul>
-	<li>n4_top.bit file can be downloaded to a Nexys4-DDR board,</li>
-	<li>bool_top.bit is compiled for Boolean board, while</li>
-	<li>ls_top.bit is usable on LogSys board.</li>
+	<li>n4_top.bit file can be downloaded to
+	a <a href="computer_v2.html#nexys4ddr">Nexys4-DDR
+	board</a>,</li>
+	<li>bool_top.bit is compiled
+	for <a href="computer_v2.html#boolean">Boolean board</a>,
+	while</li>
+	<li>ls_top.bit is usable
+	on <a href="computer_v2.html#logsys">LogSys board</a>.</li>
       </ul>
     </span>
 
