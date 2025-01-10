@@ -7,7 +7,7 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
     input wire 	       reset,
     input wire 	       cs,
     input wire 	       wen,
-    input wire [1:0]   addr,
+    input wire [2:0]   addr,
     input [WIDTH-1:0]  din,
 
     output [WIDTH-1:0] dout,
@@ -18,7 +18,7 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
     output [WIDTH-1:0] portd
     );
    
-   reg [WIDTH-1:0]     regs [3:0];
+   reg [WIDTH-1:0]     regs [7:0];
 
    initial
      begin
@@ -26,6 +26,10 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
 	regs[1]= 0;
 	regs[2]= 0;
 	regs[3]= 0;
+	regs[4]= 0;
+	regs[5]= 0;
+	regs[6]= 0;
+	regs[7]= 0;
      end
 
    always @(posedge clk, posedge reset)
@@ -36,10 +40,14 @@ module gpio_out4 //(clk, reset, cs, we, addr, din, dout);
 	     regs[1]<= 0;
 	     regs[2]<= 0;
 	     regs[3]<= 0;
+	     regs[4]<= 0;
+	     regs[5]<= 0;
+	     regs[6]<= 0;
+	     regs[7]<= 0;
 	  end
 	else if (cs & wen)
 	  begin
-	     regs[addr]<= din;
+	     regs[{1'b0,addr[1:0]}]<= din;
 	  end
      end
 

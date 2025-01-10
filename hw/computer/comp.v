@@ -227,7 +227,7 @@ module comp //(clk, reset, test_sel, test_out);
       .reset(reset),
       .cs(cs_portabcd),
       .wen(bus_wen),
-      .addr(bus_address[1:0]),
+      .addr(bus_address[2:0]),
       .din(bus_data_out),
       .dout(bus_portabcd_out),
       .porta(PORTA),
