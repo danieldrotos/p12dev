@@ -82,11 +82,11 @@ module tm
    // Send test signals to computer via UART   
    initial
      begin
-	#151000 send(8'd109); // Send "m 0" command
+	#160000 send(8'd109); // Send "m 0" command
 	#2500   send(8'h20);
 	#2500   send(8'h30);
 	#2500   send(8'ha);
-	#37000  send(8'd103); // wait answer, then send "g 1" command
+	#27000  send(8'd103); // wait answer, then send "g 1" command
 	#2500   send(8'h20);
 	#2500   send(8'h31);
 	#2500   send(8'ha);
