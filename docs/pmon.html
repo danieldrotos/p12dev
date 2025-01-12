@@ -21,7 +21,7 @@
   </head>
 
 <body>
-  
+
     <p>
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
@@ -41,8 +41,30 @@
 
     <hr>
 
+  <p>
+    <span lang="hu">Parancsok:</span> <span lang="en">Commands:</span>
+    <a href="#cmd_help">help</a>
+    |
+    <a href="#cmd_ver">ver</a>
+    |
+    <a href="#cmd_mem">mem</a>
+    |
+    <a href="#cmd_dump">dump</a>
+    |
+    <a href="#cmd_load">load</a>
+    |
+    <a href="#cmd_go">go</a>
+    |
+    <a href="#cmd_reg">reg</a>
+    |
+    <a href="#cmd_regs">rX,sp,lr,pc,f</a>
+  </p>
+
+  <p>
     <a href="#appendix"><span lang="hu">Melléklet</span>
-    <span lang="en">Appendix</span></a>
+      <span lang="en">Appendix</span></a>
+  </p>
+  
     <hr>
     
   <p>
@@ -118,7 +140,20 @@ sp [val]          Get/set R13
 lr [val]          Get/set R14
 pc [val]          Get/set R15
 f [val]           Get/set flags
+v[er]             Print pmon and cpu version
 h[elp],?          Help
+:
+</samp>
+
+
+<a name="cmd_ver"><h3>v[er]</h3></a>
+
+    <p>Kiírja a monitor program és a CPU verzióját, valamint a CPU
+    feature regisztereinek az értékét:</p>
+
+<samp>
+:ver
+pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
 :
 </samp>
 
@@ -128,7 +163,7 @@ h[elp],?          Help
 <p>Memória egy adott című rekeszének vizsgálata, vagy módosítása. Az
 első paraméter a vizsgált rekesz címe (hexadecimálisan). Ha a második
 paramétert nem adjuk meg, akkor a parancs a megadott című szót írja ki
-(a címmel együtt), ha megadjuk a második paramétert, akkor először  az
+(a címmel együtt), ha megadjuk a második paramétert, akkor először az
 érték a memóriába kerül, majd ezután íródik ki (a már módosított)
 memória tartalom.</p>
 

@@ -1,7 +1,7 @@
 	cpu	P2
 
 	version_main	=	1
-	version_sub	=	3
+	version_sub	=	4
 	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
@@ -1119,6 +1119,22 @@ cmd_f:
 	st	r0,nuof_reg
 	jmp	cmd_rx
 
+
+;;; v[er]
+cmd_v:
+	push	lr
+	mvzl	r1,version_main
+	mvzl	r2,version_sub
+	rds	r0,SVER
+	getbz	r3,r0,2
+	getbz	r4,r0,1
+	getbz	r5,r0,0
+	rds	r6,SFEAT1
+	rds	r7,SFEAT2
+	ces	pesf
+	.db	"pmon: %d.%d cpu: %d.%d.%d feat1: %x feat2: %x\n"
+	pop	pc
+	
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -2144,6 +2160,10 @@ commands:
 	db	"pc"
 	dd	cmd_f
 	db	"f"
+	dd	cmd_v
+	db	"ver"
+	dd	cmd_v
+	db	"v"
 	dd	0
 	dd	0
 
@@ -2157,6 +2177,7 @@ helps:	db	"m[em] addr [val]  Get/set memory\n"
 	db	"lr [val]          Get/set R14\n"
 	db	"pc [val]          Get/set R15\n"
 	db	"f [val]           Get/set flags\n"
+	db	"v[er]             Print pmon and cpu version\n"
 	db	"h[elp],?          Help\n"
 	dd	0
 
