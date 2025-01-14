@@ -57,12 +57,13 @@ fordít és közvetlenül a futtatható kódot készíti el. Mivel nem generál
 átmeneti áthelyezhető (object) kódot, így nincs szükség szerkesztő
 (linker) programra.</p>
 
-    <p>Az assembler egyaránt képes a CPU 1-es verziójára (p1516), vagy
-a 2-es verziójára (p2223) készült programot lefordítani, a forrásban
-használható feltételek, utasítások a választott processzortól
-(assembly nyelv) függenek. A processzor kiválasztására szolgáló
-direktívát a forrás fájl elején kell elhelyezni. Ha nem alkalmazzuk,
-akkor a fordító alapértelmezés szerint a p1516 nyelvet használja.</p>
+<p>Az assembler egyaránt képes a <a href="p1516.html">CPU 1-es
+verziójára (p1516)</a>, vagy a <a href="p2223.html">2-es verziójára
+(p2223)</a> készült programot lefordítani, a forrásban használható
+feltételek, utasítások a választott processzortól (assembly nyelv)
+függenek. A processzor kiválasztására szolgáló direktívát a forrás
+fájl elején kell elhelyezni. Ha nem alkalmazzuk, akkor a fordító
+alapértelmezés szerint a p1516 nyelvet használja.</p>
 
 <p>A program parancssorban futtatható, a következő módon:</p>
 
@@ -86,8 +87,10 @@ fejlesztő rendszerekben használatos un. object fájl típusnak. Ezek a
 fájlok további fordításokban forrás fájlként adhatók meg, a tartalmuk
 bekerül a lefordított programba. A kimeneti fájlt ebben az esetben
 ajánlott .p2o kiterjesztéssel ellátni. Több forrás, vagy object fájl
--c kapcsolóval való  lefordításával könyvtár fájlt készíthetünk,
-ezeket a fájlokat javasolt .p2l kiterjesztéssel elnevezni.</p>
+-c kapcsolóval való lefordításával könyvtár fájlt készíthetünk, ezeket
+a fájlokat javasolt .p2l kiterjesztéssel elnevezni. A -c kapcsoló
+használata bekapcsolja a -k kapcsoló hatását, így nem szükséges
+használni.</p>
 
 <p>A -k kapcsoló (keep segments) használata esetén a fordító nem
 távolítja el azoknak a szegmenseknek a tartalmát, amelyekre nincsenek
@@ -128,7 +131,7 @@ feltételt használja a program, amely a feltétel nélküli végrehajtást
 jelenti. Ugyanazt a feltételt több névvel is használhatjuk, amivel a
 program olvashatósága növelhető. A használható elnevezések a
 fordításhoz választott processzor típustól függnek, részletes
-felsorolásukat a melléklet tartalmazza.</p>
+felsorolásukat a <a href="#appendix">melléklet</a> tartalmazza.</p>
 
 <p>Az utasítás lehet konkrét CPU utasítás (a választott processzor
 típustól függően), illetve a fordítónak szóló ún. pszeudó utasítás,
@@ -136,7 +139,7 @@ direktíva.</p>
 
 <p>A paraméterek az utasítástól függenek, ha több paramétert adunk
 meg, akkor azokat vesszővel kell elválasztani egymástól. Regiszterek
-megadásánál az R betűt és a regiszter sorszámát használjuk,
+megadásánál az R betűt és a regiszter sorszámát használjuk,
 pl. R10. Adatok esetében használhatunk címkeként létrehozott
 szimbólumokat, vagy konstansokat. A konstansoknak számjeggyel kell
 kezdődniük. A 0-val kezdődő konstansokat a fordító 8-as
@@ -157,7 +160,7 @@ ponttal kezdődően is megadhatók, tehát pl a <tt>CPU</tt> direktíva
   <tt>.CPU</tt> formában is használható.</p>
 
 
-<h3 style="font-family:monospace">PROC|CPU P1|P2</h3>
+<a name="dir_cpu"><h3 style="font-family:monospace">PROC|CPU P1|P2</h3></a>
 
 <p>A használt processzor, és ezáltal az assembly nyelv kiválasztására
   szolgáló direktíva. <tt>P1</tt> paraméter esetén a fordító a forrás
@@ -167,7 +170,7 @@ utasításokra vonatkozik, a fordító által felismert direktívák
 azonosak. A direktíva paramétere kis- és nagybetűvel is írható.</p>
 
 
-<h3 style="font-family:monospace">ORG érték</h3>
+<a name="dir_org"><h3 style="font-family:monospace">ORG érték</h3></a>
 
 <p>Az ORG utasítás paramétere egy számérték, ez lesz a memória cím
 számláló értéke. Arra használható, hogy valamilyen tartalmat egy adott
@@ -183,7 +186,7 @@ rutin:
 </samp>
 
 
-<h3 style="font-family:monospace">szimbólum EQU|=|== érték</h3>
+<a name="dir_equ"><h3 style="font-family:monospace">szimbólum EQU|=|== érték</h3></a>
 
 <p>Ezzel az utasítással (amelyet EQU, vagy =, illetve == formában is
 írhatunk) egy szimbólumnak értéket adhatunk.</p>
@@ -199,7 +202,7 @@ létre, vagyis egyúttal exportálódik a szegmensen kívülre, így a
 .global direktívát már nem kell használni.</p>
 
 
-<h3 style="font-family:monospace">DS|.SPACE|.SKIP érték</h3>
+<a name="dir_ds"><h3 style="font-family:monospace">DS|.SPACE|.SKIP érték</h3></a>
 
 <p>Ez a direktíva hely lefoglalására használható, a tartalom megadása
 nélkül. Paraméterként a hely méretét kell megadni. Ha a memóriában le
@@ -212,7 +215,7 @@ adatok: ds      5       ; 5 szó helyet foglalunk le
 </samp>
 
 
-<h3 style="font-family:monospace">DB,DW,DD érték...</h3>
+<a name="dir_dx"><h3 style="font-family:monospace">DB,DW,DD érték...</h3></a>
 
 <p>Ezekkel a direktívákkal a paraméterként megadott értékeket tudjuk
   elhelyezni a memóriában. A <tt>DB</tt> az érték alsó 8 bitjét
@@ -241,7 +244,7 @@ adat1:  db      123              ; 8 bites adat
 </samp>
 
 
-<h3 style="font-family:monospace">DP “sztring”</h3>
+<a name="dir_dp"><h3 style="font-family:monospace">DP “sztring”</h3></a>
 
 <p>Sztring elhelyezése a memóriában, “pakolt” formátumban. Négy
 karakter kódja kerül egy memóriahelyre, little-endian sorrendben,
@@ -259,7 +262,7 @@ utolsó szó fel nem használt bájtjai 0 értékűek lesznek, majd egy 0
 </samp>
 
 
-<h3 style="font-family:monospace">SECTION|SEG|SEGMENT név [NOLOAD|ABS]</h3>
+<a name="dir_seg"><h3 style="font-family:monospace">SECTION|SEG|SEGMENT név [NOLOAD|ABS]</h3></a>
 
 <p>Szegmens kezdetét definiáló direktíva. A szegmensek a szimbólumok
 láthatóságát a szegmensen belülre korlátozzák, így az egyes szegmensek
@@ -276,13 +279,13 @@ egy új példány jön létre, így az értékük a szegmensen belül más lesz,
 mint a globális területen.</p>
 
 
-<h3 style="font-family:monospace">ENDS</h3>
+<a name="ends"><h3 style="font-family:monospace">ENDS</h3></a>
 
 <p>A szegmens végét jelző direktíva. Ez után a program globális
   területe folytatódik, így a globális szimbólumok válnak láthatóvá.</p>
 
 
-<h3 style="font-family:monospace">GLOBAL|EXPORT név</h3>
+<a name="dir_global"><h3 style="font-family:monospace">GLOBAL|EXPORT név</h3></a>
 
 <p>A szegmensen belül definiált szimbólum globális szimbólummá való
 konvertálását végző direktíva. Paramétere a szimbólum neve. Csak egy
@@ -290,7 +293,7 @@ paraméter adható meg. Ha a szimbólum a globális területen már létezik,
 akkor hibaüzenetet kapunk.</p>
 
 
-<h3 style="font-family:monospace">.INCLUDE fájlnév</h3>
+<a name="dir_include"><h3 style="font-family:monospace">.INCLUDE fájlnév</h3></a>
 
 <p>A paraméterként megadott fájl betöltése és fordítása. A fájl nevét
 nem kell idézőjelbe tenni. A betöltött fájl után az aktuális fájl
@@ -301,19 +304,20 @@ saját könyvtárának p12tool/include alkönyvtára, vagy a
 fejlesztőrendszer lib alkönyvtára.</p>
 
 
-<h3 style="font-family:monospace">REQ reg alias</h3>
+<a name="req"><h3 style="font-family:monospace">REQ reg alias</h3></a>
 
 <p>Regiszter alternatív elnevezésének létrehozása. Az alternatív név a
 fordítás hátralévő részében használható.</p>
 
 
-<h2>Mellékletek</h2>
+<a name="appendix"><h2>Mellékletek</h2></a>
 
 <h3>Feltételek</h3>
 
 <p>A CPU utasításokban használható feltételek a kiválasztott
-processzor típusától függnek (lásd CPU direktíva). Egyes feltételek
-több különféle névvel is használhatók.</p>
+processzor típusától függnek (lásd <a href="#dir_cpu">CPU
+direktíva</a>). Egyes feltételek több különféle névvel is
+használhatók.</p>
 
 
 <h4>Feltételek p1516 processzor esetén</h4>
@@ -378,317 +382,155 @@ elnevezéseket is.</p>
 
 <table border=1 bgcolor="lightgrey">
   <tr>
-    <td width="30%">
-      Mnemonic
-    </td>
-    <td width="30%">
-      Paraméterezési módok
-    </td>
-    <td width="30%">
-      Utasítás
-    </td>
+    <th width="30%">Mnemonic</th>
+    <th width="30%">Paraméterezési módok</th>
+    <th width="30%">Utasítás</th>
   </tr>
 
   <tr valign="top">
-      <td>
-	NOP
-      </td>
-      <td>
-	Rd,Ra,Rb<br />Rda,Rb<br />Rd<br />-
-      </td>
-      <td>
-	No operation
-      </td>
+      <td>NOP</td>
+      <td>Rd,Ra,Rb<br />Rda,Rb<br />Rd<br />-</td>
+      <td>No operation</td>
     </tr>
     <tr valign="top">
-      <td>
-	LD
-      </td>
-      <td>
-	Rd,Ra
-      </td>
-      <td>
-	Load from memory
-      </td>
+      <td>LD</td>
+      <td>Rd,Ra</td>
+      <td>Load from memory</td>
     </tr>
     <tr valign="top">
-      <td>
-	ST
-      </td>
-      <td>
-	Rd,Ra
-      </td>
-      <td>
-	Store to memory
-      </td>
+      <td>ST</td>
+      <td>Rd,Ra</td>
+      <td>Store to memory</td>
     </tr>
     <tr valign="top">
-      <td>
-	MOV
-      </td>
-      <td>
-	Rd,Ra
-      </td>
-      <td>
-	Move register to register
-      </td>
+      <td>MOV</td>
+      <td>Rd,Ra</td>
+      <td>Move register to register</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDL0
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	Load zex(immediate) to low
-      </td>
+      <td>LDL0</td>
+      <td>Rd,#16</td>
+      <td>Load zex(immediate) to low</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDL
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	Load low of immediate to low
-      </td>
+      <td>LDL</td>
+      <td>Rd,#16</td>
+      <td>Load low of immediate to low</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDH
-      </td>
-      <td>
-	Rd,#H16
-      </td>
-      <td>
-	Load high of immediate to high
-      </td>
+      <td>LDH</td>
+      <td>Rd,#H16</td>
+      <td>Load high of immediate to high</td>
     </tr>
     <tr valign="top">
-      <td>
-	CALL
-      </td>
-      <td>
-	#27
-      </td>
-      <td>
-	Call subroutine
-      </td>
+      <td>CALL</td>
+      <td>#27</td>
+      <td>Call subroutine</td>
     </tr>
     <tr valign="top">
-      <td>
-	ADD
-      </td>
-      <td>
-	Rd,Ra,Rb<br />Rda,Rb
-      </td>
-      <td>
-	Add without carry
-      </td>
+      <td>ADD</td>
+      <td>Rd,Ra,Rb<br />Rda,Rb</td>
+      <td>Add without carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	ADC
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Add with carry
-      </td>
+      <td>ADC</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Add with carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	SUB
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Subtract without borrow
-      </td>
+      <td>SUB</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Subtract without borrow</td>
     </tr>
     <tr valign="top">
-      <td>
-	SBB
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Subtract with borrow
-      </td>
+      <td>SBB</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Subtract with borrow</td>
     </tr>
     <tr valign="top">
-      <td>
-	INC
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Increment
-      </td>
+      <td>INC</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Increment</td>
     </tr>
     <tr valign="top">
-      <td>
-	DEC
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Decrement
-      </td>
+      <td>DEC</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Decrement</td>
     </tr>
     <tr valign="top">
-      <td>
-	AND
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Bitwise AND
-      </td>
+      <td>AND</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Bitwise AND</td>
     </tr>
     <tr valign="top">
-      <td>
-	OR
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Bitwise OR
-      </td>
+      <td>OR</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Bitwise OR</td>
     </tr>
     <tr valign="top">
-      <td>
-	XOR
-      </td>
-      <td>
-	Ra,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Bitwise XOR
-      </td>
+      <td>XOR</td>
+      <td>Ra,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Bitwise XOR</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHL
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Shift left
-      </td>
+      <td>SHL</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Shift left</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHR
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Shift right
-      </td>
+      <td>SHR</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Shift right</td>
     </tr>
     <tr valign="top">
-      <td>
-	ROL
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Rotate left
-      </td>
+      <td>ROL</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Rotate left</td>
     </tr>
     <tr valign="top">
-      <td>
-	ROR
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Rotate right
-      </td>
+      <td>ROR</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Rotate right</td>
     </tr>
     <tr valign="top">
-      <td>
-	MUL
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Multiply
-      </td>
+      <td>MUL</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Multiply</td>
     </tr>
     <tr valign="top">
-      <td>
-	CMP
-      </td>
-      <td>
-	Rd,Ra,Rb<br />
-	Rda,Rb
-      </td>
-      <td>
-	Compare
-      </td>
+      <td>CMP</td>
+      <td>Rd,Ra,Rb<br />
+	Rda,Rb</td>
+      <td>Compare</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHA
-      </td>
-      <td>
-	Rd,Ra<br />
-	Rda
-      </td>
-      <td>
-	Shift arithmetic right
-      </td>
+      <td>SHA</td>
+      <td>Rd,Ra<br />
+	Rda</td>
+      <td>Shift arithmetic right</td>
     </tr>
     <tr valign="top">
-      <td>
-	SETC
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	Set carry
-      </td>
+      <td>SETC</td>
+      <td>-</td>
+      <td>Set carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	CLRC
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	Clear carry
-      </td>
+      <td>CLRC</td>
+      <td>-</td>
+      <td>Clear carry</td>
     </tr>
 </table>
 
@@ -699,81 +541,39 @@ elnevezéseket is.</p>
 <table border=1 bgcolor="lightgrey">
   <thead>
     <tr valign="top">
-      <td width="30%">
-	Makró név
-      </td>
-      <td width="30%">
-	Paraméterezési módok
-      </td>
-      <td width="30%">
-	Jelentése
-      </td>
+      <th width="30%">Makró név</th>
+      <th width="30%">Paraméterezési módok</th>
+      <th width="30%">Jelentése</th>
     </tr>
     <tr valign="top">
-      <td>
-	JMP
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	LDL0 R15,#16
-      </td>
+      <td>JMP</td>
+      <td>#16</td>
+      <td>LDL0 R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JZ
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	Z LDL0 R15,#16
-      </td>
+      <td>JZ</td>
+      <td>#16</td>
+      <td>Z LDL0 R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JNZ
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	NZ LDL0 R15,#16
-      </td>
+      <td>JNZ</td>
+      <td>#16</td>
+      <td>NZ LDL0 R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	RET
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	MOV R15,R14
-      </td>
+      <td>RET</td>
+      <td>-</td>
+      <td>MOV R15,R14</td>
     </tr>
     <tr valign="top">
-      <td>
-	PUSH
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	ST Rd,R13
-      </td>
+      <td>PUSH</td>
+      <td>Rd</td>
+      <td>ST Rd,R13</td>
     </tr>
     <tr valign="top">
-      <td>
-	POP
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	LD Rd,R13
-      </td>
+      <td>POP</td>
+      <td>Rd</td>
+      <td>LD Rd,R13</td>
     </tr>
   </thead>
 </table>
@@ -818,516 +618,255 @@ elnevezések használhatók:</p>
 <table border=1>
   <thead>
     <tr valign="top">
-      <td width="30%">
-	Mnemonic
-      </td>
-      <td width="30%">
-	Paraméterezési módok
-      </td>
-      <td width="30%">
-	Utasítás
-      </td>
+      <th width="30%">Mnemonic</th>
+      <th width="30%">Paraméterezési módok</th>
+      <th width="30%">Utasítás</th>
     </tr>
     <tr valign="top">
-      <td>
-	MOV
-      </td>
-      <td>
-	Rd,Rb
-      </td>
-      <td>
-	Move register to register
-      </td>
+      <td>MOV</td>
+      <td>Rd,Rb</td>
+      <td>Move register to register</td>
     </tr>
     <tr valign="top">
-      <td>
-	SED
-      </td>
-      <td>
-	Rd,Rb
-      </td>
-      <td>
-	Sex to double
-      </td>
+      <td>SED</td>
+      <td>Rd,Rb</td>
+      <td>Sex to double</td>
     </tr>
     <tr valign="top">
-      <td>
-	MVL
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	Load low of immediate to low
-      </td>
+      <td>MVL</td>
+      <td>Rd,#16</td>
+      <td>Load low of immediate to low</td>
     </tr>
     <tr valign="top">
-      <td>
-	MVH
-      </td>
-      <td>
-	Rd,#H16
-      </td>
-      <td>
-	Load high of immediate to high
-      </td>
+      <td>MVH</td>
+      <td>Rd,#H16</td>
+      <td>Load high of immediate to high</td>
     </tr>
     <tr valign="top">
-      <td>
-	MVZL
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	Load zex(immediate)
-      </td>
+      <td>MVZL</td>
+      <td>Rd,#16</td>
+      <td>Load zex(immediate)</td>
     </tr>
     <tr valign="top">
-      <td>
-	MVS
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	Load sex(immediate)
-      </td>
+      <td>MVS</td>
+      <td>Rd,#16</td>
+      <td>Load sex(immediate)</td>
     </tr>
     <tr valign="top">
-      <td>
-	GETB
-      </td>
-      <td>
-	Rd,Rb,#2<br />
-	Rd,Rb,Ri
-      </td>
-      <td>
-	Get byte
-      </td>
+      <td>GETB</td>
+      <td>Rd,Rb,#2<br />
+	Rd,Rb,Ri</td>
+      <td>Get byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	GETBS
-      </td>
-      <td>
-	Rd,Rb,#2<br />
-	Rd,Rb,Ri
-      </td>
-      <td>
-	Get sign extended byte
-      </td>
+      <td>GETBS</td>
+      <td>Rd,Rb,#2<br />
+	Rd,Rb,Ri</td>
+      <td>Get sign extended byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	GETBZ
-      </td>
-      <td>
-	Rd,Rb,#2<br />
-	Rd,Rb,Ri
-      </td>
-      <td>
-	Get zero extended byte
-      </td>
+      <td>GETBZ</td>
+      <td>Rd,Rb,#2<br />
+	Rd,Rb,Ri</td>
+      <td>Get zero extended byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	PUTB
-      </td>
-      <td>
-	Rd,Rb,#2<br />
-	Rd,Rb,Ri
-      </td>
-      <td>
-	Put byte
-      </td>
+      <td>PUTB</td>
+      <td>Rd,Rb,#2<br />
+	Rd,Rb,Ri</td>
+      <td>Put byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	RDS
-      </td>
-      <td>
-	Rd,Rs
-      </td>
-      <td>
-	Read special register
-      </td>
+      <td>RDS</td>
+      <td>Rd,Rs</td>
+      <td>Read special register</td>
     </tr>
     <tr valign="top">
-      <td>
-	WRS
-      </td>
-      <td>
-	Rd,Rs
-      </td>
-      <td>
-	Write special register
-      </td>
+      <td>WRS</td>
+      <td>Rd,Rs</td>
+      <td>Write special register</td>
     </tr>
     <tr valign="top">
-      <td>
-	ADD
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>ADD</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Add without carry
-      </td>
+	Rd,#16</td>
+      <td>Add without carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	ADC
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>ADC</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Add with carry
-      </td>
+	Rd,#16</td>
+      <td>Add with carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	SUB
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>SUB</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Subtract without borrow
-      </td>
+	Rd,#16</td>
+      <td>Subtract without borrow</td>
     </tr>
     <tr valign="top">
-      <td>
-	SBB
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>SBB</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Subtract with borrow
-      </td>
+	Rd,#16</td>
+      <td>Subtract with borrow</td>
     </tr>
     <tr valign="top">
-      <td>
-	CMP
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>CMP</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Compare
-      </td>
+	Rd,#16</td>
+      <td>Compare</td>
     </tr>
     <tr valign="top">
-      <td>
-	MUL
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
+      <td>MUL</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Multiply
-      </td>
+	Rd,#16</td>
+      <td>Multiply</td>
     </tr>
     <tr valign="top">
-      <td>
-	PLUS
-      </td>
-      <td>
+      <td>PLUS</td>
+      <td>Rd,Rb<br />
+	Rd,#16</td>
+      <td>Add without carry (do not alter flags)</td>
+    </tr>
+    <tr valign="top">
+      <td>BTST</td>
+      <td>Rd,Rb<br />
+	Rd,#16</td>
+      <td>Bit test (AND) with write-back</td>
+    </tr>
+    <tr valign="top">
+      <td>TEST</td>
+      <td>Rd,Rb<br />
+	Rd,#16</td>
+      <td>Bit test (AND) without write-back</td>
+    </tr>
+    <tr valign="top">
+      <td>OR</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Add without carry (do not alter flags)
-      </td>
+	Rd,#16</td>
+      <td>Bitwise OR</td>
     </tr>
     <tr valign="top">
-      <td>
-	BTST
-      </td>
-      <td>
+      <td>XOR</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Bit test (AND) with write-back
-      </td>
+	Rd,#16</td>
+      <td>Bitwise XOR</td>
     </tr>
     <tr valign="top">
-      <td>
-	TEST
-      </td>
-      <td>
+      <td>AND</td>
+      <td>Rd,Rn,Rb<br />
 	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Bit test (AND) without write-back
-      </td>
+	Rd,#16</td>
+      <td>Bitwise AND</td>
     </tr>
     <tr valign="top">
-      <td>
-	OR
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Bitwise OR
-      </td>
+      <td>ZEB</td>
+      <td>Rd</td>
+      <td>Zero extend byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	XOR
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Bitwise XOR
-      </td>
+      <td>ZEW</td>
+      <td>Rd</td>
+      <td>Zero extend word</td>
     </tr>
     <tr valign="top">
-      <td>
-	AND
-      </td>
-      <td>
-	Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16
-      </td>
-      <td>
-	Bitwise AND
-      </td>
+      <td>SEB</td>
+      <td>Rd</td>
+      <td>Sign extend byte</td>
     </tr>
     <tr valign="top">
-      <td>
-	ZEB
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Zero extend byte
-      </td>
+      <td>SEW</td>
+      <td>Rd</td>
+      <td>Sign extend word</td>
     </tr>
     <tr valign="top">
-      <td>
-	ZEW
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Zero extend word
-      </td>
+      <td>NOT</td>
+      <td>Rd</td>
+      <td>Bitwise NOT</td>
     </tr>
     <tr valign="top">
-      <td>
-	SEB
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Sign extend byte
-      </td>
+      <td>NEG</td>
+      <td>Rd</td>
+      <td>Sign change</td>
     </tr>
     <tr valign="top">
-      <td>
-	SEW
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Sign extend word
-      </td>
+      <td>ROR</td>
+      <td>Rd,Rn<br />
+	Rd</td>
+      <td>Rotate right</td>
     </tr>
     <tr valign="top">
-      <td>
-	NOT
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Bitwise NOT
-      </td>
+      <td>ROL</td>
+      <td>Rd,Rn<br />
+	Rd</td>
+      <td>Rotate left</td>
     </tr>
     <tr valign="top">
-      <td>
-	NEG
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Sign change
-      </td>
+      <td>SHL</td>
+      <td>Rd,Rn<br />
+	Rd</td>
+      <td>Shift left</td>
     </tr>
     <tr valign="top">
-      <td>
-	ROR
-      </td>
-      <td>
-	Rd,Rn<br />
-	Rd
-      </td>
-      <td>
-	Rotate right
-      </td>
+      <td>SHR</td>
+      <td>Rd,Rn<br />
+	Rd</td>
+      <td>Shift right</td>
     </tr>
     <tr valign="top">
-      <td>
-	ROL
-      </td>
-      <td>
-	Rd,Rn<br />
-	Rd
-      </td>
-      <td>
-	Rotate left
-      </td>
+      <td>SHA</td>
+      <td>Rd,Rn<br />
+	Rd</td>
+      <td>Shift arithmetic right</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHL
-      </td>
-      <td>
-	Rd,Rn<br />
-	Rd
-      </td>
-      <td>
-	Shift left
-      </td>
+      <td>SZ</td>
+      <td>Rd</td>
+      <td>Sign, zero check</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHR
-      </td>
-      <td>
-	Rd,Rn<br />
-	Rd
-      </td>
-      <td>
-	Shift right
-      </td>
+      <td>SEC</td>
+      <td>-</td>
+      <td>Set carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	SHA
-      </td>
-      <td>
-	Rd,Rn<br />
-	Rd
-      </td>
-      <td>
-	Shift arithmetic right
-      </td>
+      <td>CLC</td>
+      <td>-</td>
+      <td>Clear carry</td>
     </tr>
     <tr valign="top">
-      <td>
-	SZ
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Sign, zero check
-      </td>
+      <td>GETF</td>
+      <td>Rd</td>
+      <td>Get flags</td>
     </tr>
     <tr valign="top">
-      <td>
-	SEC
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	Set carry
-      </td>
+      <td>SETF</td>
+      <td>Rd</td>
+      <td>Set flags</td>
     </tr>
     <tr valign="top">
-      <td>
-	CLC
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	Clear carry
-      </td>
+      <td>CALL</td>
+      <td>Rd,#20<br />
+	#24</td>
+      <td>Call subroutine</td>
     </tr>
     <tr valign="top">
-      <td>
-	GETF
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Get flags
-      </td>
+      <td>CES</td>
+      <td>Rd,#20<br />
+	#24</td>
+      <td>Call subroutine with embedded string</td>
     </tr>
     <tr valign="top">
-      <td>
-	SETF
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	Set flags
-      </td>
-    </tr>
-    <tr valign="top">
-      <td>
-	CALL
-      </td>
-      <td>
-	Rd,#20<br />
-	#24
-      </td>
-      <td>
-	Call subroutine
-      </td>
-    </tr>
-    <tr valign="top">
-      <td>
-	CES
-      </td>
-      <td>
-	Rd,#20<br />
-	#24
-      </td>
-      <td>
-	Call subroutine with embedded string
-      </td>
-    </tr>
-    <tr valign="top">
-      <td>
-	ST
-      </td>
-      <td>
-	Rd,Ra,Ri<br />
+      <td>ST</td>
+      <td>Rd,Ra,Ri<br />
 	Rd,Ra+,Ri<br />
 	Rd,Ra-,Ri<br />
 	Rd,+Ra,Ri<br />
@@ -1336,18 +875,12 @@ elnevezések használhatók:</p>
 	Rd,*Ra,#16<br />
 	Rd,Ra<br />
 	Rd,#16<br />
-	#16,Rd
-      </td>
-      <td>
-	Store to memory
-      </td>
+	#16,Rd</td>
+      <td>Store to memory</td>
     </tr>
     <tr valign="top">
-      <td>
-	LD
-      </td>
-      <td>
-	Rd,Ra,Ri<br />
+      <td>LD</td>
+      <td>Rd,Ra,Ri<br />
 	Rd,Ra+,Ri<br />
 	Rd,Ra-,Ri<br />
 	Rd,+Ra,Ri<br />
@@ -1356,11 +889,8 @@ elnevezések használhatók:</p>
 	Rd,*Ra,#16<br />
 	Rd,Ra<br />
 	Rd,#16<br />
-	#16,Rd
-      </td>
-      <td>
-	Load from memory
-      </td>
+	#16,Rd</td>
+      <td>Load from memory</td>
     </tr>
   </thead>
 </table>
@@ -1372,202 +902,94 @@ használhatók.</p>
 <table border=1>
   <thead>
     <tr valign="top">
-      <td width="30%">
-	Makró név
-      </td>
-      <td width="30%">
-	Paraméterezési módok
-      </td>
-      <td width="30%">
-	Jelentése
-      </td>
+      <th width="30%">Makró név</th>
+      <th width="30%">Paraméterezési módok</th>
+      <th width="30%">Jelentése</th>
     </tr>
     <tr valign="top">
-      <td>
-	NOP
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	MOV R0,R0
-      </td>
+      <td>NOP</td>
+      <td>-</td>
+      <td>MOV R0,R0</td>
     </tr>
     <tr valign="top">
-      <td>
-	JMP
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	MVZL R15,#16
-      </td>
+      <td>JMP</td>
+      <td>#16</td>
+      <td>MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JZ
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	Z MVZL R15,#16
-      </td>
+      <td>JZ</td>
+      <td>#16</td>
+      <td>Z MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	FALSE
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	Z MVZL R15,#16
-      </td>
+      <td>FALSE</td>
+      <td>#16</td>
+      <td>Z MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JNZ
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	NZ MVZL R15,#16
-      </td>
+      <td>JNZ</td>
+      <td>#16</td>
+      <td>NZ MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	TRUE
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	NZ MVZL R15,#16
-      </td>
+      <td>TRUE</td>
+      <td>#16</td>
+      <td>NZ MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JC
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	C MVZL R15,#16
-      </td>
+      <td>JC</td>
+      <td>#16</td>
+      <td>C MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JNC
-      </td>
-      <td>
-	#16
-      </td>
-      <td>
-	NC MVZL R15,#16
-      </td>
+      <td>JNC</td>
+      <td>#16</td>
+      <td>NC MVZL R15,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	JP
-      </td>
-      <td>
-	Rb
-      </td>
-      <td>
-	MOV R15,Rb
-      </td>
+      <td>JP</td>
+      <td>Rb</td>
+      <td>MOV R15,Rb</td>
     </tr>
     <tr valign="top">
-      <td>
-	RET
-      </td>
-      <td>
-	-
-      </td>
-      <td>
-	MOV R15,R14
-      </td>
+      <td>RET</td>
+      <td>-</td>
+      <td>MOV R15,R14</td>
     </tr>
     <tr valign="top">
-      <td>
-	PUSH
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	ST Rd,*R13,0
-      </td>
+      <td>PUSH</td>
+      <td>Rd</td>
+      <td>ST Rd,*R13,0</td>
     </tr>
     <tr valign="top">
-      <td>
-	POP
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	LD Rd,*R13,0
-      </td>
+      <td>POP</td>
+      <td>Rd</td>
+      <td>LD Rd,*R13,0</td>
     </tr>
     <tr valign="top">
-      <td>
-	INC
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	ADD Rd,1
-      </td>
+      <td>INC</td>
+      <td>Rd</td>
+      <td>ADD Rd,1</td>
     </tr>
     <tr valign="top">
-      <td>
-	DEC
-      </td>
-      <td>
-	Rd
-      </td>
-      <td>
-	ADD Rd,-1
-      </td>
+      <td>DEC</td>
+      <td>Rd</td>
+      <td>ADD Rd,-1</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDL0
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	MVZL Rd,#16
-      </td>
+      <td>LDL0</td>
+      <td>Rd,#16</td>
+      <td>MVZL Rd,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDL
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	MVL Rd,#16
-      </td>
+      <td>LDL</td>
+      <td>Rd,#16</td>
+      <td>MVL Rd,#16</td>
     </tr>
     <tr valign="top">
-      <td>
-	LDH
-      </td>
-      <td>
-	Rd,#16
-      </td>
-      <td>
-	MVH Rd,#16
-      </td>
+      <td>LDH</td>
+      <td>Rd,#16</td>
+      <td>MVH Rd,#16</td>
     </tr>
   </thead>
 </table>
