@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.9a -->
-<!-- CreationDate: 2025-01-14 10:00:55 -->
+<!-- CreationDate: 2025-01-14 17:02:29 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="381pt" height="192pt"
-	viewBox="1853 1113 6043 3039">
+	width="361pt" height="192pt"
+	viewBox="1853 1113 5720 3039">
 <desc>encoding: UTF-8</desc>
 <g fill="none">
 <!-- Line -->
@@ -38,7 +38,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp0">
-	<path clip-rule="evenodd" d="M 1853,1113 H 7896 V 4152 H 1853 z
+	<path clip-rule="evenodd" d="M 1853,1113 H 7573 V 4152 H 1853 z
 		M 3945,1888 3915,2008 3885,1888 3908,2032 3922,2032z"/>
 </clipPath>
 </defs>
@@ -50,7 +50,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp1">
-	<path clip-rule="evenodd" d="M 1853,1113 H 7896 V 4152 H 1853 z
+	<path clip-rule="evenodd" d="M 1853,1113 H 7573 V 4152 H 1853 z
 		M 5070,1888 5040,2008 5010,1888 5033,2032 5047,2032z"/>
 </clipPath>
 </defs>
@@ -62,7 +62,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp2">
-	<path clip-rule="evenodd" d="M 1853,1113 H 7896 V 4152 H 1853 z
+	<path clip-rule="evenodd" d="M 1853,1113 H 7573 V 4152 H 1853 z
 		M 6105,1888 6075,2008 6045,1888 6068,2032 6082,2032z"/>
 </clipPath>
 </defs>
@@ -74,7 +74,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp3">
-	<path clip-rule="evenodd" d="M 1853,1113 H 7896 V 4152 H 1853 z
+	<path clip-rule="evenodd" d="M 1853,1113 H 7573 V 4152 H 1853 z
 		M 2865,1888 2835,2008 2805,1888 2828,2032 2842,2032z"/>
 </clipPath>
 </defs>
@@ -86,7 +86,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp4">
-	<path clip-rule="evenodd" d="M 1853,1113 H 7896 V 4152 H 1853 z
+	<path clip-rule="evenodd" d="M 1853,1113 H 7573 V 4152 H 1853 z
 		M 6105,3688 6075,3808 6045,3688 6068,3832 6082,3832z"/>
 </clipPath>
 </defs>
@@ -99,26 +99,26 @@
 <polyline points=" 6030,2340 6885,2340"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Text -->
-<text xml:space="preserve" x="7020" y="2385" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">i: Ri/#</text>
+<text xml:space="preserve" x="2160" y="1350" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Rb</text>
 <!-- Text -->
-<text xml:space="preserve" x="2160" y="1350" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Rb</text>
+<text xml:space="preserve" x="2115" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Rd</text>
 <!-- Text -->
-<text xml:space="preserve" x="2115" y="4050" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Rd</text>
+<text xml:space="preserve" x="6075" y="1350" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="6075" y="1350" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">0</text>
+<text xml:space="preserve" x="2835" y="1350" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">3</text>
 <!-- Text -->
-<text xml:space="preserve" x="2835" y="1350" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">3</text>
+<text xml:space="preserve" x="3915" y="1350" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">2</text>
 <!-- Text -->
-<text xml:space="preserve" x="3915" y="1350" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">2</text>
+<text xml:space="preserve" x="5040" y="1350" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">1</text>
 <!-- Text -->
-<text xml:space="preserve" x="5040" y="1350" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">1</text>
+<text xml:space="preserve" x="6075" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="6075" y="4050" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">0</text>
+<text xml:space="preserve" x="2835" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">3</text>
 <!-- Text -->
-<text xml:space="preserve" x="2835" y="4050" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">3</text>
+<text xml:space="preserve" x="3915" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">2</text>
 <!-- Text -->
-<text xml:space="preserve" x="3915" y="4050" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">2</text>
+<text xml:space="preserve" x="5040" y="4050" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">1</text>
 <!-- Text -->
-<text xml:space="preserve" x="5040" y="4050" fill="#000000" font-family="Courier" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">1</text>
+<text xml:space="preserve" x="7020" y="2385" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">i: Ri/#</text>
 </g>
 </svg>

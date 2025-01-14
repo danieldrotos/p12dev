@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Creator: fig2dev Version 3.2.9a -->
-<!-- CreationDate: 2025-01-09 16:17:13 -->
+<!-- CreationDate: 2025-01-14 17:12:11 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -101,13 +101,13 @@
 <polyline points=" 5580,4635 5580,4500"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Line -->
+<rect x="8775" y="3330" width="225" height="630"
+	stroke="#000000" stroke-width="8px"/>
+<!-- Line -->
 <rect x="8055" y="3195" width="720" height="900" fill="#87cfff"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Line -->
 <rect x="7830" y="3375" width="225" height="495"
-	stroke="#000000" stroke-width="8px"/>
-<!-- Line -->
-<rect x="8775" y="3330" width="225" height="630"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Line -->
 <polyline points=" 6705,6390 6706,6390 6709,6390 6717,6389 6732,6388 6753,6386 6779,6383 6808,6379
@@ -147,21 +147,21 @@
  4320,4410"
 	stroke="#ffffff" stroke-width="45px" stroke-linejoin="bevel" stroke-linecap="round"/>
 <!-- Text -->
-<text xml:space="preserve" x="5130" y="6435" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">VCP</text>
+<text xml:space="preserve" x="5130" y="6435" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">VCP</text>
 <!-- Text -->
-<text xml:space="preserve" x="4410" y="6210" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">OS</text>
+<text xml:space="preserve" x="4410" y="6210" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">OS</text>
 <!-- Text -->
-<text xml:space="preserve" x="9855" y="3735" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">FPGA</text>
+<text xml:space="preserve" x="9855" y="3735" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">FPGA</text>
 <!-- Text -->
 <g transform="translate(6660,6390) rotate(-90)" >
-<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
 </g><!-- Text -->
 <g transform="translate(8010,3645) rotate(-90)" >
-<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">USB</text>
 </g><!-- Text -->
 <g transform="translate(8955,3645) rotate(-90)" >
-<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">UART</text>
+<text xml:space="preserve" x="0" y="0" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">UART</text>
 </g><!-- Text -->
-<text xml:space="preserve" x="4860" y="4860" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">TeraTerm</text>
+<text xml:space="preserve" x="4860" y="4860" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">TeraTerm</text>
 </g>
 </svg>

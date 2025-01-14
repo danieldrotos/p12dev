@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Creator: fig2dev Version 3.2.9 -->
-<!-- CreationDate: 2024-09-05 17:33:58 -->
+<!-- Creator: fig2dev Version 3.2.9a -->
+<!-- CreationDate: 2025-01-14 17:06:16 -->
 <!-- Magnification: 1.05 -->
 <svg	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="489pt" height="193pt"
-	viewBox="1480 2261 7760 3061">
+	width="470pt" height="193pt"
+	viewBox="1781 2265 7459 3057">
 <g fill="none">
 <!-- Line -->
 <rect x="2835" y="2520" width="2970" height="315" fill="#00d1d1"
@@ -25,7 +25,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp0">
-	<path clip-rule="evenodd" d="M 1480,2261 H 9240 V 5322 H 1480 z
+	<path clip-rule="evenodd" d="M 1781,2265 H 9240 V 5322 H 1781 z
 		M 5958,5205 5838,5175 5958,5145 5795,5165 5795,5186z"/>
 </clipPath>
 </defs>
@@ -37,7 +37,7 @@
 <!-- Line -->
 <defs>
 <clipPath id="cp1">
-	<path clip-rule="evenodd" d="M 1480,2261 H 9240 V 5322 H 1480 z
+	<path clip-rule="evenodd" d="M 1781,2265 H 9240 V 5322 H 1781 z
 		M 7770,3762 7740,3882 7710,3762 7730,3926 7751,3926z"/>
 </clipPath>
 </defs>
@@ -55,34 +55,34 @@
  4365,3240 4455,3240" fill="#ffe0e0"
 	stroke="#000000" stroke-width="8px"/>
 <!-- Text -->
-<text xml:space="preserve" x="4275" y="2745" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Ra</text>
+<text xml:space="preserve" x="4275" y="2745" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">Ra</text>
 <!-- Text -->
-<text xml:space="preserve" x="2835" y="2475" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">31</text>
+<text xml:space="preserve" x="2835" y="2475" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">31</text>
 <!-- Text -->
-<text xml:space="preserve" x="5805" y="2475" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">0</text>
+<text xml:space="preserve" x="5805" y="2475" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="4275" y="3060" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">Rd</text>
+<text xml:space="preserve" x="4275" y="3060" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">Rd</text>
 <!-- Text -->
-<text xml:space="preserve" x="2835" y="3870" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">31</text>
+<text xml:space="preserve" x="2520" y="2925" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">CPU</text>
 <!-- Text -->
-<text xml:space="preserve" x="5805" y="3870" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">0</text>
+<text xml:space="preserve" x="2520" y="4140" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Interface</text>
 <!-- Text -->
-<text xml:space="preserve" x="5805" y="4950" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">0</text>
+<text xml:space="preserve" x="2520" y="5220" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">Memory</text>
 <!-- Text -->
-<text xml:space="preserve" x="2520" y="4140" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">Interface</text>
+<text xml:space="preserve" x="5805" y="3870" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="2520" y="2925" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">CPU</text>
+<text xml:space="preserve" x="5805" y="4950" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="4275" y="4140" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">data</text>
+<text xml:space="preserve" x="9225" y="3870" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="end">0</text>
 <!-- Text -->
-<text xml:space="preserve" x="7740" y="4140" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="middle">address</text>
+<text xml:space="preserve" x="4275" y="4140" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">data</text>
 <!-- Text -->
-<text xml:space="preserve" x="6255" y="3870" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">31</text>
+<text xml:space="preserve" x="7740" y="4140" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="middle">address</text>
 <!-- Text -->
-<text xml:space="preserve" x="9225" y="3870" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">0</text>
+<text xml:space="preserve" x="2835" y="3870" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">31</text>
 <!-- Text -->
-<text xml:space="preserve" x="2835" y="4950" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="start">31</text>
+<text xml:space="preserve" x="2835" y="4950" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">31</text>
 <!-- Text -->
-<text xml:space="preserve" x="2520" y="5220" fill="#000000" font-family="Helvetica" font-style="normal" font-weight="normal" font-size="192" text-anchor="end">Memory</text>
+<text xml:space="preserve" x="6255" y="3870" fill="#000000" font-family="Times" font-style="normal" font-weight="normal" font-size="200" text-anchor="start">31</text>
 </g>
 </svg>
