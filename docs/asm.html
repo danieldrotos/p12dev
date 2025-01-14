@@ -43,6 +43,45 @@
     <hr>
     
     <p>
+      <span lang="hu">Direktívák:</span>
+      <span lang="en">Drectives:</span>
+      <a href="#dir_cpu">CPU</a>
+      |
+      <a href="#dir_org">ORG</a>
+      |
+      <a href="#dir_equ">EQU</a>
+      |
+      <a href="#dir_ds">DS</a>
+      |
+      <a href="#dir_dx">DB,DW,DD</a>
+      |
+      <a href="#dir_dp">DP</a>
+      |
+      <a href="#dir_seg">SEG</a>
+      |
+      <a href="#dir_ends">ENDS</a>
+      |
+      <a href="#dir_global">GLOBAL</a>
+      |
+      <a href="#dir_include">.INCLUDE</a>
+    </p>
+
+    <p>
+      <span lang="hu">Melléklet:</span>
+      <span lang="en">Appendix:</span>
+      <a href="#cond_p1516">Feltételek#1</a>
+      |
+      <a href="#cond_p2223">Feltételek#2</a>
+      |
+      <a href="#insts_p1516">Utasítások#1</a>
+      |
+      <a href="#insts_p2223">Utasítások#2</a>
+      |
+    </p>
+    
+    <hr>
+    
+    <p>
     <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
     <a href="asm.html?lang=hu">HU</a>
     <a href="asm.html?lang=en">EN</a>
@@ -70,33 +109,36 @@ alapértelmezés szerint a p1516 nyelvet használja.</p>
 <p><samp>php p2as.php [-o kimenet] [-l] [-c] [-k] forrás_file...</samp></p>
 
 
-<p>A generált kimeneti fájl neve alapértelmezés szerint az elsőként
-megadott assembly forrás fájl nevével egyezik (a kiterjesztés .p2h-ra
-cserélésével), vagy megadható a -o kapcsoló paramétereként.</p>
+<p>Az <a name="opt_o"><b>-o</b></a> kapcsolóval megadható a kimeneti
+fájl neve. A generált kimeneti fájl neve alapértelmezés szerint az
+elsőként megadott assembly forrás fájl nevével egyezik (a kiterjesztés
+<tt>.p2h</tt>-ra cserélésével), vagy megadható a <b>-o</b> kapcsoló
+paramétereként.</p>
 
-<p>A -l kapcsolóval (list file creation) kérhetjük, hogy a program
-készítsen lista fájlt, amely a lefordított kódról tartalmaz részletes
-információkat. A fájl neve az első assembly forrás fájl nevével egyező
-lesz, .lst kiterjesztéssel.</p>
+<p>A <a name="opt_l"><b>-l</b></a> kapcsolóval (list file creation)
+kérhetjük, hogy a program készítsen lista fájlt, amely a lefordított
+kódról tartalmaz részletes információkat. A fájl neve az első assembly
+forrás fájl nevével egyező lesz, <tt>.lst</tt> kiterjesztéssel.</p>
 
-<p>A -c kapcsoló (compile only) használata esetén a fordító nem ad
-hibajelzést ha olyan szimbólumot használunk, amely nincs
-definiálva. Az ilyen módon lefordított kimeneti fájl nem alkalmas a
-program futtatására, mert az még félkész. Ez megfelel az egyéb
-fejlesztő rendszerekben használatos un. object fájl típusnak. Ezek a
-fájlok további fordításokban forrás fájlként adhatók meg, a tartalmuk
-bekerül a lefordított programba. A kimeneti fájlt ebben az esetben
-ajánlott .p2o kiterjesztéssel ellátni. Több forrás, vagy object fájl
--c kapcsolóval való lefordításával könyvtár fájlt készíthetünk, ezeket
-a fájlokat javasolt .p2l kiterjesztéssel elnevezni. A -c kapcsoló
-használata bekapcsolja a -k kapcsoló hatását, így nem szükséges
+<p>A <a name="opt_c"><b>-c</b></a> kapcsoló (compile only) használata
+esetén a fordító nem ad hibajelzést ha olyan szimbólumot használunk,
+amely nincs definiálva. Az ilyen módon lefordított kimeneti fájl nem
+alkalmas a program futtatására, mert az még félkész. Ez megfelel az
+egyéb fejlesztő rendszerekben használatos un. object fájl
+típusnak. Ezek a fájlok további fordításokban forrás fájlként adhatók
+meg, a tartalmuk bekerül a lefordított programba. A kimeneti fájlt
+ebben az esetben ajánlott <tt>.p2o</tt> kiterjesztéssel ellátni. Több
+forrás, vagy object fájl -c kapcsolóval való lefordításával könyvtár
+fájlt készíthetünk, ezeket a fájlokat javasolt <tt>.p2l</tt>
+kiterjesztéssel elnevezni. A -c kapcsoló használata bekapcsolja
+a <a href="#opt_k">-k</a> kapcsoló hatását, így nem szükséges
 használni.</p>
 
-<p>A -k kapcsoló (keep segments) használata esetén a fordító nem
-távolítja el azoknak a szegmenseknek a tartalmát, amelyekre nincsenek
-hivatkozások, így minden szegmens tartalma bekerül a kimeneti
-fájlba. Ennek a kapcsolónak csak akkor van hatása, ha a -c kapcsolót
-nem használtuk.</p>
+<p>A <a name="opt_k"><b>-k</b></a> kapcsoló (keep segments) használata
+esetén a fordító nem távolítja el azoknak a szegmenseknek a tartalmát,
+amelyekre nincsenek hivatkozások, így minden szegmens tartalma bekerül
+a kimeneti fájlba. Ennek a kapcsolónak csak akkor van hatása, ha
+a <a href="#opt_c">-c</a> kapcsolót nem használtuk.</p>
 
 <p>A program további paraméterei az assembly forrás fájlok, illetve
 object, vagy könyvtár fájlok nevei lehetnek, ezekből legalább egyet
@@ -122,8 +164,9 @@ ezután következő első utasítás helyét fogja jelölni.</p>
 
 <p>Ha a címke neve után egynél több kettőspontot teszünk, akkor a
 címke globális lesz, akkor is, ha egy szegmensen belül hoztuk
-létre. Az így létrehozott szimbólumokat nem kell a <tt>.global</tt>
-direktívával exportálni.</p>
+létre. Az így létrehozott szimbólumokat nem kell
+a <a href="#dir_global"><tt>.global</tt></a> direktívával
+exportálni.</p>
 
 <p>Az utasítások feltétellel is elláthatók, ha valódi, CPU
 utasításokról van szó. Ha a feltételt nem adjuk meg, akkor AL (always)
@@ -134,8 +177,8 @@ fordításhoz választott processzor típustól függnek, részletes
 felsorolásukat a <a href="#appendix">melléklet</a> tartalmazza.</p>
 
 <p>Az utasítás lehet konkrét CPU utasítás (a választott processzor
-típustól függően), illetve a fordítónak szóló ún. pszeudó utasítás,
-direktíva.</p>
+típustól függően), illetve a fordítónak szóló ún. <i>pszeudó
+utasítás</i>, <i>direktíva</i>.</p>
 
 <p>A paraméterek az utasítástól függenek, ha több paramétert adunk
 meg, akkor azokat vesszővel kell elválasztani egymástól. Regiszterek
@@ -145,10 +188,11 @@ szimbólumokat, vagy konstansokat. A konstansoknak számjeggyel kell
 kezdődniük. A 0-val kezdődő konstansokat a fordító 8-as
 számrendszerűnek tekinti, a 0b-vel kezdődőeket kettes számrendszerűnek
 (bináris), míg a 0x-el kezdődőeket 16-osnak (hexadecimális). ASCII
-kódok megadására használhatjuk a ’b’ formát (az ASCII kód betűje
-egyszeres idézőjelek között), ún. escape szekvenciát, illetve szóközt
-azonban ilyen esetben nem használhatunk. A szimbólumok nevében a kis-
-és nagybetűk különbözőnek számítanak.</p>
+kódok megadására használhatjuk a <tt>’b’</tt> formát (az ASCII kód
+betűje egyszeres idézőjelek között). Ilyen esetben azonban ún. escape
+szekvenciát, illetve szóközt nem használhatunk! A szimbólumok nevében
+a kis- és nagybetűk különbözőnek számítanak.</p>
+
 
 <h2>Assembler direktívák</h2>
 
@@ -157,17 +201,18 @@ szolgálnak, nem a fordító működését szabályozzák, vagy egyéb
 eredményük van. A direktívák nevében a kis- és nagybetűk azonosnak
 számítanak. Azok a direktívák amelyeknek a neve nem ponttal kezdődik,
 ponttal kezdődően is megadhatók, tehát pl a <tt>CPU</tt> direktíva
-  <tt>.CPU</tt> formában is használható.</p>
+<tt>.CPU</tt> formában is használható.</p>
 
 
 <a name="dir_cpu"><h3 style="font-family:monospace">PROC|CPU P1|P2</h3></a>
 
 <p>A használt processzor, és ezáltal az assembly nyelv kiválasztására
-  szolgáló direktíva. <tt>P1</tt> paraméter esetén a fordító a forrás
-  fájlt p1516 processzor assembly nyelveként értelmezi, <tt>P2</tt> esetén
-pedig a p2223 nyelvet használja. Ez a beállítás csak a CPU
-utasításokra vonatkozik, a fordító által felismert direktívák
-azonosak. A direktíva paramétere kis- és nagybetűvel is írható.</p>
+szolgáló direktíva. <tt>P1</tt> paraméter esetén a fordító a forrás
+fájlt <a href="p1516.html">p1516</a> processzor assembly nyelveként
+értelmezi, <tt>P2</tt> esetén pedig a <a href="p2223.html">p2223</a>
+nyelvet használja. Ez a beállítás csak a CPU utasításokra vonatkozik,
+a fordító által felismert direktívák azonosak. A direktíva paramétere
+kis- és nagybetűvel is írható.</p>
 
 
 <a name="dir_org"><h3 style="font-family:monospace">ORG érték</h3></a>
@@ -197,9 +242,10 @@ rutin:
         ldh     r0,porta ; az R0 regiszterbe
 </samp>
 
-<p>Ha a == szimbólumot használjuk, akkor a szimbólum globálisként jön
-létre, vagyis egyúttal exportálódik a szegmensen kívülre, így a
-.global direktívát már nem kell használni.</p>
+<p>Ha a == jelet használjuk, akkor a szimbólum globálisként jön létre,
+vagyis egyúttal exportálódik a szegmensen kívülre, így
+a <a href="#dir_global"><tt>.global</tt></a> direktívát már nem kell
+használni.</p>
 
 
 <a name="dir_ds"><h3 style="font-family:monospace">DS|.SPACE|.SKIP érték</h3></a>
@@ -218,13 +264,13 @@ adatok: ds      5       ; 5 szó helyet foglalunk le
 <a name="dir_dx"><h3 style="font-family:monospace">DB,DW,DD érték...</h3></a>
 
 <p>Ezekkel a direktívákkal a paraméterként megadott értékeket tudjuk
-  elhelyezni a memóriában. A <tt>DB</tt> az érték alsó 8 bitjét
-  használja fel, a <tt>DW</tt> 16 bitet, míg a <tt>DD</tt> 32 bites
+elhelyezni a memóriában. A <tt>DB</tt> az érték alsó 8 bitjét
+használja fel, a <tt>DW</tt> 16 bitet, míg a <tt>DD</tt> 32 bites
 adatokat használ. Egy direktívánál több paraméter is megadható
 vesszővel elválasztva, ezek a felsorolás sorrendjében kerülnek a
 memóriába. A paramétereknek konstansnak, vagy szimbólumnak kell
-  lenniük. A szimbólumok az <tt>EQU, =</tt> direktívákkal, vagy
-címkeként hozhatók létre.</p>
+lenniük. A szimbólumok az <a href="#dir_equ"><tt>EQU, =</tt></a>
+direktívákkal, vagy címkeként hozhatók létre.</p>
 
 <p>Ezeknél a direktíváknál használhatunk sztring konstanst is, amely
 ”kettős idézőjelek” között megadott szöveg. A szövegen belül
@@ -271,18 +317,19 @@ ugyanazt a szimbólum nevet saját célra használhatják. </p>
 <p>Az első paraméter a szegmens neve, ami után opcionális paraméterek
 következhetnek. A szegmensen belül létrehozott szimbólumok és címkék
 csak a szegmensen belül láthatóak. Ha a szegmensen kívül is használni
-  szeretnénk egy szimbólumot, akkor azt a <tt>GLOBAL</tt> direktívával
-exportálni kell.</p>
+szeretnénk egy szimbólumot, akkor azt
+a <a href="#dir_global"><tt>.global</tt></a> direktívával exportálni
+kell.</p>
 
 <p>A szegmensben újra definiálhatunk globális szimbólumokat. Ezekből
 egy új példány jön létre, így az értékük a szegmensen belül más lesz,
 mint a globális területen.</p>
 
 
-<a name="ends"><h3 style="font-family:monospace">ENDS</h3></a>
+<a name="dir_ends"><h3 style="font-family:monospace">ENDS</h3></a>
 
 <p>A szegmens végét jelző direktíva. Ez után a program globális
-  területe folytatódik, így a globális szimbólumok válnak láthatóvá.</p>
+területe folytatódik, így a globális szimbólumok válnak láthatóvá.</p>
 
 
 <a name="dir_global"><h3 style="font-family:monospace">GLOBAL|EXPORT név</h3></a>
@@ -300,8 +347,8 @@ nem kell idézőjelbe tenni. A betöltött fájl után az aktuális fájl
 fordítása folytatódik. A fájlt a program először abban a könyvtárban
 keresi, ahol az eredeti forrásfájl található. Ha ott nem található,
 akkor a rendszer fájljai között fogja keresni, ez lehet a felhasználó
-saját könyvtárának p12tool/include alkönyvtára, vagy a
-fejlesztőrendszer lib alkönyvtára.</p>
+saját könyvtárának <code>p12tool/include</code> alkönyvtára, vagy a
+fejlesztőrendszer <code>lib</code> alkönyvtára.</p>
 
 
 <a name="req"><h3 style="font-family:monospace">REQ reg alias</h3></a>
@@ -312,7 +359,7 @@ fordítás hátralévő részében használható.</p>
 
 <a name="appendix"><h2>Mellékletek</h2></a>
 
-<h3>Feltételek</h3>
+<a name="cond"><h3>Feltételek</h3></a>
 
 <p>A CPU utasításokban használható feltételek a kiválasztott
 processzor típusától függnek (lásd <a href="#dir_cpu">CPU
@@ -320,7 +367,7 @@ direktíva</a>). Egyes feltételek több különféle névvel is
 használhatók.</p>
 
 
-<h4>Feltételek p1516 processzor esetén</h4>
+<a name="cond_p1516"><h4>Feltételek p1516 processzor esetén</h4></a>
 
 <table border=1 bgcolor="lightgrey">
   <tr><td>Feltétel</td>  <td>Használható nevek</td></tr>
@@ -336,7 +383,7 @@ használhatók.</p>
 </table>
 
 
-<h4>Feltételek p2223 processzor esetén</h4>
+<a name="cond_p2223"><h4>Feltételek p2223 processzor esetén</h4></a>
 
 <table border=1>
   <tr><td>Feltétel</td> <td>Használható nevek</td></tr>
@@ -358,7 +405,7 @@ használhatók.</p>
 </table>
 
 
-<h3>Processzor utasítások, p1516</h3>
+<a name="insts_p1516"><h3>Processzor utasítások, p1516</h3></a>
 
 <p>Az utasításokat ismertető táblázatban a következő rövidítéseket
 használjuk:</p>
@@ -579,7 +626,7 @@ elnevezéseket is.</p>
 </table>
 
 
-<h3>Processzor utasítások, p2223</h3>
+<a name="insts_p2223"><h3>Processzor utasítások, p2223</h3></a>
 
 <p>Az utasításokat ismertető táblázatban a következő rövidítéseket
 használjuk:</p>
