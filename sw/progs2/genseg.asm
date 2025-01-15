@@ -9,6 +9,25 @@
 	st	r1,UART.CTRL
 	
 	ces	eprints
+	.db	"<!DOCTYPE html>\n"
+	ces	eprints
+	.db	"<html id=\"html-tag\" lang=\"en\">\n"
+	ces	eprints
+	.db	"  <head>\n"
+	ces	eprints
+	.db	"  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n"
+	ces	eprints
+	.db	"  <meta charset=\"utf-8\">\n"
+	ces	eprints
+	.db	"  <link rel=\"stylesheet\" href=\"p12.css\">\n"
+	ces	eprints
+	.db	"  <title>Seven segment display characters</title>\n"
+	ces	eprints
+	.db	"  </head>\n"
+	ces	eprints
+	.db	"<body>\n\n"
+	
+	ces	eprints
 	.db	"<table border=1>\n\n<tr>\n\n"
 	
 	mvzl	r12,0		; ascii code
@@ -17,10 +36,36 @@ cyc:	mov	r0,r12
 	call	dsp_ascii2seg
 	ces	eprints
 	.db	"<td><b><span class =\"b\"> "
+	test	r4,1
+	Z mvzl	r1,32
+	NZ mvzl	r1,'_'
+	ces	eprintf
+	.db	"%c\n"
 
-	ces	eprints
-	.db	"\n"
+	test	r4,0x20
+	Z mvzl	r1,32
+	NZ mvzl	r1,'|'
+	test	r4,0x40
+	Z mvzl	r2,32
+	NZ mvzl	r2,'_'
+	test	r4,0x02
+	Z mvzl	r3,32
+	NZ mvzl	r3,'|'
+	ces	eprintf
+	.db	"%c%c%c\n"
 
+	test	r4,0x10
+	Z mvzl	r1,32
+	NZ mvzl	r1,'|'
+	test	r4,0x08
+	Z mvzl	r2,32
+	NZ mvzl	r2,'_'
+	test	r4,0x04
+	Z mvzl	r3,32
+	NZ mvzl	r3,'|'
+	ces	eprintf
+	.db	"%c%c%c\n"
+	
 	mov	r1,r12
 	ces	eprintf
 	.db	"</span></b><br>%d,0x"
@@ -49,19 +94,19 @@ non_space:
 	cmp	r12,'>'
 	jnz	non_gt
 	ces	eprints
-	.db	",'&gt;'"
+	.db	",&gt;"
 	jmp	printed
 non_gt:
 	cmp	r12,'<'
 	jnz	non_lt
 	ces	eprints
-	.db	",'&lt;'"
+	.db	",&lt;"
 	jmp	printed
 non_lt:	
 	cmp	r12,'&'
 	jnz	non_amp
 	ces	eprints
-	.db	",'&amp;'"
+	.db	",&amp;"
 	jmp	printed
 non_amp:
 	cmp	r12,127
@@ -69,7 +114,7 @@ non_amp:
 	
 	mov	r1,r12
 	ces	eprintf
-	.db	",'%c'"
+	.db	",%c"
 printed:	
 	ces	eprints
 	.db	"</td>\n\n"
@@ -86,7 +131,7 @@ printed:
 	
 done:	
 	ces	eprints
-	.db	"</tr>\n\n</table>\n"
+	.db	"</tr>\n\n</table>\n\n</body>\n</html>\n"
 
 exit:	
 	mvzl	r0,'s'
