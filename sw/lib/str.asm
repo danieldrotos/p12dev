@@ -11,6 +11,8 @@
 	;; R4=                  str_getchar (R0:str, R1:idx)
 	;;                      str_setchar (R0:str, R1:idx, R2:char)
 	;; F.C=                 str_packed  (R0:str)
+	;;                      str_unpack  (R0:instr, R1:outstr)
+	;;                      str_pack    (R0:instr, R1:outstr)
 	;; 
 	
 
@@ -342,6 +344,22 @@ sp_ret:
 	pop	r3
 	pop	r2
 	ret
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_str_unpack
+str_unpack::
+	jmp	_pm_strunpack
+	.ends
+
+	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_str_pack
+str_pack::
+	jmp	_pm_strpack
 	.ends
 
 	

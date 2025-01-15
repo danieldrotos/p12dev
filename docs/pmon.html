@@ -376,6 +376,44 @@ pedig az al verziószámot.</p>
 <a name="fn_string"><h3>Sztring kezelés</h3></a>
 
 
+<a name="pm_strunpack"><h4>0xf017 pm_strunpack</h4></a>
+
+    <p>Normál vagy pakolt sztring átalakítása normál formátumra. A
+    megfelelő méretű kimeneti bufferről a hívás előtt kell
+    gondoskodni.</p>
+
+    <p>Bemenő paraméterek:</p>
+
+    <ul>
+      <li>R0 bemeneti sztring címe</li>
+      <li>R1 kimeneti buffer címe</li>
+    </ul>
+
+    <p>Eredmény:</p>
+
+    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
+    kezdeve.</p>
+
+    
+<a name="pm_strpack"><h4>0xf018 pm_strpack</h4></a>
+
+    <p>Normál vagy pakolt sztring átalakítása pakolt formátumra. A
+    megfelelő méretű kimeneti bufferről a hívás előtt kell
+    gondoskodni.</p>
+
+    <p>Bemenő paraméterek:</p>
+
+    <ul>
+      <li>R0 bemeneti sztring címe</li>
+      <li>R1 kimeneti buffer címe</li>
+    </ul>
+
+    <p>Eredmény:</p>
+
+    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
+    kezdeve.</p>
+
+    
 <a name="pm_strchr"><h4>0xf006 pm_strchr</h4></a>
 
   <p>Karakter első előfordulásának keresése egy szövegben.</p>
@@ -873,6 +911,18 @@ karakter egyik formája jeleníthető meg.</p>
 <td>F.C egyezés</td>
 </tr>
 <tr>
+  <td><a href="#pm_strpack">pm_strpack</a></td>
+<td>0xf018</td>
+<td>R0 sztring, R1 buffer</td>
+<td>-</td>
+</tr>
+<tr>
+  <td><a href="#pm_strunpack">pm_strunpack</a></td>
+<td>0xf017</td>
+<td>R0 sztring, R1 buffer</td>
+<td>-</td>
+</tr>
+<tr>
   <td><a href="#pm_value2hexchar">pm_value2hexchar</a></td>
 <td>0xf00a</td>
 <td>R0 érték</td>
@@ -1033,6 +1083,17 @@ karakter egyik formája jeleníthető meg.</p>
 <td><a href="#pm_ascii2seg">pm_ascii2seg</a></td>
 <td>R0 ascii kód</td>
 <td>R4 szegmens kód</td>
+</tr>
+<tr>
+<td>0xf017</td>
+<td><a href="#pm_strunpack">pm_strunpack</a></td>
+<td>R0 sztring, R1 buffer</td>
+<td>-</td>
+</tr>
+<td>0xf018</td>
+<td><a href="#pm_strpack">pm_strpack</a></td>
+<td>R0 sztring, R1 buffer</td>
+<td>-</td>
 </tr>
 </table>
 

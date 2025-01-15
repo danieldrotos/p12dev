@@ -49,6 +49,9 @@ _f013:	jmp	printd
 _f014:	jmp	printf
 _f015:	jmp	pesf
 _f016:	jmp	ascii2seg
+_f017:	jmp	strunpack
+_f018:	jmp	strpack
+
 	
 enter_by_uart:
 	push	r0
@@ -1139,6 +1142,112 @@ cmd_v:
 ;;; STRING UTILITIES
 ;;; ==================================================================
 
+	;; Convert normal/packed string to normal form
+	;; In : R0 address of input string
+	;;      R1 address of output string
+strunpack:
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+
+	sz	r0		; check pointers
+	jz	sup_ret
+	sz	r1
+	jz	sup_ret
+sup_cyc:
+	mvzl	r2,0		; byte index in input
+	ld	r3,r0		; pick next word
+	sz	r3		; is it EOS?
+	jz	sup_fin
+sup_next_char:
+	getbz	r4,r3,r2	; pick byte
+	sz	r4		; check byte
+	jz	sup_next_word
+	st	r4,r1		; produce output
+	inc	r1
+	inc	r2		; advance byte index
+	cmp	r2,4
+	NE jmp	sup_next_char
+sup_next_word:
+	inc	r0
+	jmp	sup_cyc
+sup_fin:
+	mvzl	r3,0		; gen EOS in output
+	st	r3,r1
+sup_ret:	
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
+
+
+	;; Convert normal/packed string to packed form
+	;; In : R0 address of input string
+	;;      R1 address of output string
+strpack:
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	push	r5
+	push	r6
+	
+	sz	r0		; check pointers
+	jz	sp_ret
+	sz	r1
+	jz	sp_ret
+	mvzl	r5,0		; output byte index
+	mvzl	r6,0		; output word
+sp_cyc:
+	mvzl	r2,0		; byte index in input
+	ld	r3,r0		; pick next word
+	sz	r3		; is it EOS?
+	jz	sp_fin
+sp_next_char:
+	getbz	r4,r3,r2	; pick byte
+	sz	r4		; check byte
+	jz	sp_next_word
+	;; copy char to output word
+	putb	r6,r4,r5	; pack output word
+	inc	r5		; advance output byte index
+	cmp	r5,4		; is it full?
+	jnz	sp_not_full
+	st	r6,r1		; if yes, store word in mem
+	mvzl	r5,0		; and restart word
+	mvzl	r6,0
+	inc	r1		; and advance outout pointer
+sp_not_full:	
+	inc	r2		; advance input byte index
+	cmp	r2,4
+	NE jmp	sp_next_char
+sp_next_word:
+	inc	r0
+	jmp	sp_cyc
+sp_fin:
+	sz	r5
+	jz	sp_word_flushed
+sp_flush_word:
+	st	r6,r1
+	inc	r1
+sp_word_flushed:
+	mvzl	r3,0		; gen EOS in output
+	st	r3,r1
+sp_ret:
+	pop	r6
+	pop	r5
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
+
+	
 	;; locate charater in string
 	;; IN: R0 character, R1 string address
 	;; OUT: R1 address of char found, or NULL, Flag.C=1 if found

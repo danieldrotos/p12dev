@@ -34,6 +34,8 @@ _pm_printd		==	0xf013
 _pm_printf		==	0xf014
 _pm_pesf		==	0xf015
 _pm_ascii2seg		==	0xf016
+_pm_strunpack		==	0xf017
+_pm_strpack		==	0xf018
 	
 
 monitor::

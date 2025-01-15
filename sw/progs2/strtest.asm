@@ -295,9 +295,38 @@ sc4:
 	mov	r1,r0
 	ces	eprintf
 	db	"99999999 bcd= %x\n"
-	
+
+	mvzl	r0,-1
+	sew	r0
+	mvzl	r1,buf1
+	mvzl	r2,400
+upt_cyc:
+	st	r0,r2-,r1
+	sz	r2
+	jnz	upt_cyc
+
+unpack_test:
+	mvzl	r0,s1
+	mvzl	r1,buf1
+	call	str_unpack
+	mvzl	r0,s3
+	mvzl	r1,buf2
+	call	str_unpack
+pack_test:	
+	mvzl	r0,s1
+	mvzl	r1,buf3
+	call	str_pack
+	mvzl	r0,s3
+	mvzl	r1,buf4
+	call	str_pack
+
 	call	monitor
 
+buf1:	.ds	100
+buf2:	.ds	100
+buf3:	.ds	100
+buf4:	.ds	100
+	
 s0:	.db	0
 s1:	.db	"unpacked: Hello World!\n"
 s2:	.dd	0x6c6c6548
