@@ -365,6 +365,18 @@
     <p>Az R0 paraméterben megadott ascii karakter kódot átalakítja hét
     szegmenses kijelző kóddá. A bemenetnek 0-127 között kell lennie.</p>
 
+    <p>Amennyiben a karakter kisbetűs és nagybetűs változata közül
+    csak az egyikhez adható meg szegmens kód, a függvény a másik
+    változathoz is ezt a kódot adja majd. Például a 'p' és a 'P'
+    esetében egyaránt a P képét eredményező kódot kapunk.</p>
+
+    <p>Amennyiben a karakter, írásjel nem jeleníthető meg olvasható
+    módon a hét szegmenses kijelzőn, az eredmény 0 lesz (sötét
+    karakerkép).</p>
+
+    <p>A függvény a "tizedespont" LED-et nem használja a képek
+    előállítására, így a '.' esetében is 0-t kapunk.</p>
+
     
     <hr>
   </body>

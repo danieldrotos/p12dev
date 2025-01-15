@@ -11,7 +11,7 @@
 	st	r0,BRD_CTRL.OUT
 
 	mvzl	r0,'e'
-	call	_pm_ascii2seg
+	call	dsp_ascii2seg
 prompt:	
 	ces	eprintf
 	db	"Press a key:"
@@ -20,7 +20,7 @@ cyc:
 	NC jmp	chkbtn
 	call	getchar
 	mov	r0,r4
-	call	_pm_ascii2seg
+	call	dsp_ascii2seg
 	mov	r1,r0
 	mov	r2,r4
 	ces	eprintf
