@@ -94,19 +94,19 @@ non_space:
 	cmp	r12,'>'
 	jnz	non_gt
 	ces	eprints
-	.db	",&gt;"
+	.db	",<b><tt>&gt;</tt></b>"
 	jmp	printed
 non_gt:
 	cmp	r12,'<'
 	jnz	non_lt
 	ces	eprints
-	.db	",&lt;"
+	.db	",<b><tt>&lt;</tt></b>"
 	jmp	printed
 non_lt:	
 	cmp	r12,'&'
 	jnz	non_amp
 	ces	eprints
-	.db	",&amp;"
+	.db	",<b><tt>&amp;</tt></b>"
 	jmp	printed
 non_amp:
 	cmp	r12,127
@@ -114,7 +114,7 @@ non_amp:
 	
 	mov	r1,r12
 	ces	eprintf
-	.db	",%c"
+	.db	",<b><tt>%c</tt></b>"
 printed:	
 	ces	eprints
 	.db	"</td>\n\n"

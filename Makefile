@@ -69,6 +69,9 @@ progs:
 	$(MAKE) -C sw/examples all
 	$(MAKE) -C sw/progs2 all
 
+doc:
+	$(MAKE) -C $(DOCS) all
+
 comp_pmon:
 	$(MAKE) -C sw/pmon all
 

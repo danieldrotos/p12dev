@@ -2,6 +2,10 @@
 TOOLS		= $(PRJ)/sw/tools
 LIB		= $(PRJ)/sw/lib
 PMON		= $(PRJ)/sw/pmon
+MON		= $(PMON)
+DOCS		= $(PRJ)/docs
+DOC		= $(DOCS)
+PROGS		= $(PRJ)/sw/progs2
 
 ifeq ($(OS),Windows_NT)
 RM		= del /f /q
