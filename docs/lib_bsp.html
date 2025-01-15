@@ -391,8 +391,9 @@
       </li>
     </ul>
 
-    <p>Az R0 paraméterben megadott ascii karakter kódot átalakítja hét
-    szegmenses kijelző kóddá. A bemenetnek 0-127 között kell lennie.</p>
+    <p>Az R0 paraméterben megadott ascii karakter kódot
+	átalakítja <a href="computer_v2.html#display">hét szegmenses
+	kijelző</a> kóddá. A bemenetnek 0-127 között kell lennie.</p>
 
     <p>Amennyiben a karakter kisbetűs és nagybetűs változata közül
     csak az egyikhez adható meg szegmens kód, a függvény a másik
@@ -408,6 +409,35 @@
 
     <p><a href="segchars.html">Kijelző képek</a></p>
     
+
+    <a name="dsp_str2seg"><h3>dsp_str2seg</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">R0: string, R1: buffer</span>
+	<span lang="hu">R0: sztring, R1: buffer</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	-
+      </li>
+    </ul>
+
+    <p>Egy normál/pakolt formátumú szöveg
+    átalakítása <a href="computer_v2.html#display">hét szegmenses
+    kijkelző</a> kódokra, pakolt formában. Amennyiben kimeneti buffer
+    címeként az R1 regiszterben a PORTC kimeneti regiszterét adjuk meg
+    (<a href="computer_v2.html#gpio">GPIOC.ODR</a>), úgy az eredmény a
+    hét szegmenses kijelzőn megjelenik.</p>
+
+    <p>A függvény a kimeneti buffert nem ellenőrzi, a megfelelő méretű
+    területről a hívás előtt kell gondoskodni.</p>
+
+    <p>A függvény a szöveg hosszát nem ellenőrzi, ha bufferként a
+    kimeneti port regisztereit használjuk, akkor a szöveg ne legyen 8
+    karakternél hosszabb!</p>
+      
     <hr>
   </body>
 </html>

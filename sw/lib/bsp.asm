@@ -359,11 +359,78 @@ sw_get::
 
 	.seg	_lib_segment_display
 
-	;; In : R0 ascii character
-	;; Out: R4 7segment code for display
+	;; Input : R0 ascii character
+	;; Output: R4 7segment code for display
 dsp_ascii2seg::
 	jmp	_pm_ascii2seg
+
+	;; Input : R0 string
+	;;         R1 output buffer
+dsp_str2seg::
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	push	r5
+	push	r6
+	
+	sz	r0
+	jz	s2s_ret
+	sz	r1
+	jz	s2s_ret
+	mvzl	r5,0		; output byte index
+	mvzl	r6,0		; output word
+s2s_cyc:
+	mvzl	r2,0		; input byte index
+	ld	r3,r0		; pick input word
+	sz	r3		; is it EOS?
+	jz	s2s_fin
+s2s_next_char:
+	getbz	r4,r3,r2	; pick ascii char
+	sz	r4		; check char
+	jz	s2s_next_word
+	;; generate output
+	push	r0
+	mov	r0,r4
+	call	dsp_ascii2seg
+	pop	r0
+	putb	r6,r4,r5	; byte code into word
+	inc	r5		; adv. out byte idx
+	cmp	r5,4		; is it full?
+	jnz	s2s_not_full
+	st	r6,r1		; if yes, store word into buffer
+	mvzl	r5,0		; restart word
+	mvzl	r6,0
+	inc	r1		; adv. out buf ptr
+s2s_not_full:
+	inc	r2		; adv. in byte idx
+	cmp	r2,4
+	NE jmp	s2s_next_char
+s2s_next_word:
+	inc	r0		; adv. in word ptr
+	jmp	s2s_cyc
+s2s_fin:
+	sz	r5
+	jz	s2s_word_flushed
+s2s_flush_word:
+	st	r6,r1
+	inc	r1
+s2s_word_flushed:
+	mvzl	r3,0
+	st	r3,r1
+s2s_ret:
+	pop	r6
+	pop	r5
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
 	
 	.ends
 
+	
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

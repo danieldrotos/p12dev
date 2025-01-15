@@ -10,6 +10,15 @@
 	mvzl	r0,0xa1
 	st	r0,BRD_CTRL.OUT
 
+	jmp	start_test
+
+hello:	.db	"Hello"
+	
+start_test:
+	mvzl	r0,hello
+	mvzl	r1,GPIOC.ODR
+	call	dsp_str2seg
+	
 	mvzl	r0,'e'
 	call	dsp_ascii2seg
 prompt:	
