@@ -14,9 +14,12 @@
 	;;       led_toggle     (R0:led)
 	;;       led_set        (R0:led, R1:val)
 	;; F.C=  led_get        (R0:led)
+	;; R4=   dsp_ascii2seg  (R0:char)
 	;; 
 
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_nr_to_mask
 	
 	;; Convert btn/sw number into bitmask
@@ -39,6 +42,8 @@ nr_to_mask_ret:
 
 	.ends
 
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_led
 
@@ -114,6 +119,8 @@ led_get::
 	.ends
 
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_edge
 
 last_btn:
@@ -239,6 +246,8 @@ sw_restart::
 	.ends
 
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_btn
 		
 	;; Check button press
@@ -292,6 +301,8 @@ btn_get::
 	.ends
 
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_sw
 	
 	;; Check pos edge on a switch
@@ -342,4 +353,17 @@ sw_get::
 	pop	pc
 
 	.ends
+
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_display
+
+	;; In : R0 ascii character
+	;; Out: R4 7segment code for display
+dsp_ascii2seg::
+	jmp	_pm_ascii2seg
+	
+	.ends
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

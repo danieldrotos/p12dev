@@ -2177,8 +2177,13 @@ version:
 	;; In : R0 ascii
 	;; Out: R4 segments
 ascii2seg:
+	mvzl	r4,0
+	cmp	r0,0x7f
+	UGT ret
+a2s_ok:
 	push	r0
 	push	r1
+
 	shr	r0
 	shr	r0
 	mvzl	r1,ascii2seg_table

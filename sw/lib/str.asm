@@ -350,6 +350,8 @@ sp_ret:
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_str_unpack
+	;; In : R0 input string
+	;;      R1 output string
 str_unpack::
 	jmp	_pm_strunpack
 	.ends
@@ -358,6 +360,8 @@ str_unpack::
 ;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_str_pack
+	;; In : R0 input string
+	;;      R1 output string
 str_pack::
 	jmp	_pm_strpack
 	.ends
