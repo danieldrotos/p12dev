@@ -61,3 +61,15 @@ tt { font-family: monospace }
 .alu2 { background-color: #dfd; }
 
 a.inst { text-decoration: none; }
+
+/* special span block to draw 7seg display picture */
+span.b {
+  display: inline-block;
+  width: 25px;
+  height: 60px;
+  padding: 10px;
+  background-color: black;
+  color: red;
+  font-family: monospace;
+  white-space: pre;
+}

@@ -77,7 +77,22 @@
 
     <hr>
     
-
+    <p>
+      <a href="#btn"><span lang="hu">Nyomógomb</span>
+	<span lang="en">Pushbutton</span></a>
+      |
+      <a href="#sw"><span lang="hu">Kapcsoló</span>
+	<span lang="en">Switch</span></a>
+      |
+      <a href="#led"><span lang="hu">LED</span>
+	<span lang="en">LED</span></a>
+      |
+      <a href="#dsp"><span lang="hu">Kijelző</span>
+	<span lang="en">Display</span></a>
+    </p>
+    
+    <hr>
+    
     <span lang="hu">Lang:</span> <span lang="en">Nyelv:</span>
     <a href="lib_bsp.html?lang=hu">HU</a>
     <a href="lib_bsp.html?lang=en">EN</a>
@@ -89,6 +104,8 @@
     </h1>
 
 
+    <a name="btn"></a>
+    
     <a name="btn_posedge"><h3>btn_posedge</h3></a>
 
     <ul>
@@ -147,6 +164,29 @@
     <p>Nyomógomb aktuális állapotának lekérdezése.</p>
     
 
+    <a name="btn_restart"><h3>btn_restart</h3></a>
+
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>A nyomógombok állapotának megváltozását detektáló algoritmus
+    alaphelyzetbe állítása.</p>
+
+    <hr>
+
+    
+    <a name="sw"></a>
+    
     <a name="sw_posedge"><h3>sw_posedge</h3></a>
     
     <ul>
@@ -205,25 +245,6 @@
     <p>Kapcsoló aktuális értékének lekérdezése.</p>
 
 
-    <a name="btn_restart"><h3>btn_restart</h3></a>
-
-    <ul>
-      <li><span lang="en">Input(s):</span>
-	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-      <li><span lang="en">Output(s):</span>
-	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">-</span>
-	<span lang="hu">-</span>
-      </li>
-    </ul>
-
-    <p>A nyomógombok állapotának megváltozását detektáló algoritmus
-    alaphelyzetbe állítása.</p>
-
-
     <a name="sw_restart"><h3>sw_restart</h3></a>
 
     <ul>
@@ -242,6 +263,10 @@
     <p>A kapcsolók állapotának megváltozását detektáló algoritmus
       alaphelyzetbe állítása.</p>
 
+    <hr>
+
+    
+    <a name="led"></a>
     
     <a name="led_on"><h3>led_on</h3></a>
 
@@ -346,6 +371,10 @@
     0-7 sorszámú LED-ek zöldek, a 8-15 sorszámú LED-ek a 0-7 címkéjű
     piros LED-ek, míg a 16-23 sorszámok a 0-7 címkéjű kék LED-ek.</p>
 
+    <hr>
+
+    
+    <a name="dsp"></a>
     
     <a name="dsp_ascii2seg"><h3>dsp_ascii2seg</h3></a>
 

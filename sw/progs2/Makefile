@@ -28,7 +28,9 @@ all: pmonitor lib \
 	segmode.asc segmode.cdb \
 	edges.asc edges.cdb \
 	tudemo.asc tudemo.cdb \
-	shootgame.asc shootgame.cdb
+	shootgame.asc shootgame.cdb \
+	genseg.asc genseg.cdb
+
 
 pmonitor:
 	$(MAKE) -C $(PMON) pmon_app
@@ -80,6 +82,8 @@ edges.p2h: edges.asm $(PLIB)
 tudemo.p2h: tudemo.asm $(PLIB)
 
 shootgame.p2h: shootgame.asm $(PLIB)
+
+genseg.p2h: genseg.asm $(PLIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc
