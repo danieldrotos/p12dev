@@ -340,7 +340,7 @@ külön jelezzük.</p>
 <a name="fn_monitor"><h3>A monitor meghívása</h3></a>
 
 
-<a name="pm_cold_start"><h4>0xf005 pm_cold_start</h4></a>
+<a name="_pm_cold_start"><h4>0xf005 _pm_cold_start</h4></a>
 
 <p>Végleges kilépés az alkalmazói programból a monitor
 újraindításával. Kezdeti értékre állítja a monitor állapotát, így a
@@ -349,14 +349,14 @@ folytatható. Ezt a funkciót szubrutinhívás mellett ugró utasításokkal
 is meghívhatjuk. A funkciónak nincsenek paraméterei.</p>
 
 
-<a name="pm_callin"><h4>0xf000 pm_callin</h4></a>
+<a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
 
 <p>Visszatérés a monitor programba a felhasználó program állapotának
 az elmentésével. Ezután a program folytatható a paraméter nélküli go
 paranccsal. A funkciónak nincsenek paraméterei.</p>
 
 
-<a name="pm_enter_by_uart"><h4>0xf001 pm_enter_by_uart</h4></a>
+<a name="_pm_enter_by_uart"><h4>0xf001 _pm_enter_by_uart</h4></a>
 
 <p>Feltételes visszatérés a monitor programhoz. A szubrutin ellenőrzi,
 hogy van-e olvasható vett karakter az UART áramkörben. Ha igen,
@@ -366,7 +366,7 @@ beolvasást a terminálról az UART-on keresztül. A funkciónak nincsenek
 paraméterei.</p>
 
 
-<a name="pm_version"><h4>0xf003 pm_version</h4></a>
+<a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
 
 <p>A monitor program verziószámának lekérdezése. A függvény az R0
 regiszter 1. bájtjában helyezi el a fő verziószámot, a 0. bájtban
@@ -376,7 +376,7 @@ pedig az al verziószámot.</p>
 <a name="fn_string"><h3>Sztring kezelés</h3></a>
 
 
-<a name="pm_strunpack"><h4>0xf017 pm_strunpack</h4></a>
+<a name="_pm_strunpack"><h4>0xf017 _pm_strunpack</h4></a>
 
     <p>Normál vagy pakolt sztring átalakítása normál formátumra. A
     megfelelő méretű kimeneti bufferről a hívás előtt kell
@@ -395,7 +395,7 @@ pedig az al verziószámot.</p>
     kezdeve.</p>
 
     
-<a name="pm_strpack"><h4>0xf018 pm_strpack</h4></a>
+<a name="_pm_strpack"><h4>0xf018 _pm_strpack</h4></a>
 
     <p>Normál vagy pakolt sztring átalakítása pakolt formátumra. A
     megfelelő méretű kimeneti bufferről a hívás előtt kell
@@ -414,7 +414,7 @@ pedig az al verziószámot.</p>
     kezdeve.</p>
 
     
-<a name="pm_strchr"><h4>0xf006 pm_strchr</h4></a>
+<a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
 
   <p>Karakter első előfordulásának keresése egy szövegben.</p>
 
@@ -435,7 +435,7 @@ esetén), vagy 0, ha nincs találat.</li>
 </ul>
 
 
-<a name="pm_streq"><h4>0xf007 pm_streq</h4></a>
+<a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
   számítanak.</p>
@@ -453,7 +453,7 @@ esetén), vagy 0, ha nincs találat.</li>
 </ul>
 
 
-<a name="pm_strieq"><h4>0xf00c pm_strieq</h4></a>
+<a name="_pm_strieq"><h4>0xf00c _pm_strieq</h4></a>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
   számítanak.</p>
@@ -471,7 +471,7 @@ esetén), vagy 0, ha nincs találat.</li>
 </ul>
 
 
-<a name="pm_hexchar2value"><h4>0xf009 pm_hexchar2value</h4></a>
+<a name="_pm_hexchar2value"><h4>0xf009 _pm_hexchar2value</h4></a>
 
 <p>Egy hexadecimális számjegy karakter kódjának szám értékre való
   átalakítása.</p>
@@ -490,7 +490,7 @@ esetén), vagy 0, ha nincs találat.</li>
 </ul>
 
 
-<a name="pm_value2hexchar"><h4>0xf00a pm_value2hexchar</h4></a>
+<a name="_pm_value2hexchar"><h4>0xf00a _pm_value2hexchar</h4></a>
 
 <p>Egy 0-15 közötti számérték átalakítása a megfelelő hexadecimális
   számjegy ASCII kódjára.</p>
@@ -510,7 +510,7 @@ kisbetűre (a-f) alakítja.</li>
 </ul>
 
 
-<a name="pm_htoi"><h4>0xf00b pm_htoi</h4></a>
+<a name="_pm_htoi"><h4>0xf00b _pm_htoi</h4></a>
 
 <p>Hexadecimális szám jegyeit tartalmazó sztring átalakítása
 számértékké. A szövegben kis- és nagybetűk is használhatók (a-f, A-F),
@@ -537,7 +537,7 @@ egyébként 0.</li>
 <a name="fn_input"><h3>Bemeneti adatok kezelése</h3></a>
 
 
-<a name="pm_check_uart"><h4>0xf008 pm_check_uart</h4></a>
+<a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
 
 <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
 UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
@@ -550,11 +550,11 @@ paramétere.</p>
 </ul>
 
 
-<a name="pm_read"><h4>0xf00d pm_read</h4></a>
+<a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
 
 <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
   karakterre, a vevő állapotát előzőleg
-  a <a href="#pm_check_uart">pm_check_uart</a> funkcióval kell
+  a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
   vizsgálni. Nincs bemenő paramétere.</p>
 
 <p>Eredmény:</p>
@@ -564,7 +564,7 @@ paramétere.</p>
 </ul>
 
 
-<a name="pm_getchar"><h4>0xf002 pm_getchar</h4></a>
+<a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
 
 <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az UART
 áramkörből.</p>
@@ -580,7 +580,7 @@ paramétere.</p>
 <a name="fn_output"><h3>Kimenet előállítása a terminálon</h3></a>
 
 
-<a name="pm_putchar"><h4>0xf00e pm_putchar</h4></a>
+<a name="_pm_putchar"><h4>0xf00e _pm_putchar</h4></a>
 
 <p>Egy karakter kiírása a terminálra (küldése UART-on). A szubrutin
 először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
@@ -594,7 +594,7 @@ előző karakter küldése befejeződjön. Ezután átadja a küldendő
 </ul>
 
 
-<a name="pm_prints"><h4>0xf00f pm_prints</h4></a>
+<a name="_pm_prints"><h4>0xf00f _pm_prints</h4></a>
 
 <p>Egy 0 végződésű karaktertömb (sztring) kiírása a terminálra. A
 szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
@@ -607,7 +607,7 @@ szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
 </ul>
 
 
-<a name="pm_printsnl"><h4>0xf010 pm_printsnl</h4></a>
+<a name="_pm_printsnl"><h4>0xf010 _pm_printsnl</h4></a>
 
 <p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
   a terminálra. Escape szekvenciák nem használhatók.</p>
@@ -619,7 +619,7 @@ szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
 </ul>
 
 
-<a name="pm_print_vhex"><h4>0xf011 pm_print_vhex</h4></a>
+<a name="_pm_print_vhex"><h4>0xf011 _pm_print_vhex</h4></a>
 
 <p>Egy 32 bites érték kiírása a terminálon hexadecimális
 számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
@@ -634,7 +634,7 @@ számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
 </ul>
 
 
-<a name="pm_printd"><h4>0xf013 pm_printd</h4></a>
+<a name="_pm_printd"><h4>0xf013 _pm_printd</h4></a>
 
 <p>Egy 32 bites, előjel nélküli (bináris) szám kiírása a terminálra
 tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
@@ -647,7 +647,7 @@ tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
 </ul>
 
 
-<a name="pm_pes"><h4>0xf012 pm_pes</h4></a>
+<a name="_pm_pes"><h4>0xf012 _pm_pes</h4></a>
 
 <p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
 sztringnek a program kódjában közvetlenül a szubrutint meghívó CALL
@@ -656,10 +656,10 @@ címre fog visszatérni. A funkciónak sem bemeneti, sem kimeneti
 paraméterei nincsenek. Helyes használatára egy példa:</p>
 
 <samp>
-pm_pes  equ     0xf012
+_pm_pes  equ     0xf012
 
         nop</p>
-        call    pm_pes
+        call    _pm_pes
         db      ”Hello World”
         mvzl    r0,12
         ...
@@ -669,7 +669,7 @@ pm_pes  equ     0xf012
 idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
 
 
-<a name="pm_printf"><h4>0xf014 pm_printf</h4></a>
+<a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
 
 <p>Formázott szöveg kiírása a terminálra. A szövegben elhelyezhetők
 formázó utasítások (% jellel kezdve), amelyek egy adat megfelelő
@@ -720,7 +720,7 @@ regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
 </table>
 
 
-<a name="pm_pesf"><h4>0xf015 pm_pesf</h4></a>
+<a name="_pm_pesf"><h4>0xf015 _pm_pesf</h4></a>
 
 <p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
 formázó szövegnek közvetlenül a CALL utasítás után kell lennie, a
@@ -729,11 +729,11 @@ R0 regiszterben nem vár bemenő adatot).</p>
 
 <samp>
 UART_CPB = 0xff44
-pm_pesf  = 0xf015
+_pm_pesf  = 0xf015
 
          ld      r1,UART_CPB
          mov     r2,r1
-         call    pm_pesf
+         call    _pm_pesf
          db      ”Uart cpb= %d (0x%x)\n”
          nop
          ...
@@ -743,14 +743,14 @@ pm_pesf  = 0xf015
 <a name="fn_other"><h3>Egyéb függvények</h3></a>
 
 
-<a name="pm_itobcd"><h4>0xf004 pm_itobcd</h4></a>
+<a name="_pm_itobcd"><h4>0xf004 _pm_itobcd</h4></a>
 
 <p>Előjel nélküli bináris kódolású szám átalakítása BCD kódolásúra. Az
 R0 regiszterben megadott bemeneti adat maximum 99999999 lehet, az
 eredmény az R0 regiszterben keletkezik.</p>
 
 
-<a name="pm_ascii2seg"><h4>0xf016 pm_ascii2seg</h4></a>
+<a name="_pm_ascii2seg"><h4>0xf016 _pm_ascii2seg</h4></a>
 
 <p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
   karakter kijelzőn való megjelenítéséhez használhatunk.</p>
@@ -785,151 +785,151 @@ karakter egyik formája jeleníthető meg.</p>
 <th>eredmény</th>
 </tr>
 <tr>
-  <td><a href="#pm_ascii2seg">pm_ascii2seg</a></td>
+  <td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
 <td>0xf016</td>
 <td>R0 ascii kód</td>
 <td>R4 szegmens kód</td>
 </tr>
 <tr>
-  <td><a href="#pm_callin">pm_callin</a></td>
+  <td><a href="#_pm_callin">_pm_callin</a></td>
 <td>0xf000</td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_check_uart">pm_check_uart</a></td>
+  <td><a href="#_pm_check_uart">_pm_check_uart</a></td>
 <td>0xf008</td>
 <td>-</td>
 <td>F.C van adat</td>
 </tr>
 <tr>
-  <td><a href="#pm_cold_start">pm_cold_start</a></td>
+  <td><a href="#_pm_cold_start">_pm_cold_start</a></td>
 <td>0xf005</td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_enter_by_uart">pm_enter_by_uart</a></td>
+  <td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
 <td>0xf001</td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_getchar">pm_getchar</a></td>
+  <td><a href="#_pm_getchar">_pm_getchar</a></td>
 <td>0xf002</td>
 <td>-</td>
 <td>R0 karakter</td>
 </tr>
 <tr>
-  <td><a href="#pm_hexchar2value">pm_hexchar2value</a></td>
+  <td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
 <td>0xf009</td>
 <td>R0 karakter</td>
 <td>R0 érték, F.C helyes</td>
 </tr>
 <tr>
-  <td><a href="#pm_htoi">pm_htoi</a></td>
+  <td><a href="#_pm_htoi">_pm_htoi</a></td>
 <td>0xf00b</td>
 <td>R0 sztring</td>
 <td>R1 érték, F.C helyes</td>
 </tr>
 <tr>
-  <td><a href="#pm_itobcd">pm_itobcd</a></td>
+  <td><a href="#_pm_itobcd">_pm_itobcd</a></td>
 <td>0xf004</td>
 <td>R0 érték</td>
 <td>R0 érték</td>
 </tr>
 <tr>
-  <td><a href="#pm_pes">pm_pes</a></td>
+  <td><a href="#_pm_pes">_pm_pes</a></td>
 <td>0xf012</td>
 <td>R0 sztring, R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_pesf">pm_pesf</a></td>
+  <td><a href="#_pm_pesf">_pm_pesf</a></td>
 <td>0xf015</td>
 <td>R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_print_vhex">pm_print_vhex</a></td>
+  <td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
 <td>0xf011</td>
 <td>R0 érték, R1 tagolás</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_printd">pm_printd</a></td>
+  <td><a href="#_pm_printd">_pm_printd</a></td>
 <td>0xf013</td>
 <td>R0 érték</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_printf">pm_printf</a></td>
+  <td><a href="#_pm_printf">_pm_printf</a></td>
 <td>0xf014</td>
 <td>R0 sztring, R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_prints">pm_prints</a></td>
+  <td><a href="#_pm_prints">_pm_prints</a></td>
 <td>0xf00f</td>
 <td>R0 sztring</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_printsnl">pm_printsnl</a></td>
+  <td><a href="#_pm_printsnl">_pm_printsnl</a></td>
 <td>0xf010</td>
 <td>R0 sztring</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_putchar">pm_putchar</a></td>
+  <td><a href="#_pm_putchar">_pm_putchar</a></td>
 <td>0xf00e</td>
 <td>R0 karakter</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_read">pm_read</a></td>
+  <td><a href="#_pm_read">_pm_read</a></td>
 <td>0xf00d</td>
 <td>-</td>
 <td>R0 karakter</td>
 </tr>
 <tr>
-  <td><a href="#pm_strchr">pm_strchr</a></td>
+  <td><a href="#_pm_strchr">_pm_strchr</a></td>
 <td>0xf006</td>
 <td>R0 sztring, R1 karakter</td>
 <td>R1 cím, F.C van találat</td>
 </tr>
 <tr>
-  <td><a href="#pm_streq">pm_streq</a></td>
+  <td><a href="#_pm_streq">_pm_streq</a></td>
 <td>0xf007</td>
 <td>R0, R1 sztringek</td>
 <td>F.C egyezés</td>
 </tr>
 <tr>
-  <td><a href="#pm_strieq">pm_strieq</a></td>
+  <td><a href="#_pm_strieq">_pm_strieq</a></td>
 <td>0xf00c</td>
 <td>R0, R1 sztringek</td>
 <td>F.C egyezés</td>
 </tr>
 <tr>
-  <td><a href="#pm_strpack">pm_strpack</a></td>
+  <td><a href="#_pm_strpack">_pm_strpack</a></td>
 <td>0xf018</td>
 <td>R0 sztring, R1 buffer</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_strunpack">pm_strunpack</a></td>
+  <td><a href="#_pm_strunpack">_pm_strunpack</a></td>
 <td>0xf017</td>
 <td>R0 sztring, R1 buffer</td>
 <td>-</td>
 </tr>
 <tr>
-  <td><a href="#pm_value2hexchar">pm_value2hexchar</a></td>
+  <td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
 <td>0xf00a</td>
 <td>R0 érték</td>
 <td>R1 karakter</td>
 </tr>
 <tr>
-  <td><a href="#pm_version">pm_version</a></td>
+  <td><a href="#_pm_version">_pm_version</a></td>
 <td>0xf003</td>
 <td>-</td>
 <td>R0 verzió</td>
@@ -948,150 +948,150 @@ karakter egyik formája jeleníthető meg.</p>
 </tr>
 <tr>
 <td>0xf000</td>
-<td><a href="#pm_callin">pm_callin</a></td>
+<td><a href="#_pm_callin">_pm_callin</a></td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf001</td>
-<td><a href="#pm_enter_by_uart">pm_enter_by_uart</a></td>
+<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf002</td>
-<td><a href="#pm_getchar">pm_getchar</a></td>
+<td><a href="#_pm_getchar">_pm_getchar</a></td>
 <td>-</td>
 <td>R0 karakter</td>
 </tr>
 <tr>
 <td>0xf003</td>
-<td><a href="#pm_version">pm_version</a></td>
+<td><a href="#_pm_version">_pm_version</a></td>
 <td>-</td>
 <td>R0 verzió</td>
 </tr>
 <tr>
 <td>0xf004</td>
-<td><a href="#pm_itobcd">pm_itobcd</a></td>
+<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
 <td>R0 érték</td>
 <td>R0 érték</td>
 </tr>
 <tr>
 <td>0xf005</td>
-<td><a href="#pm_cold_start">pm_cold_start</a></td>
+<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
 <td>-</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf006</td>
-<td><a href="#pm_strchr">pm_strchr</a></td>
+<td><a href="#_pm_strchr">_pm_strchr</a></td>
 <td>R0 sztring, R1 karakter</td>
 <td>R1 cím, F.C van találat</td>
 </tr>
 <tr>
 <td>0xf007</td>
-<td><a href="#pm_streq">pm_streq</a></td>
+<td><a href="#_pm_streq">_pm_streq</a></td>
 <td>R0, R1 sztringek</td>
 <td>F.C egyezés</td>
 </tr>
 <tr>
 <td>0xf008</td>
-<td><a href="#pm_check_uart">pm_check_uart</a></td>
+<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
 <td>-</td>
 <td>F.C van adat</td>
 </tr>
 <tr>
 <td>0xf009</td>
-<td><a href="#pm_hexchar2value">pm_hexchar2value</a></td>
+<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
 <td>R0 karakter</td>
 <td>R0 érték, F.C helyes</td>
 </tr>
 <tr>
 <td>0xf00a</td>
-<td><a href="#pm_value2hexchar">pm_value2hexchar</a></td>
+<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
 <td>R0 érték</td>
 <td>R1 karakter</td>
 </tr>
 <tr>
 <td>0xf00b</td>
-<td><a href="#pm_htoi">pm_htoi</a></td>
+<td><a href="#_pm_htoi">_pm_htoi</a></td>
 <td>R0 sztring</td>
 <td>R1 érték, F.C helyes</td>
 </tr>
 <tr>
 <td>0xf00c</td>
-<td><a href="#pm_strieq">pm_strieq</a></td>
+<td><a href="#_pm_strieq">_pm_strieq</a></td>
 <td>R0, R1 sztringek</td>
 <td>F.C egyezés</td>
 </tr>
 <tr>
 <td>0xf00d</td>
-<td><a href="#pm_read">pm_read</a></td>
+<td><a href="#_pm_read">_pm_read</a></td>
 <td>-</td>
 <td>R0 karakter</td>
 </tr>
 <tr>
 <td>0xf00e</td>
-<td><a href="#pm_putchar">pm_putchar</a></td>
+<td><a href="#_pm_putchar">_pm_putchar</a></td>
 <td>R0 karakter</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf00f</td>
-<td><a href="#pm_prints">pm_prints</a></td>
+<td><a href="#_pm_prints">_pm_prints</a></td>
 <td>R0 sztring</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf010</td>
-<td><a href="#pm_printsnl">pm_printsnl</a></td>
+<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
 <td>R0 sztring</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf011</td>
-<td><a href="#pm_print_vhex">pm_print_vhex</a></td>
+<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
 <td>R0 érték, R1 tagolás</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf012</td>
-<td><a href="#pm_pes">pm_pes</a></td>
+<td><a href="#_pm_pes">_pm_pes</a></td>
 <td>R0 sztring, R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf013</td>
-<td><a href="#pm_printd">pm_printd</a></td>
+<td><a href="#_pm_printd">_pm_printd</a></td>
 <td>R0 érték</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf014</td>
-<td><a href="#pm_printf">pm_printf</a></td>
+<td><a href="#_pm_printf">_pm_printf</a></td>
 <td>R0 sztring, R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf015</td>
-<td><a href="#pm_pesf">pm_pesf</a></td>
+<td><a href="#_pm_pesf">_pm_pesf</a></td>
 <td>R1..R12</td>
 <td>-</td>
 </tr>
 <tr>
 <td>0xf016</td>
-<td><a href="#pm_ascii2seg">pm_ascii2seg</a></td>
+<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
 <td>R0 ascii kód</td>
 <td>R4 szegmens kód</td>
 </tr>
 <tr>
 <td>0xf017</td>
-<td><a href="#pm_strunpack">pm_strunpack</a></td>
+<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
 <td>R0 sztring, R1 buffer</td>
 <td>-</td>
 </tr>
 <td>0xf018</td>
-<td><a href="#pm_strpack">pm_strpack</a></td>
+<td><a href="#_pm_strpack">_pm_strpack</a></td>
 <td>R0 sztring, R1 buffer</td>
 <td>-</td>
 </tr>
