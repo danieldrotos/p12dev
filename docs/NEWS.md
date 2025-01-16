@@ -1,3 +1,9 @@
+### p12dev v2.2.12
+
+- document reorganized
+- library extended with new functions
+- pmon extended with new command (ver) and helper funcs
+
 ### p12dev v2.2.11
 
 - small fixes in assembler
