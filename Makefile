@@ -120,7 +120,8 @@ hw/version.v: .version $(TOOLS)/tool.php
 
 #compile: $(HEX_FILES) $(ASC_FILES) $(CDB_FILES)
 
-
+# prepare implementation
+impl: progs hw/version.v
 
 clean_files	= *~ .cproject .project \
 		*.cmd_log *.html *.lso *.ngc *.ngr *.prj \
