@@ -92,6 +92,11 @@ tc_ret:
 	pop	pc
 
 
+ti_empty_esc_buffer:
+	push	r0
+	pop	r0
+	ret
+	
 	;; In : R4 char
 	;; Out: R4 char (or 0), F.C
 ti_process_char:
@@ -99,28 +104,141 @@ ti_process_char:
 	push	r0
 	push	r1
 	push	r2
+	mvzl	r1,tu_esc_buffer
 	ld	r0,tu_esc_buflen
 	sz	r0
 	jnz	tipc_not_empty
 tipc_empty:
 	cmp	r4,27
-	jz	tipc_store
-tipc_empty_non_esc:	
+	jnz	tipc_empty_non_esc
+	call	ti_esc_put
+	jmp	tipc_false
+tipc_empty_non_esc:
+	call	ti_esc_clean
 	jmp	tipc_true
-tipc_store:
-tipc_notempty:			; store
-	mvzl	r1,tu_esc_buffer
-	st	r4,r0+,r1
-	st	r0,tu_esc_buflen
-	mvzl	r2,0
-	st	r2,r0,r1
+tipc_notempty:
+	call	ti_escbuf_put	; store
+	;; check for mouse info: len==6 && buf[2]=='M'
+	cmp	r0,6
+	jnz	tipc_nomouse
+	ld	r2,r1,6
+	cmp	r2,'M'
+	jnz	tipc_nomouse
+tipc_mouse:
+	;; TODO
+	jmp	true
+tipc_nomouse:	
+	;; check buffer len
+	cmp	r0,2
+	ULE jmp	tipc_false
+	;; check CSI
+	ld	r2,r1,1
+	cmp	r2,0x5b
+	jz	tipc_check
+	call	ti_esc_clean
+	jmp	tipc_true
+tipc_check:
+	push	r0
+	mov	r0,r4
+	call	is_alpha
+	pop	r0
+	jnz	tipc_non_alpha
+	;; end of CSI detected
+tipc_alpha:
+	call	ti_esc_clean
+	cmp	r4,'A'
+	EQ mvzl	r4,TU_UP
+	EQ jmp	tipc_true
+	cmp	r4,'B'
+	EQ mvzl	r4,TU_DOWN
+	EQ jmp	tipc_true
+	cmp	r4,'C'
+	EQ mvzl	r4,TU_RIGHT
+	EQ jmp	tipc_true
+	cmp	r4,'D'
+	EQ mvzl	r4,TU_LEFT
+	EQ jmp	tipc_true
+	cmp	r4,'H'
+	EQ mvzl	r4,TU_HOME
+	EQ jmp	tipc_true
+	cmp	r4,'F'
+	EQ mvzl	r4,TU_END
+	EQ jmp	tipc_true
+	cmp	r4,'E'
+	NE jmp	tipc_false
+	EQ jmp	tipc_false
+tipc_non_alpha:
+	cmp	r4,'~'
+	jnz	tipc_false
+
+tipc_tilde:	
+	mvzl	r0,tu_esc_buffer
+	add	r0,2
+	call	dtoi
+	call	ti_esc_clean
+	;; R4= n, first parameter in CSI
+	;; return value depends on n
+	cmp	r4,1
+	EQ mvzl	r4,TU_HOME
+	EQ jmp	tipc_true
+	cmp	r4,2
+	EQ mvzl	r4,TU_INS
+	EQ jmp	tipc_true
+	cmp	r4,3
+	EQ mvzl	r4,TU_DEL
+	EQ jmp	tipc_true
+	cmp	r4,4
+	EQ mvzl	r4,TU_END
+	EQ jmp	tipc_true
+	cmp	r4,5
+	EQ mvzl	r4,TU_PGUP
+	EQ jmp	tipc_true
+	cmp	r4,6
+	EQ mvzl	r4,TU_PGDOWN
+	EQ jmp	tipc_true
+	cmp	r4,11
+	EQ mvzl	r4,TU_F1
+	EQ jmp	tipc_true
+	cmp	r4,12
+	EQ mvzl	r4,TU_F2
+	EQ jmp	tipc_true
+	cmp	r4,13
+	EQ mvzl	r4,TU_F3
+	EQ jmp	tipc_true
+	cmp	r4,14
+	EQ mvzl	r4,TU_F4
+	EQ jmp	tipc_true
+	cmp	r4,15
+	EQ mvzl	r4,TU_F5
+	EQ jmp	tipc_true
+	cmp	r4,17
+	EQ mvzl	r4,TU_F6
+	EQ jmp	tipc_true
+	cmp	r4,18
+	EQ mvzl	r4,TU_F7
+	EQ jmp	tipc_true
+	cmp	r4,19
+	EQ mvzl	r4,TU_F8
+	EQ jmp	tipc_true
+	cmp	r4,20
+	EQ mvzl	r4,TU_F9
+	EQ jmp	tipc_true
+	cmp	r4,21
+	EQ mvzl	r4,TU_F10
+	EQ jmp	tipc_true
+	cmp	r4,23
+	EQ mvzl	r4,TU_F11
+	EQ jmp	tipc_true
+	cmp	r4,24
+	EQ mvzl	r4,TU_F12
+	EQ jmp	tipc_true
+	;; default
+	jmp	tipc_false
 	
 tipc_true:
-	mvzl	r0,0
-	st	r0,tu_esc_buflen
-	sec
 	jmp	tipc_ret
 tipc_false:
+	mvzl	r4,0
 	clc
 tipc_ret:
 	pop	r2
@@ -128,6 +246,29 @@ tipc_ret:
 	pop	r0
 	pop	pc
 
+	;; In : R4 char
+	;; Out: R0 buflen
+ti_esc_put:
+	push	r1
+	push	r2
+	ld	r0,tu_esc_buflen
+	mvzl	r1,tu_esc_buffer
+	st	r4,r0+,r1
+	st	r0,tu_esc_buflen
+	mvzl	r2,0
+	st	r2,r0,r1
+	pop	r2
+	pop	r1
+	ret
+	
+ti_esc_clean:
+	push	r0
+	mvzl	r0,0
+	st	r0,tu_esc_buflen
+	st	r0,tu_esc_buffer
+	pop	r0
+	ret
+	
 	
 	;; In : -
 	;; Out: R4 char (or 0), F.C
