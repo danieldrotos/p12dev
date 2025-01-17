@@ -21,6 +21,141 @@
 	;;
 
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+	.seg	_lib_segment_tu_input
+
+TU_UP		==	-1
+TU_DOWN		==	-2
+TU_LEFT		==	-3
+TU_RIGHT	==	-4
+TU_HOME		==	-5
+TU_END		==	-6
+TU_PGUP		==	-7
+TU_PGDOWN	==	-8
+TU_DEL		==	-9
+TU_F1		==	-10
+TU_F2		==	-11
+TU_F3		==	-12
+TU_F4		==	-13
+TU_F5		==	-14
+TU_F6		==	-15
+TU_F7		==	-16
+TU_F8		==	-17
+TU_F9		==	-18
+TU_F10		==	-19
+TU_F11		==	-20
+TU_F12		==	-21
+TU_INS		==	-22
+
+tu_proc_esc::	.db	1	; bool if esc to be processed
+tu_esc_buflen:	.db	0	; esc buffer
+tu_esc_buffer:	.ds	100	; chars in esc buffer
+	
+
+	;; In : R0 proc_esc
+	;; Out: R4 char (or 0), F.C
+tu_cin::
+	push	lr
+	push	r0
+	call	input_avail
+	NC jmp	tc_false
+	call	read
+	sz	R0
+	FALSE	tc_true
+tc_handle_esc:
+	call	ti_process_char
+	jmp	tc_ret
+tc_false:
+	mvzl	r4,0
+	clc
+	jmp	tc_ret
+tc_true:
+	sec
+tc_ret:	
+	pop	r0
+	pop	pc
+
+
+	;; In : R4 char
+	;; Out: R4 char (or 0), F.C
+ti_process_char:
+	push	lr
+	push	r0
+	push	r1
+	ld	r0,tu_esc_buflen
+	sz	r0
+	jnz	tipc_not_empty
+tipc_empty:
+	cmp	r4,27
+	jz	tipc_store
+tipc_empty_non_esc:	
+	jmp	tipc_true
+tipc_store:
+tipc_notempty:			; store
+	mvzl	r1,tu_esc_buffer
+	st	r4,r0+,r1
+	st	r0,tu_esc_buflen
+	
+tipc_true:
+	mvzl	r0,0
+	st	r0,tu_esc_buflen
+	sec
+	jmp	tipc_ret
+tipc_false:
+	clc
+tipc_ret:
+	pop	r1
+	pop	r0
+	pop	pc
+
+	
+	;; In : -
+	;; Out: R4 char (or 0), F.C
+tu_getc::
+tu_getch::
+	push	lr
+	push	r0
+	mvzl	r0,1
+	call	tu_cin
+	pop	r0
+	pop	pc
+
+	
+	;; In : -
+	;; Out: -
+tu_raw::
+	push	r0
+	mvzl	r0,0
+	st	r0,tu_proc_esc
+	pop	r0
+	ret
+
+	
+	;; In : -
+	;; Out: -
+tu_coocked::
+	push	r0
+	mvzl	r0,1
+	st	r0,tu_proc_esc
+	pop	r0
+	ret
+
+	
+	;; In : -
+	;; Out: R4 if raw, F.C
+tu_is_raw::
+	ld	r4,tu_proc_esc
+	sz	r4
+	Z clc
+	NZ sec
+	ret
+	
+	.ends
+
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_tu_cursor
 
 tu_save_cursor::
@@ -53,6 +188,8 @@ tu_show::
 	.ends
 
 
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_tu_clear
 
 tu_clear_screen::
@@ -71,6 +208,8 @@ tu_clear_char::
 	.ends
 
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	.seg	_lib_segment_tu_moving
 
 	;; In : R0 distance
@@ -132,6 +271,8 @@ tu_go::
 
 	.ends
 
+
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	.seg	_lib_segment_tu_color
 
@@ -224,3 +365,4 @@ tu_gob::
 
 	.ends
 	
+;;; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
