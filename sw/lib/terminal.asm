@@ -98,6 +98,7 @@ ti_process_char:
 	push	lr
 	push	r0
 	push	r1
+	push	r2
 	ld	r0,tu_esc_buflen
 	sz	r0
 	jnz	tipc_not_empty
@@ -111,6 +112,8 @@ tipc_notempty:			; store
 	mvzl	r1,tu_esc_buffer
 	st	r4,r0+,r1
 	st	r0,tu_esc_buflen
+	mvzl	r2,0
+	st	r2,r0,r1
 	
 tipc_true:
 	mvzl	r0,0
@@ -120,6 +123,7 @@ tipc_true:
 tipc_false:
 	clc
 tipc_ret:
+	pop	r2
 	pop	r1
 	pop	r0
 	pop	pc
