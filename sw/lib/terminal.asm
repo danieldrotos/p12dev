@@ -47,7 +47,22 @@ TU_F10		==	-19
 TU_F11		==	-20
 TU_F12		==	-21
 TU_INS		==	-22
-
+	
+;; mouse reports in 4 bytes: FF X Y Code
+TU_BTN1		==	-50	; // button1
+TU_BTN2		==	-51 	; // button2
+TU_BTN3		==	-52	; // button3
+TU_CBTN1	==	-53	; // CTRL-button1
+TU_CBTN2	==	-54	; // CTRL-button2
+TU_CBTN3	==	-55	; // CTRL-button3
+TU_ABTN1	==	-56	; // ALT-button1
+TU_ABTN2	==	-57	; // ALT-button2
+TU_ABTN3	==	-58	; // ALT-button3
+TU_SUP		==	-59	; // Scroll-UP
+TU_SDOWN	==	-60	; // Scroll-DOWN
+TU_CSUP		==	-61	; // CTRL-Scroll-UP
+TU_CSDOWN	==	-62	; // CTRL-Scroll-DOWN
+	
 tu_proc_esc::	.db	1	; bool if esc to be processed
 tu_esc_buflen:	.db	0	; esc buffer
 tu_esc_buffer:	.ds	100	; chars in esc buffer
