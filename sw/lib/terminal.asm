@@ -47,6 +47,8 @@ TU_F10		==	-19
 TU_F11		==	-20
 TU_F12		==	-21
 TU_INS		==	-22
+
+TU_MOUSE	==	-40
 	
 ;; mouse reports in 4 bytes: FF X Y Code
 TU_BTN1		==	-50	; // button1
@@ -62,7 +64,7 @@ TU_SUP		==	-59	; // Scroll-UP
 TU_SDOWN	==	-60	; // Scroll-DOWN
 TU_CSUP		==	-61	; // CTRL-Scroll-UP
 TU_CSDOWN	==	-62	; // CTRL-Scroll-DOWN
-	
+
 tu_proc_esc::	.db	1	; bool if esc to be processed
 tu_esc_buflen:	.db	0	; esc buffer
 tu_esc_buffer:	.ds	100	; chars in esc buffer
@@ -119,13 +121,14 @@ tipc_empty_non_esc:
 tipc_notempty:
 	call	ti_escbuf_put	; store
 	;; check for mouse info: len==6 && buf[2]=='M'
-	cmp	r0,6
-	jnz	tipc_nomouse
 	ld	r2,r1,6
 	cmp	r2,'M'
 	jnz	tipc_nomouse
+	cmp	r0,6
+	jnz	tipc_nomouse
 tipc_mouse:
 	;; TODO
+	mvs	r4,TU_MOUSE
 	jmp	true
 tipc_nomouse:	
 	;; check buffer len
@@ -142,27 +145,27 @@ tipc_check:
 	mov	r0,r4
 	call	is_alpha
 	pop	r0
-	jnz	tipc_non_alpha
+	jnc	tipc_non_alpha
 	;; end of CSI detected
 tipc_alpha:
 	call	ti_esc_clean
 	cmp	r4,'A'
-	EQ mvzl	r4,TU_UP
+	EQ mvs	r4,TU_UP
 	EQ jmp	tipc_true
 	cmp	r4,'B'
-	EQ mvzl	r4,TU_DOWN
+	EQ mvs	r4,TU_DOWN
 	EQ jmp	tipc_true
 	cmp	r4,'C'
-	EQ mvzl	r4,TU_RIGHT
+	EQ mvs	r4,TU_RIGHT
 	EQ jmp	tipc_true
 	cmp	r4,'D'
-	EQ mvzl	r4,TU_LEFT
+	EQ mvs	r4,TU_LEFT
 	EQ jmp	tipc_true
 	cmp	r4,'H'
-	EQ mvzl	r4,TU_HOME
+	EQ mvs	r4,TU_HOME
 	EQ jmp	tipc_true
 	cmp	r4,'F'
-	EQ mvzl	r4,TU_END
+	EQ mvs	r4,TU_END
 	EQ jmp	tipc_true
 	cmp	r4,'E'
 	NE jmp	tipc_false
@@ -179,58 +182,58 @@ tipc_tilde:
 	;; R4= n, first parameter in CSI
 	;; return value depends on n
 	cmp	r4,1
-	EQ mvzl	r4,TU_HOME
+	EQ mvs	r4,TU_HOME
 	EQ jmp	tipc_true
 	cmp	r4,2
-	EQ mvzl	r4,TU_INS
+	EQ mvs	r4,TU_INS
 	EQ jmp	tipc_true
 	cmp	r4,3
-	EQ mvzl	r4,TU_DEL
+	EQ mvs	r4,TU_DEL
 	EQ jmp	tipc_true
 	cmp	r4,4
-	EQ mvzl	r4,TU_END
+	EQ mvs	r4,TU_END
 	EQ jmp	tipc_true
 	cmp	r4,5
-	EQ mvzl	r4,TU_PGUP
+	EQ mvs	r4,TU_PGUP
 	EQ jmp	tipc_true
 	cmp	r4,6
-	EQ mvzl	r4,TU_PGDOWN
+	EQ mvs	r4,TU_PGDOWN
 	EQ jmp	tipc_true
 	cmp	r4,11
-	EQ mvzl	r4,TU_F1
+	EQ mvs	r4,TU_F1
 	EQ jmp	tipc_true
 	cmp	r4,12
-	EQ mvzl	r4,TU_F2
+	EQ mvs	r4,TU_F2
 	EQ jmp	tipc_true
 	cmp	r4,13
-	EQ mvzl	r4,TU_F3
+	EQ mvs	r4,TU_F3
 	EQ jmp	tipc_true
 	cmp	r4,14
-	EQ mvzl	r4,TU_F4
+	EQ mvs	r4,TU_F4
 	EQ jmp	tipc_true
 	cmp	r4,15
-	EQ mvzl	r4,TU_F5
+	EQ mvs	r4,TU_F5
 	EQ jmp	tipc_true
 	cmp	r4,17
-	EQ mvzl	r4,TU_F6
+	EQ mvs	r4,TU_F6
 	EQ jmp	tipc_true
 	cmp	r4,18
-	EQ mvzl	r4,TU_F7
+	EQ mvs	r4,TU_F7
 	EQ jmp	tipc_true
 	cmp	r4,19
-	EQ mvzl	r4,TU_F8
+	EQ mvs	r4,TU_F8
 	EQ jmp	tipc_true
 	cmp	r4,20
-	EQ mvzl	r4,TU_F9
+	EQ mvs	r4,TU_F9
 	EQ jmp	tipc_true
 	cmp	r4,21
-	EQ mvzl	r4,TU_F10
+	EQ mvs	r4,TU_F10
 	EQ jmp	tipc_true
 	cmp	r4,23
-	EQ mvzl	r4,TU_F11
+	EQ mvs	r4,TU_F11
 	EQ jmp	tipc_true
 	cmp	r4,24
-	EQ mvzl	r4,TU_F12
+	EQ mvs	r4,TU_F12
 	EQ jmp	tipc_true
 	;; default
 	jmp	tipc_false
