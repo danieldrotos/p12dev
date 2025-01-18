@@ -239,6 +239,7 @@ tipc_tilde:
 	jmp	tipc_false
 	
 tipc_true:
+	sec
 	jmp	tipc_ret
 tipc_false:
 	mvzl	r4,0
