@@ -1193,7 +1193,7 @@ function proc_asm_line($l)
     if (($w!==false) && ($w[0]==';'))
         return;
     $prew= "";
-    $par_sep= " \t,[]():";
+    $par_sep= " \t,";
     $inst= false;
     $error= false;
     $ok= false;
