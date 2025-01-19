@@ -4,7 +4,7 @@
 	mvzl	sp,stack
 	jmp	main
 
-str:	.db	"s\e[Ae"
+str:	.db	"0\e[A1"
 main:
 	mvzl	r10,str
 	mvzl	r9,0
@@ -20,7 +20,7 @@ proced:
 	btst	r3,2
 	shr	r3
 	ces	eprintf
-	.db	"str=%d R4=%d F.C=%d\n"
+	.db	"%x %d\n"
 	jmp	cyc
 fin:	
 	call	monitor

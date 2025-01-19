@@ -2477,7 +2477,7 @@ if (!empty($syms))
     {
         //L key name value owner [segid]
         debug("OMITING SYMBOL=".print_r($s,true));
-        $o= sprintf("//%s %s %s %08x ", $s['type'], $k, $s['name'], $s['value']);
+        $o= sprintf("//%s %s %s %08x ", $s['type'], $k, $s['name'], ($s['value'] & 0xffffffff) );
         if ($s['owner'] == '')
             $o.= "-";
         else
@@ -2598,14 +2598,14 @@ foreach ($mem as $a => $m)
                 debug( $o= sprintf("//R %05x %s %s %08x", $a,
                                    $r['mode'],
                                    $r['used_parameter'],
-                                   /*$r['value']*/$v) );
+                                   /*$r['value']*/($v & 0xffffffff)) );
                 $hex.= $o."\n";
             }
             if (($out_type=="obj") && (count($m['immediate'])>0))
             {
                 debug( $o= sprintf("//I %05x %s %08x", $a,
                                    $m['immediate']['mode'],
-                                   $m['immediate']['value']) );
+                                   ($m['immediate']['value'] & 0xffffffff)) );
                 $hex.= $o."\n";
             }
             foreach ($m['labels'] as $s)
