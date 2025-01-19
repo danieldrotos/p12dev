@@ -101,7 +101,7 @@ ti_empty_esc_buffer:
 	
 	;; In : R4 char
 	;; Out: R4 char (or 0), F.C
-ti_process_char:
+ti_process_char::
 	push	lr
 	push	r0
 	push	r1
@@ -118,8 +118,8 @@ tipc_empty:
 tipc_empty_non_esc:
 	call	ti_esc_clean
 	jmp	tipc_true
-tipc_notempty:
-	call	ti_escbuf_put	; store
+tipc_not_empty:
+	call	ti_esc_put	; store
 	;; check for mouse info: len==6 && buf[2]=='M'
 	ld	r2,r1,6
 	cmp	r2,'M'
@@ -129,7 +129,7 @@ tipc_notempty:
 tipc_mouse:
 	;; TODO
 	mvs	r4,TU_MOUSE
-	jmp	true
+	jmp	tipc_true
 tipc_nomouse:	
 	;; check buffer len
 	cmp	r0,2
@@ -143,7 +143,7 @@ tipc_nomouse:
 tipc_check:
 	push	r0
 	mov	r0,r4
-	call	is_alpha
+	call	isalpha
 	pop	r0
 	jnc	tipc_non_alpha
 	;; end of CSI detected
