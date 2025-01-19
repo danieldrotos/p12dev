@@ -29,7 +29,8 @@ all: pmonitor lib \
 	edges.asc edges.cdb \
 	tudemo.asc tudemo.cdb \
 	shootgame.asc shootgame.cdb \
-	genseg.asc genseg.cdb
+	genseg.asc genseg.cdb \
+	tutest.asc tutest.cdb
 
 
 pmonitor:
@@ -84,6 +85,8 @@ tudemo.p2h: tudemo.asm $(PLIB)
 shootgame.p2h: shootgame.asm $(PLIB)
 
 genseg.p2h: genseg.asm $(PLIB)
+
+tutest.p2h: tutest.asm $(PLIB)
 
 clean:
 	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst *.log pmon.cc
