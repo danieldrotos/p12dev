@@ -14,11 +14,12 @@ cyc:
 	jz	fin
 	mov	r1,r4
 	call	ti_process_char
+proced:
 	mov	r2,r4
 	getf	r3
 	btst	r3,2
 	shr	r3
-	call	eprintf
+	ces	eprintf
 	.db	"str=%d R4=%d F.C=%d\n"
 	jmp	cyc
 fin:	
