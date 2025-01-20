@@ -1794,6 +1794,64 @@ itoa_divs:
 	dd	0
 	
 
+	;; Convert unsigned binary value to hexa string
+	;; IN : R0 value
+	;; OUT: string in utoh_buffer
+bin2hex:
+bin2hexa:
+utoh:	
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	push	r5
+	mvzl	r1,utoh_buffer	; output ptr
+	mvzl	r2,0		; is printing started
+	mvzl	r3,7		; cycle variable
+	mvzl	r5,v2hc_table
+utoh_cyc:
+	mvzl	r4,0		; pick next char to R4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	sz	r3		; last char is always printed
+	jz	utoh_print
+	sz	r2		; printing?
+	true	utoh_print
+	sz	r4		; should start print?
+	jz	utoh_next
+	mvzl	r2,1
+utoh_print:
+	ld	r4,r5,r4	; uppercase hex char
+	or	r4,0x20		; convert to lowercase
+	st	r4,r1
+	inc	r1
+	mvzl	r4,0
+	st	r4,r1
+utoh_next:
+	sz	r3
+	jz	utoh_ret
+	dec	r3
+	jmp	utoh_cyc
+utoh_ret:
+	pop	r5
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
+
+utoh_buffer:	.ds	9
+	
+	
 ;;; SERIAL IO
 ;;; ==================================================================
 	
