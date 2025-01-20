@@ -2200,7 +2200,7 @@ printf_l4:
 	inc	r2		; go to format char
 printf_l3:
 	ld	r0,r2
-	sz	r2		; is it EOS?
+	sz	r0		; is it EOS?
 	jz	printf_ret
 	getbz	r0,r0,r3
 	sz	r0
