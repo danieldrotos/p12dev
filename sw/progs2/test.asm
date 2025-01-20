@@ -21,6 +21,7 @@ d_test:	ces	eprintf
 	.db	"signed=%d unsigned=%u hex=%x\n"
 
 	mvzl	r1,'A'
+opt_test:
 	ces	eprintf
 	.db	"%-+08c\n"
 	

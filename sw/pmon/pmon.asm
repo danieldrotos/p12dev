@@ -2237,6 +2237,7 @@ printf_n2:
 	jnz	printf_n3
 	mvzl	r0,1
 	st	r0,printf_fill_zero
+	jmp	printf_fmt_next
 printf_n3:
 	cmp	r0,'1'
 	ULT jmp	printf_n4
