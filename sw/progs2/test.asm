@@ -9,6 +9,17 @@
 	ces	eprintf
 	db	"HelloWorld!\n"
 
+	mvzl	r1,0xf000
+	mov	r2,r1
+	mov	r3,r1
+u_test:	ces	eprintf
+	.db	"signed=%d unsigned=%u hex=%x\n"
+	mvs	r1,0xf000
+	mov	r2,r1
+	mov	r3,r1
+d_test:	ces	eprintf
+	.db	"signed=%d unsigned=%u hex=%x\n"
+	
 	ces	eprintf
 	db	"B"
 

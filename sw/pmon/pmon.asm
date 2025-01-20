@@ -1,7 +1,7 @@
 	cpu	P2
 
 	version_main	=	1
-	version_sub	=	4
+	version_sub	=	5
 	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
@@ -1863,10 +1863,47 @@ div_ret:
 ;	ret
 
 
-	;; itoa
-	;; IN:  R0
+	;; itoa convert signed number to decimal string
+	;; IN:  R0 signed value
 	;; OUT: string in itoa_buffer
 itoa:
+	push	lr
+	push	r0
+	push	r1
+	sz	r0
+	S0 jmp	itoa_pos
+itoa_neg:
+	mvzl	r1,'-'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	neg	r0
+	jmp	itoa_conv
+itoa_pos:
+	mvzl	r1,itoa_buffer
+itoa_conv:
+	call	bin2asc
+	pop	r1
+	pop	r0
+	pop	pc
+
+
+	;; utoa convert unsigned number to decimal string
+	;; IN : R0 binary value
+	;; OUT: string in itoa_buffer
+utoa:
+	push	lr
+	push	r1
+	mvzl	r1,itoa_buffer
+	call	bin2asc
+	pop	r1
+	pop	pc
+
+	
+	;; bin2asc (unsigned decimal to ascii)
+	;; In : R0 binary value
+	;;    : R1 output buffer
+bin2asc:
 	push	lr
 	push	r0
 	push	r1
@@ -1876,9 +1913,10 @@ itoa:
 	push	r11
 	push	r12
 
-	mvzl	r12,itoa_buffer	; pointer to output buffer
+	mov	r12,r1		; pointer to output buffer
 	mvzl	r11,itoa_divs	; pointer to dividers
 	mvzl	r10,0		; bool: first non-zero char found
+	st	r10,r12		; start to produce an empty string
 itoa_cyc:	
 	ld	r1,r11		; get next divider
 	sz	r1		; if 0, then
@@ -1915,7 +1953,7 @@ itoa_ret:
 	pop	r0
 	pop	pc
 ;	ret
-itoa_buffer:	ds	11
+itoa_buffer:	ds	15
 itoa_divs:
 	dd	1000000000
 	dd	 100000000
@@ -1962,7 +2000,7 @@ itobcd_ret:
 	pop	pc
 
 	
-	;; Print number in decimal
+	;; Print signed number in decimal
 	;; In : R0
 	;; Out: -
 printd:
@@ -1971,14 +2009,31 @@ printd:
 	mvzl	r0,itoa_buffer
 	call	prints
 	pop	pc
-;	ret
 
+
+	;; Print unsigned number in decimal
+	;; In : R0
+	;; Out: -
+printu:
+	push	lr
+	push	r0
+	push	r1
+	mvzl	r1,itoa_buffer
+	call	bin2asc
+	mvzl	r0,itoa_buffer
+	call	prints
+	pop	r1
+	pop	r0
+	pop	pc
+	
 
 	;; Format and print string
 	;; In : R0 address of string template (format)
 	;;      R1..R12 parameter values
 	;; Out: R2 pointer to end of string (address of zero byte)
 printf:
+	sz	r0		; check str pointer
+	Z ret
 	push	lr
 	push	r0
 	push	r1
@@ -2010,54 +2065,7 @@ printf_cyc:
 
 	;cmp	r0,'\\'
 	;jnz	printf_notescape
-	jmp	printf_notescape
-	
-;; 	inc	r3
-;; 	cmp	r3,4
-;; 	jnz	printf_l1
-;; printf_l2:
-;; 	mvzl	r3,0
-;; 	inc	r2
-;; 	ld	r0,r2
-;; 	sz	r0
-;; 	jz	printf_ret
-;; printf_l1:
-;; 	ld	r0,r2
-;; 	getbz	r0,r0,r3
-;; 	sz	r0
-;; 	jz	printf_l2
-	
-;; 	cmp	r0,'a'
-;; 	Z mvzl	r0,7
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'b'
-;; 	Z mvzl	r0,8
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'e'
-;; 	Z mvzl	r0,0x1b
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'f'
-;; 	Z mvzl	r0,0xc
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'n'
-;; 	Z mvzl	r0,0xa
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'r'
-;; 	Z mvzl	r0,0xd
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'t'
-;; 	Z mvzl	r0,9
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'v'
-;; 	Z mvzl	r0,0xb
-;; 	Z jmp	printf_print
-;; 	cmp	r0,0x5c
-;; 	Z jmp	printf_print
-;; 	cmp	r0,'0'
-;; 	Z mvzl	r0,0
-;; 	Z jmp	printf_print
-	
-;; 	jmp	printf_print
+	;jmp	printf_notescape
 	
 printf_notescape:	
 	cmp	r0,'%'		; is it a format char?
@@ -2081,9 +2089,16 @@ printf_l3:
 	cmp	r0,'%'		; % is used to print %
 	jz	printf_print
 
-	cmp	r0,'u'		; u,d print in decimal
-	jz	printf_d
-	cmp	r0,'d'
+	cmp	r0,'u'		; u print unsigned in decimal
+	jnz	printf_notu
+ptintfu:
+	ld	r0,r1
+	inc	r1
+	call	printu
+	jmp	printf_next
+	
+printf_notu:	
+	cmp	r0,'d'		;d print signed in decimal
 	jnz	printf_notd
 printf_d:
 	ld	r0,r1
