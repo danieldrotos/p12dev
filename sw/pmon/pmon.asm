@@ -1138,6 +1138,98 @@ cmd_v:
 	.db	"pmon: %d.%d cpu: %d.%d.%d feat1: %x feat2: %x\n"
 	pop	pc
 	
+
+;;; GENERAL UTILITIES
+;;; ==================================================================
+
+	;; Divide Q,R= N/D
+	;; IN:  R0= N, R1= D
+	;; OUT: R2= Q, R3= R
+div:
+	push	lr
+	push	r4
+	
+	sz	r1
+	NZ jmp	div_dok
+	mov	r2,r0		; div by zero
+	mvzl	r3,0
+	jmp	div_ret
+div_dok:
+	mvzl	r2,0		; Q= 0
+	mvzl	r3,0		; R= 0
+	mvh	r4,0x80000000	; m= 1<<31
+	mvl	r4,0x80000000
+div_cyc:
+	sz	r4
+	Z jmp	div_ret
+	shl	r3		; r<<= 1
+	test	r0,r4		; if (n&m)
+	NZ or	r3,1		; r|= 1
+	cmp	r3,r1		; if (r>=d)
+	LO jmp	div_cyc_next
+	sub	r3,r1		;r-= d
+	or	r2,r4		;q|= m
+	jmp	div_cyc_next
+	jmp	div_cyc
+div_cyc_next:
+	shr	r4		; m>>= 1
+	jmp	div_cyc
+div_ret:
+	pop	r4
+	pop	pc
+
+
+	;; Convert number to BCD
+	;; In : R0
+	;; Out: R0
+itobcd:
+	push	lr
+	push	r1
+	push	r2
+	cmp	r0,99999999
+	UGT jmp	itobcd_bad
+	call	utoa
+	mvzl	r0,0
+	mvzl	r1,itoa_buffer
+itobcd_cyc:
+	ld	r2,r1
+	sz	r2
+	jz	itobcd_ret
+	sub	r2,'0'
+	shl	r0
+	shl	r0
+	shl	r0
+	shl	r0
+	or	r0,r2
+	inc	r1
+	jmp	itobcd_cyc
+itobcd_bad:
+	mvzl	r0,0
+itobcd_ret:
+	pop	r2
+	pop	r1
+	pop	pc
+
+
+	;; In : R0 ascii
+	;; Out: R4 segments
+ascii2seg:
+	mvzl	r4,0
+	cmp	r0,0x7f
+	UGT ret
+a2s_ok:
+	push	r0
+	push	r1
+
+	shr	r0
+	shr	r0
+	mvzl	r1,ascii2seg_table
+	ld	r4,r0,r1
+	pop	r1
+	pop	r0
+	getbz	r4,r4,r0
+	ret
+	
 	
 ;;; STRING UTILITIES
 ;;; ==================================================================
@@ -1478,7 +1570,10 @@ hc2v_nok:
 	clc
 	ret
 
-	
+
+	;; Convert 0-15 value to a uppercase hexa char
+	;; In : R0 value
+	;; Out: R0 hexa char
 value2Hexchar:
 	push	r1
 	and	r0,0xf
@@ -1488,14 +1583,17 @@ value2Hexchar:
 	ret
 v2hc_table:	db	"0123456789ABCDEF"
 
+
+	;; Convert 0-15 value to a lowercase hexa char
+	;; In : R0 value
+	;; Out: R0 hexa char
 value2hexchar:
 	push	lr
 	call	value2Hexchar
 	or	r0,0x20
 	pop	pc
-;	ret
 
-	
+
 	;; Convert string to number (hexadecimal)
 	;; IN: R0 addr of string
 	;; OUT: R1 value
@@ -1553,9 +1651,149 @@ htoi_ret:
 	pop	r3
 	pop	r2
 	pop	pc
+
+	
+	;; itoa convert signed number to decimal string
+	;; IN:  R0 signed value
+	;; OUT: string in itoa_buffer
+itoa:
+	push	lr
+	push	r0
+	push	r1
+	sz	r0
+	S0 jmp	itoa_pos
+itoa_neg:
+	mvzl	r1,'-'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	neg	r0
+	call	bin2asc
+	jmp	itoa_ret
+itoa_pos:
+	mvzl	r1,itoa_buffer
+itoa_conv:
+	call	bin2asc
+itoa_ret:	
+	pop	r1
+	pop	r0
+	pop	pc
+
+
+	;; itosa convert signed number to string, include sign
+	;; IN : R0 number
+	;; OUT: string in itoa_buffer
+itosa:
+	push	lr
+	push	r1
+	sz	r0
+	S1 call	itoa
+	jmp	itosa_ret
+	mvzl	r1,'+'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	call	bin2asc
+itosa_ret:	
+	pop	r1
+	pop	pc
+	
+
+	;; utoa convert unsigned number to decimal string
+	;; IN : R0 binary value
+	;; OUT: string in itoa_buffer
+utoa:
+	push	lr
+	push	r1
+	mvzl	r1,itoa_buffer
+	call	bin2asc
+	pop	r1
+	pop	pc
+
+
+	;; utosa convert unsigned number to string, include sign
+	;; IN : R0 number
+	;; OUT: string in itoa_buffer
+utosa:
+	push	lr
+	push	r1
+	mvzl	r1,'+'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	call	bin2asc
+	pop	r1
+	pop	pc
+
+	
+	;; bin2asc (unsigned decimal to ascii)
+	;; In : R0 binary value
+	;;    : R1 output buffer
+bin2asc:
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r10
+	push	r11
+	push	r12
+
+	mov	r12,r1		; pointer to output buffer
+	mvzl	r11,itoa_divs	; pointer to dividers
+	mvzl	r10,0		; bool: first non-zero char found
+	st	r10,r12		; start to produce an empty string
+itoa_cyc:	
+	ld	r1,r11		; get next divider
+	sz	r1		; if 0, then
+	jz	itoa_ret	; finish
+	cmp	r1,1		; last divider?
+	EQ mvzl	r10,1		; always print last char
+	call	div		; R2,R3= R0/R1
+	sz	r2		; is the result zero?
+	jz	itoa_f0
+itoa_fno0:
+	mvzl	r10,1		; non-zero: start to print
+itoa_store:
+	mov	r0,r2		; convert result to ASCII char
+	call	value2hexchar
+	st	r0,r12		; and store it in buffer
+	inc	r12		; inc buf ptr
+	mvzl	r0,0		; put 0 after last char
+	st	r0,r12
+itoa_next:
+	mov	r0,r3		; continue with the reminder
+	inc	r11		; and next divider
+	jmp	itoa_cyc
+itoa_f0:
+	sz	r10		; just zeros so far?
+	jnz	itoa_store	; no, print
+	jmp	itoa_next
+itoa_ret:
+	pop	r12
+	pop	r11
+	pop	r10
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
 ;	ret
+itoa_buffer:	ds	15
+itoa_divs:
+	dd	1000000000
+	dd	 100000000
+	dd	  10000000
+	dd	   1000000
+	dd	    100000
+	dd	     10000
+	dd	      1000
+	dd	       100
+	dd	        10
+	dd	         1
+	dd	0
 	
-	
+
 ;;; SERIAL IO
 ;;; ==================================================================
 	
@@ -1825,217 +2063,6 @@ print_vhex_ret:
 ;	ret
 
 
-	;; Divide Q,R= N/D
-	;; IN:  R0= N, R1= D
-	;; OUT: R2= Q, R3= R
-div:
-	push	lr
-	push	r4
-	
-	sz	r1
-	NZ jmp	div_dok
-	mov	r2,r0		; div by zero
-	mvzl	r3,0
-	jmp	div_ret
-div_dok:
-	mvzl	r2,0		; Q= 0
-	mvzl	r3,0		; R= 0
-	mvh	r4,0x80000000	; m= 1<<31
-	mvl	r4,0x80000000
-div_cyc:
-	sz	r4
-	Z jmp	div_ret
-	shl	r3		; r<<= 1
-	test	r0,r4		; if (n&m)
-	NZ or	r3,1		; r|= 1
-	cmp	r3,r1		; if (r>=d)
-	LO jmp	div_cyc_next
-	sub	r3,r1		;r-= d
-	or	r2,r4		;q|= m
-	jmp	div_cyc_next
-	jmp	div_cyc
-div_cyc_next:
-	shr	r4		; m>>= 1
-	jmp	div_cyc
-div_ret:
-	pop	r4
-	pop	pc
-;	ret
-
-
-	;; itoa convert signed number to decimal string
-	;; IN:  R0 signed value
-	;; OUT: string in itoa_buffer
-itoa:
-	push	lr
-	push	r0
-	push	r1
-	sz	r0
-	S0 jmp	itoa_pos
-itoa_neg:
-	mvzl	r1,'-'
-	st	r1,itoa_buffer
-	mvzl	r1,itoa_buffer
-	inc	r1
-	neg	r0
-	call	bin2asc
-	jmp	itoa_ret
-itoa_pos:
-	mvzl	r1,itoa_buffer
-itoa_conv:
-	call	bin2asc
-itoa_ret:	
-	pop	r1
-	pop	r0
-	pop	pc
-
-
-	;; itosa convert signed number to string, include sign
-	;; IN : R0 number
-	;; OUT: string in itoa_buffer
-itosa:
-	push	lr
-	push	r1
-	sz	r0
-	S1 call	itoa
-	jmp	itosa_ret
-	mvzl	r1,'+'
-	st	r1,itoa_buffer
-	mvzl	r1,itoa_buffer
-	inc	r1
-	call	bin2asc
-itosa_ret:	
-	pop	r1
-	pop	pc
-	
-
-	;; utoa convert unsigned number to decimal string
-	;; IN : R0 binary value
-	;; OUT: string in itoa_buffer
-utoa:
-	push	lr
-	push	r1
-	mvzl	r1,itoa_buffer
-	call	bin2asc
-	pop	r1
-	pop	pc
-
-
-	;; utosa convert unsigned number to string, include sign
-	;; IN : R0 number
-	;; OUT: string in itoa_buffer
-utosa:
-	push	lr
-	push	r1
-	mvzl	r1,'+'
-	st	r1,itoa_buffer
-	mvzl	r1,itoa_buffer
-	inc	r1
-	call	bin2asc
-	pop	r1
-	pop	pc
-
-	
-	;; bin2asc (unsigned decimal to ascii)
-	;; In : R0 binary value
-	;;    : R1 output buffer
-bin2asc:
-	push	lr
-	push	r0
-	push	r1
-	push	r2
-	push	r3
-	push	r10
-	push	r11
-	push	r12
-
-	mov	r12,r1		; pointer to output buffer
-	mvzl	r11,itoa_divs	; pointer to dividers
-	mvzl	r10,0		; bool: first non-zero char found
-	st	r10,r12		; start to produce an empty string
-itoa_cyc:	
-	ld	r1,r11		; get next divider
-	sz	r1		; if 0, then
-	jz	itoa_ret	; finish
-	cmp	r1,1		; last divider?
-	EQ mvzl	r10,1		; always print last char
-	call	div		; R2,R3= R0/R1
-	sz	r2		; is the result zero?
-	jz	itoa_f0
-itoa_fno0:
-	mvzl	r10,1		; non-zero: start to print
-itoa_store:
-	mov	r0,r2		; convert result to ASCII char
-	call	value2hexchar
-	st	r0,r12		; and store it in buffer
-	inc	r12		; inc buf ptr
-	mvzl	r0,0		; put 0 after last char
-	st	r0,r12
-itoa_next:
-	mov	r0,r3		; continue with the reminder
-	inc	r11		; and next divider
-	jmp	itoa_cyc
-itoa_f0:
-	sz	r10		; just zeros so far?
-	jnz	itoa_store	; no, print
-	jmp	itoa_next
-itoa_ret:
-	pop	r12
-	pop	r11
-	pop	r10
-	pop	r3
-	pop	r2
-	pop	r1
-	pop	r0
-	pop	pc
-;	ret
-itoa_buffer:	ds	15
-itoa_divs:
-	dd	1000000000
-	dd	 100000000
-	dd	  10000000
-	dd	   1000000
-	dd	    100000
-	dd	     10000
-	dd	      1000
-	dd	       100
-	dd	        10
-	dd	         1
-	dd	0
-	
-
-	;; Convert number to BCD
-	;; In : R0
-	;; Out: R0
-itobcd:
-	push	lr
-	push	r1
-	push	r2
-	cmp	r0,99999999
-	UGT jmp	itobcd_bad
-	call	utoa
-	mvzl	r0,0
-	mvzl	r1,itoa_buffer
-itobcd_cyc:
-	ld	r2,r1
-	sz	r2
-	jz	itobcd_ret
-	sub	r2,'0'
-	shl	r0
-	shl	r0
-	shl	r0
-	shl	r0
-	or	r0,r2
-	inc	r1
-	jmp	itobcd_cyc
-itobcd_bad:
-	mvzl	r0,0
-itobcd_ret:
-	pop	r2
-	pop	r1
-	pop	pc
-
-	
 	;; Print signed number in decimal
 	;; In : R0
 	;; Out: -
@@ -2225,26 +2252,6 @@ version:
 	ret
 	
 
-	;; In : R0 ascii
-	;; Out: R4 segments
-ascii2seg:
-	mvzl	r4,0
-	cmp	r0,0x7f
-	UGT ret
-a2s_ok:
-	push	r0
-	push	r1
-
-	shr	r0
-	shr	r0
-	mvzl	r1,ascii2seg_table
-	ld	r4,r0,r1
-	pop	r1
-	pop	r0
-	getbz	r4,r4,r0
-	ret
-	
-	
 ;;; VARIABLES
 ;;; ---------
 line:		ds	100		; line buffer
