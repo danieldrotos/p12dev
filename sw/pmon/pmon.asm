@@ -1878,11 +1878,13 @@ itoa_neg:
 	mvzl	r1,itoa_buffer
 	inc	r1
 	neg	r0
-	jmp	itoa_conv
+	call	bin2asc
+	jmp	itoa_ret
 itoa_pos:
 	mvzl	r1,itoa_buffer
 itoa_conv:
 	call	bin2asc
+itoa_ret:	
 	pop	r1
 	pop	r0
 	pop	pc
@@ -1899,7 +1901,7 @@ utoa:
 	pop	r1
 	pop	pc
 
-	
+
 	;; bin2asc (unsigned decimal to ascii)
 	;; In : R0 binary value
 	;;    : R1 output buffer
@@ -1977,7 +1979,7 @@ itobcd:
 	push	r2
 	cmp	r0,99999999
 	UGT jmp	itobcd_bad
-	call	itoa
+	call	utoa
 	mvzl	r0,0
 	mvzl	r1,itoa_buffer
 itobcd_cyc:
