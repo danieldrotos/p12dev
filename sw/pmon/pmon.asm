@@ -2150,6 +2150,11 @@ printu:
 	pop	pc
 	
 
+printf_left_align:	.ds	1
+printf_show_sign:	.ds	1
+printf_fill_zero:	.ds	1
+printf_min_len:		.ds	1
+	
 	;; Format and print string
 	;; In : R0 address of string template (format)
 	;;      R1..R12 parameter values
@@ -2178,6 +2183,11 @@ printf:
 	mov	r2,r0		; pointer to format string
 	mvzl	r1,reg1		; pointer to params
 	mvzl	r3,0		; byte idx in packed str
+	;; default values for options
+	st	r3,printf_left_align
+	st	r3,printf_show_sign
+	st	r3,printf_fill_zero
+	st	r3,printf_min_len
 printf_cyc:
 	ld	r0,r2		; get next char
 	sz	r0		; is it EOS?
@@ -2194,6 +2204,7 @@ printf_cyc:
 	jnz	printf_print
 
 printf_format_found:
+printf_fmt_next:	
 	inc	r3
 	cmp	r3,4
 	jnz	printf_l3
@@ -2208,7 +2219,32 @@ printf_l3:
 	sz	r0
 	jz	printf_l4
 	
-printf_check_format:	
+printf_check_format:
+	;; check option characters
+	cmp	r0,'+'
+	jnz	printf_n1
+	mvzl	r0,1
+	st	r0,printf_show_sign
+	jmp	printf_fmt_next
+printf_n1:
+	cmp	r0,'-'
+	jnz	printf_n2
+	mvzl	r0,1
+	st	r0,printf_left_align
+	jmp	printf_fmt_next
+printf_n2:
+	cmp	r0,'0'
+	jnz	printf_n3
+	mvzl	r0,1
+	st	r0,printf_fill_zero
+printf_n3:
+	cmp	r0,'1'
+	ULT jmp	printf_n4
+	cmp	r0,'9'
+	UGT jmp	printf_n4
+	
+	jmp	printf_fmt_next
+printf_n4:
 	cmp	r0,'%'		; % is used to print %
 	jz	printf_print
 
@@ -2237,7 +2273,6 @@ printf_x:
 	inc	r1
 	push	r1
 	mvzl	r1,0
-
 
 	call	print_vhex
 	pop	r1

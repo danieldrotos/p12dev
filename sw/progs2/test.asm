@@ -19,9 +19,13 @@ u_test:	ces	eprintf
 	mov	r3,r1
 d_test:	ces	eprintf
 	.db	"signed=%d unsigned=%u hex=%x\n"
+
+	mvzl	r1,'A'
+	ces	eprintf
+	.db	"%-+08c\n"
 	
 	ces	eprintf
-	db	"B"
+	.db	"B"
 
 stop:	jmp	stop
 	
