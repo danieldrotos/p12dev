@@ -1660,6 +1660,7 @@ itoa:
 	push	lr
 	push	r0
 	push	r1
+	
 	sz	r0
 	S0 jmp	itoa_pos
 itoa_neg:
@@ -1674,6 +1675,7 @@ itoa_pos:
 	mvzl	r1,itoa_buffer
 itoa_conv:
 	call	bin2asc
+	
 itoa_ret:	
 	pop	r1
 	pop	r0
@@ -1743,33 +1745,33 @@ bin2asc:
 	mvzl	r11,itoa_divs	; pointer to dividers
 	mvzl	r10,0		; bool: first non-zero char found
 	st	r10,r12		; start to produce an empty string
-itoa_cyc:	
+b2a_cyc:	
 	ld	r1,r11		; get next divider
 	sz	r1		; if 0, then
-	jz	itoa_ret	; finish
+	jz	b2a_ret		; finish
 	cmp	r1,1		; last divider?
 	EQ mvzl	r10,1		; always print last char
 	call	div		; R2,R3= R0/R1
 	sz	r2		; is the result zero?
-	jz	itoa_f0
-itoa_fno0:
+	jz	b2a_f0
+b2a_fno0:
 	mvzl	r10,1		; non-zero: start to print
-itoa_store:
+b2a_store:
 	mov	r0,r2		; convert result to ASCII char
 	call	value2hexchar
 	st	r0,r12		; and store it in buffer
 	inc	r12		; inc buf ptr
 	mvzl	r0,0		; put 0 after last char
 	st	r0,r12
-itoa_next:
+b2a_next:
 	mov	r0,r3		; continue with the reminder
 	inc	r11		; and next divider
-	jmp	itoa_cyc
-itoa_f0:
+	jmp	b2a_cyc
+b2a_f0:
 	sz	r10		; just zeros so far?
-	jnz	itoa_store	; no, print
-	jmp	itoa_next
-itoa_ret:
+	jnz	b2a_store	; no, print
+	jmp	b2a_next
+b2a_ret:
 	pop	r12
 	pop	r11
 	pop	r10
@@ -1778,7 +1780,7 @@ itoa_ret:
 	pop	r1
 	pop	r0
 	pop	pc
-;	ret
+
 itoa_buffer:	ds	15
 itoa_divs:
 	dd	1000000000
@@ -2188,10 +2190,10 @@ printf_cyc:
 	;jnz	printf_notescape
 	;jmp	printf_notescape
 	
-printf_notescape:	
 	cmp	r0,'%'		; is it a format char?
 	jnz	printf_print
 
+printf_format_found:
 	inc	r3
 	cmp	r3,4
 	jnz	printf_l3

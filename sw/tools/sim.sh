@@ -36,4 +36,4 @@ tt "cmd2" 6666 &
 #xfce4-terminal -T "cmd2" -e "./sw/tools/tnto 6666" &
 
 I="-I if=rom[0xffff]"
-$SIM -t2 -Z6666 -S uart=0,port=5555 $I $GOPT -e "uart0_check_often=1" $1 ${PMON}/pmon.p2h
+$SIM -t2 -Z6666 -S uart=0,port=5555 $I $GOPT -e "uart0_check_often=1" $1 ${PMON}/pmon
