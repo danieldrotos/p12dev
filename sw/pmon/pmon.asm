@@ -2198,15 +2198,15 @@ printf_notescape:
 printf_l4:
 	mvzl	r3,0
 	inc	r2		; go to format char
+printf_l3:
 	ld	r0,r2
 	sz	r2		; is it EOS?
 	jz	printf_ret
-printf_l3:
-	ld	r0,r2
 	getbz	r0,r0,r3
 	sz	r0
 	jz	printf_l4
 	
+printf_check_format:	
 	cmp	r0,'%'		; % is used to print %
 	jz	printf_print
 
