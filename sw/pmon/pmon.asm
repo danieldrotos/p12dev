@@ -1890,6 +1890,25 @@ itoa_ret:
 	pop	pc
 
 
+	;; itosa convert signed number to string, include sign
+	;; IN : R0 number
+	;; OUT: string in itoa_buffer
+itosa:
+	push	lr
+	push	r1
+	sz	r0
+	S1 call	itoa
+	jmp	itosa_ret
+	mvzl	r1,'+'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	call	bin2asc
+itosa_ret:	
+	pop	r1
+	pop	pc
+	
+
 	;; utoa convert unsigned number to decimal string
 	;; IN : R0 binary value
 	;; OUT: string in itoa_buffer
@@ -1902,6 +1921,21 @@ utoa:
 	pop	pc
 
 
+	;; utosa convert unsigned number to string, include sign
+	;; IN : R0 number
+	;; OUT: string in itoa_buffer
+utosa:
+	push	lr
+	push	r1
+	mvzl	r1,'+'
+	st	r1,itoa_buffer
+	mvzl	r1,itoa_buffer
+	inc	r1
+	call	bin2asc
+	pop	r1
+	pop	pc
+
+	
 	;; bin2asc (unsigned decimal to ascii)
 	;; In : R0 binary value
 	;;    : R1 output buffer
