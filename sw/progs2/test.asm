@@ -23,7 +23,7 @@ d_test:	ces	eprintf
 	mvzl	r1,'A'
 opt_test:
 	ces	eprintf
-	.db	"%-+08c\n"
+	.db	"%-+010c\n"
 	
 	ces	eprintf
 	.db	"B"

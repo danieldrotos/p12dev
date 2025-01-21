@@ -1781,7 +1781,7 @@ b2a_ret:
 	pop	r0
 	pop	pc
 
-itoa_buffer:	ds	15
+itoa_buffer:	ds	33
 itoa_divs:
 	dd	1000000000
 	dd	 100000000
@@ -1798,7 +1798,7 @@ itoa_divs:
 
 	;; Convert unsigned binary value to hexa string
 	;; IN : R0 value
-	;; OUT: string in utoh_buffer
+	;; OUT: string in ita_buffer
 bin2hex:
 bin2hexa:
 utoh:	
@@ -1809,7 +1809,7 @@ utoh:
 	push	r3
 	push	r4
 	push	r5
-	mvzl	r1,utoh_buffer	; output ptr
+	mvzl	r1,itoa_buffer	; output ptr
 	mvzl	r2,0		; is printing started
 	mvzl	r3,7		; cycle variable
 	mvzl	r5,v2hc_table
@@ -1850,8 +1850,6 @@ utoh_ret:
 	pop	r1
 	pop	r0
 	pop	pc
-
-utoh_buffer:	.ds	9
 	
 	
 ;;; SERIAL IO
@@ -2166,6 +2164,7 @@ printf:
 	push	r0
 	push	r1
 	push	r3
+	push	r4
 	
 	st	r1,reg1
 	st	r2,reg2
@@ -2183,6 +2182,7 @@ printf:
 	mov	r2,r0		; pointer to format string
 	mvzl	r1,reg1		; pointer to params
 	mvzl	r3,0		; byte idx in packed str
+	mvzl	r4,0		; bool: len reading mode
 	;; default values for options
 	st	r3,printf_left_align
 	st	r3,printf_show_sign
@@ -2196,10 +2196,6 @@ printf_cyc:
 	sz	r0		; is it null?
 	jz	printf_nextword	; no more non-nulls
 
-	;cmp	r0,'\\'
-	;jnz	printf_notescape
-	;jmp	printf_notescape
-	
 	cmp	r0,'%'		; is it a format char?
 	jnz	printf_print
 
@@ -2220,6 +2216,25 @@ printf_l3:
 	jz	printf_l4
 	
 printf_check_format:
+	sz	r4		; len reading?
+	jz	printf_nolen_read
+printf_len_read:
+	cmp	r0,'0'		; when non-digit found:
+	ULT jmp	printf_len_read_exit
+	cmp	r0,'9'
+	UGT jmp	printf_len_read_exit
+printf_add2len:
+	sub	r0,'0'		; convert to binary
+	push	r5		; and mix to parameter
+	ld	r5,printf_min_len
+	mul	r5,10
+	add	r5,r0
+	st	r5,printf_min_len
+	pop	r5
+	jmp	printf_fmt_next
+printf_len_read_exit:
+	mvzl	r4,0
+printf_nolen_read:
 	;; check option characters
 	cmp	r0,'+'
 	jnz	printf_n1
@@ -2243,8 +2258,8 @@ printf_n3:
 	ULT jmp	printf_n4
 	cmp	r0,'9'
 	UGT jmp	printf_n4
-	
-	jmp	printf_fmt_next
+	mvzl	r4,1
+	jmp	printf_add2len
 printf_n4:
 	cmp	r0,'%'		; % is used to print %
 	jz	printf_print
@@ -2291,6 +2306,7 @@ printf_s:
 printf_nots:
 	cmp	r0,'c'
 	jnz	printf_notc
+print_c:
 	ld	r0,r1
 	inc	r1
 	call	putchar
@@ -2319,7 +2335,8 @@ printf_ret:
 	ld	r6,reg6
 	ld	r5,reg5
 	ld	r4,reg4
-	
+
+	pop	r4
 	pop	r3
 	pop	r1
 	pop	r0
