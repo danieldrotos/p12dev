@@ -113,7 +113,7 @@ main_run:
 	sz	r0
 	Z call	move_down
 
-	call	input_avail
+	call	tu_getc			; input_avail
 	C call	handle_input
 
 	ld	r0,state
@@ -159,7 +159,7 @@ mo_out:
 	
 handle_input::
 	push	lr
-	call	read
+	;call	read
 	mvzl	r0,jump_table
 	mvzl	r2,0
 search_cycle:	
@@ -181,15 +181,21 @@ jump_table:
 	dd	move_left
 	dd	'A'
 	dd	move_left
+	dd	TU_LEFT
+	dd	move_left
 	dd	'd'
 	dd	move_right
 	dd	'D'
+	dd	move_right
+	dd	TU_RIGHT
 	dd	move_right
 	dd	0x20
 	dd	shoot
 	dd	10
 	dd	shoot
 	dd	13
+	dd	shoot
+	dd	TU_UP
 	dd	shoot
 	dd	0
 

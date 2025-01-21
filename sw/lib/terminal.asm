@@ -72,7 +72,7 @@ tu_esc_buffer:	.ds	100	; chars in esc buffer
 
 	;; In : R0 proc_esc
 	;; Out: R4 char (or 0), F.C
-tu_cin::
+tu_cin:
 	push	lr
 	push	r0
 	call	input_avail
