@@ -2303,7 +2303,9 @@ printf_n4:
 ptintfu:
 	ld	r0,r1
 	inc	r1
-	call	printu
+	call	utoa
+	mvzl	r0,itoa_buffer
+	call	printf_pr
 	jmp	printf_next
 	
 printf_notu:	
