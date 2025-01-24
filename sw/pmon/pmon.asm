@@ -2198,6 +2198,7 @@ printf:
 	push	r1
 	push	r3
 	push	r4
+	push	r5
 	
 	st	r1,reg1
 	st	r2,reg2
@@ -2333,7 +2334,9 @@ printf_notx:
 printf_s:
 	ld	r0,r1
 	inc	r1
-	call	prints
+	mvzl	r5,0
+	st	r5,printf_fill_zero
+	call	printf_pr
 	jmp	printf_next
 	
 printf_nots:
@@ -2369,6 +2372,7 @@ printf_ret:
 	ld	r5,reg5
 	ld	r4,reg4
 
+	pop	r5
 	pop	r4
 	pop	r3
 	pop	r1
@@ -2423,13 +2427,14 @@ printf_fill:
 	push	r0
 	push	r1
 	mov	r1,r0
-	mvzl	r0,32
 	ld	r0,printf_left_align
 	sz	r0
-	jz	pf_cyc
+	NZ mvzl	r0,32
+	jnz	pf_cyc
 	ld	r0,printf_fill_zero
 	sz	r0
 	NZ mvzl r0,'0'
+	Z mvzl	r0,32
 pf_cyc:	call	putchar
 	dec	r1
 	jnz	pf_cyc

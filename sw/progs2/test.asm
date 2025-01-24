@@ -7,8 +7,27 @@
 	st	r0,0xff41
 	
 	ces	eprintf
-	db	"HelloWorld!\n"
+hello:	.db	"HelloWorld!"
+	mvzl	r0,13
+	call	putchar
 
+	mvzl	r1,hello
+s_test1:
+	ces	eprintf
+	.db	"%5s\n"
+s_test2:
+	ces	eprintf
+	.db	"%20s\n"
+s_test3:
+	ces	eprintf
+	.db	"%-20s\n"
+s_test4:
+	ces	eprintf
+	.db	"%020s\n"
+s_test5:
+	ces	eprintf
+	.db	"%-020s\n"
+	
 	mvzl	r1,0xf000
 	mov	r2,r1
 	mov	r3,r1
