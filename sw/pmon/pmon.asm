@@ -1534,7 +1534,40 @@ strieq:
 	pop	pc
 ;	ret
 
+	
+	;; INPUT  R0= address of string/packed
+	;; OUTPUT R4= nuof chars in string
+strlen:
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	mov	r1,r0
+	mvzl	r2,0
+	mvzl	r4,0
+	sz	r0		; check NULL pointer
+	jz	p2_end
+p2_next:
+	ld	r3,r1
+	sz	r3
+	jz	p2_end
+p2_cyc:	
+	getbz	r0,r3,r2
+	sz	r0
+	NZ inc	r4
+	inc	r2
+	test	r2,3
+	Z plus	r1,1
+	Z jmp	p2_next
+	jmp	p2_cyc
+p2_end:
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
 
+	
 	;; Convert one hex char to value
 	;; IN: R0 char
 	;; OUT: R0 value
@@ -2343,7 +2376,67 @@ printf_ret:
 	pop	pc
 ;	ret
 
+printf_pr:
+	sz	r0
+	Z ret
+	push	lr
+	push	r0
+	push	r1
+	push	r2
+	push	r4
+	ld	r1,printf_min_len
+	sz	r1
+	jnz	pp_use_len
+pp_nouse_len:	
+	call	prints
+	jmp	pp_ret
+pp_use_len:	
+	call	strlen		; R4= str length
+	sub	r1,r4		; R1= fill length
+	ld	r2,printf_left_align
+	sz	r2
+	jnz	pp_left
+pp_right:
+	push	r0
+	mov	r0,r1
+	call	printf_fill
+	pop	r0
+	call	prints
+	jmp	pp_ret
+pp_left:
+	call	prints
+	mov	r0,r1
+	call	printf_fill
+pp_ret:	
+	pop	r4
+	pop	r2
+	pop	r1
+	pop	r0
+	pop	pc
 
+	;; In : R0 fill length
+printf_fill:
+	sz	r0
+	S1 ret
+	Z ret
+	push	lr
+	push	r0
+	push	r1
+	mov	r1,r0
+	mvzl	r0,32
+	ld	r0,printf_left_align
+	sz	r0
+	jz	pf_cyc
+	ld	r0,printf_fill_zero
+	sz	r0
+	NZ mvzl r0,'0'
+pf_cyc:	call	putchar
+	dec	r1
+	jnz	pf_cyc
+	pop	r1
+	pop	r0
+	pop	pc
+	
 pesf:
 	push	r0
 	push	r2
