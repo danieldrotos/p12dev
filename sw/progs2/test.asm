@@ -14,19 +14,19 @@ hello:	.db	"HelloWorld!"
 	mvzl	r1,hello
 s_test1:
 	ces	eprintf
-	.db	"%5s\n"
+	.db	"s len=5 \"%5s\"\n"
 s_test2:
 	ces	eprintf
-	.db	"%20s\n"
+	.db	"s len=20 \"%20s\"\n"
 s_test3:
 	ces	eprintf
-	.db	"%-20s\n"
+	.db	"s left align, len=20 \"%-20s\"\n"
 s_test4:
 	ces	eprintf
-	.db	"%020s\n"
+	.db	"s zerofill len=20 \"%020s\"\n"
 s_test5:
 	ces	eprintf
-	.db	"%-020s\n"
+	.db	"s zerofill, left, len=20 \"%-020s\"\n"
 	
 	mvzl	r1,0xf000
 	mov	r2,r1
@@ -39,6 +39,23 @@ u_test:	ces	eprintf
 d_test:	ces	eprintf
 	.db	"signed=%d unsigned=%u hex=%x\n"
 
+	mvs	r1,-100
+u_test1:
+	ces	eprintf
+	.db	"u len=5 \"%5u\"\n"
+u_test2:
+	ces	eprintf
+	.db	"u len=15 \"%15u\"\n"
+u_test3:
+	ces	eprintf
+	.db	"u left,len=15 \"%-15u\"\n"
+u_test4:
+	ces	eprintf
+	.db	"u zero,len=15 \"%015u\"\n"
+u_test5:
+	ces	eprintf
+	.db	"u zero,left,len=15 \"%-015u\"\n"
+	
 	mvzl	r1,'A'
 opt_test:
 	ces	eprintf
