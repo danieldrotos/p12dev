@@ -2315,32 +2315,29 @@ printf_x:
 	;; Skipped: +
 	ld	r0,r1
 	inc	r1
-	push	r6
-	mov	r6,r0
 	mvzl	r5,0
 	st	r5,printf_show_sign
-	call	utoh32
 	ld	r5,printf_min_len
-	cmp	r5,32
-	UGT mvzl r5,32
-	UGT st	r5,printf_min_len
-	mvzl	r0,itoa_buffer
 	sz	r5
-	jnz	printf_x_short
-	mov	r0,r6
+	jnz	printf_x_len
+printf_x_def:	
 	call	utoh
 	mvzl	r0,itoa_buffer
-	jmp	printf_x_do
-printf_x_short:
-	push	r4
+	call	printf_pr
+	jmp	printf_next
+printf_x_len:	
+	cmp	r5,8
+	UGT jmp	printf_x_wide
+printf_x_narrow:
+	call	utoh32
 	mvzl	r0,itoa_buffer
-	call	strlen
-	sub	r4,r5
-	UGT add	r0,r4
-	pop	r4
+	add	r0,8
+	sub	r0,r5
+	jmp	printf_x_do
+printf_x_wide:
+	jmp	printf_x_def
 printf_x_do:
 	call	printf_pr
-	pop	r6
 	jmp	printf_next
 	
 printf_notx:
