@@ -1722,8 +1722,11 @@ itosa:
 	push	lr
 	push	r1
 	sz	r0
-	S1 call	itoa
+	S0 jmp	itosa_pos
+itosa_neg:
+	call	itoa
 	jmp	itosa_ret
+itosa_pos:
 	mvzl	r1,'+'
 	st	r1,itoa_buffer
 	mvzl	r1,itoa_buffer
@@ -1830,6 +1833,7 @@ itoa_divs:
 	
 
 	;; Convert unsigned binary value to hexa string
+	;; without leading zeros
 	;; IN : R0 value
 	;; OUT: string in ita_buffer
 bin2hex:
@@ -2259,12 +2263,12 @@ printf_len_read:
 	UGT jmp	printf_len_read_exit
 printf_add2len:
 	sub	r0,'0'		; convert to binary
-	push	r5		; and mix to parameter
+	;push	r5		; and mix to parameter
 	ld	r5,printf_min_len
 	mul	r5,10
 	add	r5,r0
 	st	r5,printf_min_len
-	pop	r5
+	;pop	r5
 	jmp	printf_fmt_next
 printf_len_read_exit:
 	mvzl	r4,0
@@ -2301,6 +2305,8 @@ printf_n4:
 	cmp	r0,'u'		; u print unsigned in decimal
 	jnz	printf_notu
 ptintfu:
+	;; Used: -L
+	;; Skipeed: +0
 	ld	r0,r1
 	inc	r1
 	call	utoa
@@ -2312,9 +2318,26 @@ printf_notu:
 	cmp	r0,'d'		;d print signed in decimal
 	jnz	printf_notd
 printf_d:
+	;; Used: +-L0
+	;; Skipped: 0(if+,if neg) 
 	ld	r0,r1
 	inc	r1
-	call	printd
+	ld	r5,printf_show_sign
+	sz	r5
+	jnz	printf_d_sign
+printf_d_nosign:
+	sz	r0
+	S1 mvzl	r5,0
+	S1 st	r5,printf_fill_zero
+	call	itoa
+	jmp	printf_d_pr
+printf_d_sign:
+	mvzl	r5,0
+	st	r5,printf_fill_zero
+	call	itosa
+printf_d_pr:	
+	mvzl	r0,itoa_buffer
+	call	printf_pr
 	jmp	printf_next
 	
 printf_notd:

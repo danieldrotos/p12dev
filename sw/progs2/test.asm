@@ -2,7 +2,7 @@
 
 	org	1
 	UN mvzl	r1,0xabcd
-	mvzl	r13,0xefff
+	mvzl	r13,stack
 	mvzl	r0,3
 	st	r0,0xff41
 	
@@ -11,22 +11,9 @@ hello:	.db	"HelloWorld!"
 	mvzl	r0,13
 	call	putchar
 
-	mvzl	r1,hello
-s_test1:
+	mvzl	r1,1234
 	ces	eprintf
-	.db	"s len=5 \"%5s\"\n"
-s_test2:
-	ces	eprintf
-	.db	"s len=20 \"%20s\"\n"
-s_test3:
-	ces	eprintf
-	.db	"s left align, len=20 \"%-20s\"\n"
-s_test4:
-	ces	eprintf
-	.db	"s zerofill len=20 \"%020s\"\n"
-s_test5:
-	ces	eprintf
-	.db	"s zerofill, left, len=20 \"%-020s\"\n"
+	.db	"%+d\n"
 	
 	mvzl	r1,0xf000
 	mov	r2,r1
@@ -36,26 +23,35 @@ u_test:	ces	eprintf
 	mvs	r1,0xf000
 	mov	r2,r1
 	mov	r3,r1
-d_test:	ces	eprintf
+d_test1:
+	ces	eprintf
 	.db	"signed=%d unsigned=%u hex=%x\n"
 
+ft:
+	call	eprints
+	.db	"test s with hello\n"
+	mvzl	r0,ft_tab_s
+	mvzl	r1,hello
+	call	format_tester
+
+	call	eprints
+	.db	"test u with -100\n"
+	mvzl	r0,ft_tab_u
 	mvs	r1,-100
-u_test1:
-	ces	eprintf
-	.db	"u len=5 \"%5u\"\n"
-u_test2:
-	ces	eprintf
-	.db	"u len=15 \"%15u\"\n"
-u_test3:
-	ces	eprintf
-	.db	"u left,len=15 \"%-15u\"\n"
-u_test4:
-	ces	eprintf
-	.db	"u zero,len=15 \"%015u\"\n"
-u_test5:
-	ces	eprintf
-	.db	"u zero,left,len=15 \"%-015u\"\n"
-	
+	call	format_tester
+
+	call	eprints
+	.db	"test d with 10000\n"
+	mvzl	r1,10000
+	mvzl	r0,ft_tab_d
+	call	format_tester
+	.db	"test d with -1000\n"
+	mvs	r1,-1000
+	mvzl	r0,ft_tab_d
+	call	format_tester
+
+
+opt_test_start:	
 	mvzl	r1,'A'
 opt_test:
 	ces	eprintf
@@ -133,3 +129,58 @@ masik:
 	z ldl0	r9,0x8000
 	st	r9,r1
 	jmp	cikl
+
+ft_tab_s:
+	.db	"s ... 5 \"%5s\"\n"
+	.db	"s ...20 \"%20s\"\n"
+	.db	"s -..20 \"%-20s\"\n"
+	.db	"s .0.20 \"%020s\"\n"
+	.db	"s -0.20 \"%-020s\"\n"
+	.dd	0
+ft_tab_u:
+	.db	"u %u\n"
+	.db	"u %15u\n"
+	.db	"u ... 5 \"%5u\"\n"
+	.db	"u ...15 \"%15u\"\n"
+	.db	"u -..15 \"%-15u\"\n"
+	.db	"u .0.15 \"%015u\"\n"
+	.db	"u -0.15 \"%-015u\"\n"
+	.db	"u ..+15 \"%+15u\"\n"
+	.db	"u -.+15 \"%-+15u\"\n"
+	.db	"u .0+15 \"%0+15u\"\n"
+	.db	"u -0+15 \"%-0+15u\"\n"
+	.dd	0
+ft_tab_d:
+	.db	"d %d\n"
+	.db	"d %15d\n"
+	.db	"d ... 5 \"%5d\"\n"
+	.db	"d ...15 \"%15d\"\n"
+	.db	"d -..15 \"%-15d\"\n"
+	.db	"d .0.15 \"%015d\"\n"
+	.db	"d -0.15 \"%-015d\"\n"
+	.db	"d ..+15 \"%+15d\"\n"
+	.db	"d -.+15 \"%-+15d\"\n"
+	.db	"d .0+15 \"%0+15d\"\n"
+	.db	"d -0+15 \"%-0+15d\"\n"
+	.dd	0
+	
+format_tester:
+	push	lr
+ft_cyc:
+	call	printf
+ft_n:	ld	r10,r0
+	sz	r10
+	jz	ft_1
+	inc	r0
+	jmp	ft_n
+ft_1:
+	inc	r0
+	ld	r10,r0
+	sz	r10
+	jz	ft_ret
+	jmp	ft_cyc
+ft_ret:	
+	pop	pc
+
+	.ds	100
+stack:	.ds	1
