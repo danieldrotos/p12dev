@@ -1839,7 +1839,6 @@ itoa_divs:
 bin2hex:
 bin2hexa:
 utoh:	
-	push	lr
 	push	r0
 	push	r1
 	push	r2
@@ -1886,8 +1885,47 @@ utoh_ret:
 	pop	r2
 	pop	r1
 	pop	r0
-	pop	pc
+	ret
+
 	
+utoh32:	
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	mvzl	r1,itoa_buffer	; output ptr
+	mvzl	r3,7		; cycle variable
+	mvzl	r2,v2hc_table
+utoh32_cyc:
+	mvzl	r4,0		; pick next char to R4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	ld	r4,r2,r4	; uppercase hex char
+	or	r4,0x20		; convert to lowercase
+	st	r4,r1
+	inc	r1
+	mvzl	r4,0
+	st	r4,r1
+utoh32_next:
+	sz	r3
+	jz	utoh32_ret
+	dec	r3
+	jmp	utoh32_cyc
+utoh32_ret:
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
+
 	
 ;;; SERIAL IO
 ;;; ==================================================================
@@ -1906,46 +1944,7 @@ check_uart:
 	pop	r0
 	C1 ret
 	ret
-	
-;; 	push	r0
-;; 	push	r1
-;; 	push	r2
-;; 	ld	r0,sc_active
-;; 	sz	r0
-;; 	jnz	check_uart_ret_true
-;; 	ld	r0,GPIO_PORTI
-;; 	btst	r0,1
-;; 	ld	r1,prev_porti
-;; 	btst	r1,1
-;; 	cmp	r0,r1
-;; 	EQ jmp	check_uart_ret_false
-;; 	st	r0,prev_porti
-;; 	btst	r0,1
-;; 	jz	check_uart_ret_false
-;; 	;; rising edge on PORTI.0
-;; 	mvzl	r2,0
-;; 	mvzl	r0,1
-;; 	st	r0,sc_active
-;; 	mvzl	r0,sc_buffer
-;; 	st	r0,sc_ptr
-;; 	mvzl	r1,'h'
-;; 	st	r1,r0+,r2
-;; 	mvzl	r1,CR
-;; 	st	r1,r0+,r2
-;; 	mvzl	r1,0
-;; 	st	r1,r0+,r2
-;; check_uart_ret_true:	
-;; 	sec
-;; 	jmp	check_uart_ret
-;; check_uart_ret_false:
-;; 	clc
-;; check_uart_ret:
-;; 	pop	r2
-;; 	pop	r1
-;; 	pop	r0
-;; 	ret
-;; prev_porti:
-;; 	db	0
+
 	
 	;; IN: -
 	;; OUT: R0
@@ -1953,29 +1952,6 @@ read:
 	ld	r0,UART_DR
 	st	r0,UART_IRA
 	ret
-	
-;; 	push	r1
-;; 	push	r2
-;; 	ld	r1,sc_active
-;; 	sz	r1
-;; 	jz	read_uart
-;; read_sc:	
-;; 	ld	r1,sc_ptr
-;; 	ld	r0,r1
-;; 	add	r1,1
-;; 	st	r1,sc_ptr
-;; 	ld	r2,r1
-;; 	sz	r2
-;; 	jnz	read_sc_ret
-;; 	;mvzl	r2,0
-;; 	st	r2,sc_active
-;; 	jmp	read_sc_ret
-;; read_uart:	
-;; 	ld	r0,UART_DR
-;; read_sc_ret:	
-;; 	pop	r2
-;; 	pop	r1
-;; 	ret
 
 	
 	;; Wait and read one character
@@ -2051,7 +2027,6 @@ prints_done:
 	pop	r3
 	pop	r0
 	pop	pc
-;	ret
 
 
 	;; Print embedded string, return after
@@ -2061,7 +2036,6 @@ prints_done:
 ;pes_ret_to:	dd	0
 	
 pes:
-	;push	lr
 	push	r0
 	push	r1
 	push	r2
@@ -2083,14 +2057,11 @@ pes_byte:
 	jnz	pes_byte
 	jmp	pes_next
 pes_done:
-	;st	r1,pes_ret_to
 	mov	LR,r1
 	pop	r3
 	pop	r2
 	pop	r1
 	pop	r0
-	;pop	lr
-	;ld	pc,pes_ret_to
 	ret
 	
 
@@ -2106,7 +2077,6 @@ printsnl:
 	call	putchar
 	pop	r0
 	pop	pc
-;	ret
 
 
 	;; Print a value in hex format
@@ -2155,7 +2125,6 @@ print_vhex_ret:
 	pop	r1
 	pop	r0
 	pop	pc
-;	ret
 
 
 	;; Print signed number in decimal
@@ -2263,12 +2232,10 @@ printf_len_read:
 	UGT jmp	printf_len_read_exit
 printf_add2len:
 	sub	r0,'0'		; convert to binary
-	;push	r5		; and mix to parameter
-	ld	r5,printf_min_len
+	ld	r5,printf_min_len ; and mix to parameter
 	mul	r5,10
 	add	r5,r0
 	st	r5,printf_min_len
-	;pop	r5
 	jmp	printf_fmt_next
 printf_len_read_exit:
 	mvzl	r4,0
@@ -2344,19 +2311,44 @@ printf_notd:
 	cmp	r0,'x'
 	jnz	printf_notx
 printf_x:
+	;; Used: -0L
+	;; Skipped: +
 	ld	r0,r1
 	inc	r1
-	push	r1
-	mvzl	r1,0
-
-	call	print_vhex
-	pop	r1
+	push	r6
+	mov	r6,r0
+	mvzl	r5,0
+	st	r5,printf_show_sign
+	call	utoh32
+	ld	r5,printf_min_len
+	cmp	r5,32
+	UGT mvzl r5,32
+	UGT st	r5,printf_min_len
+	mvzl	r0,itoa_buffer
+	sz	r5
+	jnz	printf_x_short
+	mov	r0,r6
+	call	utoh
+	mvzl	r0,itoa_buffer
+	jmp	printf_x_do
+printf_x_short:
+	push	r4
+	mvzl	r0,itoa_buffer
+	call	strlen
+	sub	r4,r5
+	UGT add	r0,r4
+	pop	r4
+printf_x_do:
+	call	printf_pr
+	pop	r6
 	jmp	printf_next
 	
 printf_notx:
 	cmp	r0,'s'
 	jnz	printf_nots
 printf_s:
+	;; Used: -L
+	;; Skipped: 0+
 	ld	r0,r1
 	inc	r1
 	mvzl	r5,0
@@ -2368,6 +2360,8 @@ printf_nots:
 	cmp	r0,'c'
 	jnz	printf_notc
 print_c:
+	;; Used:
+	;; Skipped: -0+L
 	ld	r0,r1
 	inc	r1
 	call	putchar

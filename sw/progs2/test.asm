@@ -50,6 +50,11 @@ ft:
 	mvzl	r0,ft_tab_d
 	call	format_tester
 
+	call	eprints
+	.db	"test x with 1000\n"
+	mvzl	r1,1000
+	mvzl	r0,ft_tab_x
+	call	format_tester
 
 opt_test_start:	
 	mvzl	r1,'A'
@@ -162,6 +167,28 @@ ft_tab_d:
 	.db	"d -.+15 \"%-+15d\"\n"
 	.db	"d .0+15 \"%0+15d\"\n"
 	.db	"d -0+15 \"%-0+15d\"\n"
+	.dd	0
+ft_tab_x:
+	.db	"x %x\n"
+	.db	"x ... 5 \"%5x\"\n"
+	.db	"x ...15 \"%15x\"\n"
+	.db	"x -..15 \"%-15x\"\n"
+	.db	"x .0.15 \"%015x\"\n"
+	.db	"x -0.15 \"%-015x\"\n"
+	.db	"x ..+15 \"%+15x\"\n"
+	.db	"x -.+15 \"%-+15x\"\n"
+	.db	"x .0+15 \"%0+15x\"\n"
+	.db	"x -0+15 \"%-0+15x\"\n"
+	.db	"x ... 2 \"%2x\"\n"
+	.db	"x ... 2 \"%2x\"\n"
+	.db	"x -.. 2 \"%-2x\"\n"
+	.db	"x .0. 2 \"%02x\"\n"
+	.db	"x -0. 2 \"%-02x\"\n"
+	.db	"x ..+ 2 \"%+2x\"\n"
+	.db	"x -.+ 2 \"%-+2x\"\n"
+	.db	"x .0+ 2 \"%0+2x\"\n"
+	.db	"x -0+ 2 \"%-0+2x\"\n"
+	.db	"x .0. 4 \"%04x\"\n"
 	.dd	0
 	
 format_tester:
