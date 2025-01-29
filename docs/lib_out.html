@@ -247,7 +247,7 @@
       <tr><td>%%</td> <td>Százalékjel</td> <td>%</td></tr>
       <tr><td>%u</td> <td>Előjel nélküli decimális</td> <td>12345</td></tr>
       <tr><td>%d</td> <td>Előjeles decimális</td> <td>-12345</td></tr>
-      <tr><td>%x</td> <td>32 bites hexadecimális</td> <td>1A2B3C5D</td></tr>
+      <tr><td>%x</td> <td>32 bites hexadecimális</td> <td>1a2b3c5d</td></tr>
       <tr><td>%b</td> <td>32 bites bináris</td> <td>00010010001101000101011001111000</td></tr>
       <tr><td>%p</td> <td>32 bites pointer</td> <td>02AB_CD78</td></tr>
       <tr><td>%s</td> <td>Szöveg</td> <td>az adat regiszternek a
@@ -261,7 +261,7 @@
       amelyek befolyásolhatják a kiírás jellemzőit.</p>
 
     
-    <h4><b>szám</b> width, mező szélesség</h4>
+    <a name="printf_width"><h4><b>szám</b> width, mező szélesség</h4></a>
     
     <p>A paraméternek 0-tól eltérő számjeggyel kezdődő decimális
     számnak kell lennie. A formázó utasítás által kiírt szöveg által
@@ -286,11 +286,59 @@
     </samp>
 
     
-    <h4><b>-</b> left_align, balra igazítás</h4>
+    <a name="printf_left"><h4><b>-</b> left, balra igazítás</h4></a>
     
-    <p>Akkor van hatása, ha megadjuk a kiíráshoz a mező
-    szélességet.</p>
+    <p>Akkor van hatása, ha megadjuk a kiíráshoz a mező szélességet,
+      és a szélesség nagyobb, mint a behelyettesített szöveg
+      hossza. Ebben az esetben a kiírás a mező bal széléhez lesz
+      igazítva, a jobb szél helyett.</p>
       
+    <samp>
+%20s   "         HelloWorld!"
+%-20s  "HelloWorld!         "
+%5u    "4294967196"
+%15u   "     4294967196"
+%-15u  "4294967196     "
+%5d    "10000"
+%15d   "          10000"
+%-15d  "10000          "
+%5x    "003e8"
+%15x   "            3e8"
+%-15x  "3e8            "
+%5bb   "11000"
+%34b   "  00010010001101000101011001111000"
+%-34b  "00010010001101000101011001111000  "
+  </samp>
+
+
+    <a name="printf_sign"><h4><b>+</b> sign, előjel</h4></a>
+
+    <p>Csak a %d formátum esetében van hatása. Ha megadjuk, akkor a
+    pozitív számok előjele is kiíródik.</p>
+
+    <samp>
+%d       "10000"
+%+d      "+10000"
+%-+15d   "+10000         "
+    </samp>
+
+
+    <a name="printf_zero"><h4><b>0</b> zero, balról kitöltés 0-val</h4></a>
+
+    <p>Szám típusú formátumok (%u, %d, %x, %b) esetén van hatása
+    akkor, ha a szám előjele nem jelenik meg, meg van adva a mező
+    szélesség és ez nagyobb mint a szöveg hossza. Ekkor a megadott
+    mezőhossz balról 0 karakterekkel lesz feltöltve.</p>
+
+    <samp>
+%015u    "000004294967196"
+%015d    "000000000010000"
+%0+15d   "         +10000"
+%015d    "          -1000"
+%015x    "0000000000003e8"
+%034b    "0000010010001101000101011001111000"
+    </samp>
+    
     
     <a name="eprintf"><h3>eprintf</h3></a>
 
