@@ -1926,6 +1926,32 @@ utoh32_ret:
 	pop	r0
 	ret
 
+
+	;; Convert binary value to 32 char binary ascii text
+	;; In : R0 value
+	;; Out: string at itoa_buffer
+btoa:
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	mvzl	r1,itoa_buffer
+	mvzl	r2,0
+btoa_cyc:
+	shl	r0
+	C mvzl	r3,'1'
+	NC mvzl	r3,'0'
+	st	r3,r2+,r1
+	cmp	r2,32
+	jnz	btoa_cyc
+	mvzl	r3,0
+	st	r3,r2,r1
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
+	
 	
 ;;; SERIAL IO
 ;;; ==================================================================
@@ -2152,7 +2178,7 @@ printu:
 	pop	r1
 	pop	r0
 	pop	pc
-	
+
 
 printf_left_align:	.ds	1
 printf_show_sign:	.ds	1
@@ -2323,19 +2349,15 @@ printf_x:
 printf_x_def:	
 	call	utoh
 	mvzl	r0,itoa_buffer
-	call	printf_pr
-	jmp	printf_next
+	jmp	printf_x_do
 printf_x_len:	
 	cmp	r5,8
-	UGT jmp	printf_x_wide
+	UGT jmp	printf_x_def
 printf_x_narrow:
 	call	utoh32
 	mvzl	r0,itoa_buffer
 	add	r0,8
 	sub	r0,r5
-	jmp	printf_x_do
-printf_x_wide:
-	jmp	printf_x_def
 printf_x_do:
 	call	printf_pr
 	jmp	printf_next
@@ -2364,8 +2386,32 @@ print_c:
 	call	putchar
 	jmp	printf_next
 	
-printf_notc:	
+printf_notc:
+	cmp	r0,'b'
+	jnz	printf_notb
+printf_b:
+	;; Used: -0L
+	;; Skipped: +
+printf_notb:
+	ld	r0,r1
+	inc	r1
+	mvzl	r5,0
+	st	r5,printf_show_sign
+	call	btoa
+	mvzl	r0,itoa_buffer
+	ld	r5,printf_min_len
+	sz	r5
+	jz	printf_b_do
+printf_b_len:
+	cmp	r5,32
+	;UGT jmp	printf_b_do
+printf_b_narrow:
+	ULE plus r0,32
+	ULE sub	r0,r5
+printf_b_do:	
+	call	printf_pr
 	jmp	printf_next
+	
 printf_print:
 	call	putchar		; print actual char
 printf_next:

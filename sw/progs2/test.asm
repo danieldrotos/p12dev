@@ -56,6 +56,13 @@ ft:
 	mvzl	r0,ft_tab_x
 	call	format_tester
 
+	call	eprints
+	.db	"test b with 0x12345678\n"
+	mvl	r1,0x12345678
+	mvh	r1,0x12345678
+	mvzl	r0,ft_tab_b
+	call	format_tester
+
 opt_test_start:	
 	mvzl	r1,'A'
 opt_test:
@@ -189,6 +196,28 @@ ft_tab_x:
 	.db	"x .0+ 2 \"%0+2x\"\n"
 	.db	"x -0+ 2 \"%-0+2x\"\n"
 	.db	"x .0. 4 \"%04x\"\n"
+	.dd	0
+ft_tab_b:
+	.db	"b %b\n"
+	.db	"b ... 5 \"%5b\"\n"
+	.db	"b ...34 \"%34b\"\n"
+	.db	"b -..34 \"%-34b\"\n"
+	.db	"b .0.34 \"%034b\"\n"
+	.db	"b -0.34 \"%-034b\"\n"
+	.db	"b ..+34 \"%+34b\"\n"
+	.db	"b -.+34 \"%-+34b\"\n"
+	.db	"b .0+34 \"%0+34b\"\n"
+	.db	"b -0+34 \"%-0+34b\"\n"
+	.db	"b ... 9 \"%9b\"\n"
+	.db	"b ... 9 \"%9b\"\n"
+	.db	"b -.. 9 \"%-9b\"\n"
+	.db	"b .0. 9 \"%09b\"\n"
+	.db	"b -0. 9 \"%-09b\"\n"
+	.db	"b ..+ 9 \"%+9b\"\n"
+	.db	"b -.+ 9 \"%-+9b\"\n"
+	.db	"b .0+ 9 \"%0+9b\"\n"
+	.db	"b -0+ 9 \"%-0+9b\"\n"
+	.db	"b .0. 4 \"%04b\"\n"
 	.dd	0
 	
 format_tester:
