@@ -238,25 +238,7 @@
     használ fel a szubrutin, amennyi formázó utasítás van a
     szövegben.</p>
 
-    <p><b>A függvény módosítja az R0-R12 regiszterek, valamit a Flag
-      regiszter értékét.</b></p>
-
-      <p>A formázó szövegben escape szekvenciákat is
-    használhatunk:</p>
-
-    <table border=1>
-      <tr><th>Escape szekvencia</th> <th>Kiírt karakterkód</th></tr>
-      <tr><td>\a</td> <td>7</td></tr>
-      <tr><td>\b</td> <td>8</td></tr>
-      <tr><td>\e</td> <td>31</td></tr>
-      <tr><td>\f</td> <td>12</td></tr>
-      <tr><td>\n</td> <td>10</td></tr>
-      <tr><td>\r</td> <td>13</td></tr>
-      <tr><td>\t</td> <td>9</td></tr>
-      <tr><td>\v</td> <td>11</td></tr>
-      <tr><td>\\</td> <td>'\'</td></tr>
-      <tr><td>\0</td> <td>0</td></tr>
-    </table>
+    <p><b>A függvény módosítja a Flag regiszter értékét.</b></p>
 
     <p>A szubrutin által kezelt formázó utasítások a következők:</p>
 
@@ -266,12 +248,49 @@
       <tr><td>%u</td> <td>Előjel nélküli decimális</td> <td>12345</td></tr>
       <tr><td>%d</td> <td>Előjeles decimális</td> <td>-12345</td></tr>
       <tr><td>%x</td> <td>32 bites hexadecimális</td> <td>1A2B3C5D</td></tr>
+      <tr><td>%b</td> <td>32 bites bináris</td> <td>00010010001101000101011001111000</td></tr>
+      <tr><td>%p</td> <td>32 bites pointer</td> <td>02AB_CD78</td></tr>
       <tr><td>%s</td> <td>Szöveg</td> <td>az adat regiszternek a
-      beillesztendő szöveg címét kell tartalmaznia</td></tr>
+      beillesztendő (normál, vagy pakolt) szöveg címét kell
+      tartalmaznia</td></tr>
       <tr><td>%c</td> <td>Karakter</td> <td>az adat regiszterben lévő
       ASCII kódot írja ki</td></tr>
     </table>
 
+    <p>A % jel és a formázó utasítás között lehetnek paraméterek,
+      amelyek befolyásolhatják a kiírás jellemzőit.</p>
+
+    
+    <h4><b>szám</b> width, mező szélesség</h4>
+    
+    <p>A paraméternek 0-tól eltérő számjeggyel kezdődő decimális
+    számnak kell lennie. A formázó utasítás által kiírt szöveg által
+    elfoglalt karakterhelyek számát adja meg. A %d, %u esetén a szám
+    akkor is kiíródik, ha ennél hosszabb. %x, %b esetén a hosszabb
+    szövegek balról csonkolódnak, tehát csak a megadott számú alsó
+    helyiértékek karakterei íródnak ki.</p>
+
+    <samp>
+%d       "10000"
+%15d     "          10000"
+%u       "4294967196"
+%5u      "4294967196"
+%15u     "     4294967196"
+%x       "3e8"
+%5x      "003e8"
+%15x     "            3e8"
+%2x      "e8"
+%b       "00010010001101000101011001111000"
+%34b     "  00010010001101000101011001111000"
+%9b      "001111000"
+    </samp>
+
+    
+    <h4><b>-</b> left_align, balra igazítás</h4>
+    
+    <p>Akkor van hatása, ha megadjuk a kiíráshoz a mező
+    szélességet.</p>
+      
     
     <a name="eprintf"><h3>eprintf</h3></a>
 
