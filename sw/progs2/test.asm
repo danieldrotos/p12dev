@@ -63,6 +63,13 @@ ft:
 	mvzl	r0,ft_tab_b
 	call	format_tester
 
+	call	eprints
+	.db	"test p with 0x02abcd78\n"
+	mvl	r1,0x02abcd78
+	mvh	r1,0x02abcd78
+	ces	eprintf
+	.db	"p %p\n"
+	
 opt_test_start:	
 	mvzl	r1,'A'
 opt_test:

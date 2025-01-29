@@ -1926,7 +1926,50 @@ utoh32_ret:
 	pop	r0
 	ret
 
+	
+ptoa:	
+	push	r0
+	push	r1
+	push	r2
+	push	r3
+	push	r4
+	mvzl	r1,itoa_buffer	; output ptr
+	mvzl	r3,7		; cycle variable
+	mvzl	r2,v2hc_table
+ptoa_cyc:
+	cmp	r3,3
+	Z mvzl	r4,'_'
+	Z st	r4,r1
+	Z inc	r1
+	mvzl	r4,0		; pick next char to R4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	shl	r0
+	rol	r4
+	ld	r4,r2,r4	; uppercase hex char
+	;or	r4,0x20		; convert to lowercase
+	st	r4,r1
+	inc	r1
+	mvzl	r4,0
+	st	r4,r1
+ptoa_next:
+	sz	r3
+	jz	ptoa_ret
+	dec	r3
+	jmp	ptoa_cyc
+ptoa_ret:
+	pop	r4
+	pop	r3
+	pop	r2
+	pop	r1
+	pop	r0
+	ret
 
+	
 	;; Convert binary value to 32 char binary ascii text
 	;; In : R0 value
 	;; Out: string at itoa_buffer
@@ -2392,7 +2435,6 @@ printf_notc:
 printf_b:
 	;; Used: -0L
 	;; Skipped: +
-printf_notb:
 	ld	r0,r1
 	inc	r1
 	mvzl	r5,0
@@ -2410,6 +2452,22 @@ printf_b_narrow:
 	ULE sub	r0,r5
 printf_b_do:	
 	call	printf_pr
+	jmp	printf_next
+
+printf_notb:
+	cmp	r0,'p'
+	jnz	printf_notp
+printf_p:
+	;; Used: -0L
+	;; Skipped: +
+	ld	r0,r1
+	inc	r1
+	call	ptoa
+	mvzl	r0,itoa_buffer
+	call	printf_pr
+	jmp	printf_next
+	
+printf_notp:	
 	jmp	printf_next
 	
 printf_print:
