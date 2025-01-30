@@ -11,7 +11,7 @@ all: pmonitor lib \
 	counter3.asc counter3.cdb \
 	uart.asc uart.cdb \
 	uart2.asc uart2.cdb \
-	test.asc test.cdb \
+	printf_test.asc printf_test.cdb \
 	regsave.asc regsave.cdb \
 	msblink2.asc msblink2.cdb \
 	div.asc div.cdb \
@@ -52,7 +52,7 @@ regsave.p2h: regsave.asm $(PLIB)
 
 msblink2.p2h: msblink2.asm $(PLIB)
 
-test.p2h: test.asm $(PLIB)
+printf_test.p2h: printf_test.asm $(PLIB)
 
 div.p2h: div.asm $(PLIB)
 
