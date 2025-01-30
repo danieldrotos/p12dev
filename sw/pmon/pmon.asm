@@ -51,7 +51,8 @@ _f015:	jmp	pesf
 _f016:	jmp	ascii2seg
 _f017:	jmp	strunpack
 _f018:	jmp	strpack
-
+_f019:	jmp	strlen
+	
 	
 enter_by_uart:
 	push	r0

@@ -186,19 +186,23 @@ TST	=	0x12345678
 	
 	mvzl	r0,s1
 	call	str_len
+	mov	r1,r4
 	ces	eprintf
 	.db	"Len of unpacked: %d\n"
 	mvzl	r0,s1
 	call	str_size
+	mov	r1,r4
 	ces	eprintf
 	.db	"Size of unpacked: %d\n"
 	
 	mvzl	r0,s2
 	call	str_len
+	mov	r1,r4
 	ces	eprintf
 	.db	"Len of packed: %d\n"
 	mvzl	r0,s2
 	call	str_size
+	mov	r1,r4
 	ces	eprintf
 	.db	"Size of packed: %d\n"
 
