@@ -413,6 +413,24 @@ pedig az al verziószámot.</p>
     <p>Az átalakított sztring az R1-ben megadott memóriacímtől
     kezdeve.</p>
 
+
+    <a name="_pm_strlen"><h4>0xf019 _pm_strlen</h4></a>
+
+    <p>Normál, vagy pakolt formátumú, 0 végződésű sztring
+    karaktereinek számát adja.</p>
+
+    <p>Bemenő paraméterek:</p>
+
+    <ul>
+      <li>R0 bemeneti sztring címe</li>
+    </ul>
+
+    <p>Eredmény:</p>
+
+    <ul>
+      <li>R4 karakterek száma</li>
+    </ul>
+
     
 <a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
 
@@ -880,6 +898,12 @@ karakter egyik formája jeleníthető meg.</p>
 <td>F.C egyezés</td>
 </tr>
 <tr>
+  <td><a href="#_pm_strlen">_pm_strlen</a></td>
+  <td>0xf019</td>
+  <td>R0 sztring</td>
+  <td>R4 karakterszám</td>
+</tr>
+<tr>
   <td><a href="#_pm_strpack">_pm_strpack</a></td>
 <td>0xf018</td>
 <td>R0 sztring, R1 buffer</td>
@@ -1063,6 +1087,12 @@ karakter egyik formája jeleníthető meg.</p>
 <td><a href="#_pm_strpack">_pm_strpack</a></td>
 <td>R0 sztring, R1 buffer</td>
 <td>-</td>
+</tr>
+<tr>
+  <td><a href="#_pm_strlen">_pm_strlen</a></td>
+  <td>0xf019</td>
+  <td>R0 sztring</td>
+  <td>R4 karakterszám</td>
 </tr>
 </table>
 
