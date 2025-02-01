@@ -57,8 +57,9 @@ cyc:
 	st	r10,GPIO.PORTB
 	mov	r1,r10
 	mov	r2,r10
+	mov	r3,r10
 	ces	eprintf
-	db	"%x %d\n"
+	db	"%8x %10d %b\n"
 	add	r10,1
 	jmp	cyc
 
