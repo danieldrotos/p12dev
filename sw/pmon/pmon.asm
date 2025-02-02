@@ -2261,10 +2261,6 @@ printf:
 	mvzl	r3,0		; byte idx in packed str
 	mvzl	r4,0		; bool: len reading mode
 	;; default values for options
-	st	r3,printf_left_align
-	st	r3,printf_show_sign
-	st	r3,printf_fill_zero
-	st	r3,printf_min_len
 printf_cyc:
 	ld	r0,r2		; get next char
 	sz	r0		; is it EOS?
@@ -2277,6 +2273,11 @@ printf_cyc:
 	jnz	printf_print
 
 printf_format_found:
+	mvzl	r5,0
+	st	r5,printf_left_align
+	st	r5,printf_show_sign
+	st	r5,printf_fill_zero
+	st	r5,printf_min_len
 printf_fmt_next:	
 	inc	r3
 	cmp	r3,4

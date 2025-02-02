@@ -1,3 +1,10 @@
+### p12dev v2.2.14
+
+### p12dev v2.2.13
+
+- printf extended with new format instructions (%p, %b)
+- printf formats extended with options (zero, left, sign, width)
+
 ### p12dev v2.2.12
 
 - document reorganized
