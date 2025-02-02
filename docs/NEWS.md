@@ -1,4 +1,8 @@
+### p12dev v2.2.15
+
 ### p12dev v2.2.14
+
+- fix interpreting printf format options
 
 ### p12dev v2.2.13
 
