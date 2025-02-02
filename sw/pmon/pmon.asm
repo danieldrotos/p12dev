@@ -1,7 +1,7 @@
 	cpu	P2
 
 	version_main	=	1
-	version_sub	=	5
+	version_sub	=	6
 	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
