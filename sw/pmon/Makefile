@@ -4,12 +4,18 @@ include $(PRJ)/sw/common.mk
 
 AW		?= 16
 
-all: pmon_app
+SRC		= pmon.asm pmon_ver.asm eof_pmon.asm
+
+
+all: pmon_ver.asm pmon_app
+
+pmon_ver.asm: $(PRJ)/.version $(TOOLS)/tool.php
+	php $(TOOLS)/tool.php -va >$@
 
 pmon_app: pmon.p2h pmon.asc pmon.cdb pmon.cc pmon_chip.asc
 	php $(TOOLS)/hex2asc.php -gl -l 0xff00 pmon.p2h
 
-pmon.p2h: pmon.asm eof_pmon.asm
+pmon.p2h: $(SRC)
 	php $(TOOLS)/p2as.php -l -k -o $@ $^
 
 pmon.cc: pmon.p2h $(PRJ)/.version
