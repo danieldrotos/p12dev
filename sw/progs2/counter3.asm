@@ -58,8 +58,19 @@ cyc:
 	mov	r1,r10
 	mov	r2,r10
 	mov	r3,r10
+	mvzl	r0,'_'
+	st	r0,0xffff
+	ld	r0,0xffff
+	cmp	r0,'v'
+	jnz	p_nonv
+p_v:
+	ces	eprintf
+	.db	"%x %d\n"
+	jmp	p_done
+p_nonv:	
 	ces	eprintf
 	db	"%8x %10d %b\n"
+p_done:	
 	add	r10,1
 	jmp	cyc
 
