@@ -139,6 +139,13 @@ tr_is_off:
 	.db	"\e[40;37m"
 	mvzl	r0,LF
 	call	putchar
+
+	mvzl	r0,'_'
+	st	r0,SIMIF
+	ld	r0,SIMIF
+	cmp	r0,'v'
+	jz	skip_welcome
+	
 	rds	r0,sver
 	mvzl	r1,version_main
 	mvzl	r2,version_sub
@@ -147,6 +154,8 @@ tr_is_off:
 	getbz	r5,r0,0
 	mvzl	r0,msg_start
 	call	printf
+skip_welcome:
+	
 	;; Print addr if called from
 	ld	r0,called
 	sz	r0

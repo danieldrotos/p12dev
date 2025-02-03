@@ -14,7 +14,7 @@ module simif
 
    localparam		    CMD_PRINT= 8'h70; // p
    localparam		    CMD_DETECT= 8'h5f; // _
-   localparam		    ANS_PRESENT= 8'h21; // !
+   localparam		    ANS_PRESENT= 8'h76; // v
    
    reg [7:0] 	       cmd;
    reg [7:0] 	       param;
