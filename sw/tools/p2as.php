@@ -1051,7 +1051,7 @@ function make_sym_global($w)
         return; // alreay global
     }
     if (is_array($sg) && is_array($sl))
-        ddie("Redefinition of global symbol ($w)");
+        ddie("Redefinition of global symbol ($w) "."sg=".print_r($sg,true)." sl=".print_r($sl,true));
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
     unset($syms[arri($segment,'id').$w]);
@@ -1207,7 +1207,7 @@ function proc_asm_line($l)
             $xaddr= sprintf("%x", $addr);
             debug("proc_asm_line; found label=$n at addr=$xaddr");
             mk_mem($addr);
-            if ($commas > 1)
+            if (($commas > 1) /*|| ($segment===false)*/)
             {
                 $label= /*mk*/define_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
@@ -1280,7 +1280,7 @@ function proc_asm_line($l)
             $val= intval($w,0);
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
             /*mk*/define_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
-            if ($W=="==")
+            if (($W=="==") /*|| ($segment===false)*/)
                 make_sym_global($prew);
             else
                 debug("$prew still be local (W=$W)");
