@@ -976,25 +976,6 @@ function new_symbol($name, $value, $type)
     );
 }
 
-/*
-function mk_symbol($name, $value, $type= "S")
-{
-    global $syms, $fin, $lnr, $segment;
-    $skey= arri($segment,'id').$name;
-    $s= arri($syms, $skey);
-    if (is_array($s))
-    {
-        ddie("Redefinition of symbol $name", 9);
-    }
-    $sym= new_symbol($name, $value, $type);
-    $sym['segid']= arri($segment, 'id');
-    $sym['owner']= arri($segment, 'id');
-    $syms[$skey]= $sym;
-    debug("Symbol {$name} created at {$skey}");
-    return $sym;
-}
-*/
-
 
 function symbol_to_table(&$sym, $skey)
 {
@@ -1158,13 +1139,35 @@ function create_symbol($name, $value, $type)
     }
     if ($inseg_id===false) 
     {
-        $es['type']= $type;
-        $es['value']= $value;
-        $es['extern']= false;
-        $es['defined']= true;
+        $s['type']= $type;
+        $s['value']= $value;
+        $s['extern']= false;
+        $s['defined']= true;
     }
     $syms[$skey]= $s;
     return $skey;
+}
+
+function create_global_symbol($name, $value, $type)
+{
+    global $syms, $fin, $lnr, $segment;
+    if ($name=='') return '';
+    $es= arri($syms,$name);
+    if ($es != '')
+    {
+        ddie("Redefinition of symbol $name (defined at {$es['fin']}:{$es['lnr']})", 9);
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $fin;
+    $s['lnr']= $lnr;
+    $s['segid']= false;
+    $s['owner']= false;
+    $s['type']= $type;
+    $s['value']= $value;
+    $s['extern']= false;
+    $s['defined']= true;
+    $syms[$name]= $s;
+    return $name;
 }
 
 
@@ -1240,9 +1243,9 @@ function proc_asm_line($l)
             mk_mem($addr);
             if (($commas > 1) /*|| ($segment===false)*/)
             {
-                $label= /*define*/create_symbol($n, $addr, "L");
+                $label= /*define*/create_global_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
-                make_sym_global($n);
+                //make_sym_global($n);
             }
             else
             {
@@ -1310,11 +1313,13 @@ function proc_asm_line($l)
                 return;
             $val= intval($w,0);
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
-            /*mk*/define_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
-            if (($W=="==") /*|| ($segment===false)*/)
-                make_sym_global($prew);
+            if ($W=="==")
+                create_global_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             else
+            {
+                create_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
                 debug("$prew still be local (W=$W)");
+            }
             debug("proc_asm_line; SYMBOL $prew=$val");
             $ok= true;
             return;

@@ -1,6 +1,6 @@
 	.proc	P2
 
-btn		=	GPIO.BTN
+btn		==	GPIO.BTN
 dummy		=	12
 	
 	org	1
