@@ -104,6 +104,9 @@ hw: synth
 iss: sw
 	$(ISS) $(PRG)
 
+emu: sw
+	$(EMU) $(PRG)
+
 $(VCD): $(VVP)
 	vvp -n $(VVP)
 
