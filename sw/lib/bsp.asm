@@ -15,6 +15,7 @@
 	;;       led_set        (R0:led, R1:val)
 	;; F.C=  led_get        (R0:led)
 	;; R4=   dsp_ascii2seg  (R0:char)
+	;;       dsp_str2seg    (R0:str, R1:outbuf)
 	;; 
 
 	

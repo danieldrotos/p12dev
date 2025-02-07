@@ -1166,6 +1166,11 @@ function create_global_symbol($name, $value, $type)
     $s['value']= $value;
     $s['extern']= false;
     $s['defined']= true;
+    $inseg_id= arri($segment, 'id');
+    if ($inseg_id!='')
+    {
+        $s['owner']= $inseg_id;
+    }
     $syms[$name]= $s;
     return $name;
 }
