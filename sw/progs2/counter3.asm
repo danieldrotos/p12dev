@@ -6,7 +6,7 @@ dummy		=	12
 	org	1
 	jmp	start		;start
 	db	dummy
-start:	
+start:
 	mvzl	r1,217
 	st	r1,UART.CPB
 	mvzl	r1,3		; turn on rx and tx

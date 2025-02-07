@@ -976,12 +976,12 @@ function new_symbol($name, $value, $type)
     );
 }
 
-
+/*
 function mk_symbol($name, $value, $type= "S")
 {
     global $syms, $fin, $lnr, $segment;
     $skey= arri($segment,'id').$name;
-    $s= arri($syms, /*$name*/$skey);
+    $s= arri($syms, $skey);
     if (is_array($s))
     {
         ddie("Redefinition of symbol $name", 9);
@@ -993,6 +993,7 @@ function mk_symbol($name, $value, $type= "S")
     debug("Symbol {$name} created at {$skey}");
     return $sym;
 }
+*/
 
 
 function symbol_to_table(&$sym, $skey)
@@ -1051,7 +1052,7 @@ function make_sym_global($w)
         return; // alreay global
     }
     if (is_array($sg) && is_array($sl))
-        ddie("Redefinition of global symbol ($w) "."sg=".print_r($sg,true)." sl=".print_r($sl,true));
+        ddie("Redefinition of global symbol $w (defined at {$sg['fin']}:{$sg['lnr']})");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
     unset($syms[arri($segment,'id').$w]);
@@ -1136,6 +1137,36 @@ function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr=''
     return $skey;
 }
 
+function create_symbol($name, $value, $type)
+{
+    global $syms, $fin, $lnr, $segment;
+    if ($name=='') return '';
+    $inseg_id= arri($segment, 'id');
+    $skey= $inseg_id.$name;
+    $es= arri($syms,$skey);
+    if ($es != '')
+    {
+        ddie("Redefinition of symbol $name (defined at {$es['fin']}:{$es['lnr']})", 9);
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $fin;
+    $s['lnr']= $lnr;
+    if ($inseg_id!='')
+    {
+        $s['segid']= $inseg_id;
+        $s['owner']= $inseg_id;
+    }
+    if ($inseg_id===false) 
+    {
+        $es['type']= $type;
+        $es['value']= $value;
+        $es['extern']= false;
+        $es['defined']= true;
+    }
+    $syms[$skey]= $s;
+    return $skey;
+}
+
 
 function mk_mem($addr, $icode=0, $error= false)
 {
@@ -1209,13 +1240,13 @@ function proc_asm_line($l)
             mk_mem($addr);
             if (($commas > 1) /*|| ($segment===false)*/)
             {
-                $label= /*mk*/define_symbol($n, $addr, "L");
+                $label= /*define*/create_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 make_sym_global($n);
             }
             else
             {
-                $label= /*mk*/define_symbol($n, $addr, "L");
+                $label= /*define*/create_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
             }
