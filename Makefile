@@ -140,6 +140,6 @@ clean:
 	$(MAKE) -C hw clean
 	$(MAKE) -C docs clean
 	$(RM) $(clean_files)
-	$(RM) ./hw/cpu1/*~ ./hw/cpu2/*~
+	$(RM) ./hw/cpu2/*~
 	$(RM) ./hw/cpu2/*.asc ./hw/cpu2/*.cdb ./hw/cpu2/*.lst ./hw/cpu2/*.p2*
 	$(RM) vivado*.jou vivado*.log
