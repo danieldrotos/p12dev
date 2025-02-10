@@ -25,4 +25,6 @@ pmon_chip.asc: pmon.p2h
 	php $(TOOLS)/hex2asc.php -m 17 -c 0xf000 -cs 4096 $< >$@
 
 clean:
-	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst pmon.cc
+	$(RM) *.hex *.p2h *.asc *.cdb *~ *.lst
+	$(RM) pmon.cc
+	$(RM) pmon_ver.asm
