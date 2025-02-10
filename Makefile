@@ -63,9 +63,7 @@ all: progs sw show
 
 compile: sw hw
 
-progs:
-	$(MAKE) -C sw/lib all
-	$(MAKE) -C sw/pmon all
+progs: comp_mon comp_lib
 	$(MAKE) -C sw/examples all
 	$(MAKE) -C sw/progs2 all
 
@@ -80,12 +78,12 @@ comp_mon: comp_pmon
 comp_lib:
 	$(MAKE) -C sw/lib all
 
-comp_app: comp_lib comp_mon $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_app: comp_mon comp_lib $(PRG).p2h $(PRG).asc $(PRG).cdb
 
 $(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l
 	php $(TOOLS)/p2as.php -l -o $@ $(PRG).asm $(LIB)/plib.p2l
 
-sw: comp_pmon comp_lib comp_app
+sw: comp_app
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc
@@ -110,7 +108,7 @@ emu: sw
 $(VCD): $(VVP)
 	vvp -n $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) prj.mk comp_app
+$(VVP): $(TB_VER) $(MODS_VER) prj.mk sw
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DINSTS=$(INSTS) \
