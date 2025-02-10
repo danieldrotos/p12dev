@@ -126,7 +126,7 @@ function rrmdir($src)
 
 function rm($src)
 {
-    if ($src == '')
+    if (($src == '') || ($src == '.') || ($src == '..'))
         return;
     if (!file_exists($src))
         return;
@@ -162,7 +162,7 @@ if (isset($argv[0]))
             {
                 foreach (glob($argv[$j], \GLOB_BRACE) as $filename)
                 {
-                    echo "to delete: $filename\n";
+                    rm($filename);
                 }
             }
         }

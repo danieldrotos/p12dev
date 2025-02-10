@@ -9,7 +9,7 @@ PROGS		= $(PRJ)/sw/progs2
 
 ifeq ($(OS),Windows_NT)
 RM		= php $(TOOLS)/tool.php -rm
-RMR		= del /f /s /q
+RMR		= php $(TOOLS)/tool.php -rm
 ISS		= $(TOOLS)/sim.bat
 EMU		= $(TOOLS)/emu.bat
 else
