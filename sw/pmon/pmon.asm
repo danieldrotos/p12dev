@@ -27,7 +27,7 @@ _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	jmp	getchar
 _f003:	jmp	version
-_f004:	jmp	itobcd
+_f004:	jmp	mon_itobcd
 _f005:	jmp	cold_start
 _f006:	jmp	strchr
 _f007:	jmp	streq
@@ -1184,7 +1184,7 @@ div_ret:
 	;; Convert number to BCD
 	;; In : R0
 	;; Out: R0
-itobcd:
+mon_itobcd:
 	push	lr
 	push	r1
 	push	r2

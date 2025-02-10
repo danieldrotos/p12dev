@@ -80,9 +80,9 @@ comp_mon: comp_pmon
 comp_lib:
 	$(MAKE) -C sw/lib all
 
-comp_app: $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_app: comp_lib comp_mon $(PRG).p2h $(PRG).asc $(PRG).cdb
 
-$(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l $(PMON)/pmon.p2h
+$(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l
 	php $(TOOLS)/p2as.php -l -o $@ $(PRG).asm $(LIB)/plib.p2l
 
 sw: comp_pmon comp_lib comp_app
@@ -110,7 +110,7 @@ emu: sw
 $(VCD): $(VVP)
 	vvp -n $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
+$(VVP): $(TB_VER) $(MODS_VER) prj.mk comp_app
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DINSTS=$(INSTS) \

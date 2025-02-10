@@ -26,6 +26,7 @@ endif
 	php $(TOOLS)/p2as.php -l -c -o $@ $<
 
 .asm.p2h:
+	echo "asm to p2h, ins: $<"
 	php $(TOOLS)/p2as.php -l -o $@ $< $(LIB)/plib.p2l
 
 .p2h.asc:
