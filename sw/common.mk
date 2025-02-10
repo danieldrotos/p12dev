@@ -8,7 +8,7 @@ DOC		= $(DOCS)
 PROGS		= $(PRJ)/sw/progs2
 
 ifeq ($(OS),Windows_NT)
-RM		= del /f /q
+RM		= php $(TOOLS)/tool.php -rm
 RMR		= del /f /s /q
 ISS		= $(TOOLS)/sim.bat
 EMU		= $(TOOLS)/emu.bat

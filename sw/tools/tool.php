@@ -121,6 +121,13 @@ if (isset($argv[0]))
         {
             gen_version_asm();
         }
+        else if ($argv[$i] == "-rm")
+        {
+            for ($j=$i+1; $j<$argc; $j++)
+            {
+                echo "unlink({$argv[$j]});\n";
+            }
+        }
     }
 }
   
