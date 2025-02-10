@@ -160,7 +160,7 @@ if (isset($argv[0]))
         {
             for ($j=$i+1; $j<$argc; $j++)
             {
-                foreach (glob("path/*/*.{txt,md}", \GLOB_BRACE) as $filename)
+                foreach (glob($argv[$j], \GLOB_BRACE) as $filename)
                 {
                     echo "to delete: $filename\n";
                 }
