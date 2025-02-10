@@ -67,8 +67,11 @@ got the command prompt back.
 make progs        ; compile monitor and examples
 make sw           ; compile your app only
 make hw           ; compile hardware model only
+make compile      ; compile hw and sw without simulation
 make sim          ; run simulation
 make show         ; open gtkwave and show VCD file
+make iss          ; run uCsim to simulate your app
+make emu          ; run uCsim showing FPGA display
 make clean        ; delete compiled files
 ```
 

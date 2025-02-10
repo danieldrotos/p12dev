@@ -5,7 +5,7 @@ használhatunk. Windows-on a geany is alkalmazható. Az Open funkcióval
 megnyithatók a szerkesztendő fájlok.
 
 
-## 1. Projekt létrehozása
+## Projekt létrehozása
 
 
 Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
@@ -18,7 +18,7 @@ Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
 - `INSTS` a szimulációban lefuttatandó utasítások száma.
 
 
-## 2. Írjuk meg a programot
+## Írjuk meg a programot
 
 A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
 **.asm** kiterjesztéssel. Az irodalomjegyzékből használjuk a
@@ -33,7 +33,7 @@ dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
 fordításhoz az alább szereplő eljárást használjuk!
 
 
-## 3. Fordítás, szimuláció
+## Fordítás, szimuláció
 
 A műveletet parancssorból a
 
@@ -56,37 +56,16 @@ A fordításnak a gtkwave bezárásakor lesz vége, a geany-ban ez után
 folytathatjuk a munkát.
 
 
-## 4. Egyéb műveletek
-
-A fordítás és a szimuláció eredményének letörlése:
+## Egyéb műveletek
 
 ```
-make clean
-```
-
-Geany esetén: "Összeállítás" menü "Make egyéni céllal"
-(Shift-Ctrl-F9), majd írjuk be a clean célt.
-
-A szoftver és a hardver terv lefordítása szimuláció nélkül:
-
-```
-make compile
-```
-
-Csak a hardver lefordítása és szimulációja:
-
-```
-make sim
-```
-
-Csak a hardver lefordítása, szimuláció nélkül:
-
-```
-make hw
-```
-
-Csak a szoftver lefordítása:
-
-```
-make sw
+make progs        ; a monitor és a példák lefordítása
+make sw           ; csak a szoftver lefordítása
+make hw           ; csak a hardver lefordítása, szimuláció nélkül
+make compile      ; szoftver és a hardver terv lefordítása szimuláció nélkül
+make sim          ; csak a hardver lefordítása és szimulációja
+make show         ; a VCD fájl megjelenítése a gtkwave-el
+make iss          ; az alkalmazás szimulációja uCsim-el
+make emu          ; uCsim, az FPGA kártya kép megjelenítésével
+make clean        ; a generált fájlok letörlése
 ```
