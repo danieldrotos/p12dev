@@ -1,5 +1,7 @@
 ### p12dev v2.2.15
 
+- assembler: fix checking symbol redefinition
+
 ### p12dev v2.2.14
 
 - fix interpreting printf format options

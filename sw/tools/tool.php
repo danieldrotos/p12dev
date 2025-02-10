@@ -100,6 +100,41 @@ function gen_version_asm()
     return $v;
 }
 
+function rrmdir($src)
+{
+    if ($src == '')
+        return;
+    $dir = opendir($src);
+    while(false !== ( $file = readdir($dir)) )
+    {
+        if (( $file != '.' ) && ( $file != '..' ))
+        {
+            $full = $src . '/' . $file;
+            if ( is_dir($full) )
+            {
+                rrmdir($full);
+            }
+            else
+            {
+                unlink($full);
+            }
+        }
+    }
+    closedir($dir);
+    rmdir($src);
+}
+
+function rm($src)
+{
+    if ($src == '')
+        return;
+    if (!file_exists($src))
+        return;
+    if (is_dir($src))
+        rrmdir($src);
+    else
+        unlink($src);
+}
 
 if (isset($argv[0]))
 {
@@ -125,7 +160,10 @@ if (isset($argv[0]))
         {
             for ($j=$i+1; $j<$argc; $j++)
             {
-                echo "unlink({$argv[$j]});\n";
+                foreach (glob("path/*/*.{txt,md}", \GLOB_BRACE) as $filename)
+                {
+                    echo "to delete: $filename\n";
+                }
             }
         }
     }

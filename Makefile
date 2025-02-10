@@ -136,8 +136,9 @@ clean:
 	$(MAKE) -C sw/progs2 clean
 	$(MAKE) -C sw/pmon clean
 	$(MAKE) -C sw/tools clean
-	$(MAKE) -C hw/implement clean
 	$(MAKE) -C sw/lib clean
+	$(MAKE) -C hw clean
+	$(MAKE) -C docs clean
 	$(RM) $(clean_files)
 	$(RM) ./hw/computer/*~ ./hw/cpu1/*~ ./hw/cpu2/*~
 	$(RM) ./hw/cpu2/*.asc ./hw/cpu2/*.cdb ./hw/cpu2/*.lst ./hw/cpu2/*.p2*
