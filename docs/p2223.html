@@ -282,51 +282,104 @@
       <span lang="en"><img title="" src="mem_en.svg" alt="" /></span>
     </p>
     
-    <h2>Regiszterek</h2>
+    <h2>
+      <span lang="hu">Regiszterek</span>
+      <span lang="en">Registers</span>
+    </h2>
     
-    <p>A processzor állapota a belső regiszterekben tárolódik. A
-      regiszter készlet 16 db 32 bites regiszterből áll. A regiszterek
-      elnevezése: R0, R1...R15.</p>
+    <p>
+      <span lang="hu">A processzor állapota a belső regiszterekben
+      tárolódik. A regiszter készlet 16 db 32 bites regiszterből
+      áll. A regiszterek elnevezése: R0, R1...R15.</span>
+
+      <span lang="en">The processor state is stored in internal
+      registers. The register set consists of 16 registers, 32 bits
+      each. They are named as R0, R1...R15.</span>
+    </p>
 
     <p><img title="" src="progmodel2.svg" alt="" /></p>
     
 
-    <h3>Speciális regiszterek</h3>
+    <h3>
+      <span lang="hu">Speciális regiszterek</span>
+      <span lang="en">Special registers</span>
+    </h3>
     
     <h4>PC</h4>
     
-    <p>A processzor az R15 regisztert használja program számlálóként
-      (Program Counter), ezért ennek tartalma minden utasítás
-      végrehajtásakor eggyel növekszik.</p>
+    <p>
+      <span lang="hu">A processzor az R15 regisztert használja
+      program számlálóként (Program Counter), ezért ennek tartalma
+	minden utasítás végrehajtásakor eggyel növekszik.</span>
+
+      <span lang="en">The processor uses register R15 as a program
+	counter (Program Counter), so its contents are incremented by
+	one each time an instruction is executed.</span>
+    </p>
     
     <h4>LR</h4>
     
-    <p>A CALL utasítás a visszatéréshez szükséges címet az R14 (Link
-      Regiszter) regiszterbe menti.</p>
+    <p>
+      <span lang="hu">A CALL utasítás a visszatéréshez szükséges címet
+	az R14 (Link Register) regiszterbe menti.</span>
+
+      <span lang="en">The CALL instruction saves the return address in
+	the R14 register (Link Register).</span>
+    </p>
 
     <h4>SP</h4>
 
-    <p>A processzor nem használ verem műveleteket, a verem
-      megszervezése a programozó feladata. Az ehhez szükséges verem
-      mutató (Stack Pointer) céljára bármelyik regiszter
+    <p>
+      <span lang="hu">A processzor nem használ verem műveleteket, a
+      verem megszervezése a programozó feladata. Az ehhez szükséges
+      verem mutató (Stack Pointer) céljára bármelyik regiszter
       felhasználható. A programok megírásakor az R13 regisztert
-      használtuk SP-ként.</p>
+	használtuk SP-ként.</span>
 
-    <a name="sfr"><h3>Egyéb speciális regiszterek</h3></a>
+      <span lang="en">The processor does not use stack operations,
+	implmentating the stack is the programmer's
+	responsibility. Any register can be used as stack pointer with
+	appropriate addressing modes. When writing the programs, we
+	used register R13 as SP.</span>
+    </p>
 
-    <p>A processzoron belül 16 speciális regiszterhez lehet
-      hozzáférni, ezek között vannak írható és olvasható, illetve csak
-      olvasható típusú regiszterek is. A speciális regisztereket
-      az <a class="inst" href="#RDS"><span class="mov">RDS</span></a>
-      és <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
-      utasításokkal lehet kezelni. Az <a class="inst"
+    <a name="sfr"><h3>
+	<span lang="hu">Egyéb speciális regiszterek (SFR)</span>
+	<span lang="en">Special function registers (SFR)</span>
+    </h3></a>
+
+    <p>
+      <span lang="hu">A processzoron belül 16 speciális regiszterhez
+      lehet hozzáférni, ezek között vannak írható és olvasható,
+      illetve csak olvasható típusú regiszterek is. A speciális
+      regisztereket az <a class="inst"
+      href="#RDS"><span class="mov">RDS</span></a> és <a class="inst"
+      href="#WRS"><span class="mov">WRS</span></a> utasításokkal lehet
+      kezelni. Az <a class="inst"
       href="#RDS"><span class="mov">RDS</span></a> használható a
       regiszter kiolvasására, ugyanis ez az utasítás a megadott
       speciális regisztert egy általános regiszterbe másolja át. Az
       írható speciális regiszterek a <a class="inst"
       href="#WRS"><span class="mov">WRS</span></a> utasítással
       módosíthatók, amely az egyik általános regisztert a megadott
-      speciális regiszterbe másolja.</p>
+      speciális regiszterbe másolja.</span>
+
+      <span lang="en">Within the processor, 16 special registers can
+	be accessed, including writable, readable, and read-only
+	registers. Special registers can be manipulated with
+	the <a class="inst"
+	href="#RDS"><span class="mov">RDS</span></a>
+	and <a class="inst"
+	href="#WRS"><span class="mov">WRS</span></a>
+	instructions. <a class="inst"
+	href="#RDS"><span class="mov">RDS</span></a> can be used to
+	read a register, as this instruction copies the specified
+	special register into a general register.  Writable special
+	registers can be modified with the <a class="inst"
+	href="#WRS"><span class="mov">WRS</span></a> instruction,
+	which copies one of the general registers into the specified
+	special register.</span>
+    </p>
 
     <h4>SFR[0] Flag register (SFLAG)</h4>
 
