@@ -165,55 +165,122 @@
       <a href="p2223.html?lang=en">EN</a>
     </p>
 
-    <h1>P2223 mikroprocesszor</h1>
+    <h1>
+      <span lang="en">P2223 microprocessor</span>
+      <span lang="hu">P2223 mikroprocesszor</span>
+    </h1>
     
 
-    <p>A mikroprocesszor egy RISC felépítésű (load/store), Neumann
-      architektúrájú, 32 bites szoft processzor,
+    <p lang="hu">A mikroprocesszor egy RISC felépítésű (load/store),
+      Neumann architektúrájú, 32 bites szoft processzor,
       amelyet <a href="computer_v2.html#fpga">FPGA-val</a>
       valósíthatunk meg.</p>
+
+    <p lang="en">The microprocessor is a RISC (load/store) Neumann
+    architecture, 32-bit software processor, which can be implemented
+    with an <a href="computer_v2.html#fpga">FPGA</a>.</p>
     
     <p><img src="cpu_block.png" alt="cpu_block" /></p>
     
-    <h1>A mikroprocesszor részei</h1>
+    <h1>
+      <span lang="hu">A mikroprocesszor részei</span>
+      <span lang="hu">Parts of the microprocessor</span>
+    </h1>
     
-    <p>A mikroprocesszor az alábbi építőelemekből áll.</p>
+    <p lang="hu">A mikroprocesszor az alábbi építőelemekből áll.</p>
+
+    <p lang="en">The microprocessor consists of the following building
+    blocks.</p>
     
-    <h2>Ütemező, vezérlő</h2>
-    
-    <p>Az ütemező állítja elő a vezérlő jeleket a processzor többi
-      eleme számára. Az ütemező állapot kódokat állít elő a működési
-      fázisok jelzésére, az állapotok a <b>clk</b> bemenetre adott
-      órajel hatására követik egymást. Az állapotok bináris sorszáma a
+    <h2>
+      <span lang="hu">Ütemező, vezérlő</span>
+      <span lang="en">Scheduler, controller</span>
+    </h2>
+
+    <p>
+    <span lang="hu">Az ütemező állítja elő a vezérlő jeleket a processzor
+      többi eleme számára. Az ütemező állapot kódokat állít elő a
+      működési fázisok jelzésére, az állapotok a <b>clk</b> bemenetre
+      adott órajel hatására követik egymást. Az állapotok bináris
+      sorszáma a
       <b>clk_stat</b> kimeneten jelenik meg. A <b>reset</b> bemenet az
-      ütemezőt alaphelyzetbe állítja.</p>
+      ütemezőt alaphelyzetbe állítja.</span>
     
-    <p>A vezérlőhöz tartozik még az ún. utasítás regiszter, amely a
-      beolvasott utasítást tárolja a végrehajtás idejére.</p>
+    <span lang="en">The scheduler generates control signals for the other
+      elements of the processor. The scheduler generates status codes
+      to indicate the operating phases, the states follow each other
+      in response to the clock signal given to the <b>clk</b>
+      input. The binary sequence number of the states appears on the
+      <b>clk_stat</b> output. The <b>reset</b> input resets the
+      scheduler.</span>
+    </p>
+
+    <p>
+    <span lang="hu">A vezérlőhöz tartozik még az ún. utasítás
+      regiszter, amely a beolvasott utasítást tárolja a végrehajtás
+      idejére.</span>
+
+    <span lang="en">The controller also includes the so-called
+    instruction register, which stores the code of the instruction for
+    the duration of execution.</span>
+    </p>
     
-    <h2>Memória illesztő</h2>
+    <h2>
+      <span lang="hu">Memória illesztő</span>
+      <span lang="en">Memory interface</span>
+    </h2>
     
-    <p>Mivel a processzor Neumann architektúrájú, ezért csak egy
-      memória illesztővel rendelkezik. Ezen az illesztőn keresztül
-      olvassa be az utasításokat, és ezen az illesztőn keresztül végzi
-      el memória írási és olvasási műveleteket is. Az illesztő az
+    <p><span lang="hu">Mivel a processzor Neumann architektúrájú,
+      ezért csak egy memória illesztővel rendelkezik. Ezen az
+      illesztőn keresztül olvassa be az utasításokat, és ezen az
+      illesztőn keresztül végzi el memória írási és olvasási
+      műveleteket is. Az illesztő az
       <b>mbus_aout</b> kimeneteken adja ki a művelethez használandó
       memória címet (32 bites). Írás esetén a memóriába tárolandó adat
       az
       <b>mbus_dout</b> kimeneteken jelenik meg (32 bit). Ebben az
       esetben az <b>mbus_wen</b> kimenet magas szintű lesz (írás
       jelzés). Olvasás műveletnél a megcímzett memória tartalmát az
-      <b>mbus_din</b> bemenetre kell juttatni, ekkor az <b>mbus_wen</b>
-      kimenet alacsony lesz.</p>
+      <b>mbus_din</b> bemenetre kell juttatni, ekkor
+      az <b>mbus_wen</b> kimenet alacsony lesz.</span>
+
+      <span lang="en">Since the processor has a Neumann architecture,
+	it has only one memory interface. It reads instructions
+	through this interface, and it also performs memory read and
+	write operations through the same interface. The interface outputs
+	the memory address (32 bits) to be used for the operation on
+	the
+	<b>mbus_aout</b> outputs. In case of writing, the data to be
+	stored in the memory appears on the
+	<b>mbus_dout</b> outputs (32 bits). In this case,
+	the <b>mbus_wen</b> output will be high (write signal). In
+	case of a read operation, the contents of the addressed memory
+	must be sent to the
+	<b>mbus_din</b> input, in which case the <b>mbus_wen</b>
+	output will be low.</span>
+    </p>
     
-    <h3>Memória szervezés</h3>
+    <h3>
+      <span lang="hu">Memória szervezés</span>
+      <span lang="en">Memory organization</span>
+    </h3>
     
-    <p>A processzor által kezelt memória 32 bites szélességű, minden
-      32 bites rekesznek külön címe van. Memória műveletnél a processzor
-      a megcímzett rekeszből 32 bites adatot olvas be, illetve 32 bites
-      adatot ír ki.</p>
+    <p>
+      <span lang="hu">A processzor által kezelt memória 32 bites
+      szélességű, minden 32 bites rekesznek külön címe van. Memória
+      műveletnél a processzor a megcímzett rekeszből 32 bites adatot
+      olvas be, illetve 32 bites adatot ír ki.</span>
+
+      <span lang="en">The memory managed by the processor is 32-bit
+      wide, each 32-bit slot has a separate address. During a memory
+      operation, the processor reads 32-bit data from the addressed
+	slot, and writes 32-bit data.</span>
+    </p>
     
-    <p><img title="" src="mem_hu.svg" alt="" /></p>
+    <p>
+      <span lang="hu"><img title="" src="mem_hu.svg" alt="" /></span>
+      <span lang="en"><img title="" src="mem_en.svg" alt="" /></span>
+    </p>
     
     <h2>Regiszterek</h2>
     
