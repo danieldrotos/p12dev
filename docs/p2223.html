@@ -1026,12 +1026,21 @@
 
     <p><img src="getbz.svg"></p>
     
-    <p>Az utasítás az Rb regiszter kiválasztott bájtját az Rd
-      regiszterbe másolja, az Rd felső helyiértékű 3 bájtja 0 lesz. Az
-      Rb regiszter 4 bájtja közül a másoláshoz egyet lehet
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter kiválasztott bájtját
+      az Rd regiszterbe másolja, az Rd felső helyiértékű 3 bájtja 0
+      lesz. Az Rb regiszter 4 bájtja közül a másoláshoz egyet lehet
       kiválasztani, vagy az Ri regiszter értékével, vagy egy 2 bites
       konstanssal. Ha az Ri-vel választunk, akkor a processzor a
-      regiszternek csak az alsó két bitjét használja.</p>
+      regiszternek csak az alsó két bitjét használja.</span>
+
+      <span lang="en">The instruction copies the selected byte of the
+	Rb register to the Rd register, the upper 3 bytes of Rd will
+	be 0. One of the 4 bytes of the Rb register can be selected
+	for copying, either by the value of the Ri register or by a
+	2-bit constant. If we select with Ri, then the processor uses
+	only the lower two bits of the register.</span>
+    </p>
 
     <a name="GETF"><h1>GETF get flags</h1></a>
     
@@ -1044,12 +1053,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás átmásolja a Flag regiszter értékét (beleértve az U
-      és P biteket is) a megadott Rd regiszterbe. A jelzőbitek a Flag
-      regiszter 0-5 bitjeit foglalják el, a regiszter azonban 8
-      bites. A 6-7 bitek tetszőleges 2 bites érték tárolására
-      használhatók. Az utasítás a Flag tartalmát az Rd[7:0] bitekbe
-      másolja, az Rd[31:8] bitek 0 értéket kapnak.</p>
+    <p>
+      <span lang="hu">Az utasítás átmásolja a Flag regiszter értékét
+      (beleértve az U és P biteket is) a megadott Rd regiszterbe. A
+      jelzőbitek a Flag regiszter 0-5 bitjeit foglalják el, a
+      regiszter azonban 32 bites. A 31-6 bitek tetszőleges érték
+      tárolására használhatók.</span>
+
+      <span lang="en">The instruction copies the value of the Flag
+	register (including the U and P bits) into the specified Rd
+	register.  The flag bits occupy bits 0-5 of the Flag register,
+	but the register is 32 bits long. Bits 31-6 can be used to
+	store any value.</span>
+    </p>
 
     <a name="MOV"><h1>MOV copy register to register</h1></a>
 
@@ -1062,8 +1078,13 @@
       </tr>
     </table>
 
-    <p>Az utasítás az Rb regiszter (forrás) tartalmát átmásolja az Rd
-      (cél) regiszterbe.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter (forrás) tartalmát
+	átmásolja az Rd (cél) regiszterbe.</span>
+
+      <span lang="en">The instruction copies the contents of the Rb
+	register (source) to the Rd register (destination).</span>
+    </p>
     
     <a name="MVH"><h1>MVH load immediate into high</h1></a>
 
@@ -1076,11 +1097,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amely az Rd regiszter felső helyiértékű 16
-      bitjébe kerül. A regiszter alsó helyiértékű 16 bitje változatlan
-      marad. A Flag regiszter nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amely az Rd regiszter felső
+      helyiértékű 16 bitjébe kerül. A regiszter alsó helyiértékű 16
+      bitje változatlan marad. A Flag regiszter nem módosul.</span>
+
+      <span lang="en">This instruction can be used to load a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which is placed in the upper 16 bits
+      of the Rd register. The lower 16 bits of the register remain
+      unchanged. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVL"><h1>MVL load immediate into low</h1></a>
 
@@ -1093,11 +1122,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amely az Rd regiszter alsó helyiértékű 16
-      bitjébe kerül. A regiszter felső helyiértékű 16 bitje
-      változatlan marad. A Flag regiszter nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amely az Rd regiszter alsó
+      helyiértékű 16 bitjébe kerül. A regiszter felső helyiértékű 16
+      bitje változatlan marad. A Flag regiszter nem módosul.</span>
+
+      <span lang="en">The instruction can be used to load a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which is placed in the lower 16 bits
+      of the Rd register. The upper 16 bits of the register remain
+      unchanged. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVS"><h1>MVS load sign extended 16 bit immediate</h1></a>
     
@@ -1110,11 +1147,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy signed 16 bites
-      konstans, amelyet a CPU előjel kiterjesztéssel 32 bitesre
-      alakít, ez az érték kerül az Rd regiszterbe. A Flag regiszter
-      nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      signed 16 bites konstans, amelyet a CPU előjel kiterjesztéssel
+      32 bitesre alakít, ez az érték kerül az Rd regiszterbe. A Flag
+      regiszter nem módosul.</span>
+
+      <span lang="en">This instruction can be used to load a register
+      with a constant. The second parameter of the instruction is a
+      signed 16-bit constant, which the CPU converts to a 32-bit
+      constant with sign extension, and this value is placed in the Rd
+      register. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVZL"><h1>MVZL load zero extended 16 bit immediate</h1></a>
     
@@ -1127,11 +1172,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amelyet a CPU 0 kiterjesztéssel 32 bitesre
-      alakít, ez az érték kerül az Rd regiszterbe. A Flag regiszter
-      nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amelyet a CPU 0 kiterjesztéssel 32
+      bitesre alakít, ez az érték kerül az Rd regiszterbe. A Flag
+      regiszter nem módosul.</span>
+
+      <span lang="en">The instruction can be used to fill a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which the CPU converts to 32-bit with
+      extension 0, and this value is placed in the Rd register. The
+      Flag register is not modified.</span>
+    </p>
 
     <a name="PUTB"><h1>PUTB set one byte of a register</h1></a>
     
@@ -1153,12 +1206,21 @@
 
     <p><img src="putb.svg"></p>
     
-    <p>Az utasítás az Rb regiszter legalsó helyiértékű bájtját
-      átmásolja az Rd regiszter kiválasztott bátjába, úgy, hogy az Rd
-      többi bájtja nem változik. Az Rd módosítandó bájtjának sorszámát
-      az Ri regiszterrel (amelynek csak a legalsó két bitjét használja
-      a processzor), vagy egy két bites konstanssal választhatjuk
-      ki.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter legalsó helyiértékű
+      bájtját átmásolja az Rd regiszter kiválasztott bátjába, úgy,
+      hogy az Rd többi bájtja nem változik. Az Rd módosítandó
+      bájtjának sorszámát az Ri regiszterrel (amelynek csak a legalsó
+      két bitjét használja a processzor), vagy egy két bites
+      konstanssal választhatjuk ki.</span>
+
+      <span lang="en">The instruction copies the least significant
+	byte of the Rb register into the selected byte of the Rd
+	register, leaving the other bytes of Rd unchanged. The number
+	of the byte of Rd to be modified can be selected using the Ri
+	register (only the two least bits of which are used by the
+	processor) or a two-bit constant.</span>
+    </p>
 
     <a name="RDS"><h1>RDS read special regiszter</h1></a>
     
@@ -1173,8 +1235,15 @@
       
     </table>
     
-    <p>Az Rs sorszámú <a href="#sfr">speciális regiszter</a>
-    kiolvasása és átmásolása az Rd regiszterbe.</p>
+    <p>
+      <span lang="hu">Az Rs sorszámú <a href="#sfr">speciális
+	regiszter</a> kiolvasása és átmásolása az Rd
+	regiszterbe.</span>
+
+      <span lang="en">Read and copy the <a href="#sfr">special
+	  register</a> with serial number Rs into the Rd
+	  register.</span>
+    </p>
     
     <a name="SEB"><h1>SEB sign extend byte</h1></a>
     
@@ -1189,10 +1258,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 8
-      bitjét előjel kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 8 bitjét előjel kiterjesztéssel kibővíti 32 bitre,
+      majd ezt az eredményt tárolja az Rd regiszterben
+      (felülíródik). A Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower 8 bits of the
+	contents of the Rd register to 32 bits by sign extension, and
+	then stores this result in the Rd register (it is
+	overwritten). The Flag register is not changed.</span>
+    </p>
 
     <a name="SED"><h1>SED sign extend double word</h1></a>
     
@@ -1207,11 +1283,19 @@
       
     </table>
     
-    <p>Előjel kiterjesztés 32 bitről 64 bitre. Az utasítás az Rb
-      előjelével (Rb[31] bit) tölti fel az Rd minden bitjét, így az
-      Rd,Rb regiszterek együtt az Rb-nek a 64 bitre kiterjesztett
-      értékét fogják tartamazni. Az utasítás nem módosítja a Flag
-      regisztert.</p>
+    <p>
+      <span lang="hu">Előjel kiterjesztés 32 bitről 64 bitre. Az
+      utasítás az Rb előjelével (Rb[31] bit) tölti fel az Rd minden
+      bitjét, így az Rd,Rb regiszterek együtt az Rb-nek a 64 bitre
+      kiterjesztett értékét fogják tartamazni. Az utasítás nem
+      módosítja a Flag regisztert.</span>
+
+      <span lang="en">Sign extension from 32 bits to 64 bits. The
+	instruction fills each bit of Rd with the sign of Rb (Rb[31]
+	bits), so the Rd,Rb registers together will contain the 64-bit
+	extended value of Rb. The instruction does not modify the Flag
+	register.</span>
+    </p>
     
     <a name="SEW"><h1>SEW sign extend word</h1></a>
     
@@ -1226,10 +1310,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 16
-      bitjét előjel kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 16 bitjét előjel kiterjesztéssel kibővíti 32 bitre,
+      majd ezt az eredményt tárolja az Rd regiszterben
+      (felülíródik). A Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower significant 16
+	bits of the contents of the Rd register to 32 bits by sign
+	extension, and then stores this result in the Rd register (it
+	is overwritten). The Flag register is not changed.</span>
+    </p>
 
     <a name="SETF"><h1>SETF copy register to flag register</h1></a>
     
@@ -1242,12 +1333,17 @@
       </tr>
     </table>
     
-    <p>Az utasítás az Rd regiszter értékét a Flag regiszterbe
-      másolja. A használt Flag bitek a regiszter 0-5 bitjeit foglalják
-      el, de a regiszter 8 bites. A 6-7 bitek tetszőleges 2 bites
-      érték tárolására használhatók, vagyis a műveletben az Rd[7:0]
-      bitjei kerülnek a Flag regiszterbe, az Rd[31:8] bitek figyelmen
-      kívül maradnak.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter értékét a Flag
+      regiszterbe másolja. A használt Flag bitek a regiszter 0-5
+      bitjeit foglalják el, de a regiszter 32 bites. A 31-6 bitek
+      tetszőleges érték tárolására használhatók.</span>
+
+      <span lang="en">The instruction copies the value of the Rd
+	register to the Flag register. The Flag bits used occupy bits
+	0-5 of the register, but the register is 32-bit. Bits 31-6 can
+	be used to store any value.</span>
+    </p>
 
     <a name="WRS"><h1>WRS write special register</h1></a>
     
@@ -1262,8 +1358,14 @@
       
     </table>
     
-    <p>Az Rd regiszter átmásolása az Rs sorszámú <a href="#sfr">speciális
-	regiszterbe</a>.</p>
+    <p>
+      <span lang="hu">Az Rd regiszter átmásolása az Rs
+	  sorszámú <a href="#sfr">speciális regiszterbe</a>.</span>
+
+      <span lang="en">Copy the register Rd to
+	  the <a href="#sfr">special register</a> with the serial
+	  number Rs.</span>
+    </p>
 
     <a name="ZEB"><h1>ZEB zero extend byte</h1></a>
     
@@ -1278,10 +1380,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 8
-      bitjét 0 kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 8 bitjét 0 kiterjesztéssel kibővíti 32 bitre, majd
+      ezt az eredményt tárolja az Rd regiszterben (felülíródik). A
+      Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower 8 bits of the
+	contents of the Rd register to 32 bits with an extension of 0,
+	and then stores this result in the Rd register (overwrites
+	it).  The Flag register is not changed.</span>
+    </p>
 
     <a name="ZEW"><h1>ZEW zero extend word</h1></a>
     
@@ -1296,12 +1405,23 @@
       
     </table>
     
-    <p>Az Rd[15:0] bitjein lévő 16 bites adat 0 kiterjesztése 32
-      bitesre. Az eredmény az Rd regiszterbe kerül (felülíródik). Az
-      utasítás a Flag regisztert nem módosítja.</p>
+    <p>
+      <span lang="hu">Az Rd[15:0] bitjein lévő 16 bites adat 0
+      kiterjesztése 32 bitesre. Az eredmény az Rd regiszterbe kerül
+      (felülíródik). Az utasítás a Flag regisztert nem
+      módosítja.</span>
+
+      <span lang="en">The 16-bit data at bits Rd[15:0] is 0 extended
+	to 32 bits. The result is placed in the Rd register
+	(overwritten). The instruction does not modify the Flag
+	register.</span>
+    </p>
 
     
-    <a name="call_group"><h3>Szubrutinhívás</h3></a>
+    <a name="call_group"><h3>
+	<span lang="hu">Szubrutinhívás</span>
+	<span lang="en">Subroutine call</span>
+    </h3></a>
     
     <a name="CALL"><h1>CALL call subroutine</h1></a>
     
@@ -1322,29 +1442,59 @@
       
     </table>
     
-    <p>Az utasítás működése az abszolút címzésmódú változat
-    esetén:</p>
+    <p>
+      <span lang="hu">Az utasítás működése az abszolút címzésmódú
+	változat esetén:</span>
+
+      <span lang="en">The operation of the instruction in the case of
+      the absolute addressing version:</span>
+    </p>
 
     <p>R14= R15<br />
       R15= zex(u24)</p>
 
-    <p>Ahol a zex() művelet a Zero Extension-t jelenti, vagyis az
-      utasításban szereplő unsigned 24 bites paramétert a CPU
-      nullákkal bővíti 32 bit méretűre. Ezzel az utasítással a memória
-      első 16 MB-ja érhető el.</p>
+    <p>
+      <span lang="hu">Ahol a zex() művelet a Zero Extension-t jelenti,
+      vagyis az utasításban szereplő unsigned 24 bites paramétert a
+      CPU nullákkal bővíti 32 bit méretűre. Ezzel az utasítással a
+      memória első 16 MB-ja érhető el.</span>
 
-    <p>Az utasítás működése relatív címzési mód esetén:</p>
+      <span lang="en">Where the zex() operation stands for Zero
+	Extension, meaning that the unsigned 24-bit parameter in the
+	instruction is expanded by the CPU with zeros to a size of 32
+	bits. With this instruction, the first 16 MB of the memory can
+	be accessed.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az utasítás működése relatív címzési mód
+      esetén:</span>
+
+      <span lang="en">The operation of the instruction in relative
+	addressing mode:</span>
+    </p>
 
     <p>R14= R15<br />
       R15= Rd + sex(s20)</p>
 
-    <p>Ahol a sex() a Sign Extension műveletet jelenti, ami az
-      utasításban megadott signed 20 bites paramétert előjel
+    <p>
+      <span lang="hu">Ahol a sex() a Sign Extension műveletet jelenti,
+      ami az utasításban megadott signed 20 bites paramétert előjel
       megtartással bővíti 32 bites méretűre. Ha az Rd az R15, akkor
       figyelembe kell venni, hogy az R15 az összeadás elvégzésekor a
       következő utasítás címét tartalmazza. Az R15 használata lehetővé
       teszi pozíció független kód készítését, ahol az elérhető cím a
-      hívás helyétől ±0.5 MB távolságon belül lehet.</p>
+      hívás helyétől ±0.5 MB távolságon belül lehet.</span>
+
+      <span lang="en">Where sex() stands for Sign Extension operation,
+	which extends the signed 20-bit parameter specified in the
+	instruction to a 32-bit size with sign preservation.  If Rd is
+	R15, then it should be noted that R15 contains the address of
+	the next instruction when the addition is performed.  Using
+	R15 allows to create position-independent code, where the
+	accessible address can be within ±0.5 MB of the call
+	location.</span>
+    </p>
 
     <a name="CES"><h1>CES call subroutine with embedded string</h1></a>
     
@@ -1365,7 +1515,9 @@
       
     </table>
     
-    <p>Az utasítás működése megegyezik a <a class="inst"
+    <p>
+      <span lang="hu">Az utasítás működése megegyezik
+      a <a class="inst"
       href="#CALL"><span class="call">CALL</span></a> utasítással,
       azonban feltételt nem lehet megadni, a
       szubrutinhívás <b>feltétel nélkül</b> megtörténik. Az utasítást
@@ -1377,10 +1529,29 @@
       href="#CES"><span class="call">CES</span></a> utasítás
       használata segíti a szimulátort a visszatérési cím
       megállapításában, hogy a szubrutin a next paranccsal
-      lefuttatható legyen.</p>
+      lefuttatható legyen.</span>
+
+      <span lang="en">The operation of the instruction is the same as
+	the <a class="inst"
+	href="#CALL"><span class="call">CALL</span></a> instruction,
+	however, a condition cannot be specified, the subroutine call
+	is made <b>without a condition</b>. The instruction is useful
+	when there is an embedded string in memory immediately after
+	the call instruction which is the parameter of the
+	subroutine. Such subroutines do not return to the instruction
+	following the call, but to the string following it. Using
+	the <a class="inst"
+	href="#CES"><span class="call">CES</span></a> instruction
+	helps the simulator determine the return address so that the
+	subroutine can be executed with the simulator's next
+	command.</span>
+    </p>
 
     
-    <a name="mem_group"><h3>Memória kezelés</h3></a>
+    <a name="mem_group"><h3>
+	<span lang="hu">Memória kezelés</span>
+	<span lang="en">Memory operations</span>
+    </h3></a>
     
     <a name="LD"><h1>LD load memory to register</h1></a>
     
@@ -1437,27 +1608,59 @@
       
     </table>
     
-    <p>A memória címe megadható direkt, vagy indexelt
+    <p>
+      <span lang="hu">A memória címe megadható direkt, vagy indexelt
       címzésmóddal. Direkt címésmód esetén a cím mérete unsigned 16
       bit lehet, ami a címtér első 64 kB-jának az elérését teszi
-      lehetővé.</p>
+	lehetővé.</span>
 
-    <p>Indexelt címzésmód esetén a bázis cím az Ra regiszterben van,
-      amihez hozzáadódik egy eltolási érték, amely lehet az Rb
-      regiszter, vagy egy signed 16 bites konstans. Indexelt címzés
-      esetén kérhetjük a bázis regiszter módosítását. Ha regiszter
-      eltolást alkalmazunk, akkor az Ra változtatását az utasításban
-      adhatjuk meg, amely lehet pre-increment (növelés eggyel a cím
-      számítás előtt), pre-decrement (csökkentés eggyel a cím számítás
-      előtt), post-increment (növelés eggyel a cím számítás után),
-      vagy post-decrement (csökkentés eggyel a cím számítás
-      után). Ebben az esetben az utasítás módosítja mind az Rd, mind
-      az Ra regisztert. Ha az Rd és az Ra regiszter ugyanaz, akkor a
-      memóriából beolvasott adat felülírja a címet.</p>
+      <span lang="en">Memory addresses can be specified using direct
+      or indexed addressing. In direct addressing, the address size
+      can be unsigned 16 bits, which allows access to the first 64 KB
+      of the address space. </span>
+    </p>
 
-    <p>Konstans eltolás esetén a módosítás módját nem az utasítás,
-      hanem a FLAG regiszter U és P bitjei határozzák meg, erre utal a
-      fenti táblázatban a * jelölés:</p>
+    <p>
+      <span lang="hu">Indexelt címzésmód esetén a bázis cím az Ra
+      regiszterben van, amihez hozzáadódik egy eltolási érték, amely
+      lehet az Rb regiszter, vagy egy signed 16 bites
+      konstans. Indexelt címzés esetén kérhetjük a bázis regiszter
+      módosítását. Ha regiszter eltolást alkalmazunk, akkor az Ra
+      változtatását az utasításban adhatjuk meg, amely lehet
+      pre-increment (növelés eggyel a cím számítás előtt),
+      pre-decrement (csökkentés eggyel a cím számítás előtt),
+      post-increment (növelés eggyel a cím számítás után), vagy
+      post-decrement (csökkentés eggyel a cím számítás után). Ebben az
+      esetben az utasítás módosítja mind az Rd, mind az Ra
+      regisztert. Ha az Rd és az Ra regiszter ugyanaz, akkor a
+      memóriából beolvasott adat felülírja a címet.</span>
+
+      <span lang="en">In the case of indexed addressing, the base
+	address is in the Ra register, to which an offset value is
+	added, which can be the Rb register or a signed 16-bit
+	constant. In the case of indexed addressing, we can request
+	the modification of the base register. If we use a register
+	offset, then the change of Ra can be specified in the
+	instruction, which can be pre-increment (increase by one
+	before the address calculation), pre-decrement (decrease by
+	one before the address calculation), post-increment (increase
+	by one after the address calculation), or post-decrement
+	(decrease by one after the address calculation). In this case,
+	the instruction modifies both the Rd and Ra registers. If the
+	Rd and Ra registers are the same, the data read from the
+	memory overwrites the address.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Konstans eltolás esetén a módosítás módját nem
+      az utasítás, hanem a FLAG regiszter U és P bitjei határozzák
+      meg, erre utal a fenti táblázatban a * jelölés:</span>
+
+      <span lang="en">In the case of a constant offset, the
+	modification method is not determined by the instruction, but
+	by the U and P bits of the FLAG register, as indicated by the
+	* in the table above:</span>
+    </p>
 
     <table border="1">
       <thead>
