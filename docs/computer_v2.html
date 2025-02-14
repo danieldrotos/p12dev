@@ -209,14 +209,26 @@
     
     
     <h2>
-      Bemenetek</h2>
+      <span lang="hu">Bemenetek</span>
+      <span lang="en">Inputs</span>
+    </h2>
     
-    <p>Bemenetként szintén regisztert használunk. A regiszter olvasásakor
-      a bemeneti vezetékek állapota eltárolódik a regiszterben (mintavétel),
-      a processzor ennek a tartalmát fogja megkapni. A bemeneti GPIO
-      áramkörben egy regiszter van, így egy 32 bites bemenő adathoz lehet
-      vele hozzáférni. A számítógépben két ilyen áramkört kapcsolunk a
-      buszra, így két bemeneti portot kapunk:</p>
+    <p>
+      <span lang="hu">Bemenetként szintén regisztert használunk. A
+      regiszter olvasásakor a bemeneti vezetékek állapota eltárolódik
+      a regiszterben (mintavétel), a processzor ennek a tartalmát
+      fogja megkapni. A bemeneti GPIO áramkörben egy regiszter van,
+      így egy 32 bites bemenő adathoz lehet vele hozzáférni. A
+      számítógépben két ilyen áramkört kapcsolunk a buszra, így két
+      bemeneti portot kapunk:</span>
+
+      <span lang="en">We also use a register as an input. When reading
+      the register, the state of the input wires is stored in the
+      register (sampling), the processor will receive its content. The
+      input GPIO circuit has a register, so it can access a 32-bit
+      input data. In the computer, we connect two such circuits to the
+      bus, so we get two input ports:</span>
+    </p>
     
     <table border=1>
       <tr>
@@ -234,11 +246,22 @@
     </table>
     
     
-    <a name="timer"><h1>Időzítő</h1></a>
+    <a name="timer"><h1>
+	<span lang="hu">Időzítő</span>
+	<span lang="en">Timer</span>
+    </h1></a>
     
-    <p>Az időzítő egy 32 bites bináris előre számlálót tartalmaz, amely a
-      számítógéptől független órajellel léptethető. Az FPGA megvalósításnál
-      1 MHz-es órajelet használunk, míg a verilog szimulációban az időzítő
+    <p>
+      <span lang="hu">Az időzítő egy 32 bites bináris előre számlálót
+      tartalmaz, amely a számítógéptől független órajellel
+      léptethető. Az FPGA megvalósításnál 1 MHz-es órajelet
+	használunk, míg a verilog szimulációban az időzítő</span>
+      
+      <span lang="en">The timer contains a 32-bit binary up-counter
+      that can be stepped by a clock signal independent of the
+      computer . In the FPGA implementation, a 1 MHz clock signal is
+      used, while in the verilog simulation the timer receives a clock
+      signal of</span>
       
       <math xmlns="http://www.w3.org/1998/Math/MathML">
 	<mrow>
@@ -252,166 +275,305 @@
 	</mrow>
       </math>
       
-      frekvenciájú órajelet kap. A
+      <span lang="hu">frekvenciájú órajelet kap. A
       számlálás ki, illetve bekapcsolható, nullától egy beállítható
       végértékig tart, melynek az elérése után a számláló nullázódik. A
       végérték elérését a túlcsordulás kimenet 1 értékűvé válása jelzi, a
-      kimenetet szoftverből kell törölni, törlésig 1 marad.</p>
+	kimenetet szoftverből kell törölni, törlésig 1 marad.</span>
+
+      <span lang="en">frequency.  The counting can be turned on or
+      off, and it goes from zero to the end value which can be set,
+      after which the counter is reset.  Reaching the end value is
+      indicated by the overflow output becoming 1, the output must be
+      cleared from software, and remains 1 until cleared.</span>
+    </p>
+
     
-    <h2>Az időzítő regiszterei</h2>
+    <h2>
+      <span lang="hu">Az időzítő regiszterei</span>
+      <span lang="en">Registers of the timer</span>
+    </h2>
     
     <h3>TIMER.CTRL, control</h3>
     
-    <p>Offszet: 0<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>A regiszter tartalma vezérli a számláló működését.</p>
+    <p>
+      <span lang="hu">A regiszter tartalma vezérli a számláló
+	működését.</span>
+
+      <span lang="en">The contents of the register control the
+      operation of the counter.</span>
+    </p>
     
     <ul>
       
-      <li>TIMER.CTRL[0]: EN, enable. Ha a bit értéke 1, a számláló
-	bekapcsol, ha a bit értéke 0, a számláló megáll.</li>
+      <li>TIMER.CTRL[0]: EN, enable.
+	<span lang="hu">Ha a bit értéke 1, a számláló bekapcsol, ha a
+	  bit értéke 0, a számláló megáll.</span>
+	<span lang="en">If the bit value is 1, the counter starts, if
+	the bit value is 0, the counter stops.</span>
+      </li>
       
-      <li>TIMER.CTRL[1]: IEN, interrupt enable. H a bit értéke 1, az
-	áramkör irq kivezetése 1 lesz túlcsordulás esetén.</li>
+      <li>TIMER.CTRL[1]: IEN, interrupt enable.
+	<span lang="hu">Ha a bit értéke 1, az áramkör irq kivezetése
+	  túlcsordulás esetén 1 lesz.</span>
+	<span lang="en">If the bit value is 1, the circuit's irq pin
+	  will be set to 1 in case of overflow.</span>
+      </li>
       
-      <li>TIMER.CTRL[31:2]: reserved. Nem használt bitek.</li>
+      <li>TIMER.CTRL[31:2]: reserved.
+	<span lang="hu">Nem használt bitek.</span>
+	<span lang="en">Unused bits.</span>
+      </li>
       
     </ul>
     
     <h3>TIMER.AR, auto-reload</h3>
     
-    <p>Offszet: 1<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 1<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>A regiszter a számlálás végértékét állítja be. Amikor a számláló
-      értéke az AR regiszter tartalmával egyezik, a túlcsordulás kimenet 1
-      lesz, a számláló a következő lépéskor nullázódik.</p>
+    <p>
+      <span lang="hu">A regiszter a számlálás végértékét állítja
+      be. Amikor a számláló értéke az AR regiszter tartalmával
+      egyezik, a túlcsordulás kimenet 1 lesz, a számláló a következő
+	lépéskor nullázódik.</span>
+
+      <span lang="en">The register sets the end value of the
+      count. When the counter value matches the contents of the AR
+      register, the overflow output will be 1, and the counter will be
+      reset to zero at the next step.</span>
+    </p>
     
     <h3>TIMER.CNTR, counter</h3>
     
-    <p>Offszet: 2<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 2<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>A számláló aktuális értékét tartalmazó regiszter. Írás művelettel a
-      számláló értéke megváltoztatható.</p>
+    <p>
+      <span lang="hu">A számláló aktuális értékét tartalmazó
+	regiszter. Írás művelettel a számláló értéke
+	megváltoztatható.</span>
+
+      <span lang="en">A register containing the current value of the
+      counter. The value of the counter can be changed by a write
+      operation.</span>
+    </p>
     
     <h3>TIMER.STAT, status</h3>
     
-    <p>Offszet: 3<br>
-      Kezdőérték: 2</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 3<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 2</p>
     
-    <p>Az időzítő állapotáról tartalmaz információt.</p>
+    <p>
+      <span lang="hu">Az időzítő állapotáról tartalmaz
+      információt.</span>
+
+      <span lang="en">It contains information about the timer
+      status.</span>
+    </p>
     
     <ul>
       
-      <li>TIMER.STAT[0]: EN, enable. A CTRL[0] bit értéke, csak olvasható.</li>
+      <li>TIMER.STAT[0]: EN, enable.
+	<span lang="hu">A CTRL[0] bit értéke, csak olvasható.</span>
+	<span lang="en">Value os the CTRL[0] bit, read only.</span>
+      </li>
       
-      <li>TIMER.STAT[1]: OVF, overflow, read-only. Olvasás esetén a
-	túlcsordulási állapot értékét kapjuk. A túlcsordulás akkor vált 1-re,
-	amikor a számláló értéke egyezővé válik az AR regiszter
-	értékével.</li>
+      <li>TIMER.STAT[1]: OVF, overflow, read-only.
+	<span lang="hu">Olvasás esetén a túlcsordulási állapot értékét
+	kapjuk. A túlcsordulás akkor vált 1-re, amikor a számláló
+	  értéke egyezővé válik az AR regiszter értékével.</span>
+        <span lang="en"> In the case of reading, we get the overflow
+        condition value. Overflow becomes 1 when the counter value
+        becomes the same as the value of the AR register.</span>
+      </li>
       
-      <li>TIMER.STAT[1]: RSTO, reset overflow, write-only. Írás művelet
-	esetén ennek a bitnek az 1 értékűre való írásával tudjuk törölni a
-	túlcsordulás állapotot.</li>
+      <li>TIMER.STAT[1]: RSTO, reset overflow, write-only.
+	<span lang="hu">Írás művelet esetén ennek a bitnek az 1
+	értékűre való írásával tudjuk törölni a túlcsordulás
+	  állapotot.</span>
+	<span lang="en">In the case of a write operation, we can clear
+	  the overflow condition by writing this bit to 1.</span>
+      </li>
       
     </ul>
     
     
     <a name="uart"><h1>UART</h1></a>
     
-    <p>Univerzális aszinkron soros adó- vevő áramkör. Az áramkör vevő
-      oldala egy 16 elemű belső FIFO-val van ellátva, amely kiolvasás előtt
-      az utolsó 15 vett adatot tudja tárolni.</p>
+    <p>
+      <span lang="hu">Univerzális aszinkron soros adó- vevő
+      áramkör. Az áramkör vevő oldala egy 16 elemű belső FIFO-val van
+      ellátva, amely kiolvasás előtt az utolsó 15 vett adatot tudja
+      tárolni.</span>
+
+      <span lang="en">Universal asynchronous serial transceiver
+      circuit. The receiver side of the circuit is equipped with a
+      16-element internal FIFO, which can store the last 15 received
+      data before reading it out.</span>
+    </p>
     
     <h3>UART.DR, data register</h3>
     
-    <p>Offszet: 0<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>8 bites adat regiszter, írása elindítja a küldő műveletet. Olvasása
-      a FIFO legrégebbi tárolt karakterét adja. Olvasáskor a [31:8] bitek
-      értéke 0 lesz.</p>
+    <p>
+      <span lang="hu">8 bites adat regiszter, írása elindítja a küldő
+      műveletet. Olvasása a FIFO legrégebbi tárolt karakterét
+      adja. Olvasáskor a [31:8] bitek értéke 0 lesz.</span>
+
+      <span lang="en">8-bit data register, writing it starts the send
+      operation. Reading it gives the oldest stored character of the
+      FIFO. When reading, bits [31:8] will be set to 0.</span>
+    </p>
     
     <h3>UART.CTRL, control</h3>
     
-    <p>Offset: 1</p>
-    <p>Kezdőérték: 0</p>
+    <p>Offset: 1</br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <ul>
       
-      <li>UART.CTRL[0]: RXEN, receive enable. Vevő áramkör
-	engedélyezése, a vétel funkció bekapcsolása. 1 értéke a vevőt
-	bekapcsolja, 0 értéke a vevőt kikapcsolja.</li>
+      <li>UART.CTRL[0]: RXEN, receive enable.
+	<span lang="hu">Vevő áramkör engedélyezése, a vétel funkció
+	bekapcsolása. 1 értéke a vevőt bekapcsolja, 0 értéke a vevőt
+	  kikapcsolja.</span>
+	<span lang="en">Enable receiver circuit, turn on the receive
+	function. A value of 1 turns the receiver on, a value of 0
+	turns the receiver off.</span>
+      </li>
       
-      <li>UART.CTRL[1]: TXEN, transmit enable. Küldő áramkör
-	engedélyezése, a küldés funkció bekapcsolása. 1 értéke a küldést
-	engedélyezi, 0 értéke a küldést tiltja.</li>
+      <li>UART.CTRL[1]: TXEN, transmit enable.
+	<span lang="hu">Küldő áramkör engedélyezése, a küldés funkció
+	bekapcsolása. 1 értéke a küldést engedélyezi, 0 értéke a
+	  küldést tiltja.</span>
+	<span lang="en">Enable the sending circuit, turn on the
+	sending function. A value of 1 enables sending, a value of 0
+	disables sending.</span>
+      </li>
       
     </ul>
     
     <h3>UART.RSTAT, receive status</h3>
     
-    <p>Offszet: 2<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 2<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>Csak olvasható regiszter, a vevő áramkör állapotáról tartalmaz
-      információt.</p>
+    <p>
+      <span lang="hu">Csak olvasható regiszter, a vevő áramkör
+	állapotáról tartalmaz információt.</span>
+
+      <span lang="en">Read-only register, it contains information about
+      the state of the receiver circuit.</span>
+    </p>
     
     <ul>
       
-      <li>UART.RSTAT[0]: RNE, receiver not empty. A bit 1 értékű, ha a
-	vevő áramkör egy byte-ot vett és a FIFO nem üres. Az adat
-	regiszter kiolvasása a bitet 0 értékre állítja, amennyiben az
-	olvasás a FIFO utolsó adatát olvasta ki.</li>
+      <li>UART.RSTAT[0]: RNE, receiver not empty.
+	<span lang="hu">A bit 1 értékű, ha a vevő áramkör egy byte-ot
+	vett és a FIFO nem üres. Az adat regiszter kiolvasása a bitet
+	0 értékre állítja, amennyiben az olvasás a FIFO utolsó adatát
+	olvasta ki.</span>
+	<span lang="en">The bit is set to 1 if the receiver circuit
+        has received a byte and the FIFO is not empty. Reading the
+        data register sets the bit to 0 if the read has read the last
+        data from the FIFO.</span>
+      </li>
       
-      <li>UART.RSTAT[1]: BREAK, break received. A bit 1 értékű, ha van
-	vett karakter, és az 0.</li>
+      <li>UART.RSTAT[1]: BREAK, break received.
+	<span lang="hu">A bit 1 értékű, ha van vett karakter, és az
+	  0.</span>
+	<span lang="en">The bit is 1 if there is a character received,
+        and 0 if not.</span>
+      </li>
       
-      <li>UART.RSTAT[2]: RX_VALID, 1 értéke azt jelzi, hogy a vevő shift
-	regiszter kimenetén vett adat található.</li>
+      <li>UART.RSTAT[2]: RX_VALID,
+	<span lang="hu">1 értéke azt jelzi, hogy a vevő shift
+	  regiszter kimenetén vett adat található.</span>
+	<span lang="en">A value of 1 indicates that there is data
+        received at the output of the receiver shift register.</span>
+      </li>
       
-      <li>UART.RSTAT[4]: FIFO_EMPTY, 1, ha a vevő FIFO üres (az RNE bit
-	értékének negáltja).</li>
+      <li>UART.RSTAT[4]: FIFO_EMPTY,
+	<span lang="hu">értéke 1, ha a vevő FIFO üres (az RNE bit
+	  értékének negáltja).</span>
+	<span lang="en">will be 1 if the receiver FIFO is empty (the
+	  negation of the RNE bit ).</span>
+      </li>
       
-      <li>UART.RSTAT[5]: FIFO_FULL, 1, ha a vevő FIFO megtelt. Ha
-	olvasással nem távolítunk el adatot a FIFO-ból, akkor a további
-	vett adatok elvesznek.</li>
+      <li>UART.RSTAT[5]: FIFO_FULL,
+	<span lang="hu">1, ha a vevő FIFO megtelt. Ha olvasással nem
+	távolítunk el adatot a FIFO-ból, akkor a további vett adatok
+	  elvesznek.</span>
+	<span lang="en">1, if the receiver FIFO is full. If no data is
+	removed from the FIFO by reading, then further received data
+	will be lost.</span>
+      </li>
       
-      <li>UART.RSTAT[23:16]: FIFO_WADDR, a FIFO buffer következő üres
-	helyének címe.</li>
+      <li>UART.RSTAT[23:16]: FIFO_WADDR,
+	<span lang="hu">a FIFO buffer következő üres helyének
+	címe.</span>
+	<span lang="en">the address of the next empty space in the
+        FIFO buffer .</span>
+      </li>
       
-      <li>UART.RSTAT[31:24]: FIFO_RADDR, a FIFO-ban legrégebben eltárolt
-	adat címe.</li>
+      <li>UART.RSTAT[31:24]: FIFO_RADDR,
+	<span lang="hu">a FIFO-ban legrégebben eltárolt adat
+        címe.</span>
+	<span lang="en">the address of the oldest data stored in the
+        FIFO.</span>
+      </li>
       
     </ul>
     
     <h3>UART.TSTAT, transmit status</h3>
     
-    <p>Offszet: 3<br>
-      Kezdőérték: 1</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 3<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 1</p>
     
-    <p>Csak olvasható regiszter, a küldő áramkör állapotáról tartalmaz
-      információt.</p>
+    <p>
+      <span lang="hu">Csak olvasható regiszter, a küldő áramkör
+      állapotáról tartalmaz információt.</span>
+
+      <span lang="en">Read-only register, contains information about
+      the state of the sending circuit .</span>
+    </p>
     
     <ul>
       
-      <li>UART.TSTAT[0]: TC transmit complete. A bit 1 értékű, ha a
-	küldő üres, és nem végez adattovábbítást. Az adat regiszter
-	írásával elindított küldés törli a bit értékét.</li>
+      <li>UART.TSTAT[0]: TC transmit complete.
+	<span lang="hu">A bit 1 értékű, ha a küldő üres, és nem végez
+	adattovábbítást. Az adat regiszter írásával elindított küldés
+	  törli a bit értékét.</span>
+	<span lang="en">The bit is set to 1 if the sender is empty and
+	not transmitting data. A transmission initiated by writing to
+	the data register clears the bit.</span>
+      </li>
       
     </ul>
     
     <h3>UART.CPB, cycles per bit</h3>
     
-    <p>Offszet: 4<br>
-      Kezdőérték: 216</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 4<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 216</p>
     
-    <p>Írható és olvasható regiszter, amelynek az értéke a bit továbbítás
-      sebességét állítja be (jelelési sebesség). A tartalma azt adja meg,
-      hogy 1 bit továbbításának az ideje mennyi, az áramkörre kapcsolt
-      órajel periódusainak a számában. Az átvitel sebessége:</p>
+    <p>
+      <span lang="hu">Írható és olvasható regiszter, amelynek az
+      értéke a bit továbbítás sebességét állítja be (jelelési
+      sebesség). A tartalma azt adja meg, hogy egy bit továbbításának
+      az ideje mennyi, az áramkörre kapcsolt órajel periódusainak a
+      számában. Az átvitel sebessége:</span>
+
+      <span lang="en">A readable and writable register whose value
+      sets the bit transmission speed (signaling rate). Its contents
+      specify the time it takes to transmit one bit, in the number of
+      periods of the clock signal connected to the circuit. The
+      transmission speed:</span>
+    </p>
     
     <p>
       <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -427,35 +589,63 @@
       
     </p>
     
-    <p>ahol az fCLK az áramkör bemenetére kötött órajel frekvenciája. 25
-      MHz-es órajel esetén a 216-os kezdőérték ~115200 baud sebességet
-      eredményez.</p>
+    <p>
+      <span lang="hu">ahol az fCLK az áramkör bemenetére kötött órajel
+      frekvenciája. 25 MHz-es órajel esetén a 216-os kezdőérték
+	~115200 baud sebességet eredményez.</span>
+
+      <span lang="en">where fCLK is the frequency of the clock signal
+      connected to the input of the circuit. For a 25 MHz clock, a
+      starting value of 216 results in a baud rate of ~115200.</span>
+    </p>
     
     
     <a name="brd_ctrl"><h1>Board Control</h1></a>
     
-    <p>A periféria regisztereivel a számítógép kimeneti portjainak
-      felhasználási módja vezérelhető.</p>
+    <p>
+      <span lang="hu">A periféria regisztereivel a számítógép kimeneti
+	portjainak felhasználási módja vezérelhető.</span>
+
+      <span lang="en">The peripheral registers control how the
+      computer's output ports are used.</span>
+    </p>
     
     <h3>BRD_CTRL.OUT, output control</h3>
     
-    <p>Offszet: 0<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <ul>
       
-      <li>BRD_CTRL.OUT[0] DISPLAY_BY_COMP: 0 érték esetén a hétszegmenses
-	kijelzőn megjelenő értéket a [7:4] kapcsolók választják ki, 1
-	esetén pedig az OUT regiszter [7:4] bitjei.</li>
+      <li>BRD_CTRL.OUT[0] DISPLAY_BY_COMP:
+	<span lang="hu">0 érték esetén a hétszegmenses kijelzőn
+	megjelenő értéket a [7:4] kapcsolók választják ki, 1 esetén
+	pedig az OUT regiszter [7:4] bitjei.</span>
+	<span lang="en">In the case of a value of 0, the value
+        displayed on the seven-segment display is selected by the
+        [7:4] switches, and in the case of a value of 1, by the [7:4]
+        bits of the OUT register.</span>
+      </li>
       
-      <li>BRD_CTRL.OUT[7:4]: DISPLAY_SELECT: a hétszegmenses kijelzőn
-	megjelenő értéket választják ki, akkor ha az DISPLAY_BY_COMP bit 1
-	értékű.</li>
+      <li>BRD_CTRL.OUT[7:4]: DISPLAY_SELECT:
+	<span lang="hu">a hétszegmenses kijelzőn megjelenő értéket
+	választják ki, akkor ha az DISPLAY_BY_COMP bit 1
+	értékű.</span>
+	<span lang="en">the value displayed on the seven-segment
+        display is selected when the DISPLAY_BY_COMP bit is set to 1.
+	</span>
+      </li>
       
     </ul>
     
-    <p>A kimeneti portok (PORTA...PORTD) felhasználását vezérli. Hatása
-      csak az FPGA megvalósítások esetén van.</p>
+    <p>
+      <span lang="hu">A kimeneti portok (PORTA...PORTD) felhasználását
+	vezérli. Hatása csak az FPGA megvalósítások esetén van.</span>
+
+      <span lang="en">Controls the usage of the output ports
+      (PORTA...PORTD). It only has an effect on FPGA
+      implementations.</span>
+    </p>
     
     
     <a name="simif"><h1>Szimulátor felület</h1></a>
@@ -470,8 +660,8 @@
     
     <h3>SIMIF.CMD_PAR</h3>
     
-    <p>Offszet: 0<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <p>Parancs és adat regiszter.</p>
     
@@ -490,16 +680,16 @@
     
     <h3>CLOCK, clock value</h3>
     
-    <p>Offszet: 0<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <p>A regiszter az óra számláló értékét tartalmazza, írható és
       olvasható.</p>
     
     <h3>CLOCK.PRE, pre-divider value</h3>
     
-    <p>Offszet: 1<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 1<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <p>A PRE regiszter értéke határozza meg az óra működési frekvenciáját,
       két lépés között CNT+1 bemeneti órajel telik el:</p>
@@ -524,8 +714,8 @@
     
     <h3>CLOCK.BCNT2…BCNT15, backward counters</h3>
     
-    <p>Offszet: 2…15<br>
-      Kezdőérték: 0</p>
+    <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 2…15<br>
+      <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
     <p>Hátra számlálók, amelyeknek a működési frekvenciája az óra
       regiszterével egyezik. A számlálók csak akkor lépnek, ha nem 0 az
