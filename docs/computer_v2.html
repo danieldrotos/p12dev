@@ -927,28 +927,41 @@
       </tr>
       <tr>
 	<td>0101 (5)</td>
-	<td>Az időzítő AR regiszterének az értéke</td>
+	<td><span lang="hu">Az időzítő AR regiszterének az
+	értéke</span><span lang="en">The value of the timer AR
+	register</span>
+	</td>
       </tr>
       <tr>
 	<td>0110 (6)</td>
-	<td>Az időzítő CNTR regiszterének az értéke</td>
+	<td><span lang="hu">Az időzítő CNTR regiszterének az
+	értéke</span><span lang="en">The value of the timer's CNTR
+	register</span></td>
       </tr>
       <tr>
 	<td>0111 (7)</td>
-	<td>Az időzítő CTRL regiszterének az értéke</td>
+	<td><span lang="hu">Az időzítő CTRL regiszterének az
+	értéke</span><span lang="en">The value of the timer's CTRL
+	register</span></td>
       </tr>
       <tr>
 	<td>1000 (8)</td>
-	<td>A CPU teszt kimenetének az értéke (*)</td>
+	<td><span lang="hu">A CPU teszt kimenetének az értéke
+	(*)</span><span lang="en">The value of the CPU test output
+	(*)</span></td>
       </tr>
       <tr>
 	<td>1001 (9)</td>
-	<td>A CPU kiválasztott regiszterének az értéke (**)</td>
+	<td><span lang="hu">A CPU kiválasztott regiszterének az értéke
+	(**)</span><span lang="en">The value of the selected register
+	of the CPU (**)</span></td>
       </tr>
       <tr>
 	<td>1010 (10)</td>
-	<td>A kijelző direkt meghajtása (szegmens mód) a PORTC, PORTD
-	  kimenetekkel (***)</td>
+	<td><span lang="hu">A kijelző direkt meghajtása (szegmens mód)
+	    a PORTC, PORTD kimenetekkel
+	    (***)</span><span lang="en">Direct display drive (segment
+	    mode) with PORTC, PORTD outputs (***)</span></td>
       </tr>
       <tr>
 	<td>1011 (11)</td>
@@ -956,36 +969,68 @@
       </tr>
       <tr>
 	<td>1100 (12)</td>
-	<td>A processzor megszakításkérő bemeneteire kötött értékek (jelenleg
-	  nem használt)</td>
+	<td><span lang="hu">A processzor megszakításkérő bemeneteire
+	    kötött értékek (jelenleg nem
+	    használt)</span><span lang="en">Values ​​bound to the
+	    processor interrupt request inputs (currently
+	    unused)</span></td>
       </tr>
       <tr>
 	<td>1101 (13)</td>
-	<td>A CPU adatbusz bemeneteinek értéke</td>
+	<td><span lang="hu">A CPU adatbusz bemeneteinek
+	értéke</span><span lang="en">CPU data bus inputs
+	value</span></td>
       </tr>
       <tr>
 	<td>1110 (14)</td>
-	<td>A CPU adatbusz kimeneteinek értéke</td>
+	<td><span lang="hu">A CPU adatbusz kimeneteinek
+	értéke</span><span lang="en">CPU data bus outputs
+	value</span></td>
       </tr>
       <tr>
 	<td>1111 (15)</td>
-	<td>A CPU címbusz értéke</td>
+	<td><span lang="hu">A CPU címbusz
+	értéke</span><span lang="en">CPU address bus value</span></td>
       </tr>
     </table>
     
-    <p>(*) A SW[11:8] kapcsolókon beállított 4 bites bináris érték
-      választja ki, hogy a CPU teszt kimenetein milyen értékek jelenjenek
-      meg (P2 CPU esetén nincs megvalósítva).</p>
+    <p>
+      <span lang="hu">(*) A SW[11:8] kapcsolókon beállított 4 bites
+      bináris érték választja ki, hogy a CPU teszt kimenetein milyen
+      értékek jelenjenek meg (P2 CPU esetén nincs
+      megvalósítva).</span>
+
+      <span lang="en">(*) The 4-bit binary value set on the SW[11:8]
+      switches selects the values ​​to be displayed on the CPU test
+      outputs (not implemented in the case of P2 CPU).</span>
+    </p>
     
-    <p>(**) A SW[3:0] kapcsolókon beállított 4 bites bináris érték (0-15)
-      választja ki, hogy a CPU melyik regiszterének az értéke jelenjen meg a
-      kijelzőn.</p>
+    <p>
+      <span lang="hu">(**) A SW[3:0] kapcsolókon beállított 4 bites
+      bináris érték (0-15) választja ki, hogy a CPU melyik
+      regiszterének az értéke jelenjen meg a kijelzőn.</span>
+
+      <span lang="en">(**) The 4-bit binary value (0-15) set on the
+      SW[3:0] switches selects which register of the CPU is
+      displayed.</span>
+    </p>
     
-    <p>(***) A PORTD 32 bitje a kijelző 0-3 számjegyének 32 LED-jét
-      vezérli (4-7 karakterpozíciók), míg a PORTC 32 bitje a kijelző 4-7
-      számjegyének (0-3 karakterpozíciók) LED-jeit működteti.</p>
+    <p>
+      <span lang="hu">(***) A PORTD 32 bitje a kijelző 0-3
+      számjegyének 32 LED-jét vezérli (4-7 karakterpozíciók), míg a
+      PORTC 32 bitje a kijelző 4-7 számjegyének (0-3 karakterpozíciók)
+      LED-jeit működteti.</span>
+
+      <span lang="en">(***) The 32 bits of PORTD control the 32 LEDs
+      of the display digits 0-3 (character positions 4-7), while the
+      32 bits of PORTC operate the LEDs of the display digits 4-7
+      (character positions 0-3).</span>
+    </p>
     
-    <h3>Szegmens mód</h3>
+    <h3>
+      <span lang="hu">Szegmens mód</span>
+      <span lang="en">Segment mode</span>
+    </h3>
     
     <p>Amennyiben a kijelzendő adatként a 10-es sorszámú van kiválasztva,
       a kijelző meghajtó szegmens üzemmódban működik, ebben az esetben az
