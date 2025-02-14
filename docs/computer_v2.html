@@ -263,24 +263,24 @@ Kezdőérték: 0</p>
 a FIFO legrégebbi tárolt karakterét adja. Olvasáskor a [31:8] bitek
 értéke 0 lesz.</p>
 
-<h3>UART.DRCTRL, control</h3>
+<h3>UART.CTRL, control</h3>
 
 <p>Offset: 1</p>
 <p>Kezdőérték: 0</p>
 
 <ul>
 
-  <li>UART.DRCTRL[0]: RXEN, receive enable. Vevő áramkör
+  <li>UART.CTRL[0]: RXEN, receive enable. Vevő áramkör
     engedélyezése, a vétel funkció bekapcsolása. 1 értéke a vevőt
     bekapcsolja, 0 értéke a vevőt kikapcsolja.</li>
   
-  <li>UART.DRCTRL[1]: TXEN, transmit enable. Küldő áramkör
+  <li>UART.CTRL[1]: TXEN, transmit enable. Küldő áramkör
     engedélyezése, a küldés funkció bekapcsolása. 1 értéke a küldést
     engedélyezi, 0 értéke a küldést tiltja.</li>
 
 </ul>
 
-<h3>UART.DRRSTAT, receive status</h3>
+<h3>UART.RSTAT, receive status</h3>
 
 <p>Offszet: 2<br>
 Kezdőérték: 0</p>
@@ -290,33 +290,33 @@ információt.</p>
 
 <ul>
 
-  <li>UART.DRRSTAT[0]: RNE, receiver not empty. A bit 1 értékű, ha a
+  <li>UART.RSTAT[0]: RNE, receiver not empty. A bit 1 értékű, ha a
     vevő áramkör egy byte-ot vett és a FIFO nem üres. Az adat
     regiszter kiolvasása a bitet 0 értékre állítja, amennyiben az
     olvasás a FIFO utolsó adatát olvasta ki.</li>
   
-  <li>UART.DRRSTAT[1]: BREAK, break received. A bit 1 értékű, ha van
+  <li>UART.RSTAT[1]: BREAK, break received. A bit 1 értékű, ha van
     vett karakter, és az 0.</li>
   
-  <li>UART.DRRSTAT[2]: RX_VALID, 1 értéke azt jelzi, hogy a vevő shift
+  <li>UART.RSTAT[2]: RX_VALID, 1 értéke azt jelzi, hogy a vevő shift
     regiszter kimenetén vett adat található.</li>
 
-  <li>UART.DRRSTAT[4]: FIFO_EMPTY, 1, ha a vevő FIFO üres (az RNE bit
+  <li>UART.RSTAT[4]: FIFO_EMPTY, 1, ha a vevő FIFO üres (az RNE bit
     értékének negáltja).</li>
 
-  <li>UART.DRRSTAT[5]: FIFO_FULL, 1, ha a vevő FIFO megtelt. Ha
+  <li>UART.RSTAT[5]: FIFO_FULL, 1, ha a vevő FIFO megtelt. Ha
     olvasással nem távolítunk el adatot a FIFO-ból, akkor a további
     vett adatok elvesznek.</li>
 
-  <li>UART.DRRSTAT[23:16]: FIFO_WADDR, a FIFO buffer következő üres
+  <li>UART.RSTAT[23:16]: FIFO_WADDR, a FIFO buffer következő üres
     helyének címe.</li>
 
-  <li>UART.DRRSTAT[31:24]: FIFO_RADDR, a FIFO-ban legrégebben eltárolt
+  <li>UART.RSTAT[31:24]: FIFO_RADDR, a FIFO-ban legrégebben eltárolt
     adat címe.</li>
   
 </ul>
 
-<h3>UART.DRTSTAT, transmit status</h3>
+<h3>UART.TSTAT, transmit status</h3>
 
 <p>Offszet: 3<br>
 Kezdőérték: 1</p>
@@ -326,13 +326,13 @@ információt.</p>
 
 <ul>
 
-  <li>UART.DRTSTAT[0]: TC transmit complete. A bit 1 értékű, ha a
+  <li>UART.TSTAT[0]: TC transmit complete. A bit 1 értékű, ha a
     küldő üres, és nem végez adattovábbítást. Az adat regiszter
     írásával elindított küldés törli a bit értékét.</li>
   
 </ul>
 
-<h3>UART.DRCPB, cycles per bit</h3>
+<h3>UART.CPB, cycles per bit</h3>
 
 <p>Offszet: 4<br>
 Kezdőérték: 216</p>
