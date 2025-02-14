@@ -1748,31 +1748,63 @@
     </table>
     
 
-    <p>A memória címe megadható direkt, vagy indexelt
+    <p>
+      <span lang="hu">A memória címe megadható direkt, vagy indexelt
       címzésmóddal. Direkt címésmód esetén a cím mérete unsigned 16
       bit lehet, ami a címtér első 64 kB-jának az elérését teszi
-      lehetővé.</p>
+      lehetővé.</span>
 
-    <p>Indexelt címzésmód esetén a bázis cím az Ra regiszterben van,
-      amihez hozzáadódik egy eltolási érték, amely lehet az Rb
-      regiszter, vagy egy signed 16 bites konstans. Indexelt címzés
-      esetén kérhetjük a bázis regiszter módosítását. Ha regiszter
-      eltolást alkalmazunk, akkor az Ra változtatását az utasításban
-      adhatjuk meg, amely lehet pre-increment (növelés eggyel a cím
-      számítás előtt), pre-decrement (csökkentés eggyel a cím számítás
-      előtt), post-increment (növelés eggyel a cím számítás után),
-      vagy post-decrement (csökkentés eggyel a cím számítás után).</p>
+      <span lang="en">Memory addresses can be specified using direct
+      or indexed addressing. In direct addressing, the address size
+      can be unsigned 16 bits, which allows access to the first 64 KB
+      of the address space.</span>
+    </p>
 
-    <p>Konstans eltolás esetén a módosítás módját nem az utasítás,
-      hanem a FLAG regiszter U és P bitjei határozzák meg, erre utal a
-      fenti táblázatban a * jelölés:</p>
+    <p>
+      <span lang="hu">Indexelt címzésmód esetén a bázis cím az Ra
+      regiszterben van, amihez hozzáadódik egy eltolási érték, amely
+      lehet az Rb regiszter, vagy egy signed 16 bites
+      konstans. Indexelt címzés esetén kérhetjük a bázis regiszter
+      módosítását. Ha regiszter eltolást alkalmazunk, akkor az Ra
+      változtatását az utasításban adhatjuk meg, amely lehet
+      pre-increment (növelés eggyel a cím számítás előtt),
+      pre-decrement (csökkentés eggyel a cím számítás előtt),
+      post-increment (növelés eggyel a cím számítás után), vagy
+      post-decrement (csökkentés eggyel a cím számítás után).</span>
+
+      <span lang="en">In the case of indexed addressing, the base
+	address is in the Ra register, to which is added an offset
+	value, which can be the Rb register or a signed 16-bit
+	constant. In the case of indexed addressing, we can request a
+	modification of the base register. If we use register offset,
+	then the change in Ra can be specified in the instruction,
+	which can be pre-increment (increase by one before the address
+	calculation), pre-decrement (decrease by one before the
+	address calculation), post-increment (increase by one after
+	the address calculation), or post-decrement (decrease by one
+	after the address calculation).</span>
+    </p>
+
+    <p>
+      <span lang="hu">Konstans eltolás esetén a módosítás módját nem
+      az utasítás, hanem a FLAG regiszter U és P bitjei határozzák
+      meg, erre utal a fenti táblázatban a * jelölés:</span>
+
+      <span lang="en">In the case of a constant offset, the
+	modification method is not determined by the instruction, but
+	by the U and P bits of the FLAG register, as indicated by the
+	* in the table above:</span>
+    </p>
 
     <table border="1">
       <thead>
 	<tr>
-	  <td>U</td>
-	  <td>P</td>
-	  <td>Ra módosítása: *Ra</td>
+	  <th>U</th>
+	  <th>P</th>
+	  <th>
+	    <span lang="hu">Ra módosítása: *Ra</span>
+	    <span lang="hu">Modification of Ra: *Ra</span>
+	  </th>
 	</tr>
 	<tr>
 	  <td>0</td>
@@ -1798,7 +1830,10 @@
     </table>
 
     
-    <a name="alu_group"><h3>Aritmetikai, logikai műveletek</h3></a>
+    <a name="alu_group"><h3>
+	<span lang="hu">Aritmetikai, logikai műveletek</span>
+	<span lang="en">Arithmetic, logic operations</span>
+    </h3></a>
     
     <a name="ADC"><h1>ADC add with carry</h1></a>
     
@@ -1819,10 +1854,18 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembevételével. Az első operandus
-      egyúttal az eredmény tárolási helye is (felülíródik). A második
-      operandus regiszter, vagy signed 16 bites konstans lehet. A
-      művelet mind a négy aritmetikai flag-et módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembevételével. Az első
+      operandus egyúttal az eredmény tárolási helye is
+      (felülíródik). A második operandus regiszter, vagy signed 16
+      bites konstans lehet. A művelet mind a négy aritmetikai flag-et
+      módosítja.</span>
+
+      <span lang="en">Addition with carry. The first operand is also
+	the storage location for the result (overwritten). The second
+	operand can be a register or a signed 16 bit constant. The
+	operation modifies all four arithmetic flags.</span>
+    </p>
 
     <a name="ADD"><h1>ADD add without carry</h1></a>
     
@@ -1843,10 +1886,19 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembe vétele nélkül. Az első operandus
-      egyúttal az eredmény tárolási helye is (felülíródik). A második
-      operandus regiszter, vagy signed 16 bites konstans lehet. A
-      művelet mind a négy aritmetikai flag-et módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembe vétele nélkül. Az
+      első operandus egyúttal az eredmény tárolási helye is
+      (felülíródik). A második operandus regiszter, vagy signed 16
+      bites konstans lehet. A művelet mind a négy aritmetikai flag-et
+      módosítja.</span>
+
+      <span lang="en">Addition without carry. The first operand is
+	also the storage location for the result (it is
+	overwritten). The second operand can be a register or a signed
+	16 bit constant. The operation modifies all four arithmetic
+	flags.</span>
+    </p>
 
     <a name="AND"><h1>AND bitwise and</h1></a>
     
@@ -1867,13 +1919,24 @@
       
     </table>
     
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy 16 bites
-      konstans lehet. A konstans 32 bitesre való kiterjesztése mindig
-      1-es értékű bitekkel történik. Az utasítás ebben a formában
-      bitek 0-ba állítására használható, ha a törlendő bitek a 0-15
-      pozíciók között találhatók.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy 16 bites konstans lehet. A konstans 32 bitesre való
+      kiterjesztése mindig 1-es értékű bitekkel történik. Az utasítás
+      ebben a formában bitek 0-ba állítására használható, ha a
+      törlendő bitek a 0-15 pozíciók között találhatók.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+	operands in the same position. The first operand is also the
+	storage location for the result (it is overwritten). The
+	second operand can be a register, or a 16-bit constant. The
+	constant is always expanded to 32-bit with bits with the value
+	1. The instruction in this form can be used to set bits to 0
+	if the bits to be cleared are located between positions
+	0-15.</span>
+    </p>
 
     <a name="BTST"><h1>BTST bit test with write-back</h1></a>
     
@@ -1894,14 +1957,26 @@
       
     </table>
     
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy unsigned 16
-      bites konstans lehet. A konstans 32 bitesre való kiterjesztése
-      mindig 0 értékű bitekkel történik. Az utasítás ebben a formában
-      bit értékének a vizsgálatára használható, ha a vizsgált bit a
-      0-15 pozíció között található. Az utasítás csak a Z és S flag-et
-      módosítja.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy unsigned 16 bites konstans lehet. A konstans 32 bitesre
+      való kiterjesztése mindig 0 értékű bitekkel történik. Az
+      utasítás ebben a formában bit értékének a vizsgálatára
+      használható, ha a vizsgált bit a 0-15 pozíció között
+      található. Az utasítás csak a Z és S flag-et módosítja.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+	operands in the same position. The first operand is also the
+	storage location for the result (it is overwritten). The
+	second operand can be a register, or an unsigned 16-bit
+	constant. The constant is always extended to 32-bit with bits
+	of value 0. The instruction in this form can be used to
+	examine the value of a bit if the examined bit is located
+	between positions 0-15. The instruction only modifies the Z
+	and S flags.</span>
+    </p>
 
     <a name="CLC"><h1>CLC clear C flag</h1></a>
     
@@ -1916,8 +1991,13 @@
       
     </table>
     
-    <p>Az utasítás 0 értéket ír a Flag regiszter C bitjébe. Más hatása
-      nincs.</p>
+    <p>
+      <span lang="hu">Az utasítás 0 értéket ír a Flag regiszter C
+	bitjébe. Más hatása nincs.</span>
+
+      <span lang="en">The instruction writes a value of 0 to bit C of
+	the Flag register. It has no other effect.</span>
+    </p>
 
     <a name="CMP"><h1>CMP compare</h1></a>
     
@@ -1940,12 +2020,21 @@
       
     </table>
     
-    <p>Az utasítás a két operandus összehasonlítására használható. A
-      működése megegyezik
-      a <a class="inst" href="#SUB"><span class="alu2">SUB</span></a> utasítással,
+    <p>
+      <span lang="hu">Az utasítás a két operandus összehasonlítására
+      használható. A működése megegyezik a <a class="inst"
+      href="#SUB"><span class="alu2">SUB</span></a> utasítással,
       azonban a kivonás eredményét nem tárolja, az első operandus
       regisztere (Rd) változatlan marad, csak a Flag regiszter
-      aritmetikai bitjei módosulnak.</p>
+      aritmetikai bitjei módosulnak.</span>
+
+      <span lang="en">The instruction can be used to compare two
+	operands. Its operation is the same as the <a class="inst"
+	href="#SUB"><span class="alu2">SUB</span></a> instruction, but
+	it does not store the result of the subtraction, the register
+	(Rd) of the first operand remains unchanged, only the
+	arithmetic bits of the Flag register are changed.</span>
+    </p>
     
     <a name="MUL"><h1>MUL multiply</h1></a>
     
@@ -1966,10 +2055,17 @@
       
     </table>
     
-    <p>Az utasítás a két operandus értékét szorozza össze, az eredmény
-      alsó helyiértékű 32 bitje az Rd regiszterbe kerül. Az eredmény
-      felső helyiértékű 32 bitje elvész. Az utasítás csak a Z és S
-      Flag biteket módosítja.</p>
+    <p>
+      <span lang="hu">Az utasítás a két operandus értékét szorozza
+      össze, az eredmény alsó helyiértékű 32 bitje az Rd regiszterbe
+      kerül. Az eredmény felső helyiértékű 32 bitje elvész. Az
+      utasítás csak a Z és S Flag biteket módosítja.</span>
+
+      <span lang="en">The instruction multiplies the values ​​of the two
+      operands and the lower 32 bits of the result are placed in the
+      Rd register. The upper 32 bits of the result are lost. The
+      instruction only modifies the Z and S Flag bits.</span>
+    </p>
 
     <a name="NEG"><h1>NEG sign change</h1></a>
     
@@ -1985,11 +2081,19 @@
       
     </table>
     
-    <p>Az utasítás a signed 32 bitesnek tekintett Rd regiszter
-      értékének az előjelét az ellenkezőjére állítja, az eredmény az
-      Rd regiszterbe kerül. A CPU a műveletet az Rd=0-Rd kivonás
-      elvégzésével számítja ki, a Flag biteket ennek megfelelően
-      állítja be.</p>
+    <p>
+      <span lang="hu">Az utasítás a signed 32 bitesnek tekintett Rd
+      regiszter értékének az előjelét az ellenkezőjére állítja, az
+      eredmény az Rd regiszterbe kerül. A CPU a műveletet az Rd=0-Rd
+      kivonás elvégzésével számítja ki, a Flag biteket ennek
+      megfelelően állítja be.</span>
+
+      <span lang="en">The instruction reverses the sign of the value
+      in the Rd register, which is considered a signed 32-bit
+      register, and the result is placed in the Rd register. The CPU
+      calculates the operation by Rd=0-Rd, setting the Flag bits
+      accordingly.</span>
+    </p>
 
     <a name="NOT"><h1>NOT bitwise complement</h1></a>
     
@@ -2005,9 +2109,15 @@
       
     </table>
     
-    <p>A művelet az Rd bitjeit egyenként negálja, az eredmény az Rd
-      regiszterbe kerül. Az utasítás csak a Z és S Flag biteket
-      módosítja.</p>
+    <p>
+      <span lang="hu">A művelet az Rd bitjeit egyenként negálja, az
+      eredmény az Rd regiszterbe kerül. Az utasítás csak a Z és S Flag
+      biteket módosítja.</span>
+
+      <span lang="en">The operation negates the bits of Rd one by one,
+      the result is placed in the Rd register. The instruction only
+      modifies the Z and S Flag bits.</span>
+    </p>
 
     <a name="OR"><h1>OR bitwise or</h1></a>
     
@@ -2028,13 +2138,23 @@
       
     </table>
     
-    <p>Logikai VAGY művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy 16 bites
-      konstans lehet. A konstans 32 bitesre való kiterjesztése mindig
-      0-s értékű bitekkel történik. Az utasítás ebben a formában bitek
-      1-be állítására használható, ha a beállítandó bitek a 0-15
-      pozíciók között találhatók.</p>
+    <p>
+      <span lang="hu">Logikai VAGY művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy 16 bites konstans lehet. A konstans 32 bitesre való
+      kiterjesztése mindig 0-s értékű bitekkel történik. Az utasítás
+      ebben a formában bitek 1-be állítására használható, ha a
+      beállítandó bitek a 0-15 pozíciók között találhatók.</span>
+
+      <span lang="en">Logical OR operation between the bits of the
+      operands in the same position. The first operand is also the
+      storage location for the result (it is overwritten). The second
+      operand can be a register, or a 16-bit constant. The constant is
+      always expanded to 32-bit with 0 bits. The instruction in this
+      form can be used to set bits to 1 if the bits to be set are in
+      positions 0-15.</span>
+    </p>
 
     <a name="PLUS"><h1>PLUS add without carry</h1></a>
     
@@ -2055,12 +2175,24 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembe vétele és a Flag regiszter
-      módosítása nélkül. Az első operandus egyúttal az eredmény
-      tárolási helye is (felülíródik). A második operandus regiszter,
-      vagy signed 16 bites konstans lehet. Az utasítás eredménye
-      megegyezik az <a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
-      utasítás eredményével, azonban a Flag regisztert nem módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembe vétele és a Flag
+      regiszter módosítása nélkül. Az első operandus egyúttal az
+      eredmény tárolási helye is (felülíródik). A második operandus
+      regiszter, vagy signed 16 bites konstans lehet. Az utasítás
+      eredménye megegyezik az <a class="inst"
+      href="#ADD"><span class="alu2">ADD</span></a> utasítás
+      eredményével, azonban a Flag regisztert nem módosítja.</span>
+
+      <span lang="en">Addition without taking into account carry and
+      without modifying the Flag register. The first operand is also
+      the storage location for the result (it is overwritten). The
+      second operand can be a register or a signed 16-bit
+      constant. The result of the instruction is the same as the
+      result of the <a class="inst"
+      href="#ADD"><span class="alu2">ADD</span></a> instruction, but
+      the Flag register is not modified.</span>
+    </p>
 
     <a name="ROL"><h1>ROL rotate left through carry</h1></a>
     
@@ -2077,10 +2209,19 @@
     
     <p><img title="" src="rol.svg" alt="rol.png" /></p>
     
-    <p>33 bites forgatás balra a C bittel együtt. A C Flag bit értéke
-      az Rd[31] bit forgatás előtti értéke lesz. A C Flag bit forgatás
-      előtti értéke az Rd[0] bitbe kerül. A forgatás után a Z és S
-      Flag bitek az Rd-nek megfelelő értéket veszik fel.</p>
+    <p>
+      <span lang="hu">33 bites forgatás balra a C bittel együtt. A C
+      Flag bit értéke az Rd[31] bit forgatás előtti értéke lesz. A C
+      Flag bit forgatás előtti értéke az Rd[0] bitbe kerül. A forgatás
+      után a Z és S Flag bitek az Rd-nek megfelelő értéket veszik
+      fel.</span>
+
+      <span lang="en">33-bit left rotation including the C bit. The C
+      Flag bit value will be the value of the Rd[31] bit before the
+      rotation. The C Flag bit value before the rotation is placed in
+      the Rd[0] bit. After the rotation, the Z and S Flag bits will
+      take the value corresponding to Rd.</span>
+    </p>
 
     <a name="ROR"><h1>ROR rotate right through carry</h1></a>
     
@@ -2097,10 +2238,19 @@
     
     <p><img title="" src="ror.svg" alt="ror.png" /></p>
     
-    <p>33 bites forgatás jobbra a C Flag bittel együtt. A C Flag
-      értéke az Rd[0] bit forgatás előtti értéke lesz. A C Flag bit
-      forgatás előtti értéke az Rd[31] bitbe kerül. A forgatás után a
-      Z és S Flag bitek az Rd-nek megfelelő értéket veszik fel.</p>
+    <p>
+      <span lang="hu">33 bites forgatás jobbra a C Flag bittel
+      együtt. A C Flag értéke az Rd[0] bit forgatás előtti értéke
+      lesz. A C Flag bit forgatás előtti értéke az Rd[31] bitbe
+      kerül. A forgatás után a Z és S Flag bitek az Rd-nek megfelelő
+      értéket veszik fel.</span>
+
+      <span lang="en">33-bit right rotation along with the C Flag
+      bit. The value of the C Flag bit will be the value of the Rd[0]
+      bit before the rotation. The value of the C Flag bit before the
+      rotation is put into the Rd[31] bit. After the rotation, the Z
+      and S Flag bits will take the value according the Rd.</span>
+    </p>
 
     <a name="SBB"><h1>SBB subtract with carry</h1></a>
     
@@ -2123,14 +2273,25 @@
       
     </table>
     
-    <p>Kivonás művelet. Az első operandus (Rd) egyúttal az eredmény
-      tárolási helye is (felülíródik). A második operandus egy 32
-      bites regiszter, vagy egy signed 16 bites konstans lehet,
+    <p>
+      <span lang="hu">Kivonás művelet. Az első operandus (Rd) egyúttal
+      az eredmény tárolási helye is (felülíródik). A második operandus
+      egy 32 bites regiszter, vagy egy signed 16 bites konstans lehet,
       amelyet a CPU előjel kiterjesztéssel alakít 32 bitesre. A
       második operandus negáltját adja hozzá az elsőhöz Rd=Rd+(-op2),
       úgy, hogy kezdő átvitelként a C Flag bitet használja fel. A
       kivonás után a C Flag 0 értéke jelenti azt, hogy túlcsordulás
-      keletkezett.</p>
+      keletkezett.</span>
+
+      <span lang="en">Subtraction operation. The first operand (Rd) is
+      also the storage location for the result (it is
+      overwritten). The second operand can be a 32-bit register or a
+      signed 16-bit constant, which the CPU converts to 32-bit by sign
+      extension. The negation of the second operand is added to the
+      first, Rd=Rd+(-op2), using the C Flag bit as the initial carry.
+      After the subtraction, a value of 0 in the C Flag means that an
+      overflow has occurred.</span>
+    </p>
     
     <a name="SEC"><h1>SEC set carry flag</h1></a>
     
@@ -2145,8 +2306,13 @@
       
     </table>
     
-    <p>Az utasítás a C Flag bitet 1 értékűre állítja. Más hatása
-    nincs.</p>
+    <p>
+      <span lang="hu">Az utasítás a C Flag bitet 1 értékűre
+      állítja. Más hatása nincs.</span>
+
+      <span lang="en">The instruction sets the C Flag bit to 1. It
+      has no other effect.<</span>
+    </p>
     
     <a name="SHA"><h1>SHA arithmetic (signed) shift right</h1></a>
     
@@ -2163,11 +2329,20 @@
     
     <p><img title="" src="sha.svg" alt="sha.png" /></p>
     
-    <p>Signed 32 bites adat aritmetikai (előjel tartó) eltolása jobbra
-      1 bittel. A C Flag bit az Rd[0] eltolás előtti értékét veszi
-      fel. Az Rd[31] bit értéke nem változik, a 32 bites adat
-      megtartja az előjelét. A Z és S Flag bitek az Rd eltolás utáni
-      értéke alapján kapnak értéket.</p>
+    <p>
+      <span lang="hu">Előjeles 32 bites adat aritmetikai (előjel tartó)
+      eltolása jobbra 1 bittel. A C Flag bit az Rd[0] eltolás előtti
+      értékét veszi fel. Az Rd[31] bit értéke nem változik, a 32 bites
+      adat megtartja az előjelét. A Z és S Flag bitek az Rd eltolás
+      utáni értéke alapján kapnak értéket.</span>
+
+      <span lang="en">Arithmetic (sign-retaining) shift of signed
+      32-bit data to the right by 1 bit. The C Flag bit takes the
+      value of Rd[0] before the shift. The value of the Rd[31] bit
+      does not change, the 32-bit data retains its sign. The Z and S
+      Flag bits are given values ​​based on the value of Rd after the
+      shift.</span>
+    </p>
 
     <a name="SHL"><h1>SHL shift left</h1></a>
     
@@ -2184,9 +2359,17 @@
     
     <p><img title="" src="shl.svg" alt="shl.png" /></p>
     
-    <p>Eltolás balra 1 bittel. A C Flag bit az Rd[31] eltolás előtti
-      értékét kapja, az Rd[0] bitje 0 lesz. A Z és S Flag bitek az Rd
-      eltolás utáni értékének megfelelően módosul.</p>
+    <p>
+      <span lang="hu">Eltolás balra 1 bittel. A C Flag bit az Rd[31]
+      eltolás előtti értékét kapja, az Rd[0] bitje 0 lesz. A Z és S
+      Flag bitek az Rd eltolás utáni értékének megfelelően
+      módosul.</span>
+
+      <span lang="en">Shift left by 1 bit. The C Flag bit gets the
+      value of Rd[31] before the shift, the Rd[0] bit becomes 0. The
+      Z and S Flag bits change according to the value of Rd after the
+      shift.</span>
+    </p>
 
     <a name="SHR"><h1>SHR logic (unsigned) shift right</h1></a>
     
@@ -2203,10 +2386,19 @@
     
     <p><img title="" src="shr.svg" alt="shr.png" /></p>
     
-    <p>Unsigned 32 bites adat eltolása jobbra 1 bittel. A C Flag bit
-      értéke az Rd[0] eltolás előtti értéke lesz. Az Rd[31] bit 0
-      értéket kap. A Z és az S Flag bitek az Rd eltolás utáni értéke
-      alapján kapnak értéket, vagyis a S Flag bit mindig 0 lesz.</p>
+    <p>
+      <span lang="hu">Előjel nélküli 32 bites adat eltolása jobbra 1
+      bittel. A C Flag bit értéke az Rd[0] eltolás előtti értéke
+      lesz. Az Rd[31] bit 0 értéket kap. A Z és az S Flag bitek az Rd
+      eltolás utáni értéke alapján kapnak értéket, vagyis a S Flag bit
+      mindig 0 lesz.</span>
+
+      <span lang="en">Shift unsigned 32-bit data to the right by 1
+      bit. The C Flag bit will be the value of Rd[0] before the
+      shift. The Rd[31] bit will be set to 0. The Z and S Flag bits
+      will be set to the value of Rd after the shift, so the S Flag
+      bit will always be 0.</span>
+    </p>
 
     <a name="SUB"><h1>SUB subtract without carry</h1></a>
     
@@ -2229,14 +2421,25 @@
       
     </table>
     
-    <p>Kivonás művelet az átvitel figyelmen kívül hagyásával. Az első
-      operandus (Rd) egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus egy 32 bites regiszter, vagy
-      egy signed 16 bites konstans lehet, amelyet a CPU előjel
-      kiterjesztéssel alakít 32 bitesre. A második operandus negáltját
-      adja hozzá az elsőhöz Rd=Rd+(-op2), úgy, hogy kezdő átvitelként
-      1 értéket használ fel. A kivonás után a C Flag 0 értéke jelenti
-      azt, hogy túlcsordulás keletkezett.</p>
+    <p>
+      <span lang="hu">Kivonás művelet az átvitel figyelmen kívül
+      hagyásával. Az első operandus (Rd) egyúttal az eredmény tárolási
+      helye is (felülíródik). A második operandus egy 32 bites
+      regiszter, vagy egy signed 16 bites konstans lehet, amelyet a
+      CPU előjel kiterjesztéssel alakít 32 bitesre. A második
+      operandus negáltját adja hozzá az elsőhöz Rd=Rd+(-op2), úgy,
+      hogy kezdő átvitelként 1 értéket használ fel. A kivonás után a C
+      Flag 0 értéke jelenti azt, hogy túlcsordulás keletkezett.</span>
+
+      <span lang="en">Subtraction operation ignoring the carry. The
+	first operand (Rd) is also the storage location for the result
+	(overwritten). The second operand can be a 32-bit register or
+	a signed 16-bit constant, which the CPU converts to 32-bit by
+	sign extension. The negation of the second operand is added to
+	the first, Rd=Rd+(-op2), using 1 as the initial carry. After
+	the subtraction, the C Flag value of 0 indicates that an
+	overflow has occurred.</span>
+    </p>
 
     <a name="SZ"><h1>SZ test of zero</h1></a>
     
@@ -2251,11 +2454,19 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter értékének a 0-val való
-      összehasonlítására, illetve az előjelének a megállapítására
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter értékének a 0-val
+      való összehasonlítására, illetve az előjelének a megállapítására
       használható. Ha a regiszter 0, akkor a Z Flag bit 1 lesz,
       különben 0. Az S Flag bit az Rd[31] értékét veszi fel. Az Rd nem
-      változik.</p>
+      változik.</span>
+
+      <span lang="en">The instruction can be used to compare the value
+      of the register Rd with 0 and to determine its sign.  If the
+      register is 0, the Z Flag bit will be 1, otherwise it will be
+      0. The S Flag bit will take the value of Rd[31]. Rd will not
+      change.</span>
+    </p>
 
     <a name="TEST"><h1>TEST bitwise and without write back</h1></a>
     
@@ -2276,16 +2487,31 @@
       
     </table>
 
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között.  Az első operandus nem változik. A második operandus
-      regiszter, vagy unsigned 16 bites konstans lehet. A konstans 32
-      bitesre való kiterjesztése mindig 0 értékű bitekkel történik. Az
-      utasítás ebben a formában bit értékének a vizsgálatára
-      használható, ha a vizsgált bit a 0-15 pozíció között
-      található. Az utasítás csak a Z és S flag-et módosítja, az Rd
-      regiszter értéke változatlan marad. Az utasítás
-      a <a class="inst" href="#BTST"><span class="alu2">BTST</span></a> utasítással
-      megegyezően működik, az Rd módosítása nélkül.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között.  Az első operandus nem változik. A
+      második operandus regiszter, vagy unsigned 16 bites konstans
+      lehet. A konstans 32 bitesre való kiterjesztése mindig 0 értékű
+      bitekkel történik. Az utasítás ebben a formában bit értékének a
+      vizsgálatára használható, ha a vizsgált bit a 0-15 pozíció
+      között található. Az utasítás csak a Z és S flag-et módosítja,
+      az Rd regiszter értéke változatlan marad. Az utasítás
+      a <a class="inst"
+      href="#BTST"><span class="alu2">BTST</span></a> utasítással
+      megegyezően működik, az Rd módosítása nélkül.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+      operands in the same position. The first operand is not
+      changed. The second operand can be a register or an unsigned
+      16-bit constant. The extension of the constant to 32 bits is
+      always done with 0 bits. The instruction in this form can be
+      used to test the value of a bit, if the tested bit is located
+      between positions 0-15. The instruction only modifies the Z and
+      S flags, the value of the Rd register remains unchanged. The
+      instruction works the same as the <a class="inst"
+      href="#BTST"><span class="alu2">BTST</span></a> instruction,
+      without modifying Rd.</span>
+    </p>
 
     <a name="XOR"><h1>XOR bitwise xor</h1></a>
     
@@ -2306,14 +2532,26 @@
       
     </table>
     
-    <p>Logikai XOR művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy unsigned 16
-      bites konstans lehet. A konstans 32 bitesre való kiterjesztése
-      mindig 0 értékű bitekkel történik. Az utasítás ebben a formában
-      bit értékének a negálására használható, ha a negálandó bit a
-      0-15 pozíció között található. Az utasítás csak a Z és S flag-et
-      módosítja.</p>
+    <p>
+      <span lang="hu">Logikai XOR művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy unsigned 16 bites konstans lehet. A konstans 32 bitesre
+      való kiterjesztése mindig 0 értékű bitekkel történik. Az
+      utasítás ebben a formában bit értékének a negálására
+      használható, ha a negálandó bit a 0-15 pozíció között
+      található. Az utasítás csak a Z és S flag-et módosítja.</span>
+
+      <span lang="en">Logical XOR operation between the bits of the
+      operands in the same position. The first operand is also the
+      storage location for the result (it is overwritten). The second
+      operand can be a register, or an unsigned 16-bit constant. The
+      extension of the constant to 32 bits is always done with bits
+      with the value 0.  The instruction in this form can be used to
+      negate the value of a bit if the bit to be negated is between
+      positions 0-15. The instruction only modifies the Z and S
+      flags.</span>
+    </p>
 
 <hr>
 	
