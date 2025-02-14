@@ -648,34 +648,67 @@
     </p>
     
     
-    <a name="simif"><h1>Szimulátor felület</h1></a>
+    <a name="simif"><h1>
+	<span lang="hu">Szimulátor felület</span>
+	<span lang="en">Simulator interface</span>
+    </h1></a>
     
-    <p>Ez a periféria szövegek kiírására használható, abban az esetben, ha
-      szimuláljuk az áramkör viselkedését egy verilog szimulátorral. A
-      perifériának egy regisztere van. A regiszterbe először egy parancsot,
-      majd egy paramétert kell a szoftvernek írnia. Ha a parancs értéke ‘p’
-      (112, 0x70), akkor a második, paraméter értéket az illesztő ASCII
-      kódnak tekinti, és a kódnak megfelelő betűt kiírja a szimulátor
-      felületére.</p>
+    <p>
+      <span lang="hu">Ez a periféria szövegek kiírására használható,
+      abban az esetben, ha szimuláljuk az áramkör viselkedését egy
+      verilog szimulátorral. A perifériának egy regisztere van. A
+      regiszterbe először egy parancsot, majd egy paramétert kell a
+      szoftvernek írnia. Ha a parancs értéke ‘p’ (112, 0x70), akkor a
+      második, paraméter értéket az illesztő ASCII kódnak tekinti, és
+      a kódnak megfelelő betűt kiírja a szimulátor felületére.</span>
+
+      <span lang="en">This peripheral can be used to print texts, in
+      case the circuit behavior is simulated with a verilog
+      simulator. The peripheral has one register.  The software must
+      first write a command and then a parameter to the register. If
+      the command value is ‘p’ (112, 0x70), then the second, parameter
+      value is considered as an ASCII code and the letter
+      corresponding to the code is printed on the simulator
+      interface.</span>
+    </p>
     
     <h3>SIMIF.CMD_PAR</h3>
     
     <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
       <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>Parancs és adat regiszter.</p>
+    <p>
+      <span lang="hu">Parancs és adat regiszter.</span>
+      <span lang="hu">Command and data register.</span>
+    </p>
     
     
-    <a name="clock"><h1>Clock, óra</h1></a>
+    <a name="clock"><h1>
+	<span lang="hu">Óra</span>
+	<span lang="en">Clock</span>
+    </h1></a>
     
-    <p>A periféria egy 32 bites előre számlálót tartalmaz, amelynek a
-      működési frekvenciája (vagyis a lépések közötti idő) egy előosztó
-      segítségével beállítható.</p>
+    <p>
+      <span lang="hu">A periféria egy 32 bites előre számlálót
+      tartalmaz, amelynek a működési frekvenciája (vagyis a lépések
+      közötti idő) egy előosztó segítségével beállítható.</span>
+
+      <span lang="en">The peripheral contains a 32-bit up-counter,
+      whose operating frequency (i.e. the time between steps ) can be
+      set using a prescaler.</span>
+    </p>
     
-    <p>Ezen kívül még 14 darab 32 bites hátra számlálót is használhatunk,
-      amlyeknek a frekvenciája az óra számlálóéval egyezik meg. Ezek a
-      számlálók csak akkor lépnek, ha nem nulla az értékük, a 0 elérésekor a
-      számlálás leáll.</p>
+    <p>
+      <span lang="hu">Ezen kívül még 14 darab 32 bites hátra számlálót
+      is használhatunk, amlyeknek a frekvenciája az óra számlálóéval
+      egyezik meg. Ezek a számlálók csak akkor lépnek, ha nem nulla az
+      értékük, a 0 elérésekor a számlálás leáll.</span>
+
+      <span lang="en">In addition, we can use 14 32-bit down counters
+      whose frequency is the same as that of the clock counter.  These
+      counters only move if their value is not zero, and counting
+      stops when 0 is reached.</span>
+    </p>
     
     
     <h3>CLOCK, clock value</h3>
@@ -683,16 +716,28 @@
     <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 0<br>
       <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>A regiszter az óra számláló értékét tartalmazza, írható és
-      olvasható.</p>
+    <p>
+      <span lang="hu">A regiszter az óra számláló értékét tartalmazza,
+      írható és olvasható.</span>
+
+      <span lang="en">The register contains the clock counter value,
+      it can be written and read.</span>
+    </p>
     
     <h3>CLOCK.PRE, pre-divider value</h3>
     
     <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 1<br>
       <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>A PRE regiszter értéke határozza meg az óra működési frekvenciáját,
-      két lépés között CNT+1 bemeneti órajel telik el:</p>
+    <p>
+      <span lang="hu">A PRE regiszter értéke határozza meg az óra
+	működési frekvenciáját, két lépés között CNT+1 bemeneti órajel
+	telik el:</span>
+
+      <span lang="en">The value of the PRE register determines the
+      operating frequency of the clock, CNT+1 input clock signal
+      elapses between two steps:</span>
+    </p>
     
     <p>
       <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -707,71 +752,155 @@
       </math>
     </p>
     
-    <p>Ha a rendszer órajele 25 MHz, ahhoz, hogy az óra 1 ms időnként
-      lépjen egyet, az előosztó regiszter értékét 24999-re kell állítani. Az
-      óra csak akkor működik, ha a PRE nem 0 értékű, így 0-ra állítással az
-      óra megállítható.</p>
+    <p>
+      <span lang="hu">Ha a rendszer órajele 25 MHz, ahhoz, hogy az óra
+      1 ms időnként lépjen egyet, az előosztó regiszter értékét
+      24999-re kell állítani. Az óra csak akkor működik, ha a PRE nem
+      0 értékű, így 0-ra állítással az óra megállítható.</span>
+
+      <span lang="en">If the system clock is 25 MHz, in order for the
+      clock to move once every 1 ms, the value of the prescaler
+      register should be set to 24999. The clock only works if the PRE
+      is not 0, so setting it to 0 stops the clock.</span>
+    </p>
     
     <h3>CLOCK.BCNT2…BCNT15, backward counters</h3>
     
     <p><span lang="hu">Offszet</span><span lang="en">Offset</span>: 2…15<br>
       <span lang="hu">Kezdőérték</span><span lang="en">Initial value</span>: 0</p>
     
-    <p>Hátra számlálók, amelyeknek a működési frekvenciája az óra
-      regiszterével egyezik. A számlálók csak akkor lépnek, ha nem 0 az
-      értékük. A 0 elérésekor az egyes számlálók megállnak.</p>
+    <p>
+      <span lang="hu">Hátra számlálók, amelyeknek a működési
+      frekvenciája az óra regiszterével egyezik. A számlálók csak
+      akkor lépnek, ha nem 0 az értékük. A 0 elérésekor az egyes
+      számlálók megállnak.</span>
+
+      <span lang="en">Countdown counters whose operating frequency
+      matches the clock register. The counters only advance if their
+      value is not 0. When 0 is reached, the backcounter stops.</span>
+    </p>
     
     
-    <a name="fpga"><h1>FPGA megvalósítás</h1></a>
+    <a name="fpga"><h1>
+	<span lang="hu">FPGA megvalósítás</span>
+	<span lang="en">FPGA implementation</span>
+    </h1></a>
     
-    <p>A számítógéphez az FPGA kártyán elérhető eszközök vannak hozzákötve
-      megfelelő illesztő áramkörökön keresztül.</p>
+    <p>
+      <span lang="hu">A számítógéphez az FPGA kártyán elérhető
+	eszközök vannak hozzákötve megfelelő illesztő áramkörökön
+	keresztül.</span>
+
+      <span lang="en">The devices available on the FPGA board are
+      connected to the computer via appropriate interface
+      circuits.</span>
+    </p>
     
     <p><img title="" src="fpga_comp.svg" alt="" /></p>
     
-    <p>A felhasznált kártyákon az oszcillátor 100 MHz-es órajelet állít
-      elő. Ez egy osztón keresztül állítja elő a számítógép 25 MHz-es
-      órajelét.</p>
+    <p>
+      <span lang="hu">A felhasznált kártyákon az oszcillátor 100
+      MHz-es órajelet állít elő. Ebből a számítógép 25 MHz-es órajelét
+      egy frekvenciaosztó áramkör készíti el.</span>
+
+      <span lang="en">On the cards used, the oscillator produces a 100
+      MHz clock signal. From this, the computer's 25 MHz clock signal
+      is generated by a frequency divider circuit.</span>
+    </p>
     
-    <p>A bemeneti eszközök (BTN nyomógombok, SW kapcsolók) illesztésére
-      pergésmentesítő áramkört alkalmazunk.</p>
+    <p>
+      <span lang="hu">A bemeneti eszközök (BTN nyomógombok, SW
+	kapcsolók) illesztésére pergésmentesítő áramkört
+	alkalmazunk.</span>
+
+      <span lang="en">A debounce circuit is used to process signals
+      from the input devices (BTN pushbuttons, SW switches).</span>
+    </p>
     
-    <p>A kimeneti eszközök a kártyák LED-jei és hétszegmenses kijelzői. A
-      kijelző multiplex meghajtást igényel, ezt egy több üzemmódban is
-      használható kódátalakító működteti. A megjelenített adatok a
-      számítógép különböző kimeneteiről érkezhetnek, ezek közül egy
-      multiplexer választja ki a megjelenített értéket.</p>
+    <p>
+      <span lang="hu">A kimeneti eszközök a kártyák LED-jei és
+      hétszegmenses kijelzői. A kijelző multiplex meghajtást igényel,
+      ezt egy több üzemmódban is használható kódátalakító működteti. A
+      megjelenített adatok a számítógép különböző kimeneteiről
+      érkezhetnek, ezek közül egy multiplexer választja ki a
+      megjelenített értéket.</span>
+
+      <span lang="en">The output devices are the LEDs and
+      seven-segment displays of the boards. The display requires
+      multiplex drive, which is operated by a multi-mode code
+      converter.  The displayed data can come from different outputs
+      of the computer, from which a multiplexer selects the displayed
+      value.</span>
+    </p>
     
-    <p>A számítógéppel az UART periférián keresztül kommunikálhatunk,
-      amely a kártya UART-USB átalakítóján keresztül érhető el.</p>
+    <p>
+      <span lang="hu">A számítógéppel az UART periférián keresztül
+	kommunikálhatunk, amely a kártya UART-USB átalakítóján
+	keresztül érhető el.</span>
+
+      <span lang="en">We can communicate with the computer via the
+      UART peripheral, which is accessible via the UART-USB converter
+      of the board.</span>
+    </p>
     
     
-    <a name="reset"><h2>A számítógép alaphelyzetbe állítása</h2></a>
+    <a name="reset"><h2>
+	<span lang="hu">A számítógép alaphelyzetbe állítása</span>
+	<span lang="en">Reset the computer</span>
+    </h2></a>
     
-    <p>A CPU reset-elése elvégezhető a kártya CPU reset nyomógombjával, ha
-      a kártya rendelkezik vele.</p>
+    <p>
+      <span lang="hu">A CPU reset-elése elvégezhető a kártya CPU reset
+	nyomógombjával, ha a kártya rendelkezik vele.</span>
+
+      <span lang="en">The CPU can be reset using the CPU reset button
+      on the board, if the board has one.</span>
+    </p>
     
-    <p>Másik módszer, a BTN[1] nyomógomb (Nexys4DDR kártyán BTND) nyomva
-      tartása közben a BTN[0] gomb (Nexys4DDR kártyán a BTNC) megnyomása. Ez
-      a módszer csak a BTN[0] egyszeri megnyomásakor működik. A következő
-      reset előállításához a BTN[1] gombot fel kell engedni, majd újra
-      nyomva tartva lehet a BTN[0] megnyomásával reset-elni.</p>
+    <p>
+      <span lang="hu">Másik módszer, a BTN[1] nyomógomb (Nexys4DDR
+      kártyán BTND) nyomva tartása közben a BTN[0] gomb (Nexys4DDR
+      kártyán a BTNC) megnyomása. Ez a módszer csak a BTN[0] egyszeri
+      megnyomásakor működik. A következő reset előállításához a BTN[1]
+      gombot fel kell engedni, majd újra nyomva tartva lehet a BTN[0]
+      megnyomásával reset-elni.</span>
+
+      <span lang="en">Another method is to press and hold the BTN[1]
+      button (BTND on Nexys4DDR card) while pressing the BTN[0] button
+      (BTNC on Nexys4DDR card). This method only works when BTN[0] is
+      pressed once. To generate the next reset, the BTN[1] button must
+      be released, and then the BTN[0] button can be pressed and held
+      again to reset.</span>
+    </p>
     
     
-    <a name="display"><h2>Kijelző</h2></a>
+    <a name="display"><h2>
+	<span lang="hu">Kijelző</span>
+	<span lang="en">Display</span>
+    </h2></a>
     
-    <p>A hétszegmenses kijelző egy 32 bites szám értékét tudja
-      megjeleníteni hexadecimális számrendszerben. A kijelzőn 16 különféle
-      érték jeleníthető meg, ezeket a SW[7:4] kapcsolókon beállított bináris
-      (0-15) értékkel, vagy a <a href="#brd_ctrl">BRD_CTRL periféria</a> OUT
-      regiszterének [7:4] bitjeivel (ha OUT[0]==1) választhatjuk ki.</p>
+    <p>
+      <span lang="hu">A hétszegmenses kijelző egy 32 bites szám
+      értékét tudja megjeleníteni hexadecimális számrendszerben. A
+      kijelzőn 16 különféle érték jeleníthető meg, ezeket a SW[7:4]
+      kapcsolókon beállított bináris (0-15) értékkel, vagy
+      a <a href="#brd_ctrl">BRD_CTRL periféria</a> OUT regiszterének
+      [7:4] bitjeivel (ha OUT[0]==1) választhatjuk ki.</span>
+
+      <span lang="en">The seven-segment display can display a 32-bit
+      number in hexadecimal. The display can display 16 different
+      values, which can be selected by the binary (0-15) values ​​set on
+      the SW[7:4] switches, or by the [7:4] bits of
+      the <a href="#brd_ctrl">BRD_CTRL peripheral</a> OUT register (if
+      OUT[0]==1).</span>
+    </p>
     
     <p><img title="" src="display.svg" alt="" /></p>
     
     <table border=1>
       <tr>
-	<th>SW[7:4] vagy BRD_CTRL.OUT[7:4]</th>
-	<th>Megjelenített érték</th>
+	<th>SW[7:4] <span lang="hu">vagy</span><span lang="en">or</span> BRD_CTRL.OUT[7:4]</th>
+	<th><span lang="hu">Megjelenített érték</span><span lang="en">Displayed value</span></th>
       </tr>
       <tr>
 	<td>0000 (0)</td>
@@ -791,7 +920,10 @@
       </tr>
       <tr>
 	<td>0100 (4)</td>
-	<td>A CPU órajelével léptetett 32 bites bináris számláló értéke</td>
+	<td><span lang="hu">A CPU órajelével léptetett 32 bites bináris
+	  számláló értéke</span>
+	  <span lang="en">The value of a 32-bit binary counter that is
+	  incremented by the CPU clock</span></td>
       </tr>
       <tr>
 	<td>0101 (5)</td>
