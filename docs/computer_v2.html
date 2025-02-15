@@ -1034,45 +1034,91 @@
       <span lang="en">Segment mode</span>
     </h3>
     
-    <p>Amennyiben a kijelzendő adatként a 10-es sorszámú van kiválasztva,
-      a kijelző meghajtó szegmens üzemmódban működik, ebben az esetben az
-      adatot a PORTD és PORTC kimenetek szolgáltatják.</p>
+    <p>
+      <span lang="hu">Amennyiben a kijelzendő adatként a 10-es
+      sorszámú van kiválasztva, a kijelző meghajtó szegmens üzemmódban
+      működik, ebben az esetben az adatot a PORTD és PORTC kimenetek
+      szolgáltatják.</span>
+
+      <span lang="en">If the data to be displayed is numbered 10, the
+      display driver operates in segment mode, in which case the data
+      is provided by the PORTD and PORTC outputs.</span>
+    </p>
     
     <p><img title="" src="segmode.svg" alt="" /></p>
     
     
-    <a name="mem_map"><h1>Címdekóder, memória térkép</h1></a>
+    <a name="mem_map"><h1>
+	<span lang="hu">Címdekóder, memória térkép</span>
+	<span lang="en">Address decoder, memory map</span>
+    </h1></a>
     
-    <p>A számítógépbe 128 kszó RAM memória van beépítve, amely alapvetően
-      az első 128k címen érhető el. Az első 64k utolsó 256 címe esetén
-      azonban a címdekóder nem a memóriát, hanem helyette az IO áramköröket
-      választja ki. Az IO áramkörök tehát a 0xFF00-0xFFFF tartományon belül
-      használhatók. Az egyes perifériák regisztereinek kezdőcímét a memória
-      térkép rajzáról olvashatjuk le.</p>
+    <p>
+      <span lang="hu">A számítógépbe 128 kszó RAM memória van
+      beépítve, amely alapvetően az első 128k címen érhető el. Az első
+      64k utolsó 256 címe esetén azonban a címdekóder nem a memóriát,
+      hanem helyette az IO áramköröket választja ki. Az IO áramkörök
+      tehát a 0xFF00-0xFFFF tartományon belül használhatók. Az egyes
+      perifériák regisztereinek kezdőcímét a memória térkép rajzáról
+      olvashatjuk le.</span>
+
+      <span lang="en">The computer has 128 kwords of RAM memory, which
+      is basically accessible at the first 128k addresses. However, in
+      the case of the last 256 addresses of the first 64k, the address
+      decoder does not select the memory, but instead selects the IO
+      circuits. The IO circuits can therefore be used within the range
+      0xFF00-0xFFFF. The starting address of the registers of each
+      peripheral can be read from the memory map.</span>
+    </p>
     
-    <p>A RAM első 65280 szó, és a második 64 kszó méretű területén
-      tárolhatók a felhasználói program és annak adatai. A 0xF000-0xFEFF
-      memóriaterület kezdőértékként a PMon nevű monitorprogram kódját
+    <p>
+      <span lang="hu">A RAM első 65280 szó, és a második 64 kszó
+      méretű területén tárolhatók a felhasználói program és annak
+      adatai. A 0xF000-0xFEFF memóriaterület kezdőértékként a
+	<a href="pmon.html">PMon nevű monitorprogram</a> kódját
       tartalmazza, míg a 0 címen egy vezérlésátadó utasítás van, amely
-      bekapcsoláskor elindítja a monitort.</p>
+      bekapcsoláskor elindítja a monitort.</span>
+
+      <span lang="en">The first 65280 words of RAM and the second 64
+      kwords area can store the user program and its data. The
+      0xF000-0xFEFF memory area contains
+      the <a href="pmon.html">monitor program code called PMon</a> as
+      its initial value, while at address 0 there is a control
+      transfer instruction that starts the monitor when the computer
+      is turned on.</span>
+    </p>
     
-    <p>A monitor segítségével megvizsgálhatjuk, módosíthatjuk a memória
-      tartalmát, beállíthatjuk a felhasználói program számára a
-      regisztereket, valamint az <a href="#uart">UART</a>-on keresztül
-      betölthetjük a memóriába a felhasználói programot. A monitor egy
-      parancssoros felhasználói felülettel (CLI) rendelkezik, amelyet
-      az <a href="#uart">UART</a>-on keresztül használhatunk, 115200,N,8,1
-      beállításokkal.</p>
+    <p>
+      <span lang="hu">A monitor segítségével megvizsgálhatjuk,
+      módosíthatjuk a memória tartalmát, beállíthatjuk a felhasználói
+      program számára a regisztereket, valamint
+      az <a href="#uart">UART</a>-on keresztül betölthetjük a
+      memóriába a felhasználói programot. A monitor egy parancssoros
+      felhasználói felülettel (CLI) rendelkezik, amelyet
+      az <a href="#uart">UART</a>-on keresztül használhatunk,
+      115200,N,8,1 beállításokkal.</span>
+
+      <span lang="en">The monitor allows you to examine, modify the
+      contents of memory, set registers for the user program, and load
+      the user program into the memory via
+      the <a href="#uart">UART</a>. The monitor has a command-line
+      user interface (CLI), which can be used via
+      the <a href="#uart">UART</a>, with settings of
+      115200,N,8,1.</span>
+    </p>
     
     <p><img title="" src="mem_map.svg" alt="" /></p>
     
-    <h3>IO áramkörök regisztereinek címei</h3>
+    <h3>
+      <span lang="hu">IO áramkörök regisztereinek címei</span>
+      <span lang="en">Addresses of IO registers</span>
+    </h3>
     
     <table border=1 width=600px>
       <tr>
-	<th>Cím</th>
-	<th>Periféria</th>
-	<th>Regiszter</th>
+	<th><span lang="hu">Cím</span><span lang="en">Address</span></th>
+	<th><span lang="hu">Periféria</span><span lang="en">Peripheral</span></th>
+	<th><span lang="hu">Regiszter</span><span lang="en">Register</span></th>
       </tr>
       <tr bgcolor="c9daf8">
 	<td>0xFFFF</td>
@@ -1207,25 +1253,55 @@
     </table>
     
     
-    <a name="nexys4ddr"><h1>Megvalósítás a Nexys4DDR kártyával</h1></a>
+    <a name="nexys4ddr"><h1>
+	<span lang="hu">Megvalósítás a Nexys4DDR kártyával</span>
+	<span lang="en">Implementation on Nexys4DDR board</span>
+    </h1></a>
     
-    <p>A kártya dokumentációja elérhető
-      a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr">http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr</a> címen.</p>
+    <p>
+      <span lang="hu">A kártya dokumentációja elérhető
+	a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr">http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr</a>
+	címen.</span>
+
+      <span lang="en">The board's documentation is available
+      at <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr">http://mazsola.iit.uni-miskolc.hu/d/fpga_nexys4ddr</a>.</span>
+    </p>
     
-    <p>A kártya egy CPU RESET gombot, valamint 5 nyomógombot és 16
-      kapcsolót tartalmaz, a kimeneti jeleket 16 LED-en és egy 8 digites
-      hétszegmenses kijelzőn lehet megjeleníteni.</p>
+    <p>
+      <span lang="hu">A kártya egy CPU RESET gombot, valamint 5
+      nyomógombot és 16 kapcsolót tartalmaz, a kimeneti jeleket 16
+      LED-en és egy 8 digites hétszegmenses kijelzőn lehet
+      megjeleníteni.</span>
+
+      <span lang="en">The board contains a CPU RESET button, 5
+      pushbuttons and 16 switches, the output signals can be displayed
+      on 16 LEDs and an 8-digit seven-segment display.</span>
+    </p>
     
-    <p>A számítógép órajele 25 MHz.</p>
+    <p>
+      <span lang="hu">A számítógép órajele 25 MHz.</span>
+
+      <span lang="en">The computer's clock speed is 25 MHz.</span>
+    </p>
     
-    <h2>Nexys4DDR bemenetek</h2>
+    <h2>
+      <span lang="hu">Nexys4DDR bemenetek</span>
+      <span lang="en">Nexys4DDR inputs</span>
+    </h2>
     
-    <p>A kapcsolók és nyomógombok pergésmentesítettek.</p>
+    <p>
+      <span lang="hu">A kapcsolók és nyomógombok
+	pergésmentesítettek.</span>
+      
+      <span lang="en">The switches and pushbuttons are
+      debounced.</span>
+    </p>
     
     <table border=1>
       <tr>
-	<th>Kapcsoló/nyomógomb</th>
-	<th>Számítógép port</th>
+	<th><span lang="hu">Kapcsoló/nyomógomb</span>
+	<span lang="en">Switch/pushbutton</span></th>
+	<th><span lang="hu">Számítógép port</span><span lang="en">Computer port</span></th>
       </tr>
       <tr>
 	<td>BTNC</td>
@@ -1253,21 +1329,50 @@
       </tr>
     </table>
     
-    <p>A PORTI és PORTJ fel nem használt bitjeire 0 van bekötve.</p>
+    <p>
+      <span lang="hu">A PORTI és PORTJ fel nem használt bitjeire 0 van
+      bekötve.</span>
+
+      <span lang="en">The unused bits of PORTI and PORTJ are set to
+      0.</span>
+    </p>
     
-    <p>A kártya CPU RESET feliratú nyomógombját használhatjuk a számítógép
-      alapállapotba állítására.</p>
+    <p>
+      <span lang="hu">A kártya CPU RESET feliratú nyomógombját
+	használhatjuk a számítógép alapállapotba állítására.</span>
+
+      <span lang="en">The CPU RESET button on the baord can be used to
+      reset the computer.</span>
+    </p>
     
-    <h2>Nexys4DDR kimenetek</h2>
+    <h2>
+      <span lang="hu">Nexys4DDR kimenetek</span>
+      <span lang="en">Nexys4DDR outputs</span>
+    </h2>
     
-    <p>A számítógép PORTB[15:0] kimenetei a kártya 16 LED-jére vannak
-      bekötve.</p>
+    <p>
+      <span lang="hu">A számítógép PORTB[15:0] kimenetei a kártya 16
+	LED-jére vannak bekötve.</span>
+
+      <span lang="en">The computer's PORTB[15:0] outputs are connected
+      to the 16 LEDs on the baord.</span>
+    </p>
     
-    <h2>Nexys4DDR memória</h2>
+    <h2>
+      <span lang="hu">Nexys4DDR memória</span>
+      <span lang="en">Nexys4DDR memory</span>
+    </h2>
     
-    <p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
+    <p>
+      <span lang="hu">A számítógépben 128 kszó memória van, a memória
+      térkép megegyezik a
       <a href="#mem_map">címdekóder fejezetben</a> ismertetett
-      térképpel.</p>
+      térképpel.</span>
+
+      <span lang="en">The computer has 128 kwords of memory, the
+      memory map is the same as the map described in
+      the <a href="#mem_map">address decoder chapter</a>.</span>
+    </p>
     
     
     <a name="boolean"><h1>Megvalósítás a Boolean kártyával</h1></a>
