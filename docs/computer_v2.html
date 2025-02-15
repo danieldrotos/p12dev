@@ -1375,31 +1375,68 @@
     </p>
     
     
-    <a name="boolean"><h1>Megvalósítás a Boolean kártyával</h1></a>
+    <a name="boolean"><h1>
+	<span lang="hu">Megvalósítás a Boolean kártyával</span>
+	<span lang="hu">Implementation on Boolean board</span>
+    </h1></a>
     
-    <p>A kártya dokumentációja elérhető
-      a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean">http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean</a> címen.</p>
+    <p>
+      <span lang="hu">A kártya dokumentációja elérhető
+	a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean">http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean</a>
+	címen.</span>
+
+      <span lang="en">The board documentation is available
+      at <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean">http://mazsola.iit.uni-miskolc.hu/d/fpga_boolean</a>.</span>
+    </p>
     
-    <p>A kártya 4 nyomógombot, 16 kapcsolót, valamint 16 LED-et és egy 8
-      digites hét szegmenses kijelzőt tartalmaz.</p>
+    <p>
+      <span lang="hu">A kártya 4 nyomógombot, 16 kapcsolót, valamint
+	16 LED-et és egy 8 digites hét szegmenses kijelzőt
+	tartalmaz.</span>
+
+      <span lang="en">The board contains 4 pushbuttons, 16 switches,
+      and 16 LEDs and an 8-digit seven-segment display.</span>
+    </p>
     
-    <p>A számítógép órajele 25 MHz.</p>
+    <p>
+      <span lang="hu">A számítógép órajele 25 MHz.</span>
+
+      <span lang="en">The computer's clock speed is 25 MHz.</span>
+    </p>
     
-    <p>A kapcsolók, LED-ek és a hétszegmenses kijelző bekötése megegyezik
-      a Nexy4DDR kártyán megvalósított áramkörével. A nyomógombok és
-      kapcsolók pergésmentesítettek.</p>
+    <p>
+      <span lang="hu">A kapcsolók, LED-ek és a hétszegmenses kijelző
+      bekötése megegyezik a Nexy4DDR kártyán megvalósított
+      áramkörével. A nyomógombok és kapcsolók
+      pergésmentesítettek.</span>
+
+      <span lang="en">The connections of the switches, LEDs and the
+      seven-segment display are the same as those implemented on the
+      Nexy4DDR board. The pushbuttons and switches are
+      debounced.</span>
+    </p>
     
-    <h2>Boolean bemenetek</h2>
+    <h2>
+      <span lang="hu">Boolean bemenetek</span>
+      <span lang="en">Boolean inputs</span>
+    </h2>
     
-    <p>A kártya 16 kapcsolóval és 4 nyomógombbal rendelkezik, mivel
-      azonban a CPU RESET számára nincs rajta dedikált nyomógomb, ezért a
-      fent említett <a href="#reset">2 nyomógombos módszer</a> használható a
-      CPU újraindítására.</p>
+    <p>
+      <span lang="hu">A kártya 16 kapcsolóval és 4 nyomógombbal
+      rendelkezik, mivel azonban a CPU RESET számára nincs rajta
+      dedikált nyomógomb, ezért a fent említett <a href="#reset">2
+      nyomógombos módszer</a> használható a CPU újraindítására.</span>
+
+      <span lang="en">The board has 16 switches and 4 pushbuttons,
+      however, since there is no dedicated pushbutton for CPU RESET,
+      the <a href="#reset">2 pushbutton method</a> mentioned above can
+      be used to reset the CPU.</span>
+    </p>
     
     <table border=1>
       <tr>
-	<th>Nyomógomb/kapcsoló</th>
-	<th>Számítógép port</th>
+	<th><span lang="hu">Nyomógomb/kapcsoló</span><span lang="en">Switch/pushbutton</span></th>
+	<th><span lang="hu">Számítógép port</span><span lang="en">Computer port</span></th>
       </tr>
       <tr>
 	<td>SW[15:0]</td>
@@ -1411,40 +1448,93 @@
       </tr>
     </table>
     
-    <h2>Boolean kimenetek</h2>
+    <h2>
+      <span lang="hu">Boolean kimenetek</span>
+      <span lang="en">Boolean outputs</span>
+    </h2>
     
-    <p>A számítógép PORTB[15:0] kimenetei a kártya 16 LED-jére vannak
-      bekötve.</p>
+    <p>
+      <span lang="hu">A számítógép PORTB[15:0] kimenetei a kártya 16
+	LED-jére vannak bekötve.</span>
+
+      <span lang="en">The computer's PORTB[15:0] outputs are connected
+      to the 16 LEDs on the board.</span>
+    </p>
     
-    <h2>Boolean memória</h2>
+    <h2>
+      <span lang="hu">Boolean memória</span>
+      <span lang="en">Boolean memory</span>
+    </h2>
     
-    <p>A számítógépben 64 kszó memória található, amely a 0-0xFFFF címeken
-      érhető el. A <a href="#mem_map">címdekóder fejezetben</a> látható
-      térképhez képest az a különbség, hogy a 0x10000-0x1FFFF címeken
-      nincs beépített memória.</p>
+    <p>
+      <span lang="hu">A számítógépben 64 kszó memória található, amely
+      a 0-0xFFFF címeken érhető el. A <a href="#mem_map">címdekóder
+      fejezetben</a> látható térképhez képest az a különbség, hogy a
+      0x10000-0x1FFFF címeken nincs beépített memória.</span>
+
+      <span lang="en">The computer has 64 kwords of memory, which is
+      accessible at addresses 0-0xFFFF. The difference compared to the
+      map shown in the <a href="#mem_map">address decoder chapter</a>
+      is that there is no built-in memory at addresses
+      0x10000-0x1FFFF.</span>
+    </p>
     
     
-    <a name="logsys"><h1>Megvalósítás a LogSys kártyával</h1></a>
+    <a name="logsys"><h1>
+	<span lang="hu">Megvalósítás a LogSys kártyával</span>
+	<span lang="en">Implementation on LogSys board</span>
+    </h1></a>
     
-    <p>A kártya dokumentációja elérhető
-      a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys">http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys</a> címen.</p>
+    <p>
+      <span lang="hu">A kártya dokumentációja elérhető
+	a <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys">http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys</a>
+	címen.</span>
+
+      <span lang="en">The card documentation is available
+      at <a href="http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys">http://mazsola.iit.uni-miskolc.hu/d/fpga_logsys</a>
+      .</span>
+    </p>
     
-    <p>A kártya egy RST, valamint négy általános nyomógombot és 8
-      kapcsolót tartalmaz. A kimeneti eszközök nyolc darab 3 színű LED és
-      egy négy digites hétszegmenses kijelző.</p>
+    <p>
+      <span lang="hu">A kártya egy RST, valamint négy általános
+      nyomógombot és 8 kapcsolót tartalmaz. A kimeneti eszközök nyolc
+      darab 3 színű LED és egy négy digites hétszegmenses
+      kijelző.</span>
+
+      <span lang="en">The board contains an RST, four general
+      pushbuttons and 8 switches. The output devices are eight 3-color
+      LEDs and a four-digit seven-segment display.</span>
+    </p>
     
-    <p>A számítógép órajele 25 MHz.</p>
+    <p>
+      <span lang="hu">A számítógép órajele 25 MHz.</span>
+
+      <span lang="en">The computer's clock speed is 25 MHz.</span>
+    </p>
     
-    <h2>LogSys bemenetek</h2>
+    <h2>
+      <span lang="hu">LogSys bemenetek</span>
+      <span lang="en">LogSys inputs</span>
+    </h2>
     
-    <p>A nyomógombok és kapcsolók pergésmentesítettek.</p>
+    <p>
+      <span lang="hu">A nyomógombok és kapcsolók pergésmentesítettek.</span>
+
+      <span lang="en">The buttons and switches are debounced.</span>
+    </p>
     
-    <p>A számítógép az RST nyomógombbal állítható alaphelyzetbe.</p>
+    <p>
+      <span lang="hu">A számítógép az RST nyomógombbal állítható
+      alaphelyzetbe.</span>
+
+      <span lang="en">The computer can be reset using the RST
+      button.</span>
+    </p>
     
     <table border=1>
       <tr>
-	<th>Nyomógomb/kapcsoló</th>
-	<th>Számítógép port</th>
+	<th><span lang="hu">Nyomógomb/kapcsoló</span><span lang="en">Switch/pushbutton</span></th>
+	<th><span lang="hu">Számítógép port</span><span lang="en">Computer port</span></th>
       </tr>
       <tr>
 	<td>SW[7:0]</td>
@@ -1456,43 +1546,74 @@
       </tr>
     </table>
     
-    <h2>LogSys kimenetek</h2>
+    <h2>
+      <span lang="hu">LogSys kimenetek</span>
+      <span lang="en">LogSys outputs</span>
+    </h2>
     
-    <p>Az LD0..LD7 LED-ek mindegyike három színű, vagyis egy zöld, egy kék
-      és egy piros LED-et is tartalmaz. A számítógép PORTB[23:0] kimenetei
-      segítségével működtethetők a LED-ek:</p>
+    <p>
+      <span lang="hu">Az LD0..LD7 LED-ek mindegyike három színű,
+      vagyis egy zöld, egy kék és egy piros LED-et is tartalmaz. A
+      számítógép PORTB[23:0] kimenetei segítségével működtethetők a
+      LED-ek:</span>
+
+      <span lang="en">The LEDs LD0..LD7 each have three colors, that
+      is, a green, a blue and a red LED.  The LEDs can be operated
+      using the computer's PORTB[23:0] outputs:</span>
+    </p>
     
     <table border=1>
       <tr>
-	<th>Számítógép port</th>
+	<th><span lang="hu">Számítógép port</span><span lang="en">Computer port</span></th>
 	<th>LED</th>
       </tr>
       <tr>
 	<td>PORTB[7:0]</td>
-	<td>ZÖLD7 .. ZÖLD0</td>
+	<td><span lang="hu">ZÖLD7 .. ZÖLD0</span><span lang="en">GREEN7 .. GREEN0</span></td>
       </tr>
       <tr>
 	<td>PORTB[15:8]</td>
-	<td>PIROS7 .. PIROS0</td>
+	<td><span lang="hu">PIROS7 .. PIROS0</span><span lang="en">RED7 .. RED0</span></td>
       </tr>
       <tr>
 	<td>PORTB[23:16]</td>
-	<td>KÉK7 .. KÉK0</td>
+	<td><span lang="hu">KÉK7 .. KÉK0</span><span lang="en">BLUE7 .. BLUE0</span></td>
       </tr>
     </table>
     
-    <p>A hétszegmenses kijelzőn megjelenő érték a SW[7:4] kapcsolókon
-      beállított 4 bites bináris kód segítségével választható ki. Mivel a
-      kijelző csak 4 digites, ezért a kiválasztott adatnak csak az alsó 16
-      bitje jelenik meg. Szegmens mód esetén (SW[7:4]==10), a PORTC
-      kimenetek határozzák meg a kijelző 32 LEDjének az állapotát, a PORTD
-      kimenetek nincsenek hatással a kijelzőre.</p>
+    <p>
+      <span lang="hu">A hétszegmenses kijelzőn megjelenő érték a
+      SW[7:4] kapcsolókon beállított 4 bites bináris kód segítségével
+      választható ki. Mivel a kijelző csak 4 digites, ezért a
+      kiválasztott adatnak csak az alsó 16 bitje jelenik meg. Szegmens
+      mód esetén (SW[7:4]==10), a PORTC kimenetek határozzák meg a
+      kijelző 32 LEDjének az állapotát, a PORTD kimenetek nincsenek
+      hatással a kijelzőre.</span>
+
+      <span lang="en">The value displayed on the seven-segment display
+      can be selected using the 4-bit binary code set on the SW[7:4]
+      switches. Since the display is only 4 digits, only the lower 16
+      bits of the selected data are displayed. In segment mode
+      (SW[7:4]==10), the PORTC outputs determine the state of the 32
+      LEDs of the display, the PORTD outputs have no effect on the
+      display.</span>
+    </p>
     
-    <h2>LogSys memória</h2>
+    <h2>
+      <span lang="hu">LogSys memória</span>
+      <span lang="en">LogSys memory</span>
+    </h2>
     
-    <p>A számítógépben 128 kszó memória van, a memória térkép megegyezik a
+    <p>
+      <span lang="hu">A számítógépben 128 kszó memória van, a memória
+      térkép megegyezik a
       <a href="#mem_map">címdekóder fejezetben</a> ismertetett
-      térképpel.</p>
+      térképpel.</span>
+
+      <span lang="en">The computer has 128 kwords of memory, the
+      memory map is the same as the map described in
+      the <a href="#mem_map">address decoder chapter</a>.</span>
+    </p>
     
     <hr>
     
