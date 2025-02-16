@@ -71,13 +71,13 @@
     <p>
       <span lang="hu">Melléklet:</span>
       <span lang="en">Appendix:</span>
-      <a href="#cond_p1516">Feltételek#1</a>
+      <a href="#cond_p1516"><span lang="hu">Feltételek#1</span><span lang="en">Conditions#1</span></a>
       |
-      <a href="#cond_p2223">Feltételek#2</a>
+      <a href="#cond_p2223"><span lang="hu">Feltételek#2</span><span lang="en">Conditions#2</span></a>
       |
-      <a href="#insts_p1516">Utasítások#1</a>
+      <a href="#insts_p1516"><span lang="hu">Utasítások#1</span><span lang="en">Instructions#1</span></a>
       |
-      <a href="#insts_p2223">Utasítások#2</a>
+      <a href="#insts_p2223"><span lang="hu">Utasítások#2</span><span lang="en">Instructions#2</span></a>
       |
     </p>
     
@@ -91,138 +91,343 @@
     
     <h1>P1516/p2223 assembler: p2as</h1>
 
-    <p>A p2223 CPU-hoz kifejlesztett p2as assembler program alkalmas a
-processzoron futtatható assembly nyelvű programok lefordítására és a
-futtatható gépi kódú program létrehozására. Az assembler két menetben
-fordít és közvetlenül a futtatható kódot készíti el. Mivel nem generál
-átmeneti áthelyezhető (object) kódot, így nincs szükség szerkesztő
-(linker) programra.</p>
+    <p>
+      <span lang="hu">A p2223 CPU-hoz kifejlesztett p2as assembler
+      program alkalmas a processzoron futtatható assembly nyelvű
+      programok lefordítására és a futtatható gépi kódú program
+      létrehozására. Az assembler két menetben fordít és közvetlenül a
+      futtatható kódot készíti el. Mivel nem generál átmeneti
+      áthelyezhető (object) kódot, így nincs szükség szerkesztő
+      (linker) programra.</span>
 
-<p>Az assembler egyaránt képes a <a href="p1516.html">CPU 1-es
-verziójára (p1516)</a>, vagy a <a href="p2223.html">2-es verziójára
-(p2223)</a> készült programot lefordítani, a forrásban használható
-feltételek, utasítások a választott processzortól (assembly nyelv)
-függenek. A processzor kiválasztására szolgáló direktívát a forrás
-fájl elején kell elhelyezni. Ha nem alkalmazzuk, akkor a fordító
-alapértelmezés szerint a p1516 nyelvet használja.</p>
+      <span lang="en">The p2as assembler program developed for the
+      p2223 CPU is suitable for compiling assembly language programs
+      that can be run on the processor and for creating executable
+      machine code programs. The assembler compiles in two passes and
+      directly creates the executable code. Since it does not generate
+      temporary relocatable (object) code, no editor (linker) program
+      is required.</span>
+    </p>
 
-<p>A program parancssorban futtatható, a következő módon:</p>
+    <p>
+      <span lang="hu">Az assembler egyaránt képes
+      a <a href="p1516.html">CPU 1-es verziójára (p1516)</a>, vagy
+      a <a href="p2223.html">2-es verziójára (p2223)</a> készült
+      programot lefordítani, a forrásban használható feltételek,
+      utasítások a választott processzortól (assembly nyelv)
+      függenek. A processzor kiválasztására szolgáló direktívát a
+      forrás fájl elején kell elhelyezni. Ha nem alkalmazzuk, akkor a
+      fordító alapértelmezés szerint a p1516 nyelvet használja.</span>
 
-<p><samp>php p2as.php [-o kimenet] [-l] [-c] [-k] forrás_file...</samp></p>
+      <span lang="en">The assembler can compile a program for
+      either <a href="p1516.html">CPU version 1 (p1516)</a>
+      or <a href="p2223.html">CPU version 2 (p2223)</a>, the
+      conditions and instructions that can be used in the source
+      depend on the chosen processor (assembly language). The
+      directive for selecting the processor must be placed at the
+      beginning of the source file. If not used, the compiler will use
+      the p1516 language by default.</span>
+    </p>
 
+    <p>
+      <span lang="hu">A program parancssorban futtatható, a következő
+      módon:</span>
 
-<p>Az <a name="opt_o"><b>-o</b></a> kapcsolóval megadható a kimeneti
-fájl neve. A generált kimeneti fájl neve alapértelmezés szerint az
-elsőként megadott assembly forrás fájl nevével egyezik (a kiterjesztés
-<tt>.p2h</tt>-ra cserélésével), vagy megadható a <b>-o</b> kapcsoló
-paramétereként.</p>
+      <span lang="en">The program can be run from the command line, as
+      follows:</span>
+    </p>
 
-<p>A <a name="opt_l"><b>-l</b></a> kapcsolóval (list file creation)
-kérhetjük, hogy a program készítsen lista fájlt, amely a lefordított
-kódról tartalmaz részletes információkat. A fájl neve az első assembly
-forrás fájl nevével egyező lesz, <tt>.lst</tt> kiterjesztéssel.</p>
+    <p>
+      <span lang="hu"><samp>php p2as.php [-o kimenet] [-l] [-c] [-k] forrás_file...</samp></span>
 
-<p>A <a name="opt_c"><b>-c</b></a> kapcsoló (compile only) használata
-esetén a fordító nem ad hibajelzést ha olyan szimbólumot használunk,
-amely nincs definiálva. Az ilyen módon lefordított kimeneti fájl nem
-alkalmas a program futtatására, mert az még félkész. Ez megfelel az
-egyéb fejlesztő rendszerekben használatos un. object fájl
-típusnak. Ezek a fájlok további fordításokban forrás fájlként adhatók
-meg, a tartalmuk bekerül a lefordított programba. A kimeneti fájlt
-ebben az esetben ajánlott <tt>.p2o</tt> kiterjesztéssel ellátni. Több
-forrás, vagy object fájl -c kapcsolóval való lefordításával könyvtár
-fájlt készíthetünk, ezeket a fájlokat javasolt <tt>.p2l</tt>
-kiterjesztéssel elnevezni. A -c kapcsoló használata bekapcsolja
-a <a href="#opt_k">-k</a> kapcsoló hatását, így nem szükséges
-használni.</p>
-
-<p>A <a name="opt_k"><b>-k</b></a> kapcsoló (keep segments) használata
-esetén a fordító nem távolítja el azoknak a szegmenseknek a tartalmát,
-amelyekre nincsenek hivatkozások, így minden szegmens tartalma bekerül
-a kimeneti fájlba. Ennek a kapcsolónak csak akkor van hatása, ha
-a <a href="#opt_c">-c</a> kapcsolót nem használtuk.</p>
-
-<p>A program további paraméterei az assembly forrás fájlok, illetve
-object, vagy könyvtár fájlok nevei lehetnek, ezekből legalább egyet
-kötelező megadni. A megadott fájlok tartalmát a program összefűzi, és
-egy programként fordítja le. Ezért, ha a forrás több fájlban
-szétbontva található, azonos globális címkék nem fordulhatnak elő
-többször a fájlokban.</p>
+      <span lang="en"><samp>php p2as.php [-o output] [-l] [-c] [-k] source_file...</samp></span>
+    </p>
 
 
-<h2>Assembly nyelv</h2>
+    <p>
+      <span lang="hu">Az <a name="opt_o"><b>-o</b></a> kapcsolóval
+      megadható a kimeneti fájl neve. A generált kimeneti fájl neve
+      alapértelmezés szerint az elsőként megadott assembly forrás fájl
+      nevével egyezik (a kiterjesztés
+      <tt>.p2h</tt>-ra cserélésével), vagy megadható a <b>-o</b>
+      kapcsoló paramétereként.</span>
 
-<p>A forrás fájlok más assembler-eknél megszokott szintaxisúak
-lehetnek. Az utasításokat egy sorba írva kell a fájban elhelyezni, a
-sorok a következő mezőket tartalmazhatják:</p>
+      <span lang="en">The <a name="opt_o"><b>-o</b></a> switch can be
+      used to specify the name of the output file. The name of the
+      generated output file by default matches the name of the first
+      assembly source file specified (with the extension replaced
+      with <tt>.p2h</tt>), or can be specified as a parameter to
+      the <b>-o</b> switch.</span>
+    </p>
 
-<p><samp>[címke:[:]] [feltétel] utasítás paraméterek [;megjegyzés]</samp></p>
+    <p>
+      <span lang="hu">A <a name="opt_l"><b>-l</b></a> kapcsolóval
+      (list file creation) kérhetjük, hogy a program készítsen lista
+      fájlt, amely a lefordított kódról tartalmaz részletes
+      információkat. A fájl neve az első assembly forrás fájl nevével
+      egyező lesz, <tt>.lst</tt> kiterjesztéssel.</span>
 
-<p>A <tt>címke:</tt> (a szó végén lévő kettőspont jelöli), egy névvel
-(label) látja el azt a memória helyet, amelyre az utasítás kódszava
-kerül. Ugrásoknál és szubrutin hívásoknál használható a cím
-megadására. A címke a sorban egyedül is állhat, ekkor a forrásban
-ezután következő első utasítás helyét fogja jelölni.</p>
+      <span lang="en">With the <a name="opt_l"><b>-l</b></a> switch
+      (list file creation), we can ask the program to create a list
+      file that contains detailed information about the compiled
+      code. The file name will be the same as the name of the first
+      assembly source file with the <tt>.lst</tt> extension.</span>
+    </p>
 
-<p>Ha a címke neve után egynél több kettőspontot teszünk, akkor a
-címke globális lesz, akkor is, ha egy szegmensen belül hoztuk
-létre. Az így létrehozott szimbólumokat nem kell
-a <a href="#dir_global"><tt>.global</tt></a> direktívával
-exportálni.</p>
+    <p>
+      <span lang="hu">A <a name="opt_c"><b>-c</b></a> kapcsoló
+      (compile only) használata esetén a fordító nem ad hibajelzést ha
+      olyan szimbólumot használunk, amely nincs definiálva. Az ilyen
+      módon lefordított kimeneti fájl nem alkalmas a program
+      futtatására, mert az még félkész. Ez megfelel az egyéb fejlesztő
+      rendszerekben használatos un. object fájl típusnak. Ezek a
+      fájlok további fordításokban forrás fájlként adhatók meg, a
+      tartalmuk bekerül a lefordított programba. A kimeneti fájlt
+      ebben az esetben ajánlott <tt>.p2o</tt> kiterjesztéssel
+      ellátni. Több forrás, vagy object fájl -c kapcsolóval való
+      lefordításával könyvtár fájlt készíthetünk, ezeket a fájlokat
+      javasolt <tt>.p2l</tt> kiterjesztéssel elnevezni. A -c kapcsoló
+      használata bekapcsolja a <a href="#opt_k">-k</a> kapcsoló
+      hatását, így nem szükséges használni.</span>
 
-<p>Az utasítások feltétellel is elláthatók, ha valódi, CPU
-utasításokról van szó. Ha a feltételt nem adjuk meg, akkor AL (always)
-feltételt használja a program, amely a feltétel nélküli végrehajtást
-jelenti. Ugyanazt a feltételt több névvel is használhatjuk, amivel a
-program olvashatósága növelhető. A használható elnevezések a
-fordításhoz választott processzor típustól függnek, részletes
-felsorolásukat a <a href="#appendix">melléklet</a> tartalmazza.</p>
+      <span lang="en">When using the <a name="opt_c"><b>-c</b></a>
+      switch (compile only), the compiler will not give an error if a
+      symbol is used that is not defined. The output file compiled in
+      this way is not suitable for running the program, because it is
+      still half-finished. This corresponds to the so-called object
+      file type used in other development systems. These files can be
+      specified as source files in further compilations, and their
+      contents will be included in the compiled program. In this case,
+      it is recommended to give the output file the <tt>.p2o</tt>
+      extension. By compiling several source or object files with the
+      -c switch we can create a library file, and it is recommended to
+      name these files with the <tt>.p2l</tt> extension. Using the -c
+      switch activates the effect of the <a href="#opt_k">-k</a>
+      switch, so it is not necessary to use it.</span>
+    </p>
 
-<p>Az utasítás lehet konkrét CPU utasítás (a választott processzor
-típustól függően), illetve a fordítónak szóló ún. <i>pszeudó
-utasítás</i>, <i>direktíva</i>.</p>
+    <p>
+      <span lang="hu">A <a name="opt_k"><b>-k</b></a> kapcsoló (keep
+      segments) használata esetén a fordító nem távolítja el azoknak a
+      szegmenseknek a tartalmát, amelyekre nincsenek hivatkozások, így
+      minden szegmens tartalma bekerül a kimeneti fájlba. Ennek a
+      kapcsolónak csak akkor van hatása, ha a <a href="#opt_c">-c</a>
+      kapcsolót nem használtuk.</span>
 
-<p>A paraméterek az utasítástól függenek, ha több paramétert adunk
-meg, akkor azokat vesszővel kell elválasztani egymástól. Regiszterek
-megadásánál az R betűt és a regiszter sorszámát használjuk,
-pl. R10. Adatok esetében használhatunk címkeként létrehozott
-szimbólumokat, vagy konstansokat. A konstansoknak számjeggyel kell
-kezdődniük. A 0-val kezdődő konstansokat a fordító 8-as
-számrendszerűnek tekinti, a 0b-vel kezdődőeket kettes számrendszerűnek
-(bináris), míg a 0x-el kezdődőeket 16-osnak (hexadecimális). ASCII
-kódok megadására használhatjuk a <tt>’b’</tt> formát (az ASCII kód
-betűje egyszeres idézőjelek között). Ilyen esetben azonban ún. escape
-szekvenciát, illetve szóközt nem használhatunk! A szimbólumok nevében
-a kis- és nagybetűk különbözőnek számítanak.</p>
+      <span lang="en">When using the <a name="opt_k"><b>-k</b></a>
+      switch (keep segments), the compiler does not remove the
+      contents of segments that are not referenced, so the contents of
+      all segments are included in the output file. This switch only
+      has an effect if the <a href="#opt_c">-c</a> switch was not
+      used.</span>
+    </p>
 
+    <p>
+      <span lang="hu">A program további paraméterei az assembly forrás
+      fájlok, illetve object, vagy könyvtár fájlok nevei lehetnek,
+      ezekből legalább egyet kötelező megadni. A megadott fájlok
+      tartalmát a program összefűzi, és egy programként fordítja
+      le. Ezért, ha a forrás több fájlban szétbontva található, azonos
+      globális címkék nem fordulhatnak elő többször a
+      fájlokban.</span>
 
-<h2>Assembler direktívák</h2>
-
-<p>Bizonyos utasítások nem a processzor utasításainak a leírására
-szolgálnak, nem a fordító működését szabályozzák, vagy egyéb
-eredményük van. A direktívák nevében a kis- és nagybetűk azonosnak
-számítanak. Azok a direktívák amelyeknek a neve nem ponttal kezdődik,
-ponttal kezdődően is megadhatók, tehát pl a <tt>CPU</tt> direktíva
-<tt>.CPU</tt> formában is használható.</p>
-
-
-<a name="dir_cpu"><h3 style="font-family:monospace">PROC|CPU P1|P2</h3></a>
-
-<p>A használt processzor, és ezáltal az assembly nyelv kiválasztására
-szolgáló direktíva. <tt>P1</tt> paraméter esetén a fordító a forrás
-fájlt <a href="p1516.html">p1516</a> processzor assembly nyelveként
-értelmezi, <tt>P2</tt> esetén pedig a <a href="p2223.html">p2223</a>
-nyelvet használja. Ez a beállítás csak a CPU utasításokra vonatkozik,
-a fordító által felismert direktívák azonosak. A direktíva paramétere
-kis- és nagybetűvel is írható.</p>
+      <span lang="en">Additional program parameters can be the names
+      of assembly source files, object or library files, of which at
+      least one must be specified. The contents of the specified files
+      are concatenated by the program and compiled as a single
+      program. Therefore, if the source is split into multiple files,
+      the same global symbols cannot occur more than once in the
+      files.</span>
+    </p>
 
 
-<a name="dir_org"><h3 style="font-family:monospace">ORG érték</h3></a>
+    <h2>
+      <span lang="hu">Assembly nyelv</span>
+      <span lang="en">Assembly language</span>
+    </h2>
 
-<p>Az ORG utasítás paramétere egy számérték, ez lesz a memória cím
-számláló értéke. Arra használható, hogy valamilyen tartalmat egy adott
-memória területen helyezzünk el.</p>
+    <p>
+      <span lang="hu">A forrás fájlok más assembler-eknél megszokott
+      szintaxisúak lehetnek. Az utasításokat egy sorba írva kell a
+      fájban elhelyezni, a sorok a következő mezőket
+      tartalmazhatják:</span>
 
+      <span lang="en">Source files can have the syntax common to other
+      assemblers. The instructions should be written on a single line
+      in the file, and the lines may contain the following
+      fields:</span>
+    </p>
+
+    <p>
+      <span lang="hu"><samp>[címke:[:]] [feltétel] utasítás paraméterek [;megjegyzés]</samp></span>
+
+      <span lang="en"><samp>[label:[:]] [condition] instruction parameters [;comment]</samp></span>
+    </p>
+
+    <p>
+      <span lang="hu">A <tt>címke:</tt> (a szó végén lévő kettőspont
+      jelöli), egy névvel (label) látja el azt a memória helyet,
+      amelyre az utasítás kódszava kerül. Ugrásoknál és szubrutin
+      hívásoknál használható a cím megadására. A címke a sorban
+      egyedül is állhat, ekkor a forrásban ezután következő első
+      utasítás helyét fogja jelölni.</span>
+
+      <span lang="en">The <tt>label:</tt> (denoted by a colon at the
+      end of the word) gives a name (label) to the memory location
+      where the instruction's codeword is located. It can be used to
+      specify the address for jumps and subroutine calls. The label
+      can also stand alone in the line, in which case it will indicate
+      the location of the next instruction in the source.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Ha a címke neve után egynél több kettőspontot
+      teszünk, akkor a címke globális lesz, akkor is, ha egy
+      szegmensen belül hoztuk létre. Az így létrehozott szimbólumokat
+      nem kell a <a href="#dir_global"><tt>.global</tt></a>
+      direktívával exportálni.</span>
+
+      <span lang="en">If you put more than one colon after the label
+      name, the symbol will be global, even if it was created within a
+      segment. Symbols created in this way do not need to be exported
+      with the <a href="#dir_global"><tt>.global</tt></a>
+      directive.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az utasítások feltétellel is elláthatók, ha
+      valódi, CPU utasításokról van szó. Ha a feltételt nem adjuk meg,
+      akkor AL (always) feltételt használja a program, amely a
+      feltétel nélküli végrehajtást jelenti. Ugyanazt a feltételt több
+      névvel is használhatjuk, amivel a program olvashatósága
+      növelhető. A használható elnevezések a fordításhoz választott
+      processzor típustól függnek, részletes felsorolásukat
+      a <a href="#appendix">melléklet</a> tartalmazza.</span>
+
+      <span lang="en">Instructions can also be provided with
+      conditions, if they are real, CPU instructions. If the condition
+      is not specified, then the program uses the AL (always)
+      condition, which means unconditional execution. The same
+      condition can be used with several names, which can increase the
+      readability of the program. The names that can be used depend on
+      the processor type chosen for compilation, a detailed list of
+      them is included in the <a href="#appendix">appendix</a>.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az utasítás lehet konkrét CPU utasítás (a
+      választott processzor típustól függően), illetve a fordítónak
+      szóló ún. <i>pszeudó utasítás</i>, <i>direktíva</i>.</span>
+
+      <span lang="en">The instruction can be a specific CPU
+      instruction (depending on the chosen processor type), or a
+      so-called <i>pseudo instruction</i>, <i>directive</i> for the
+      compiler.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A paraméterek az utasítástól függenek, ha több
+      paramétert adunk meg, akkor azokat vesszővel kell elválasztani
+      egymástól. Regiszterek megadásánál az R betűt és a regiszter
+      sorszámát használjuk, pl. R10. Adatok esetében használhatunk
+      címkeként létrehozott szimbólumokat, vagy konstansokat. A
+      konstansoknak számjeggyel kell kezdődniük. A 0-val kezdődő
+      konstansokat a fordító 8-as számrendszerűnek tekinti, a 0b-vel
+      kezdődőeket kettes számrendszerűnek (bináris), míg a 0x-el
+      kezdődőeket 16-osnak (hexadecimális). ASCII kódok megadására
+      használhatjuk a <tt>’b’</tt> formát (az ASCII kód betűje
+      egyszeres idézőjelek között). Ilyen esetben azonban ún. escape
+      szekvenciát, illetve szóközt nem használhatunk! A szimbólumok
+      nevében a kis- és nagybetűk különbözőnek számítanak.</span>
+
+      <span lang="en">The parameters depend on the instruction, if we
+      specify more parameters, they must be separated from each other
+      by a comma. When specifying registers, we use the letter R and
+      the register number, e.g. R10. In the case of data, we can use
+      symbols or constants created as labels.  Constants must start
+      with a digit. The compiler considers constants starting with 0
+      as being in the 8th number system, those starting with 0b as
+      being in the binary number system (binary), while those starting
+      with 0x as being in the 16th (hexadecimal). To specify ASCII
+      codes, we can use the <tt>’b’</tt> form (the letter of the ASCII
+      code between single quotes). However, in such a case, we cannot
+      use so-called escape sequences or space! In the names of
+      symbols lowercase and uppercase letters are considered
+      different.</span>
+    </p>
+
+
+    <h2>
+      <span lang="hu">Assembler direktívák</span>
+      <span lang="en">Assembler directives</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Bizonyos utasítások nem a processzor
+      utasításainak a leírására szolgálnak, nem a fordító működését
+      szabályozzák, vagy egyéb eredményük van. A direktívák nevében a
+      kis- és nagybetűk azonosnak számítanak. Azok a direktívák
+      amelyeknek a neve nem ponttal kezdődik, ponttal kezdődően is
+      megadhatók, tehát pl a <tt>CPU</tt> direktíva
+      <tt>.CPU</tt> formában is használható.</span>
+
+      <span lang="en">Some statements are not used to describe the
+      instructions of the processor, but control the operation of the
+      compiler, or have other results, they are called directives. In
+      the names of directives, the upper and lowercase letters are
+      considered the same. Directives whose names do not start with a
+      dot can also be specified starting with a dot, so for example
+      the directive <tt>CPU</tt> can also be used in the
+      form <tt>.CPU</tt>.</span>
+    </p>
+
+
+    <a name="dir_cpu"><h3 style="font-family:monospace">PROC|CPU P1|P2</h3></a>
+
+    <p>
+      <span lang="hu">A használt processzor, és ezáltal az assembly
+      nyelv kiválasztására szolgáló direktíva. <tt>P1</tt> paraméter
+      esetén a fordító a forrás fájlt <a href="p1516.html">p1516</a>
+      processzor assembly nyelveként értelmezi, <tt>P2</tt> esetén
+      pedig a <a href="p2223.html">p2223</a> nyelvet használja. Ez a
+      beállítás csak a CPU utasításokra vonatkozik, a fordító által
+      felismert direktívák azonosak. A direktíva paramétere kis- és
+      nagybetűvel is írható.</span>
+
+      <span lang="en">A directive for selecting the processor used,
+      and thus the assembly language. In the case of the <tt>P1</tt>
+      parameter, the compiler interprets the source file as the
+      assembly language of the <a href="p1516.html">p1516</a>
+      processor, and in the case of <tt>P2</tt> the compiler uses
+      the <a href="p2223.html">p2223</a> language.  This setting only
+      applies to CPU instructions, the directives recognized by the
+      compiler are the same. The directive parameter can be written in
+      both upper and lower case.</span>
+    </p>
+
+
+    <a name="dir_org">
+      <span lang="hu">
+	<h3 style="font-family:monospace">ORG érték</h3>
+      </span>
+      <span lang="en">
+	<h3 style="font-family:monospace">ORG value</h3>
+      </span>
+    </a>
+
+    <p>
+      <span lang="hu">Az ORG utasítás paramétere egy számérték, ez
+      lesz a memória cím számláló értéke. Arra használható, hogy
+      valamilyen tartalmat egy adott memória területen helyezzünk
+      el.</span>
+
+      <span lang="en">The ORG instruction parameter is a numeric
+      value, this will be the counter value of the memory address. It
+      can be used to place some content in a specific memory
+      area.</span>
+    </p>
+
+    <span lang="hu">
 <samp>        org     0       ; 0-s címen elhelyezve
         call    rutin
 vege:   jmp     vege
@@ -231,12 +436,37 @@ vege:   jmp     vege
 rutin:
         ldl0    r1,0    ; ....
 </samp>
+    </span>
 
+        <span lang="en">
+<samp>        org     0       ; placed at address 0
+        call    routine
+end:    jmp     end
 
-<a name="dir_equ"><h3 style="font-family:monospace">szimbólum EQU|=|== érték</h3></a>
+        org     50      ; routine placed at 50
+routine:
+        ldl0    r1,0    ; ....
+</samp>
+    </span>
 
-<p>Ezzel az utasítással (amelyet EQU, vagy =, illetve == formában is
-írhatunk) egy szimbólumnak értéket adhatunk.</p>
+	<a name="dir_equ">
+	  <span lang="hu">
+	    <h3 style="font-family:monospace">szimbólum EQU|=|== érték</h3>
+	  </span>
+	  <span lang="en">
+	    <h3 style="font-family:monospace">symbol EQU|=|== value</h3>
+	  </span>
+	</a>
+
+    <p>
+      <span lang="hu">Ezzel az utasítással (amelyet EQU, vagy =,
+	illetve == formában is írhatunk) egy szimbólumnak értéket
+	adhatunk.</span>
+
+      <span lang="en">This instruction (which can also be written as
+      EQU, or =, or ==) can be used to assign a value to a
+      symbol.</span>
+    </p>
 
 <samp>porta   =       0xff00   ; a kimeneti port címe
 
