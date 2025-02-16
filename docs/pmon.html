@@ -552,122 +552,228 @@ R10 0000_AB45
     </p>
 
 
-<a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
+    <a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
 
-<p>Visszatérés a monitor programba a felhasználó program állapotának
-az elmentésével. Ezután a program folytatható a paraméter nélküli go
-paranccsal. A funkciónak nincsenek paraméterei.</p>
+    <p>
+      <span lang="hu">Visszatérés a monitor programba a felhasználó
+      program állapotának az elmentésével. Ezután a program
+      folytatható a paraméter nélküli go paranccsal. A funkciónak
+      nincsenek paraméterei.</span>
 
-
-<a name="_pm_enter_by_uart"><h4>0xf001 _pm_enter_by_uart</h4></a>
-
-<p>Feltételes visszatérés a monitor programhoz. A szubrutin ellenőrzi,
-hogy van-e olvasható vett karakter az UART áramkörben. Ha igen,
-kiüríti az UART-ot és meghívja a _pm_callin funkciót, vagyis visszatér
-a monitorhoz. Olyan program esetében használhatjuk, amely nem végez
-adat beolvasást a terminálról az UART-on keresztül. A funkciónak
-nincsenek paraméterei.</p>
+      <span lang="en">Return to the monitor program by saving the user
+      program state. The program can then be continued with the
+      command go without parameters. The function has no
+      parameters.</span>
+    </p>
 
 
-<a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
+    <a name="_pm_enter_by_uart"><h4>0xf001 _pm_enter_by_uart</h4></a>
 
-<p>A monitor program verziószámának lekérdezése. A függvény az R0
-regiszter 1. bájtjában helyezi el a fő verziószámot, a 0. bájtban
-pedig az al verziószámot.</p>
+    <p>
+      <span lang="hu">Feltételes visszatérés a monitor programhoz. A
+      szubrutin ellenőrzi, hogy van-e olvasható vett karakter az UART
+      áramkörben. Ha igen, kiüríti az UART-ot és meghívja
+      a <a href="#_pm_callin">_pm_callin</a> funkciót, vagyis
+      visszatér a monitorhoz. Olyan program esetében használhatjuk,
+      amely nem végez adat beolvasást a terminálról az UART-on
+      keresztül. A funkciónak nincsenek paraméterei.</span>
+
+      <span lang="en">Conditional return to the monitor program. The
+      subroutine checks whether there is a readable character received
+      in the UART circuit. If so, it clears the UART and calls the
+	<a href="#_pm_callin">_pm_callin</a> function, i.e. returns to
+      the monitor. It can be used in a program that does not read data
+      from the terminal via the UART. The function has no
+      parameters.</span>
+    </p>
 
 
-<a name="fn_string"><h3>Sztring kezelés</h3></a>
+    <a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
+
+    <p>
+      <span lang="hu">A monitor program verziószámának lekérdezése. A
+      függvény az R0 regiszter 1. bájtjában helyezi el a fő
+      verziószámot, a 0. bájtban pedig az al verziószámot.</span>
+
+      <span lang="en">Querying the version number of the monitor
+      program. The function places the major version number in the 1st
+      byte of the R0 register, and the minor version number in the 0th
+      byte.</span>
+    </p>
 
 
-<a name="_pm_strunpack"><h4>0xf017 _pm_strunpack</h4></a>
+    <a name="fn_string"><h3>
+	<span lang="hu">Sztring kezelés</span>
+	<span lang="en">String functions</span>
+    </h3></a>
 
-    <p>Normál vagy pakolt sztring átalakítása normál formátumra. A
-    megfelelő méretű kimeneti bufferről a hívás előtt kell
-    gondoskodni.</p>
 
-    <p>Bemenő paraméterek:</p>
+    <a name="_pm_strunpack"><h4>0xf017 _pm_strunpack</h4></a>
+
+    <p>
+      <span lang="hu">Normál vagy pakolt sztring átalakítása normál
+    formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
+    kell gondoskodni.</span>
+
+      <span lang="en">Convert a normal or packed string to normal
+      format. An output buffer of the appropriate size must be
+      provided before the call.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+      parameters</span>:
+    </p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
-      <li>R1 kimeneti buffer címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 input string address</span>
+      </li>
+      <li>
+	<span lang="hu">R1 kimeneti buffer címe</span>
+	<span lang="en">R1 output buffer address</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
-    kezdeve.</p>
+    <p>
+      <span lang="hu">Az átalakított sztring az R1-ben megadott
+	memóriacímtől kezdeve.</span>
+
+      <span lang="en">The converted string starts at the memory
+      address specified in R1.</span>
+    </p>
 
     
-<a name="_pm_strpack"><h4>0xf018 _pm_strpack</h4></a>
+    <a name="_pm_strpack"><h4>0xf018 _pm_strpack</h4></a>
 
-    <p>Normál vagy pakolt sztring átalakítása pakolt formátumra. A
-    megfelelő méretű kimeneti bufferről a hívás előtt kell
-    gondoskodni.</p>
+    <p>
+      <span lang="hu">Normál vagy pakolt sztring átalakítása pakolt
+      formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
+      kell gondoskodni.</span>
 
-    <p>Bemenő paraméterek:</p>
+      <span lang="en">Convert a normal or packed string to packed
+      format. An output buffer of the appropriate size must be
+      provided before the call.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
-      <li>R1 kimeneti buffer címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 address of input string</span>
+      </li>
+      <li>
+	<span lang="hu">R1 kimeneti buffer címe</span>
+	<span lang="en">R1 address of output buffer</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
-    kezdeve.</p>
+    <p>
+      <span lang="hu">Az átalakított sztring az R1-ben megadott
+	memóriacímtől kezdeve.</span>
+
+      <span lang="en">The converted string starts at the memory
+      address specified in R1.</span>
+    </p>
 
 
     <a name="_pm_strlen"><h4>0xf019 _pm_strlen</h4></a>
 
-    <p>Normál, vagy pakolt formátumú, 0 végződésű sztring
-    karaktereinek számát adja.</p>
+    <p>
+      <span lang="hu">Normál, vagy pakolt formátumú, 0 végződésű sztring
+      karaktereinek számát adja.</span>
 
-    <p>Bemenő paraméterek:</p>
+      <span lang="en">Returns the number of characters in a string in
+      normal or packed format, terminated by 0.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 address of input string</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
     <ul>
-      <li>R4 karakterek száma</li>
+      <li>
+	<span lang="hu">R4 karakterek száma</span>
+	<span lang="en">R4 number of characters</span>
+      </li>
     </ul>
 
     
-<a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
+    <a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
 
-  <p>Karakter első előfordulásának keresése egy szövegben.</p>
+    <p>
+      <span lang="hu">Karakter első előfordulásának keresése egy
+      szövegben.</span>
 
-  <p>Bemenő paraméterek:</p>
+      <span lang="en">Find the first occurrence of a character in a
+      string.</span>
+    </p>
 
-<ul>
-<li>R0 keresett karakter</li>
-<li>R1 sztring kezdőcíme</li>
-</ul>
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
-<p>Eredmény:</p>
+    <ul>
+      <li>
+	<span lang="hu">R0 keresett karakter</span>
+	<span lang="en">R0 character to search for</span>
+      </li>
+      <li>
+	<span lang="hu">R1 sztring kezdőcíme</span>
+	<span lang="en">R1 address of string</span>
+      </li>
+    </ul>
 
-<ul>
-<li>R1 a megtalált karakter címe, ha nincs a szövegben, akkor 0.</li>
-<li>R2 a megtalált karakter indexe a szón belül (pakolt szöveg
-esetén), vagy 0, ha nincs találat.</li>
-<li>F.C találat esetén 1, egyébként 0</li>
-</ul>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R1 a megtalált karakter címe, ha nincs a
+	szövegben, akkor 0.</span>
+	<span lang="en">R1 is the address of the found character, if
+          it is not in the string, then 0.</span>
+      </li>
+      <li>
+	<span lang="hu">R2 a megtalált karakter indexe a memóriaszón
+	  belül (pakolt szöveg esetén), vagy 0, ha nincs
+	  találat.</span>
+	<span lang="en">R2 is the index of the found character within
+        the memory word (in case of packed text), or 0 if no match is
+        found.</span>
+      </li>
+      <li>
+	<span lang="hu">F.C találat esetén 1, egyébként 0</span>
+	<span lang="en">F.C 1 if character is found, 0 otherwise</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
+    <a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
 
 <p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
   számítanak.</p>
 
-<p>Bemenő paraméterek:</p>
+<p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input parameters</span>:</p>
 
 <ul>
 <li>R0, R1 az összehasonlítandó sztringek címei</li>
 </ul>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
@@ -679,13 +785,13 @@ esetén), vagy 0, ha nincs találat.</li>
 <p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
   számítanak.</p>
 
-<p>Bemenő paraméterek:</p>
+<p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input parameters</span>:</p>
 
 <ul>
 <li>R0, R1 az összehasonlítandó sztringek címei</li>
 </ul>
 
-<p> Eredmény:</p>
+<p> <span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
@@ -703,7 +809,7 @@ esetén), vagy 0, ha nincs találat.</li>
 <li>R0 karakter ASCII kódja</li>
 </ul>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>R0 számérték</li>
@@ -723,7 +829,7 @@ esetén), vagy 0, ha nincs találat.</li>
 nullázza.</li>
 </ul>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>R0 hexadecimális számjegy. A szubrutin a 10-15 közötti értékeket
@@ -746,7 +852,7 @@ eredmény az addig feldolgozott sztring részletnek megfelelő
 <li>R0 a sztring kezdőcíme</li>
 </ul>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>R1 a sztringnek megfelelő számérték.</li>
@@ -764,7 +870,7 @@ egyébként 0.</li>
 UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
 paramétere.</p>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
@@ -778,7 +884,7 @@ paramétere.</p>
   a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
   vizsgálni. Nincs bemenő paramétere.</p>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>R0 a legrégebben vett karakter értéke.</li>
@@ -790,7 +896,7 @@ paramétere.</p>
 <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az UART
 áramkörből.</p>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>F.C értéke 1 lesz, jelezve, hogy volt vett karakter.</li>
@@ -951,7 +1057,7 @@ eredmény az R0 regiszterben keletkezik.</p>
 <li>R0 ASCII kód</li>
 </ul>
 
-<p>Eredmény:</p>
+<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
 <ul>
 <li>R4 hét szegmenses kód</li>
