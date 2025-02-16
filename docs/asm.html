@@ -468,48 +468,121 @@ routine:
       symbol.</span>
     </p>
 
+    <span lang="hu">
 <samp>porta   =       0xff00   ; a kimeneti port címe
 
         ldl     r0,porta ; a cím betöltése
         ldh     r0,porta ; az R0 regiszterbe
 </samp>
+    </span>
 
-<p>Ha a == jelet használjuk, akkor a szimbólum globálisként jön létre,
-vagyis egyúttal exportálódik a szegmensen kívülre, így
-a <a href="#dir_global"><tt>.global</tt></a> direktívát már nem kell
-használni.</p>
+    <span lang="en">
+<samp>porta   =       0xff00   ; address of output port
+
+        ldl     r0,porta ; load the address
+        ldh     r0,porta ; into R0 register
+</samp>
+    </span>
+    
+    <p>
+      <span lang="hu">Ha a == jelet használjuk, akkor a szimbólum
+      globálisként jön létre, vagyis egyúttal exportálódik a
+      szegmensen kívülre, így
+      a <a href="#dir_global"><tt>.global</tt></a> direktívát már nem
+      kell használni.</span>
+
+      <span lang="en">If we use the == sign, the symbol is created as
+      global, meaning it is also exported outside the segment, so
+      the <a href="#dir_global"><tt>.global</tt></a> directive no
+      longer needs to be used.</span>
+    </p>
 
 
-<a name="dir_ds"><h3 style="font-family:monospace">DS|.SPACE|.SKIP érték</h3></a>
+    <a name="dir_ds">
+      <span lang="hu">
+	<h3 style="font-family:monospace">DS|.SPACE|.SKIP érték</h3>
+      </span>
+      <span lang="en">
+	<h3 style="font-family:monospace">DS|.SPACE|.SKIP value</h3>
+      </span>
+    </a>
 
-<p>Ez a direktíva hely lefoglalására használható, a tartalom megadása
-nélkül. Paraméterként a hely méretét kell megadni. Ha a memóriában le
-akarunk foglalni valahány rekeszt adat tárolására, ezzel a
-direktívával megadhatjuk, hány szó helyre van szükségünk. A direktíva
-paraméterének 0-nál nagyobb pozitív számnak kell lennie.</p>
+    <p>
+      <span lang="hu">Ez a direktíva hely lefoglalására használható, a
+      tartalom megadása nélkül. Paraméterként a hely méretét kell
+      megadni. Ha a memóriában le akarunk foglalni valahány rekeszt
+      adat tárolására, ezzel a direktívával megadhatjuk, hány szó
+      helyre van szükségünk. A direktíva paraméterének 0-nál nagyobb
+      pozitív számnak kell lennie.</span>
 
+      <span lang="en">This directive can be used to allocate space,
+      without specifying the contents. The size of the space must be
+      specified as a parameter. If we want to allocate some space in
+      memory to store data, we can use this directive to specify how
+      many words of space we need. The parameter of the directive must
+      be a positive number greater than 0.</span>
+    </p>
+
+    <span lang="hu">
 <samp>        org     20      ; ettől a címtő kezdve
 adatok: ds      5       ; 5 szó helyet foglalunk le
 </samp>
+    </span>
 
+    <span lang="en">
+<samp>        org     20      ; from this address
+data:   ds      5       ; we allocate 5 words
+</samp>
+    </span>
 
-<a name="dir_dx"><h3 style="font-family:monospace">DB,DW,DD érték...</h3></a>
+    <a name="dir_dx">
+      <span lang="hu">
+	<h3 style="font-family:monospace">DB,DW,DD érték...</h3>
+      </span>
+      <span lang="en">
+	<h3 style="font-family:monospace">DB,DW,DD value...</h3>
+      </span>
+    </a>
 
-<p>Ezekkel a direktívákkal a paraméterként megadott értékeket tudjuk
-elhelyezni a memóriában. A <tt>DB</tt> az érték alsó 8 bitjét
-használja fel, a <tt>DW</tt> 16 bitet, míg a <tt>DD</tt> 32 bites
-adatokat használ. Egy direktívánál több paraméter is megadható
-vesszővel elválasztva, ezek a felsorolás sorrendjében kerülnek a
-memóriába. A paramétereknek konstansnak, vagy szimbólumnak kell
-lenniük. A szimbólumok az <a href="#dir_equ"><tt>EQU, =</tt></a>
-direktívákkal, vagy címkeként hozhatók létre.</p>
+    <p>
+      <span lang="hu">Ezekkel a direktívákkal a paraméterként megadott
+      értékeket tudjuk elhelyezni a memóriában. A <tt>DB</tt> az érték
+      alsó 8 bitjét használja fel, a <tt>DW</tt> 16 bitet, míg
+      a <tt>DD</tt> 32 bites adatokat használ. Egy direktívánál több
+      paraméter is megadható vesszővel elválasztva, ezek a felsorolás
+      sorrendjében kerülnek a memóriába. A paramétereknek konstansnak,
+      vagy szimbólumnak kell lenniük. A szimbólumok
+      az <a href="#dir_equ"><tt>EQU, =</tt></a> direktívákkal, vagy
+      címkeként hozhatók létre.</span>
 
-<p>Ezeknél a direktíváknál használhatunk sztring konstanst is, amely
-”kettős idézőjelek” között megadott szöveg. A szövegen belül
-használhatók a C nyelvben megszokott escape szekvenciák is. A fordító
-a sztring konstansokat mindig kiegészíti egy 0 értékű szóval. Ebben az
-esetben a direktívának nem lehet más paramétere.</p>
+      <span lang="en">With these directives, we can place the values
+      specified as parameters in memory. <tt>DB</tt> uses the lower 8
+      bits of the value, <tt>DW</tt> uses 16 bits, while
+      <tt>DD</tt> uses 32-bit data. More parameters can be specified
+      in a directive, separated by commas, and they are placed in
+      memory in the order they are listed. The parameters must be
+      constants or symbols. Symbols can be created with the
+      directives <a href="#dir_equ"><tt>EQU, =</tt></a> or as
+      labels.</span>
+    </p>
 
+    <p>
+      <span lang="hu">Ezeknél a direktíváknál használhatunk sztring
+      konstanst is, amely ”kettős idézőjelek” között megadott
+      szöveg. A szövegen belül használhatók a C nyelvben megszokott
+      escape szekvenciák is. A fordító a sztring konstansokat mindig
+      kiegészíti egy 0 értékű szóval. Ebben az esetben a direktívának
+      nem lehet más paramétere.</span>
+
+      <span lang="en">With these directives, we can also use a string
+      constant, which is a text enclosed in ”double quotes”. The
+      escape sequences common in the C language can also be used
+      within the text. The compiler always completes the string
+      constants with a word with the value 0. In this case, the
+      directive cannot have any other parameters.</span>
+    </p>
+    
+    <span lang="hu">
 <samp>start:  ldl0    r1,0
         ...
         org     10
@@ -520,15 +593,45 @@ adat1:  db      123              ; 8 bites adat
         dd      start            ; vagy címkék is
         db      ”Hello World!\n” ; sztring konstans
 </samp>
+    </span>
 
+    <span lang="en">
+<samp>start:  ldl0    r1,0
+        ...
+        org     10
+data1:  db      123              ; 8 bit data
+        db      65,’z’,13        ; ASCII constant
+        dw      0x213            ; 16 bit data
+        dd      -4321            ; data can be negative
+        dd      start            ; or a label
+        db      ”Hello World!\n” ; string constant
+</samp>
+    </span>
 
-<a name="dir_dp"><h3 style="font-family:monospace">DP “sztring”</h3></a>
+    <a name="dir_dp">
+      <span lang="hu">
+	<h3 style="font-family:monospace">DP “sztring”</h3>
+      </span>
+      <span lang="en">
+	<h3 style="font-family:monospace">DP “string”</h3>
+      </span>
+    </a>
 
-<p>Sztring elhelyezése a memóriában, “pakolt” formátumban. Négy
-karakter kódja kerül egy memóriahelyre, little-endian sorrendben,
-tehát az első karakter az alsó helyen lévő 8 bites helyre kerül. Az
-utolsó szó fel nem használt bájtjai 0 értékűek lesznek, majd egy 0
-értékű szó zárja le a sztringet.</p>
+    <p>
+      <span lang="hu">Sztring elhelyezése a memóriában, “pakolt”
+      formátumban. Négy karakter kódja kerül egy memóriahelyre,
+      little-endian sorrendben, tehát az első karakter az alsó helyen
+      lévő 8 bites helyre kerül. Az utolsó szó fel nem használt
+      bájtjai 0 értékűek lesznek, majd egy 0 értékű szó zárja le a
+      sztringet.</span>
+
+      <span lang="en">Place a string in memory, in “packed”
+      format. Four character codes are placed in a memory location, in
+      little-endian order, so the first character is placed in the
+      8-bit location in the lower position. The unused bytes of the
+      last word are set to 0, and then a word with value 0 terminates
+      the string.</span>
+    </p>
 
 <samp>s3:     .dp     "Hello World!\n"
         ...
@@ -540,738 +643,996 @@ utolsó szó fel nem használt bájtjai 0 értékűek lesznek, majd egy 0
 </samp>
 
 
-<a name="dir_seg"><h3 style="font-family:monospace">SECTION|SEG|SEGMENT név [NOLOAD|ABS]</h3></a>
+<a name="dir_seg">
+  <span lang="hu">
+    <h3 style="font-family:monospace">SECTION|SEG|SEGMENT név [NOLOAD|ABS]</h3>
+  </span>
+  <span lang="en">
+    <h3 style="font-family:monospace">SECTION|SEG|SEGMENT name [NOLOAD|ABS]</h3>
+  </span>
+</a>
 
-<p>Szegmens kezdetét definiáló direktíva. A szegmensek a szimbólumok
-láthatóságát a szegmensen belülre korlátozzák, így az egyes szegmensek
-ugyanazt a szimbólum nevet saját célra használhatják. </p>
+    <p>
+      <span lang="hu">Szegmens kezdetét definiáló direktíva. A
+      szegmensek a szimbólumok láthatóságát a szegmensen belülre
+      korlátozzák, így az egyes szegmensek ugyanazt a szimbólum nevet
+      saját célra használhatják.</span>
 
-<p>Az első paraméter a szegmens neve, ami után opcionális paraméterek
-következhetnek. A szegmensen belül létrehozott szimbólumok és címkék
-csak a szegmensen belül láthatóak. Ha a szegmensen kívül is használni
-szeretnénk egy szimbólumot, akkor azt
-a <a href="#dir_global"><tt>.global</tt></a> direktívával exportálni
-kell.</p>
+      <span lang="en">A directive defining the start of a segment.
+      Segments restrict the visibility of symbols to within the
+      segment, so that each segment can use the same symbol name for
+      its own purpose.</span>
+    </p>
 
-<p>A szegmensben újra definiálhatunk globális szimbólumokat. Ezekből
-egy új példány jön létre, így az értékük a szegmensen belül más lesz,
-mint a globális területen.</p>
+    <p>
+      <span lang="hu">Az első paraméter a szegmens neve, ami után
+      opcionális paraméterek következhetnek. A szegmensen belül
+      létrehozott szimbólumok és címkék csak a szegmensen belül
+      láthatóak. Ha a szegmensen kívül is használni szeretnénk egy
+      szimbólumot, akkor azt
+      a <a href="#dir_global"><tt>.global</tt></a> direktívával
+      exportálni kell.</span>
 
+      <span lang="en">The first parameter is the name of the segment,
+      followed by optional parameters. Symbols and labels created
+      within a segment are only visible within the segment. If we want
+      to use a symbol outside the segment, it must be exported with
+      the <a href="#dir_global"><tt>.global</tt></a> directive.</span>
+    </p>
 
-<a name="dir_ends"><h3 style="font-family:monospace">ENDS</h3></a>
+    <p>
+      <span lang="hu">A szegmensben újra definiálhatunk globális
+      szimbólumokat. Ezekből egy új példány jön létre, így az értékük
+      a szegmensen belül más lesz, mint a globális területen.</span>
 
-<p>A szegmens végét jelző direktíva. Ez után a program globális
-területe folytatódik, így a globális szimbólumok válnak láthatóvá.</p>
-
-
-<a name="dir_global"><h3 style="font-family:monospace">GLOBAL|EXPORT név</h3></a>
-
-<p>A szegmensen belül definiált szimbólum globális szimbólummá való
-konvertálását végző direktíva. Paramétere a szimbólum neve. Csak egy
-paraméter adható meg. Ha a szimbólum a globális területen már létezik,
-akkor hibaüzenetet kapunk.</p>
-
-
-<a name="dir_include"><h3 style="font-family:monospace">.INCLUDE fájlnév</h3></a>
-
-<p>A paraméterként megadott fájl betöltése és fordítása. A fájl nevét
-nem kell idézőjelbe tenni. A betöltött fájl után az aktuális fájl
-fordítása folytatódik. A fájlt a program először abban a könyvtárban
-keresi, ahol az eredeti forrásfájl található. Ha ott nem található,
-akkor a rendszer fájljai között fogja keresni, ez lehet a felhasználó
-saját könyvtárának <code>p12tool/include</code> alkönyvtára, vagy a
-fejlesztőrendszer <code>lib</code> alkönyvtára.</p>
-
-
-<a name="req"><h3 style="font-family:monospace">REQ reg alias</h3></a>
-
-<p>Regiszter alternatív elnevezésének létrehozása. Az alternatív név a
-fordítás hátralévő részében használható.</p>
-
-
-<a name="appendix"><h2>Mellékletek</h2></a>
-
-<a name="cond"><h3>Feltételek</h3></a>
-
-<p>A CPU utasításokban használható feltételek a kiválasztott
-processzor típusától függnek (lásd <a href="#dir_cpu">CPU
-direktíva</a>). Egyes feltételek több különféle névvel is
-használhatók.</p>
+      <span lang="en">Global symbols can be redefined in the
+      segment. A new instance of these will be created, so their value
+      within the segment will be different from that in the global
+      area.</span>
+    </p>
 
 
-<a name="cond_p1516"><h4>Feltételek p1516 processzor esetén</h4></a>
+    <a name="dir_ends">
+      <h3 style="font-family:monospace">ENDS</h3>
+    </a>
 
-<table border=1 bgcolor="lightgrey">
-  <tr><td>Feltétel</td>  <td>Használható nevek</td></tr>
+    <p>
+      <span lang="hu">A szegmens végét jelző direktíva. Ez után a
+	program globális területe folytatódik, így a globális
+	szimbólumok válnak láthatóvá.</span>
+
+      <span lang="en">A directive that marks the end of a
+      segment. After this, the global area of ​​the program continues,
+      so that global symbols become visible.</span>
+    </p>
+
+
+    <a name="dir_global">
+      <span lang="hu">
+	<h3 style="font-family:monospace">GLOBAL|EXPORT név</h3>
+      </span>
+      <span lang="en">
+	<h3 style="font-family:monospace">GLOBAL|EXPORT name</h3>
+      </span>
+    </a>
+
+    <p>
+      <span lang="hu">A szegmensen belül definiált szimbólum globális
+      szimbólummá való konvertálását végző direktíva. Paramétere a
+      szimbólum neve. Csak egy paraméter adható meg. Ha a szimbólum a
+      globális területen már létezik, akkor hibaüzenetet
+      kapunk.</span>
+
+      <span lang="en">Directive that converts a symbol defined within
+      a segment into a global symbol. Its parameter is the name of the
+      symbol. Only one parameter can be specified. If the symbol
+      already exists in the global area, an error message will be
+      returned.</span>
+    </p>
+
+
+    <a name="dir_include">
+      <span name="hu">
+	<h3 style="font-family:monospace">.INCLUDE fájlnév</h3>
+      </span>
+      <span name="en">
+	<h3 style="font-family:monospace">.INCLUDE filename</h3>
+      </span>
+    </a>
+
+    <p>
+      <span lang="hu">A paraméterként megadott fájl betöltése és
+      fordítása. A fájl nevét nem kell idézőjelbe tenni. A betöltött
+      fájl után az aktuális fájl fordítása folytatódik. A fájlt a
+      program először abban a könyvtárban keresi, ahol az eredeti
+      forrásfájl található. Ha ott nem található, akkor a rendszer
+      fájljai között fogja keresni, ez lehet a felhasználó saját
+      könyvtárának <code>p12tool/include</code> alkönyvtára, vagy a
+      fejlesztőrendszer <code>lib</code> alkönyvtára.</span>
+
+      <span lang="en">Load and compile the file specified as a
+      parameter. The file name does not need to be enclosed in
+      quotes. After the loaded file, the compilation of the current
+      file continues. The program first searches for the file in the
+      directory where the original source file is located. If it is
+      not found there, it will search among the system files, which
+      can be the <code>p12tool/include</code> subdirectory of the
+      user's home directory, or the <code>lib</code> subdirectory of
+      the development system.</span>
+    </p>
+
+
+    <a name="req"><h3 style="font-family:monospace">REQ reg alias</h3></a>
+
+    <p>
+      <span lang="hu">Regiszter alternatív elnevezésének
+	létrehozása. Az alternatív név a fordítás hátralévő részében
+	használható.</span>
+
+      <span lang="en">Create an alternative name for a register. The
+      alternative name can be used in the rest of the
+      compilation.</span>
+    </p>
+
+
+    <a name="appendix"><h2>
+	<span lang="hu">Mellékletek</span>
+	<span lang="hu">Appendices</span>
+    </h2></a>
+
+    <a name="cond"><h3>
+	<span lang="hu">Feltételek</span>
+	<span lang="en">Conditions</span>
+    </h3></a>
+
+    <p>
+      <span lang="hu">A CPU utasításokban használható feltételek a
+      kiválasztott processzor típusától függnek
+      (lásd <a href="#dir_cpu">CPU direktíva</a>). Egyes feltételek
+      több különféle névvel is használhatók.</span>
+
+      <span lang="en">The conditions that can be used in CPU
+      instructions depend on the type of processor selected
+      (see <a href="#dir_cpu">CPU directive</a>). Some conditions can
+      be used with several different names.</span>
+    </p>
+
+
+    <a name="cond_p1516"><h4>
+	<span lang="hu">Feltételek p1516 processzor esetén</span>
+	<span lang="en">Conditions for processor p1516</span>
+    </h4></a>
+
+    <table border=1 bgcolor="lightgrey">
+      <tr><th><span lang="hu">Feltétel</span><span lang="en">Condition</span></th>  <th><span lang="hu">Használható nevek</span><span lang="en">Usable names</span></th></tr>
     
-  <tr><td>S==0</td>     <td>S0</td></tr>
-  <tr><td>S==1</td>     <td>S1</td></tr>
-  <tr><td>C==0</td>     <td>C0</td></tr>
-  <tr><td>C==1</td>     <td>C1</td></tr>
-  <tr><td>Z==0</td>     <td>Z0, NZ</td></tr>
-  <tr><td>Z==1</td>     <td>Z1, Z</td></tr>
-  <tr><td>O==0</td>     <td>O0</td></tr>
-  <tr><td>O==1</td>     <td>O1</td></tr>
-</table>
-
-
-<a name="cond_p2223"><h4>Feltételek p2223 processzor esetén</h4></a>
-
-<table border=1>
-  <tr><td>Feltétel</td> <td>Használható nevek</td></tr>
+      <tr><td>S==0</td>     <td>S0</td></tr>
+      <tr><td>S==1</td>     <td>S1</td></tr>
+      <tr><td>C==0</td>     <td>C0</td></tr>
+      <tr><td>C==1</td>     <td>C1</td></tr>
+      <tr><td>Z==0</td>     <td>Z0, NZ</td></tr>
+      <tr><td>Z==1</td>     <td>Z1, Z</td></tr>
+      <tr><td>O==0</td>     <td>O0</td></tr>
+      <tr><td>O==1</td>     <td>O1</td></tr>
+    </table>
+    
+    
+    <a name="cond_p2223"><h4>
+	<span lang="hu">Feltételek p2223 processzor esetén</span>
+	<span lang="en">Conditions for p2223 processor</span>
+    </h4></a>
+    
+    <table border=1>
+      <tr><th><span lang="hu">Feltétel</span><span lang="en">Condition</span></th> <th><span lang="hu">Használható nevek</span><span lang="en">Usable names</span></th></tr>
   
-  <tr><td>Z==0</td>                            <td>NE, ZC, Z0, NZ, T</td></tr>
-  <tr><td>Z==1</td>                            <td>EQ, ZS, Z1, Z, F</td></tr>
-  <tr><td>C==0 (u1&lt;u2)</td>                 <td>CC, LO, C0, NC, ULT</td></tr>
-  <tr><td>C==1 (u1&gt;=u2)</td>                <td>CS, HS, C1, C, UGE</td></tr>
-  <tr><td>S==0</td>                            <td>PL, SC, S0, NS</td></tr>
-  <tr><td>S==1</td>                            <td>MI, SS, S1, S</td></tr>
-  <tr><td>O==0</td>                            <td>VC, OC, V0, O0, NV, NO</td></tr>
-  <tr><td>O==1</td>                            <td>VS, OS, V1, O1, V, O</td></tr>
-  <tr><td>C==1 &amp;&amp; Z==0 (u1&gt;u2)</td> <td>HI, UGT</td></tr>
-  <tr><td>C==0 || Z==1 (u1&lt;=u2)</td>        <td>LS, ULE</td></tr>
-  <tr><td>S==O (s1&gt;=s2)</td>                <td>GE, SGE</td></tr>
-  <tr><td>S!=O (s1&lt;s2)</td>                 <td>LT, SLT</td></tr>
-  <tr><td>Z==0 &amp;&amp; S==O (s1&gt;s2)</td> <td>GT, SGT</td></tr>
-  <tr><td>Z==1 || S!=O (s1&lt;=s2)</td>        <td>LE, SLE</td></tr>
-</table>
+      <tr><td>Z==0</td>                            <td>NE, ZC, Z0, NZ, T</td></tr>
+      <tr><td>Z==1</td>                            <td>EQ, ZS, Z1, Z, F</td></tr>
+      <tr><td>C==0 (u1&lt;u2)</td>                 <td>CC, LO, C0, NC, ULT</td></tr>
+      <tr><td>C==1 (u1&gt;=u2)</td>                <td>CS, HS, C1, C, UGE</td></tr>
+      <tr><td>S==0</td>                            <td>PL, SC, S0, NS</td></tr>
+      <tr><td>S==1</td>                            <td>MI, SS, S1, S</td></tr>
+      <tr><td>O==0</td>                            <td>VC, OC, V0, O0, NV, NO</td></tr>
+      <tr><td>O==1</td>                            <td>VS, OS, V1, O1, V, O</td></tr>
+      <tr><td>C==1 &amp;&amp; Z==0 (u1&gt;u2)</td> <td>HI, UGT</td></tr>
+      <tr><td>C==0 || Z==1 (u1&lt;=u2)</td>        <td>LS, ULE</td></tr>
+      <tr><td>S==O (s1&gt;=s2)</td>                <td>GE, SGE</td></tr>
+      <tr><td>S!=O (s1&lt;s2)</td>                 <td>LT, SLT</td></tr>
+      <tr><td>Z==0 &amp;&amp; S==O (s1&gt;s2)</td> <td>GT, SGT</td></tr>
+      <tr><td>Z==1 || S!=O (s1&lt;=s2)</td>        <td>LE, SLE</td></tr>
+    </table>
+    
+
+    <a name="insts_p1516"><h3>
+	<span lang="hu">Processzor utasítások, p1516</span>
+	<span lang="hu">Processor instructions, p1516</span>
+    </h3></a>
+
+    <p>
+      <span lang="hu">Az utasításokat ismertető táblázatban a
+	következő rövidítéseket használjuk:</span>
+
+      <span lang="en">In the table describing the instructions, the
+      following abbreviations are used:</span>
+    </p>
+
+    <ul>
+      <li>
+	<span lang="hu">Rd A cél regiszter neve (R0..R15)</span>
+	<span lang="en">Rd Name of destination register (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Ra Az első operandus, vagy a cím regiszter
+	neve (R0..R15)</span>
+	<span lang="en">Ra The name of the first operand, or address
+	  register (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Rda Regiszter név amelyet a fordító egyaránt
+	  Rd és Ra regiszterként használ fel (R0..R15)</span>
+	<span lang="en">Rda Register name that the compiler uses as
+        both Rd and Ra registers (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Rb A második operandus regiszter neve
+	(R0..R15)</span>
+	<span lang="en">Rb Name of the second operand register
+	  (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">#16 Konstans, amelynek az alsó 16 bitjét
+	használja a fordító</span>
+	<span lang="en">#16 Constant whose lower 16 bits are used by
+	  the compiler</span> </li>
+      <li>
+	<span lang="hu">#27 Konstans, amelynek az alsó 27 bitjét
+	használja a fordító</span>
+	<span lang="en">#27 Constant, the lower 27 bits of which are
+	used by the compiler</span>
+      </li>
+      <li>
+	<span lang="hu">#H16 Konstans (32 bites), amelynek a felső 16
+	  bitjét használja fel a fordító</span>
+	<span lang="en">#H16 Constant (32-bit), the upper 16
+	  bits of which are used by the compiler</span>
+      </li>
+    </ul>
+
+    <p>
+      <span lang="hu">A konstansokban a # jelet nem kell használni,
+      elég a számértéket, vagy a szimbólum nevét megadni. A
+      regiszterek közül az R13 helyett használhatjuk az SP, az R14
+      helyett az LR, míg az R15 helyett a PC elnevezéseket is.</span>
+
+      <span lang="en">You don't need to use the # sign in constants,
+      just specify the numerical value or the name of the symbol.
+      Among the registers, you can use SP instead of R13, LR instead
+      of R14, and PC instead of R15.</span>
+    </p>
+
+    <table border=1 bgcolor="lightgrey">
+      <tr>
+	<th width="30%">Mnemonic</th>
+	<th width="30%">
+	  <span lang="hu">Paraméterezési módok</span>
+	  <span lang="en">Parameterization methods</span>
+	</th>
+	<th width="30%">
+	  <span lang="hu">Utasítás</span>
+	  <span lang="en">Instruction</span>
+	</th>
+      </tr>
+
+      <tr valign="top">
+	<td>NOP</td>
+	<td>Rd,Ra,Rb<br />Rda,Rb<br />Rd<br />-</td>
+	<td>No operation</td>
+      </tr>
+      <tr valign="top">
+	<td>LD</td>
+	<td>Rd,Ra</td>
+	<td>Load from memory</td>
+      </tr>
+      <tr valign="top">
+	<td>ST</td>
+	<td>Rd,Ra</td>
+	<td>Store to memory</td>
+      </tr>
+      <tr valign="top">
+	<td>MOV</td>
+	<td>Rd,Ra</td>
+	<td>Move register to register</td>
+      </tr>
+      <tr valign="top">
+	<td>LDL0</td>
+	<td>Rd,#16</td>
+	<td>Load zex(immediate) to low</td>
+      </tr>
+      <tr valign="top">
+	<td>LDL</td>
+	<td>Rd,#16</td>
+	<td>Load low of immediate to low</td>
+      </tr>
+      <tr valign="top">
+	<td>LDH</td>
+	<td>Rd,#H16</td>
+	<td>Load high of immediate to high</td>
+      </tr>
+      <tr valign="top">
+	<td>CALL</td>
+	<td>#27</td>
+	<td>Call subroutine</td>
+      </tr>
+      <tr valign="top">
+	<td>ADD</td>
+	<td>Rd,Ra,Rb<br />Rda,Rb</td>
+	<td>Add without carry</td>
+      </tr>
+      <tr valign="top">
+	<td>ADC</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Add with carry</td>
+      </tr>
+      <tr valign="top">
+	<td>SUB</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Subtract without borrow</td>
+      </tr>
+      <tr valign="top">
+	<td>SBB</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Subtract with borrow</td>
+      </tr>
+      <tr valign="top">
+	<td>INC</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Increment</td>
+      </tr>
+      <tr valign="top">
+	<td>DEC</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Decrement</td>
+      </tr>
+      <tr valign="top">
+	<td>AND</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Bitwise AND</td>
+      </tr>
+      <tr valign="top">
+	<td>OR</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Bitwise OR</td>
+      </tr>
+      <tr valign="top">
+	<td>XOR</td>
+	<td>Ra,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Bitwise XOR</td>
+      </tr>
+      <tr valign="top">
+	<td>SHL</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Shift left</td>
+      </tr>
+      <tr valign="top">
+	<td>SHR</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Shift right</td>
+      </tr>
+      <tr valign="top">
+	<td>ROL</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Rotate left</td>
+      </tr>
+      <tr valign="top">
+	<td>ROR</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Rotate right</td>
+      </tr>
+      <tr valign="top">
+	<td>MUL</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Multiply</td>
+      </tr>
+      <tr valign="top">
+	<td>CMP</td>
+	<td>Rd,Ra,Rb<br />
+	  Rda,Rb</td>
+	<td>Compare</td>
+      </tr>
+      <tr valign="top">
+	<td>SHA</td>
+	<td>Rd,Ra<br />
+	  Rda</td>
+	<td>Shift arithmetic right</td>
+      </tr>
+      <tr valign="top">
+	<td>SETC</td>
+	<td>-</td>
+	<td>Set carry</td>
+      </tr>
+      <tr valign="top">
+	<td>CLRC</td>
+	<td>-</td>
+	<td>Clear carry</td>
+      </tr>
+    </table>
+    
+
+    <p>
+      <span lang="hu">A következő makrók egyes utasítások alternatív
+	elnevezéseiként használhatók.</span>
+
+      <span lang="en">The following macros can be used as alternative
+      names for some instructions.</span>
+    </p>
+
+    <table border=1 bgcolor="lightgrey">
+      <thead>
+	<tr valign="top">
+	  <th width="30%">
+	    <span lang="hu">Makró név</span>
+	    <span lang="hu">Macro</span>
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Paraméterezési módok</span>
+	    <span lang="en">Parameterization methods</span>
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Jelentése</span>
+	    <span lang="en">Meaning</span>
+	  </th>
+	</tr>
+	<tr valign="top">
+	  <td>JMP</td>
+	  <td>#16</td>
+	  <td>LDL0 R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JZ</td>
+	  <td>#16</td>
+	  <td>Z LDL0 R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JNZ</td>
+	  <td>#16</td>
+	  <td>NZ LDL0 R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>RET</td>
+	  <td>-</td>
+	  <td>MOV R15,R14</td>
+	</tr>
+	<tr valign="top">
+	  <td>PUSH</td>
+	  <td>Rd</td>
+	  <td>ST Rd,R13</td>
+	</tr>
+	<tr valign="top">
+	  <td>POP</td>
+	  <td>Rd</td>
+	  <td>LD Rd,R13</td>
+	</tr>
+      </thead>
+    </table>
 
 
-<a name="insts_p1516"><h3>Processzor utasítások, p1516</h3></a>
+    <a name="insts_p2223"><h3>
+	<span lang="hu">Processzor utasítások, p2223</span>
+	<span lang="en">Processor instructions, p2223</span>
+    </h3></a>
 
-<p>Az utasításokat ismertető táblázatban a következő rövidítéseket
-használjuk:</p>
+    <p>
+      <span lang="hu">Az utasításokat ismertető táblázatban a
+	következő rövidítéseket használjuk:</span>
 
-<ul>
-  <li>Rd A cél regiszter neve (R0..R15)</li>
-  <li>Ra Az első operandus, vagy a cím regiszter neve (R0..R15)</li>
-  <li>Rda Regiszter név amelyet a fordító egyaránt Rd és Ra
-  regiszterként használ fel (R0..R15)</li>
-  <li>Rb A második operandus regiszter neve (R0..R15)</li>
-  <li>#16 Konstans, amelynek az alsó 16 bitjét használja a fordító</li>
-  <li>#27 Konstans, amelynek az alsó 27 bitjét használja a fordító</li>
-  <li>#H16 Konstans (32 bites), amelynek a felső 16 bitjét használja
-  fel a fordító</li>
-</ul>
+      <span lang="en">In the table describing the instructions, the
+      following abbreviations are used:</span>
+    </p>
 
-<p>A konstansokban a # jelet nem kell használni, elég a számértéket,
-vagy a szimbólum nevét megadni. A regiszterek közül az R13 helyett
-használhatjuk az SP, az R14 helyett az LR, míg az R15 helyett a PC
-elnevezéseket is.</p>
+    <ul>
+      <li>
+	<span lang="hu">Rd A cél regiszter, egyúttal az első operandus
+	  regiszterének neve (R0..R15)</span>
+	<span lang="en">Rd The destination register, also the name of
+        the register of the first operand (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Ra A cím regiszter neve (R0..R15)</span>
+	<span lang="en">Ra Address register name (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Rn Regiszter név amelyet a fordító nem használ
+	fel, figyelmen kívül hagy. Használata megkönnyíti a p1516
+	processzorra írt programok portolását</span>
+	<span lang="en">Rn Register name that is not used by the
+	compiler and is ignored. Its use makes it easier to port
+	programs written for the p1516 processor</span>
+      </li>
+      <li>
+	<span lang="hu">Rb A második oparandus regisztere
+	(R0..R15)</span>
+	<span lang="en">Rb Second operand register (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Ri Az index regiszter neve (R0..R15)</span>
+	<span lang="en">Ri The name of the index register
+	  (R0..R15)</span>
+      </li>
+      <li>
+	<span lang="hu">Rs Speciális regiszter neve (R0..R15, vagy
+	Sxxx nevek)</span>
+	<span lang="en">Rs Special register name (R0..R15, or
+	  Sxxx names)</span>
+      </li>
+      <li>
+	<span lang="hu">#16 Konstans, amelynek az alsó 16 bitjét
+	használja a fordító</span>
+	<span lang="en">#16 Constant whose lower 16 bits are used by
+	  the compiler</span>
+      </li>
+      <li>
+	<span lang="hu">#20 Konstans, amelynek az alsó 20 bitjét
+	használja a fordító</span>
+	<span lang="en">#20 Constant, the lower 20 bits of which are
+	used by the compiler</span>
+      </li>
+      <li>
+	<span lang="hu">#H16 Konstans (32 bites), amelynek a felső 16
+	  bitjét használja fel a fordító</span>
+	<span lang="en">#H16 Constant (32-bit), the upper 16
+	  bits of which are used by the compiler</span>
+      </li>
+      <li>
+	<span lang="hu">#24 Konstans, amelynek az alsó 24 bitjét
+	használja a fordító</span>
+	<span lang="en">#24 Constant, the lower 24 bits of which are
+	used by the compiler</span>
+      </li>
+    </ul>
 
-<table border=1 bgcolor="lightgrey">
-  <tr>
-    <th width="30%">Mnemonic</th>
-    <th width="30%">Paraméterezési módok</th>
-    <th width="30%">Utasítás</th>
-  </tr>
+    <p>
+      <span lang="hu">A konstansokban a # jelet nem kell használni,
+      elég a számértéket, vagy a szimbólum nevét megadni. A
+      regiszterek közül az R13 helyett használhatjuk az SP, az R14
+      helyett az LR, míg az R15 helyett a PC elnevezéseket is. A
+      speciális regiszterek azonosítására a következő elnevezések
+      használhatók:</span>
 
-  <tr valign="top">
-      <td>NOP</td>
-      <td>Rd,Ra,Rb<br />Rda,Rb<br />Rd<br />-</td>
-      <td>No operation</td>
-    </tr>
-    <tr valign="top">
-      <td>LD</td>
-      <td>Rd,Ra</td>
-      <td>Load from memory</td>
-    </tr>
-    <tr valign="top">
-      <td>ST</td>
-      <td>Rd,Ra</td>
-      <td>Store to memory</td>
-    </tr>
-    <tr valign="top">
-      <td>MOV</td>
-      <td>Rd,Ra</td>
-      <td>Move register to register</td>
-    </tr>
-    <tr valign="top">
-      <td>LDL0</td>
-      <td>Rd,#16</td>
-      <td>Load zex(immediate) to low</td>
-    </tr>
-    <tr valign="top">
-      <td>LDL</td>
-      <td>Rd,#16</td>
-      <td>Load low of immediate to low</td>
-    </tr>
-    <tr valign="top">
-      <td>LDH</td>
-      <td>Rd,#H16</td>
-      <td>Load high of immediate to high</td>
-    </tr>
-    <tr valign="top">
-      <td>CALL</td>
-      <td>#27</td>
-      <td>Call subroutine</td>
-    </tr>
-    <tr valign="top">
-      <td>ADD</td>
-      <td>Rd,Ra,Rb<br />Rda,Rb</td>
-      <td>Add without carry</td>
-    </tr>
-    <tr valign="top">
-      <td>ADC</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Add with carry</td>
-    </tr>
-    <tr valign="top">
-      <td>SUB</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Subtract without borrow</td>
-    </tr>
-    <tr valign="top">
-      <td>SBB</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Subtract with borrow</td>
-    </tr>
-    <tr valign="top">
-      <td>INC</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Increment</td>
-    </tr>
-    <tr valign="top">
-      <td>DEC</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Decrement</td>
-    </tr>
-    <tr valign="top">
-      <td>AND</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Bitwise AND</td>
-    </tr>
-    <tr valign="top">
-      <td>OR</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Bitwise OR</td>
-    </tr>
-    <tr valign="top">
-      <td>XOR</td>
-      <td>Ra,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Bitwise XOR</td>
-    </tr>
-    <tr valign="top">
-      <td>SHL</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Shift left</td>
-    </tr>
-    <tr valign="top">
-      <td>SHR</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Shift right</td>
-    </tr>
-    <tr valign="top">
-      <td>ROL</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Rotate left</td>
-    </tr>
-    <tr valign="top">
-      <td>ROR</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Rotate right</td>
-    </tr>
-    <tr valign="top">
-      <td>MUL</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Multiply</td>
-    </tr>
-    <tr valign="top">
-      <td>CMP</td>
-      <td>Rd,Ra,Rb<br />
-	Rda,Rb</td>
-      <td>Compare</td>
-    </tr>
-    <tr valign="top">
-      <td>SHA</td>
-      <td>Rd,Ra<br />
-	Rda</td>
-      <td>Shift arithmetic right</td>
-    </tr>
-    <tr valign="top">
-      <td>SETC</td>
-      <td>-</td>
-      <td>Set carry</td>
-    </tr>
-    <tr valign="top">
-      <td>CLRC</td>
-      <td>-</td>
-      <td>Clear carry</td>
-    </tr>
-</table>
+      <span lang="en">The # sign does not need to be used in
+      constants, it is enough to specify the numerical value or the
+      name of the symbol.  Among the registers, we can use SP instead
+      of R13, LR instead of R14, and PC instead of R15.  The following
+      names can be used to identify special registers:</span>
+    </p>
 
+    <ul>
+      <li>SFR[0]:
+      SFLAG, <span lang="hu">vagy</span><span lang="en">or</span>
+      R0</li>
+      <li>SFR[1]:
+      SVER, <span lang="hu">vagy</span><span lang="en">or</span>
+      R1</li>
+      <li>SFR[2]:
+      SFEAT1, <span lang="hu">vagy</span><span lang="en">or</span>
+      R2</li>
+      <li>SFR[3]:
+      SFEAT2, <span lang="hu">vagy</span><span lang="en">or</span>
+      R3</li>
+      <li>SFR[4..15]: R4..R15</li>
+    </ul>
 
-<p>A következő makrók egyes utasítások alternatív elnevezéseiként
-  használhatók.</p>
-
-<table border=1 bgcolor="lightgrey">
-  <thead>
-    <tr valign="top">
-      <th width="30%">Makró név</th>
-      <th width="30%">Paraméterezési módok</th>
-      <th width="30%">Jelentése</th>
-    </tr>
-    <tr valign="top">
-      <td>JMP</td>
-      <td>#16</td>
-      <td>LDL0 R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JZ</td>
-      <td>#16</td>
-      <td>Z LDL0 R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JNZ</td>
-      <td>#16</td>
-      <td>NZ LDL0 R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>RET</td>
-      <td>-</td>
-      <td>MOV R15,R14</td>
-    </tr>
-    <tr valign="top">
-      <td>PUSH</td>
-      <td>Rd</td>
-      <td>ST Rd,R13</td>
-    </tr>
-    <tr valign="top">
-      <td>POP</td>
-      <td>Rd</td>
-      <td>LD Rd,R13</td>
-    </tr>
-  </thead>
-</table>
-
-
-<a name="insts_p2223"><h3>Processzor utasítások, p2223</h3></a>
-
-<p>Az utasításokat ismertető táblázatban a következő rövidítéseket
-használjuk:</p>
-
-<ul>
-  <li>Rd A cél regiszter, egyúttal az első operandus regiszterének
-  neve (R0..R15)</li>
-  <li>Ra A cím regiszter neve (R0..R15)</li>
-  <li>Rn Regiszter név amelyet a fordító nem használ fel, figyelmen
-  kívül hagy. Használata megkönnyíti a p1516 processzorra írt
-  programok portolását</li>
-  <li>Rb A második oparandus regisztere (R0..R15)</li>
-  <li>Ri Az index regiszter neve (R0..R15)</li>
-  <li>Rs Speciális regiszter neve (R0..R15, vagy Sxxx nevek)</li>
-  <li>#16 Konstans, amelynek az alsó 16 bitjét használja a fordító</li>
-  <li>#20 Konstans, amelynek az alsó 20 bitjét használja a fordító</li>
-  <li>#H16 Konstans (32 bites), amelynek a felső 16 bitjét használja
-  fel a fordító</li>
-  <li>#24 Konstans, amelynek az alsó 24 bitjét használja a fordító</li>
-</ul>
-
-<p>A konstansokban a # jelet nem kell használni, elég a számértéket,
-vagy a szimbólum nevét megadni. A regiszterek közül az R13 helyett
-használhatjuk az SP, az R14 helyett az LR, míg az R15 helyett a PC
-elnevezéseket is. A speciális regiszterek azonosítására a következő
-elnevezések használhatók:</p>
-
-<ul>
-  <li>SFR[0]: SFLAG, vagy R0</li>
-  <li>SFR[1]: SVER, vagy R1</li>
-  <li>SFR[2]: SFEAT1, vagy R2</li>
-  <li>SFR[3]: SFEAT2, vagy R3</li>
-  <li>SFR[4..15]: R4..R15</li>
-</ul>
-
-<table border=1>
-  <thead>
-    <tr valign="top">
-      <th width="30%">Mnemonic</th>
-      <th width="30%">Paraméterezési módok</th>
-      <th width="30%">Utasítás</th>
-    </tr>
-    <tr valign="top">
-      <td>MOV</td>
-      <td>Rd,Rb</td>
-      <td>Move register to register</td>
-    </tr>
-    <tr valign="top">
-      <td>SED</td>
-      <td>Rd,Rb</td>
-      <td>Sex to double</td>
-    </tr>
-    <tr valign="top">
-      <td>MVL</td>
-      <td>Rd,#16</td>
-      <td>Load low of immediate to low</td>
-    </tr>
-    <tr valign="top">
-      <td>MVH</td>
-      <td>Rd,#H16</td>
-      <td>Load high of immediate to high</td>
-    </tr>
-    <tr valign="top">
-      <td>MVZL</td>
-      <td>Rd,#16</td>
-      <td>Load zex(immediate)</td>
-    </tr>
-    <tr valign="top">
-      <td>MVS</td>
-      <td>Rd,#16</td>
-      <td>Load sex(immediate)</td>
-    </tr>
-    <tr valign="top">
-      <td>GETB</td>
-      <td>Rd,Rb,#2<br />
-	Rd,Rb,Ri</td>
-      <td>Get byte</td>
-    </tr>
-    <tr valign="top">
-      <td>GETBS</td>
-      <td>Rd,Rb,#2<br />
-	Rd,Rb,Ri</td>
-      <td>Get sign extended byte</td>
-    </tr>
-    <tr valign="top">
-      <td>GETBZ</td>
-      <td>Rd,Rb,#2<br />
-	Rd,Rb,Ri</td>
-      <td>Get zero extended byte</td>
-    </tr>
-    <tr valign="top">
-      <td>PUTB</td>
-      <td>Rd,Rb,#2<br />
-	Rd,Rb,Ri</td>
-      <td>Put byte</td>
-    </tr>
-    <tr valign="top">
-      <td>RDS</td>
-      <td>Rd,Rs</td>
-      <td>Read special register</td>
-    </tr>
-    <tr valign="top">
-      <td>WRS</td>
-      <td>Rd,Rs</td>
-      <td>Write special register</td>
-    </tr>
-    <tr valign="top">
-      <td>ADD</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Add without carry</td>
-    </tr>
-    <tr valign="top">
-      <td>ADC</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Add with carry</td>
-    </tr>
-    <tr valign="top">
-      <td>SUB</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Subtract without borrow</td>
-    </tr>
-    <tr valign="top">
-      <td>SBB</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Subtract with borrow</td>
-    </tr>
-    <tr valign="top">
-      <td>CMP</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Compare</td>
-    </tr>
-    <tr valign="top">
-      <td>MUL</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Multiply</td>
-    </tr>
-    <tr valign="top">
-      <td>PLUS</td>
-      <td>Rd,Rb<br />
-	Rd,#16</td>
-      <td>Add without carry (do not alter flags)</td>
-    </tr>
-    <tr valign="top">
-      <td>BTST</td>
-      <td>Rd,Rb<br />
-	Rd,#16</td>
-      <td>Bit test (AND) with write-back</td>
-    </tr>
-    <tr valign="top">
-      <td>TEST</td>
-      <td>Rd,Rb<br />
-	Rd,#16</td>
-      <td>Bit test (AND) without write-back</td>
-    </tr>
-    <tr valign="top">
-      <td>OR</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Bitwise OR</td>
-    </tr>
-    <tr valign="top">
-      <td>XOR</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Bitwise XOR</td>
-    </tr>
-    <tr valign="top">
-      <td>AND</td>
-      <td>Rd,Rn,Rb<br />
-	Rd,Rb<br />
-	Rd,#16</td>
-      <td>Bitwise AND</td>
-    </tr>
-    <tr valign="top">
-      <td>ZEB</td>
-      <td>Rd</td>
-      <td>Zero extend byte</td>
-    </tr>
-    <tr valign="top">
-      <td>ZEW</td>
-      <td>Rd</td>
-      <td>Zero extend word</td>
-    </tr>
-    <tr valign="top">
-      <td>SEB</td>
-      <td>Rd</td>
-      <td>Sign extend byte</td>
-    </tr>
-    <tr valign="top">
-      <td>SEW</td>
-      <td>Rd</td>
-      <td>Sign extend word</td>
-    </tr>
-    <tr valign="top">
-      <td>NOT</td>
-      <td>Rd</td>
-      <td>Bitwise NOT</td>
-    </tr>
-    <tr valign="top">
-      <td>NEG</td>
-      <td>Rd</td>
-      <td>Sign change</td>
-    </tr>
-    <tr valign="top">
-      <td>ROR</td>
-      <td>Rd,Rn<br />
-	Rd</td>
-      <td>Rotate right</td>
-    </tr>
-    <tr valign="top">
-      <td>ROL</td>
-      <td>Rd,Rn<br />
-	Rd</td>
-      <td>Rotate left</td>
-    </tr>
-    <tr valign="top">
-      <td>SHL</td>
-      <td>Rd,Rn<br />
-	Rd</td>
-      <td>Shift left</td>
-    </tr>
-    <tr valign="top">
-      <td>SHR</td>
-      <td>Rd,Rn<br />
-	Rd</td>
-      <td>Shift right</td>
-    </tr>
-    <tr valign="top">
-      <td>SHA</td>
-      <td>Rd,Rn<br />
-	Rd</td>
-      <td>Shift arithmetic right</td>
-    </tr>
-    <tr valign="top">
-      <td>SZ</td>
-      <td>Rd</td>
-      <td>Sign, zero check</td>
-    </tr>
-    <tr valign="top">
-      <td>SEC</td>
-      <td>-</td>
-      <td>Set carry</td>
-    </tr>
-    <tr valign="top">
-      <td>CLC</td>
-      <td>-</td>
-      <td>Clear carry</td>
-    </tr>
-    <tr valign="top">
-      <td>GETF</td>
-      <td>Rd</td>
-      <td>Get flags</td>
-    </tr>
-    <tr valign="top">
-      <td>SETF</td>
-      <td>Rd</td>
-      <td>Set flags</td>
-    </tr>
-    <tr valign="top">
-      <td>CALL</td>
-      <td>Rd,#20<br />
-	#24</td>
-      <td>Call subroutine</td>
-    </tr>
-    <tr valign="top">
-      <td>CES</td>
-      <td>Rd,#20<br />
-	#24</td>
-      <td>Call subroutine with embedded string</td>
-    </tr>
-    <tr valign="top">
-      <td>ST</td>
-      <td>Rd,Ra,Ri<br />
-	Rd,Ra+,Ri<br />
-	Rd,Ra-,Ri<br />
-	Rd,+Ra,Ri<br />
-	Rd,-Ra,Ri<br />
-	Rd,Ra,#16<br />
-	Rd,*Ra,#16<br />
-	Rd,Ra<br />
-	Rd,#16<br />
-	#16,Rd</td>
-      <td>Store to memory</td>
-    </tr>
-    <tr valign="top">
-      <td>LD</td>
-      <td>Rd,Ra,Ri<br />
-	Rd,Ra+,Ri<br />
-	Rd,Ra-,Ri<br />
-	Rd,+Ra,Ri<br />
-	Rd,-Ra,Ri<br />
-	Rd,Ra,#16<br />
-	Rd,*Ra,#16<br />
-	Rd,Ra<br />
-	Rd,#16<br />
-	#16,Rd</td>
-      <td>Load from memory</td>
-    </tr>
-  </thead>
-</table>
+    <table border=1>
+      <thead>
+	<tr valign="top">
+	  <th width="30%">
+	    Mnemonic
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Paraméterezési módok</span>
+	    <span lang="en">Parameterization methods</span>
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Utasítás</span>
+	    <span lang="en">Instruction</span>
+	  </th>
+	</tr>
+	<tr valign="top">
+	  <td>MOV</td>
+	  <td>Rd,Rb</td>
+	  <td>Move register to register</td>
+	</tr>
+	<tr valign="top">
+	  <td>SED</td>
+	  <td>Rd,Rb</td>
+	  <td>Sex to double</td>
+	</tr>
+	<tr valign="top">
+	  <td>MVL</td>
+	  <td>Rd,#16</td>
+	  <td>Load low of immediate to low</td>
+	</tr>
+	<tr valign="top">
+	  <td>MVH</td>
+	  <td>Rd,#H16</td>
+	  <td>Load high of immediate to high</td>
+	</tr>
+	<tr valign="top">
+	  <td>MVZL</td>
+	  <td>Rd,#16</td>
+	  <td>Load zex(immediate)</td>
+	</tr>
+	<tr valign="top">
+	  <td>MVS</td>
+	  <td>Rd,#16</td>
+	  <td>Load sex(immediate)</td>
+	</tr>
+	<tr valign="top">
+	  <td>GETB</td>
+	  <td>Rd,Rb,#2<br />
+	    Rd,Rb,Ri</td>
+	  <td>Get byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>GETBS</td>
+	  <td>Rd,Rb,#2<br />
+	    Rd,Rb,Ri</td>
+	  <td>Get sign extended byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>GETBZ</td>
+	  <td>Rd,Rb,#2<br />
+	    Rd,Rb,Ri</td>
+	  <td>Get zero extended byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>PUTB</td>
+	  <td>Rd,Rb,#2<br />
+	    Rd,Rb,Ri</td>
+	  <td>Put byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>RDS</td>
+	  <td>Rd,Rs</td>
+	  <td>Read special register</td>
+	</tr>
+	<tr valign="top">
+	  <td>WRS</td>
+	  <td>Rd,Rs</td>
+	  <td>Write special register</td>
+	</tr>
+	<tr valign="top">
+	  <td>ADD</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Add without carry</td>
+	</tr>
+	<tr valign="top">
+	  <td>ADC</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Add with carry</td>
+	</tr>
+	<tr valign="top">
+	  <td>SUB</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Subtract without borrow</td>
+	</tr>
+	<tr valign="top">
+	  <td>SBB</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Subtract with borrow</td>
+	</tr>
+	<tr valign="top">
+	  <td>CMP</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Compare</td>
+	</tr>
+	<tr valign="top">
+	  <td>MUL</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Multiply</td>
+	</tr>
+	<tr valign="top">
+	  <td>PLUS</td>
+	  <td>Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Add without carry (do not alter flags)</td>
+	</tr>
+	<tr valign="top">
+	  <td>BTST</td>
+	  <td>Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Bit test (AND) with write-back</td>
+	</tr>
+	<tr valign="top">
+	  <td>TEST</td>
+	  <td>Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Bit test (AND) without write-back</td>
+	</tr>
+	<tr valign="top">
+	  <td>OR</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Bitwise OR</td>
+	</tr>
+	<tr valign="top">
+	  <td>XOR</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Bitwise XOR</td>
+	</tr>
+	<tr valign="top">
+	  <td>AND</td>
+	  <td>Rd,Rn,Rb<br />
+	    Rd,Rb<br />
+	    Rd,#16</td>
+	  <td>Bitwise AND</td>
+	</tr>
+	<tr valign="top">
+	  <td>ZEB</td>
+	  <td>Rd</td>
+	  <td>Zero extend byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>ZEW</td>
+	  <td>Rd</td>
+	  <td>Zero extend word</td>
+	</tr>
+	<tr valign="top">
+	  <td>SEB</td>
+	  <td>Rd</td>
+	  <td>Sign extend byte</td>
+	</tr>
+	<tr valign="top">
+	  <td>SEW</td>
+	  <td>Rd</td>
+	  <td>Sign extend word</td>
+	</tr>
+	<tr valign="top">
+	  <td>NOT</td>
+	  <td>Rd</td>
+	  <td>Bitwise NOT</td>
+	</tr>
+	<tr valign="top">
+	  <td>NEG</td>
+	  <td>Rd</td>
+	  <td>Sign change</td>
+	</tr>
+	<tr valign="top">
+	  <td>ROR</td>
+	  <td>Rd,Rn<br />
+	    Rd</td>
+	  <td>Rotate right</td>
+	</tr>
+	<tr valign="top">
+	  <td>ROL</td>
+	  <td>Rd,Rn<br />
+	    Rd</td>
+	  <td>Rotate left</td>
+	</tr>
+	<tr valign="top">
+	  <td>SHL</td>
+	  <td>Rd,Rn<br />
+	    Rd</td>
+	  <td>Shift left</td>
+	</tr>
+	<tr valign="top">
+	  <td>SHR</td>
+	  <td>Rd,Rn<br />
+	    Rd</td>
+	  <td>Shift right</td>
+	</tr>
+	<tr valign="top">
+	  <td>SHA</td>
+	  <td>Rd,Rn<br />
+	    Rd</td>
+	  <td>Shift arithmetic right</td>
+	</tr>
+	<tr valign="top">
+	  <td>SZ</td>
+	  <td>Rd</td>
+	  <td>Sign, zero check</td>
+	</tr>
+	<tr valign="top">
+	  <td>SEC</td>
+	  <td>-</td>
+	  <td>Set carry</td>
+	</tr>
+	<tr valign="top">
+	  <td>CLC</td>
+	  <td>-</td>
+	  <td>Clear carry</td>
+	</tr>
+	<tr valign="top">
+	  <td>GETF</td>
+	  <td>Rd</td>
+	  <td>Get flags</td>
+	</tr>
+	<tr valign="top">
+	  <td>SETF</td>
+	  <td>Rd</td>
+	  <td>Set flags</td>
+	</tr>
+	<tr valign="top">
+	  <td>CALL</td>
+	  <td>Rd,#20<br />
+	    #24</td>
+	  <td>Call subroutine</td>
+	</tr>
+	<tr valign="top">
+	  <td>CES</td>
+	  <td>Rd,#20<br />
+	    #24</td>
+	  <td>Call subroutine with embedded string</td>
+	</tr>
+	<tr valign="top">
+	  <td>ST</td>
+	  <td>Rd,Ra,Ri<br />
+	    Rd,Ra+,Ri<br />
+	    Rd,Ra-,Ri<br />
+	    Rd,+Ra,Ri<br />
+	    Rd,-Ra,Ri<br />
+	    Rd,Ra,#16<br />
+	    Rd,*Ra,#16<br />
+	    Rd,Ra<br />
+	    Rd,#16<br />
+	    #16,Rd</td>
+	  <td>Store to memory</td>
+	</tr>
+	<tr valign="top">
+	  <td>LD</td>
+	  <td>Rd,Ra,Ri<br />
+	    Rd,Ra+,Ri<br />
+	    Rd,Ra-,Ri<br />
+	    Rd,+Ra,Ri<br />
+	    Rd,-Ra,Ri<br />
+	    Rd,Ra,#16<br />
+	    Rd,*Ra,#16<br />
+	    Rd,Ra<br />
+	    Rd,#16<br />
+	    #16,Rd</td>
+	  <td>Load from memory</td>
+	</tr>
+      </thead>
+    </table>
 
 
-<p>A következő makrók egyes utasítások alternatív elnevezéseiként
-használhatók.</p>
+    <p>
+      <span lang="hu">A következő makrók egyes utasítások alternatív
+	elnevezéseiként használhatók.</span>
 
-<table border=1>
-  <thead>
-    <tr valign="top">
-      <th width="30%">Makró név</th>
-      <th width="30%">Paraméterezési módok</th>
-      <th width="30%">Jelentése</th>
-    </tr>
-    <tr valign="top">
-      <td>NOP</td>
-      <td>-</td>
-      <td>MOV R0,R0</td>
-    </tr>
-    <tr valign="top">
-      <td>JMP</td>
-      <td>#16</td>
-      <td>MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JZ</td>
-      <td>#16</td>
-      <td>Z MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>FALSE</td>
-      <td>#16</td>
-      <td>Z MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JNZ</td>
-      <td>#16</td>
-      <td>NZ MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>TRUE</td>
-      <td>#16</td>
-      <td>NZ MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JC</td>
-      <td>#16</td>
-      <td>C MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JNC</td>
-      <td>#16</td>
-      <td>NC MVZL R15,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>JP</td>
-      <td>Rb</td>
-      <td>MOV R15,Rb</td>
-    </tr>
-    <tr valign="top">
-      <td>RET</td>
-      <td>-</td>
-      <td>MOV R15,R14</td>
-    </tr>
-    <tr valign="top">
-      <td>PUSH</td>
-      <td>Rd</td>
-      <td>ST Rd,*R13,0</td>
-    </tr>
-    <tr valign="top">
-      <td>POP</td>
-      <td>Rd</td>
-      <td>LD Rd,*R13,0</td>
-    </tr>
-    <tr valign="top">
-      <td>INC</td>
-      <td>Rd</td>
-      <td>ADD Rd,1</td>
-    </tr>
-    <tr valign="top">
-      <td>DEC</td>
-      <td>Rd</td>
-      <td>ADD Rd,-1</td>
-    </tr>
-    <tr valign="top">
-      <td>LDL0</td>
-      <td>Rd,#16</td>
-      <td>MVZL Rd,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>LDL</td>
-      <td>Rd,#16</td>
-      <td>MVL Rd,#16</td>
-    </tr>
-    <tr valign="top">
-      <td>LDH</td>
-      <td>Rd,#16</td>
-      <td>MVH Rd,#16</td>
-    </tr>
-  </thead>
-</table>
+      <span lang="en">The following macros can be used as alternative
+      names for some instructions.</span>
+    </p>
+
+    <table border=1>
+      <thead>
+	<tr valign="top">
+	  <th width="30%">
+	    <span lang="hu">Makró név</span>
+	    <span lang="en">Macro</span>
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Paraméterezési módok</span>
+	    <span lang="en">Parameterization methods</span>
+	  </th>
+	  <th width="30%">
+	    <span lang="hu">Jelentése</span>
+	    <span lang="en">Meaning</span>
+	  </th>
+	</tr>
+	<tr valign="top">
+	  <td>NOP</td>
+	  <td>-</td>
+	  <td>MOV R0,R0</td>
+	</tr>
+	<tr valign="top">
+	  <td>JMP</td>
+	  <td>#16</td>
+	  <td>MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JZ</td>
+	  <td>#16</td>
+	  <td>Z MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>FALSE</td>
+	  <td>#16</td>
+	  <td>Z MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JNZ</td>
+	  <td>#16</td>
+	  <td>NZ MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>TRUE</td>
+	  <td>#16</td>
+	  <td>NZ MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JC</td>
+	  <td>#16</td>
+	  <td>C MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JNC</td>
+	  <td>#16</td>
+	  <td>NC MVZL R15,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>JP</td>
+	  <td>Rb</td>
+	  <td>MOV R15,Rb</td>
+	</tr>
+	<tr valign="top">
+	  <td>RET</td>
+	  <td>-</td>
+	  <td>MOV R15,R14</td>
+	</tr>
+	<tr valign="top">
+	  <td>PUSH</td>
+	  <td>Rd</td>
+	  <td>ST Rd,*R13,0</td>
+	</tr>
+	<tr valign="top">
+	  <td>POP</td>
+	  <td>Rd</td>
+	  <td>LD Rd,*R13,0</td>
+	</tr>
+	<tr valign="top">
+	  <td>INC</td>
+	  <td>Rd</td>
+	  <td>ADD Rd,1</td>
+	</tr>
+	<tr valign="top">
+	  <td>DEC</td>
+	  <td>Rd</td>
+	  <td>ADD Rd,-1</td>
+	</tr>
+	<tr valign="top">
+	  <td>LDL0</td>
+	  <td>Rd,#16</td>
+	  <td>MVZL Rd,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>LDL</td>
+	  <td>Rd,#16</td>
+	  <td>MVL Rd,#16</td>
+	</tr>
+	<tr valign="top">
+	  <td>LDH</td>
+	  <td>Rd,#16</td>
+	  <td>MVH Rd,#16</td>
+	</tr>
+      </thead>
+    </table>
 
 
     <hr>
