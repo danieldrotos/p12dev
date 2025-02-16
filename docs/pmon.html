@@ -764,132 +764,215 @@ R10 0000_AB45
 
     <a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
 
-<p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
-  számítanak.</p>
+    <p>
+      <span lang="hu">Sztringek összehasonlítása, a kis- és nagybetűk
+	különbözőnek számítanak.</span>
 
-<p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input parameters</span>:</p>
+      <span lang="en">Compare strings, uppercase and lowercase are
+      considered different.</span>
+    </p>
 
-<ul>
-<li>R0, R1 az összehasonlítandó sztringek címei</li>
-</ul>
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    <ul>
+      <li>
+	<span lang="hu">R0, R1 az összehasonlítandó sztringek
+	címei</span>
+	<span lang="en">R0, R1 are the addresses of the strings to be
+	compared</span>
+      </li>
+    </ul>
 
-<ul>
-<li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
-</ul>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-
-<a name="_pm_strieq"><h4>0xf00c _pm_strieq</h4></a>
-
-<p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
-  számítanak.</p>
-
-<p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input parameters</span>:</p>
-
-<ul>
-<li>R0, R1 az összehasonlítandó sztringek címei</li>
-</ul>
-
-<p> <span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
-
-<ul>
-<li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
-</ul>
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a sztringek megegyeznek,
+	egyébként 0.</span>
+	<span lang="en">F.C is 1 if the strings match, otherwise
+	  0.</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_hexchar2value"><h4>0xf009 _pm_hexchar2value</h4></a>
+    <a name="_pm_strieq"><h4>0xf00c _pm_strieq</h4></a>
 
-<p>Egy hexadecimális számjegy karakter kódjának szám értékre való
-  átalakítása.</p>
+    <p>
+      <span lang="hu">Sztringek összehasonlítása, a kis- és nagybetűk
+	egyezőnek számítanak.</span>
 
-<p>Bemenet:</p>
+      <span lang="en">Compare strings, case-sensitive.</span>
+    </p>
 
-<ul>
-<li>R0 karakter ASCII kódja</li>
-</ul>
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    <ul>
+      <li>
+	<span lang="hu">R0, R1 az összehasonlítandó sztringek
+	címei</span>
+	<span lang="en">R0, R1 are the addresses of the strings to be
+	compared</span>
+      </li>
+    </ul>
 
-<ul>
-<li>R0 számérték</li>
-<li>F.C értéke 1, ha a karakter hexa karakter volt, egyébként 0</li>
-</ul>
+    <p> <span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-
-<a name="_pm_value2hexchar"><h4>0xf00a _pm_value2hexchar</h4></a>
-
-<p>Egy 0-15 közötti számérték átalakítása a megfelelő hexadecimális
-  számjegy ASCII kódjára.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 átalakítandó számérték. A szubrutin a regiszter 31:4 bitjeit
-nullázza.</li>
-</ul>
-
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
-
-<ul>
-<li>R0 hexadecimális számjegy. A szubrutin a 10-15 közötti értékeket
-kisbetűre (a-f) alakítja.</li>
-</ul>
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a sztringek megegyeznek,
+	egyébként 0.</span>
+	<span lang="en">F.C is 1 if the strings match, otherwise
+        0.</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_htoi"><h4>0xf00b _pm_htoi</h4></a>
+    <a name="_pm_hexchar2value"><h4>0xf009 _pm_hexchar2value</h4></a>
 
-<p>Hexadecimális szám jegyeit tartalmazó sztring átalakítása
-számértékké. A szövegben kis- és nagybetűk is használhatók (a-f, A-F),
-a tagolásra használt . (pont) vagy _ (aláhúzás) karakterek figyelmen
-kívül maradnak. Érvénytelen karakter esetén a feldolgozás megáll, az
-eredmény az addig feldolgozott sztring részletnek megfelelő
-  lesz.</p>
+    <p>
+      <span lang="hu">Egy hexadecimális számjegy karakter kódjának
+      szám értékre való átalakítása.</span>
 
-<p>Bemenet:</p>
+      <span lang="en">Converting the character code of a hexadecimal
+      digit to a numeric value.</span>
+    </p>
 
-<ul>
-<li>R0 a sztring kezdőcíme</li>
-</ul>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    <ul>
+      <li>
+	<span lang="hu">R0 karakter ASCII kódja</span>
+	<span lang="en">R0 ASCII code of character</span>
+      </li>
+    </ul>
 
-<ul>
-<li>R1 a sztringnek megfelelő számérték.</li>
-<li>F.C értéke 1 lesz, ha a feldolgozás nem talált hibás karaktert,
-egyébként 0.</li>
-</ul>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="hu">R0 numerical value</span>	
+      </li>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a karakter hexa karakter
+	volt, egyébként 0</span>
+	<span lang="en">F.C value is 1 if the character was a
+        hexadecimal character, otherwise 0</span>
+      </li>
+    </ul>
 
 
-<a name="fn_input"><h3>Bemeneti adatok kezelése</h3></a>
+    <a name="_pm_value2hexchar"><h4>0xf00a _pm_value2hexchar</h4></a>
+
+    <p>
+      <span lang="hu">Egy 0-15 közötti számérték átalakítása a
+	megfelelő hexadecimális számjegy ASCII kódjára.</span>
+
+      <span lang="en">Convert a numeric value between 0-15 to the
+      ASCII code of the corresponding hexadecimal digit.</span>
+    </p>
+    
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+    
+    <ul>
+      <li>
+	<span lang="hu">R0 átalakítandó számérték. A szubrutin a
+        regiszter 31:4 bitjeit nullázza.</span>
+	<span lang="en">R0 is the numerical value to be converted. The
+        subroutine sets bits 31:4 of register to zero.</span>
+      </li>
+    </ul>
+    
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    
+    <ul>
+      <li>
+	<span lang="hu">R0 hexadecimális számjegy. A szubrutin a 10-15
+	  közötti értékeket kisbetűre (a-f) alakítja.</span>
+	<span lang="en">R0 is a hexadecimal digit. The subroutine
+        converts values ​​between 10-15 to lowercase (a-f).</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
+    <a name="_pm_htoi"><h4>0xf00b _pm_htoi</h4></a>
 
-<p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
+    <p>
+      <span lang="hu">Hexadecimális szám jegyeit tartalmazó sztring
+      átalakítása számértékké. A szövegben kis- és nagybetűk is
+      használhatók (a-f, A-F), a tagolásra használt . (pont) vagy _
+      (aláhúzás) karakterek figyelmen kívül maradnak. Érvénytelen
+      karakter esetén a feldolgozás megáll, az eredmény az addig
+      feldolgozott sztring részletnek megfelelő lesz.</span>
+
+      <span lang="en">Convert a string containing hexadecimal digits
+      into a numeric value. The string can be case-sensitive (a-f, A-F),
+      and the. (period) or _ (underscore) characters used for
+      segmentation are ignored. In case of an invalid character, the
+      processing stops, and the result will correspond to the string
+      fragment processed so far.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 a sztring kezdőcíme</span>
+	<span lang="en">R0 address of string</span>
+      </li>
+    </ul>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R1 a sztringnek megfelelő számérték.</span>
+	<span lang="en">R1 is the numeric value corresponding to the
+	string.</span>
+      </li>
+      <li>
+	<span lang="hu">F.C értéke 1 lesz, ha a feldolgozás nem talált
+	  hibás karaktert, egyébként 0.</span>
+	<span lang="en">F.C will be 1 if the processing did not find
+        any incorrect characters, otherwise it will be 0.</span>
+      </li>
+    </ul>
+
+
+    <a name="fn_input"><h3>
+	<span lang="hu">Bemeneti adatok kezelése</span>
+	<span lang="en">Processing input</span>
+    </h3></a>
+
+
+    <a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
+
+    <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
 UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
 paramétere.</p>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-<ul>
-<li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
-</ul>
+    <ul>
+      <li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
+    </ul>
+    
 
+    <a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
+    
+    <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
+      karakterre, a vevő állapotát előzőleg
+      a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
+      vizsgálni. Nincs bemenő paramétere.</p>
 
-<a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
-
-<p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
-  karakterre, a vevő állapotát előzőleg
-  a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
-  vizsgálni. Nincs bemenő paramétere.</p>
-
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
-
-<ul>
-<li>R0 a legrégebben vett karakter értéke.</li>
-</ul>
-
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    
+    <ul>
+      <li>R0 a legrégebben vett karakter értéke.</li>
+    </ul>
+    
 
 <a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
 
@@ -914,7 +997,7 @@ először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
 előző karakter küldése befejeződjön. Ezután átadja a küldendő
   karaktert az UART-nak.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 a küldendő karakter értéke (8 bites adat)</li>
@@ -927,7 +1010,7 @@ előző karakter küldése befejeződjön. Ezután átadja a küldendő
 szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
   szekvenciák nem használhatók.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 sztring címe.</li>
@@ -939,7 +1022,7 @@ szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
 <p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
   a terminálra. Escape szekvenciák nem használhatók.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 sztring címe.</li>
@@ -953,7 +1036,7 @@ számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
 számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
   értékek nagybetűvel íródnak ki.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 számérték</li>
@@ -967,7 +1050,7 @@ számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
 tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
   nullák nélkül.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 számérték</li>
@@ -1004,7 +1087,7 @@ formátumban való kiírását eredményezik. Az adatokat az R1..R12
 regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
   szubrutin, amennyi formázó utasítás van a szövegben.</p>
 
-<p>Bemenetek:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>ek:</p>
 
 <ul>
 <li>R0 a formátum szöveg címe.</li>
@@ -1051,7 +1134,7 @@ eredmény az R0 regiszterben keletkezik.</p>
 <p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
   karakter kijelzőn való megjelenítéséhez használhatunk.</p>
 
-<p>Bemenet:</p>
+<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
 <ul>
 <li>R0 ASCII kód</li>
