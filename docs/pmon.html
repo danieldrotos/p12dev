@@ -18,7 +18,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="p12.css">
-    <title>Computer v2</title>
+    <title>PMon monitor program</title>
   </head>
 
 <body>
@@ -77,20 +77,37 @@
   </p>
 
  
-<h1>PMon monitor program</h1>
+  <h1>PMon monitor program</h1>
   
-<p>A monitor program egy egyszerű firmware, amely lehetővé teszi az
-alkalmazói programnak a betöltését a számítógép memóriájába. Mivel a
-PMon a <a href="p2223.html">p2223 CPU</a> utasításait felhasználva
-íródott, és a felhasználóval
-az <a href="computer_v2.html#uart">UART</a> periférián keresztül
-tartja a kapcsolatot, ezért csak a <a href="p2223.html">p2223 típusú
-CPU</a>-t tartalmazó, <a href="computer_v2.html">v2 típusú
-számítógépen</a> használható.</p>
+    <p>
+      <span lang="hu">A monitor program egy egyszerű firmware, amely
+      lehetővé teszi az alkalmazói programnak a betöltését a
+      számítógép memóriájába. Mivel a PMon
+      a <a href="p2223.html">p2223 CPU</a> utasításait felhasználva
+      íródott, és a felhasználóval
+      az <a href="computer_v2.html#uart">UART</a> periférián keresztül
+      tartja a kapcsolatot, ezért csak a <a href="p2223.html">p2223
+      típusú CPU</a>-t tartalmazó, <a href="computer_v2.html">v2
+      típusú számítógépen</a> használható.</span>
 
-<h2>Felhasználói felület</h2>
+      <span lang="en">The monitor program is a simple firmware that
+      allows the application program to be loaded into the computer's
+      memory. Since PMon is written using the instructions of
+      the <a href="p2223.html">p2223 CPU</a> and communicates with the
+      user via the <a href="computer_v2.html#uart">UART</a>
+      peripheral, it can only be used on <a href="computer_v2.html">v2
+      type computer</a> with <a href="p2223.html">p2223 type
+      CPU</a>.</span>
+    </p>
 
-    <p>A számítógép <a href="computer_v2.html#uart">UART</a>
+    <h2>
+      <span lang="hu">Felhasználói felület</span>
+      <span lang="en">User interface</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A
+      számítógép <a href="computer_v2.html#uart">UART</a>
       perifériájához az <a href="computer_v2.html#fpga">FPGA
       kártyán</a> egy USB-UART átalakító van kapcsolva, amelynek az
       USB portját összeköthetjük egy PC-vel. Az átalakító a PC
@@ -99,38 +116,90 @@ számítógépen</a> használható.</p>
       használható. A PC-n indítsunk el egy terminál emulátor programot
       (pl. TeraTerm, putty, stb.) és nyissuk meg az FPGA kártya
       csatlakoztatásakor létrejövő COM portot. Állítsuk be a
-      115200,N,8,1 paramétereket.</p>
+      115200,N,8,1 paramétereket.</span>
 
-  <p><img title="" src="vcp.svg" alt="" /></p>
+      <span lang="en">A USB-UART converter is connected to
+      the <a href="computer_v2.html#uart">UART</a> peripheral of
+      the <a href="computer_v2.html#fpga">FPGA board</a>, whose USB
+      port can be connected to a PC. The converter appears to the PC
+      operating system as a VCP (Virtual COM Port) device, which can
+      be used as an asynchronous serial peripheral. On the PC, start a
+      terminal emulator program (e.g. TeraTerm, putty, etc.) and open
+      the COM port created when the FPGA board is connected. Set the
+      parameters to 115200,N,8,1.</span>
+    </p>
 
-  <p>A PMon egy parancssoros program, amely a prompt kiírása után egy
-  parancs begépelését várja. Az ENTER lenyomása után értelmezi a beírt
-  utasítást és végrehajtja a megfelelő műveletet.</p>
+    <p><img title="" src="vcp.svg" alt="" /></p>
 
-  <p>A parancsok egy szóból állnak, amelyet szóközzel elválasztva
-    paraméter(ek) követhet(nek). A paramétereket szóközzel kell
-    elválasztani.</p>
+    <p>
+      <span lang="hu">A PMon egy parancssoros program, amely a prompt
+      kiírása után egy parancs begépelését várja. Az ENTER lenyomása
+      után értelmezi a beírt utasítást és végrehajtja a megfelelő
+      műveletet.</span>
 
-  <p>A parancsok a legtöbb esetben rövidíthetőek a szó első
-betűjével. A paraméterek általában számok, amelyeket hexadecimális
-számrendszerben kell beírni, 0x, H, $ és egyéb jelek
-nélkül. Tagolásként a beírt hexadecimális számokba írhatunk . vagy _
-jeleket, ezeket a monitor figyelmen kívül hagyja. Az A..F értékű
-jegyeket kis és nagybetűvel is beírhatjuk.</p>
+      <span lang="en">PMon is a command-line program that waits for a
+      command to be typed after displaying a prompt. After pressing
+      ENTER, it interprets the entered command and performs the
+      appropriate action.</span>
+    </p>
 
-  <p>A monitor által kiírt adatok mindig hexadecimális számrendszerben,
-nagybetűvel íródnak ki. A könnyebb olvashatóság érdekében a monitor
-által kiírt 32 bites értékek hexadecimális alakjában négy jegyenként
-egy _ jel van.</p>
+    <p>
+      <span lang="hu">A parancsok egy szóból állnak, amelyet szóközzel
+      elválasztva paraméter(ek) követhet(nek). A paramétereket
+      szóközzel kell elválasztani.</span>
 
-  <h2>Parancsok</h2>
+      <span lang="en">Commands consist of a single word, followed by
+      parameter(s), separated by a space. Parameters must be separated
+      by a space.</span>
+    </p>
 
-  <a name="cmd_help"><h3>h[elp],?</h3></a>
+    <p>
+      <span lang="hu">A parancsok a legtöbb esetben rövidíthetőek a
+      szó első betűjével. A paraméterek általában számok, amelyeket
+      hexadecimális számrendszerben kell beírni, 0x, H, $ és egyéb
+      jelek nélkül. Tagolásként a beírt hexadecimális számokba
+      írhatunk . vagy _ jeleket, ezeket a monitor figyelmen kívül
+      hagyja. Az A..F értékű jegyeket kis és nagybetűvel is
+      beírhatjuk.</span>
+
+      <span lang="en">Commands can be abbreviated in most cases with
+      the first letter of the word. Parameters are usually numbers
+      that should be entered in hexadecimal, without 0x, H, $, and
+      other symbols. As a separator, you can enter . or _ in the
+      entered hexadecimal numbers, which are ignored by the
+      monitor. The characters A..F can be entered in both upper and
+      lower case letters.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A monitor által kiírt adatok mindig
+      hexadecimális számrendszerben, nagybetűvel íródnak ki. A
+      könnyebb olvashatóság érdekében a monitor által kiírt 32 bites
+      értékek hexadecimális alakjában négy jegyenként egy _ jel
+      van.</span>
+
+      <span lang="en">The data displayed by the monitor is always in
+      hexadecimal, in uppercase.  For easier readability, the 32-bit
+      values ​​displayed by the monitor have a _ sign every four digits
+      in hexadecimal format.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Parancsok</span>
+      <span lang="en">Commands</span>
+    </h2>
+
+    <a name="cmd_help"><h3>h[elp],?</h3></a>
   
-<p>Kiírja a használható parancsok listáját és a szükséges, illetve
-  lehetséges paramétereket.</p>
+    <p>
+      <span lang="hu">Kiírja a használható parancsok listáját és a
+	szükséges, illetve lehetséges paramétereket.</span>
 
-<samp>
+      <span lang="en">Lists the available commands and the required
+      and possible parameters.</span>
+    </p>
+
+    <samp>
 PMonitor v1.1 (cpu: v2.2.7)
 :help
 m[em] addr [val]  Get/set memory
@@ -146,46 +215,69 @@ f [val]           Get/set flags
 v[er]             Print pmon and cpu version
 h[elp],?          Help
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_ver"><h3>v[er]</h3></a>
+    <a name="cmd_ver"><h3>v[er]</h3></a>
 
-    <p>Kiírja a monitor program és a CPU verzióját, valamint a CPU
-    feature regisztereinek az értékét:</p>
+    <p>
+      <span lang="hu">Kiírja a monitor program és a CPU verzióját,
+	valamint a CPU feature regisztereinek az értékét:</span>
 
-<samp>
+      <span lang="en">Lists the monitor program and CPU version, and
+      the values ​​of the CPU feature registers:</span>
+    </p>
+
+    <samp>
 :ver
 pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_mem"><h3>m[em] addr [val]</h3></a>
+    <a name="cmd_mem"><h3>m[em] addr [val]</h3></a>
 
-<p>Memória egy adott című rekeszének vizsgálata, vagy módosítása. Az
-első paraméter a vizsgált rekesz címe (hexadecimálisan). Ha a második
-paramétert nem adjuk meg, akkor a parancs a megadott című szót írja ki
-(a címmel együtt), ha megadjuk a második paramétert, akkor először az
-érték a memóriába kerül, majd ezután íródik ki (a már módosított)
-memória tartalom.</p>
+    <p>
+      <span lang="hu">Memória egy adott című rekeszének vizsgálata,
+      vagy módosítása. Az első paraméter a vizsgált rekesz címe
+      (hexadecimálisan). Ha a második paramétert nem adjuk meg, akkor
+      a parancs a megadott című szót írja ki (a címmel együtt), ha
+      megadjuk a második paramétert, akkor először az érték a
+      memóriába kerül, majd ezután íródik ki (a már módosított)
+      memória tartalom.</span>
 
-<samp>
+      <span lang="en">Examine or modify a memory location with a given
+      address. The first parameter is the address of the location to
+      be examined (in hexadecimal). If the second parameter is not
+      specified, the command prints the specified address (including
+      the address), if the second parameter is specified, the value is
+      first placed in memory, and then the (already modified) memory
+      content is printed.</span>
+    </p>
+
+    <samp>
 :m 1
 0000_0001 01D2_0093
 :m 1 deadbeef
 0000_0001 DEAD_BEEF
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_dump"><h3>d[ump] start [end]</h3></a>
+    <a name="cmd_dump"><h3>d[ump] start [end]</h3></a>
 
-<p>Egy adott memóriaterület tartalmát listázza ki. A kezdőcímet
-kötelező megadni. Ha a vég címet nem adjuk meg, akkor 17 egymás utáni
-szó értéke íródik ki.</p>
+    <p>
+      <span lang="hu">Egy adott memóriaterület tartalmát listázza
+      ki. A kezdőcímet kötelező megadni. Ha a vég címet nem adjuk meg,
+      akkor 17 egymás utáni szó értéke íródik ki.</span>
 
-<samp>
+      <span lang="en">Lists the contents of a given memory area. The
+      starting address is required. If the ending address is not
+      specified, then the values ​​of 17 consecutive words are
+      printed.</span>
+    </p>
+
+    <samp>
 :d 10
 0000_0010 0000_000A
 0000_0011 0000_0000
@@ -211,56 +303,110 @@ szó értéke íródik ki.</p>
 0000_0013 01F2_0003
 0000_0014 0000_0000
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_load"><h3>l[oad]</h3></a>
+    <a name="cmd_load"><h3>l[oad]</h3></a>
 
-<p>Lefordított alkalmazói program betöltése a memóriába. A parancsnak
-nincs paramétere, a betöltéshez szükséges adatok a lefordított fájlban
-vannak. A parancs p2h formátumú fájl tartalmát várja, ezt az assembler
-segítségével állíthatjuk elő.</p>
+    <p>
+      <span lang="hu">Lefordított alkalmazói program betöltése a
+      memóriába. A parancsnak nincs paramétere, a betöltéshez
+      szükséges adatok a lefordított fájlban vannak. A parancs p2h
+      formátumú fájl tartalmát várja, ezt
+      az <a href="asm.html">assembler</a> segítségével állíthatjuk
+      elő.</span>
 
-<p>A parancs kiadása után várakozik, a fájl tartalmát a terminálon
-kell elküldeni. Erre használjuk a terminál emulátor megfelelő
-funkcióját. TeraTerm esetén pl. a File menü Send file pontja
-használható:</p>
+      <span lang="en">Loading a compiled application program into
+      memory. The command has no parameters, the data required for
+      loading is in the compiled file. The command expects the
+      contents of a file in p2h format, which can be generated using
+      the <a href="asm.html">assembler</a>.</span>
+    </p>
 
-<p><img title="" src="teraterm_sendfile.png" alt="" /></p>
+    <p>
+      <span lang="hu">A parancs kiadása után várakozik, a fájl
+      tartalmát a terminálon kell elküldeni. Erre használjuk a
+      terminál emulátor megfelelő funkcióját. TeraTerm esetén pl. a
+      File menü Send file pontja használható:</span>
 
-<p>Válasszuk ki a lefordított programból készült .p2h kiterjesztésű
-fájlt:</p>
+      <span lang="en">After issuing the command, it waits, the
+      contents of the file must be sent to the terminal. For this, we
+      use the appropriate function of the terminal emulator. In the
+      case of TeraTerm, for example, the File menu item Send file can
+      be used:</span>
+    </p>
 
-<p><img title="" src="teraterm_fileselect.png" alt="" /></p>
+    <p><img title="" src="teraterm_sendfile.png" alt="" /></p>
 
-<p>A program a soros vonalon elküldi a fájl tartalmát. A load parancs
-értelmezi a fájlban lévő rekordokat, ezeknek a típusát kiírja a
-terminálra. A memória tartalmat meghatározó rekordoknak megfelelően
-módosítja a memóriát. A fájl végét jelző rekord után kilép, és újra
-megjelenik a monitor promptja:</p>
+    <p>
+      <span lang="hu">Válasszuk ki a lefordított programból készült
+	.p2h kiterjesztésű fájlt:</span>
 
-<p><img title="" src="teraterm_sent.png" alt="" /></p>
+      <span lang="en">Select the file with the .p2h extension made
+      from the compiled program:</span>
+    </p>
+
+    <p><img title="" src="teraterm_fileselect.png" alt="" /></p>
+
+    <p>
+      <span lang="hu">A program a soros vonalon elküldi a fájl
+      tartalmát. A load parancs értelmezi a fájlban lévő rekordokat,
+      ezeknek a típusát kiírja a terminálra. A memória tartalmat
+      meghatározó rekordoknak megfelelően módosítja a memóriát. A fájl
+      végét jelző rekord után kilép, és újra megjelenik a monitor
+      promptja:</span>
+
+      <span lang="en">The program sends the contents of the file on
+      the serial line. The load command interprets the records in the
+      file, and prints their types to the terminal. It modifies the
+      memory according to the records that define the memory
+      contents. After the record indicating the end of the file, it
+      exits, and the monitor prompt reappears:</span>
+    </p>
+
+    <p><img title="" src="teraterm_sent.png" alt="" /></p>
 
 
-<a name="cmd_go"><h3>g[o],run [addr]</h3></a>
+    <a name="cmd_go"><h3>g[o],run [addr]</h3></a>
 
-<p>Ez a parancs a felhasználói programot indítja el a megadott
-címtől. Ha a program visszalép a monitorhoz a megfelelő szubrutin
-meghívásával, akkor ettől a ponttól a programot lehet folytatni. Ehhez
-nem kell megadni a go parancsnak paramétert. Ez a módszer nem működik,
-ha még nem volt átlépés a programról a monitorra.</p>
+    <p>
+      <span lang="hu">Ez a parancs a felhasználói programot indítja el
+      a megadott címtől. Ha a program visszalép a monitorhoz a
+      megfelelő szubrutin meghívásával, akkor ettől a ponttól a
+      programot lehet folytatni. Ehhez nem kell megadni a go
+      parancsnak paramétert. Ez a módszer nem működik, ha még nem volt
+      átlépés a programról a monitorra.</span>
+
+      <span lang="en">This command starts the user program from the
+      specified address. If the program returns to the monitor by
+      calling the appropriate subroutine, the program can be continued
+      from that point. You do not need to specify a parameter to the
+      go command for this. This method does not work if there has not
+      been a transition from the user program to the monitor
+      yet.</span>
+    </p>
 
 
-<a name="cmd_reg"><h3>r[eg[s]]</h3></a>
+    <a name="cmd_reg"><h3>r[eg[s]]</h3></a>
 
-<p>Kiírja azokat a regiszter értékeket, amelyeket a program betölt a
-go parancs hatására a felhasználói program indítása előtt. Ezeket az
-értékeket akkor menti el a monitor program, amikor a felhasználó
-program visszatér a monitorhoz a megfelelő szubrutin hívással. Az első
-sor arról tájékoztat, hogy ilyen mentés történt-e már, vagy még
-nem:</p>
+    <p>
+      <span lang="hu">Kiírja azokat a regiszter értékeket, amelyeket a
+	program betölt a <a href="#cmd_go">go</a> parancs hatására a
+	felhasználói program indítása előtt. Ezeket az értékeket akkor
+	menti el a monitor program, amikor a felhasználó program
+	visszatér a monitorhoz a megfelelő szubrutin hívással. Az első
+	sor arról tájékoztat, hogy ilyen mentés történt-e már, vagy
+	még nem:</span>
 
-<samp>
+      <span lang="en">Lists the register values ​​that the program loads
+	in response to the <a href="#cmd_go">go</a> command before
+	the user program starts. These values ​​are saved by the monitor
+	program when the user program returns to the monitor with the
+	appropriate subroutine call. The first line informs whether
+	such a save has already occurred or not:</span>
+    </p>
+
+    <samp>
 :r
 Monitor not called by user
 R0  0000_0000
@@ -282,12 +428,17 @@ PC  0000_0000
 F   0000_0000
 U0 P0 O0 Z0 C0 S0
 :
-</samp>
+    </samp>
 
-<p>Az utolsó sorban az egyes flag bitek értéke egyenként is látható. A
-monitor hívása után:</p>
+    <p>
+      <span lang="hu">Az utolsó sorban az egyes flag bitek értéke
+	egyenként is látható. A monitor hívása után:</span>
 
-<samp>
+      <span lang="en">The last line shows the value of each flag bit
+      individually. After calling the monitor:</span>
+    </p>
+
+    <samp>
 PMonitor v1.1 (cpu: v2.2.7)
 Stop at: 0000_0004
 :r
@@ -302,53 +453,103 @@ PC  0000_0004
 F   0000_0000
 U0 P0 O0 Z0 C0 S0
 :
-</samp>
+    </samp>
 
-<p>A PC és az LR a hívás helyét követő utasításra mutat, ahonnan a
-felhasználói program folytatható. Ettől a címtől a programot a
-paraméter nélküli go parancs kiadásával folytathatjuk.</p>
+    <p>
+      <span lang="hu">A PC és az LR a hívás helyét követő utasításra
+      mutat, ahonnan a felhasználói program folytatható. Ettől a
+      címtől a programot a paraméter nélküli go parancs kiadásával
+      folytathatjuk.</span>
+
+      <span lang="en">PC and LR point to the instruction following the
+      call, from where the user program can be continued. From this
+      address, the program can be continued by issuing the go command
+      without parameters.</span>
+    </p>
 
 
-<a name="cmd_regs"><h3>rX|sp|lr|pc|f [val]</h3></a>
+    <a name="cmd_regs"><h3>rX|sp|lr|pc|f [val]</h3></a>
 
-<p>Az egyes regiszterek elmentett értékeit megjelenítő, illetve
-megváltoztató parancsok. A regiszter névben (rX) 0 és 15 közötti
-számokat használhatunk, az r13 helyett írhatunk sp nevet, az r14
-helyett lr-t, míg az r15 helyett a pc név is használható. A f név a
-Flag regiszter elmentett értékének kezelésére szolgál.</p>
+    <p>
+      <span lang="hu">Az egyes regiszterek elmentett értékeit
+      megjelenítő, illetve megváltoztató parancsok. A regiszter névben
+      (rX) 0 és 15 közötti számokat használhatunk, az r13 helyett
+      írhatunk sp nevet, az r14 helyett lr-t, míg az r15 helyett a pc
+      név is használható. A f név a Flag regiszter elmentett értékének
+      kezelésére szolgál.</span>
 
-<samp>
+      <span lang="en">Commands that display and change the saved
+      values of individual registers. In the register name (rX) we can
+      use numbers between 0 and 15, instead of r13 we can write the
+      name sp, instead of r14 we can write lr, while instead of r15 we
+      can use the name pc. The name f is used to manage the saved
+      value of the Flag register.</span>
+    </p>
+
+    <samp>
 :r10
 R10 0000_00D8
 :r10 ab_45
 R10 0000_AB45
 :
-</samp>
+    </samp>
 
 
-<h2>Monitor szolgáltatások</h2>
+    <h2>
+      <span lang="hu">Monitor szolgáltatások</span>
+      <span lang="en">Monitor services</span>
+    </h2>
 
-<p>A monitor programban található egyes szubrutinok a felhasználói
-programok fejlesztése során is hasznosak lehetnek, a megfelelő CALL
-utasításokkal meghívhatók. Az alábbiakban megadjuk a meghívható
-szubrutinok címeit és a funkciókat.</p>
+    <p>
+      <span lang="hu">A monitor programban található egyes szubrutinok
+      a felhasználói programok fejlesztése során is hasznosak
+      lehetnek, a megfelelő CALL utasításokkal meghívhatók. Az
+      alábbiakban megadjuk a meghívható szubrutinok címeit és a
+      funkciókat.</span>
 
-<p>Az egyes szubrutinok a bemenő és kimenő paraméterek átadására
-használt regisztereken, és a Flag regiszteren kívül egyéb
-regisztereket nem módosítanak, az esetleges ettől eltérő eseteket
-külön jelezzük.</p>
+      <span lang="en">Some subroutines in the monitor program may also
+      be useful during the development of user programs, and can be
+      called with the appropriate CALL instruction.  Below, we
+      provide the addresses and functions of the subroutines that can
+      be called.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az egyes szubrutinok a bemenő és kimenő
+      paraméterek átadására használt regisztereken, és a Flag
+      regiszteren kívül egyéb regisztereket nem módosítanak, az
+      esetleges ettől eltérő eseteket külön jelezzük.</span>
+
+      <span lang="en">The individual subroutines do not modify the
+      registers used to pass input and output parameters, and other
+      registers except the Flag register, any cases that differ from
+      this are indicated separately.</span>
+    </p>
 
 
-<a name="fn_monitor"><h3>A monitor meghívása</h3></a>
+    <a name="fn_monitor"><h3>
+	<span lang="hu">A monitor meghívása</span>
+	<span lang="en">Call of the monitor</span>
+    </h3></a>
 
 
-<a name="_pm_cold_start"><h4>0xf005 _pm_cold_start</h4></a>
+    <a name="_pm_cold_start"><h4>0xf005 _pm_cold_start</h4></a>
 
-<p>Végleges kilépés az alkalmazói programból a monitor
-újraindításával. Kezdeti értékre állítja a monitor állapotát, így a
-felhasználói program a paraméterek nélküli go paranccsal nem
-folytatható. Ezt a funkciót szubrutinhívás mellett ugró utasításokkal
-is meghívhatjuk. A funkciónak nincsenek paraméterei.</p>
+    <p>
+      <span lang="hu">Végleges kilépés az alkalmazói programból a
+      monitor újraindításával. Kezdeti értékre állítja a monitor
+      állapotát, így a felhasználói program a paraméterek nélküli go
+      paranccsal nem folytatható. Ezt a funkciót szubrutinhívás
+      mellett ugró utasításokkal is meghívhatjuk. A funkciónak
+      nincsenek paraméterei.</span>
+
+      <span lang="en">Final exit from the application program by
+      restarting the monitor. Sets the monitor state to its initial
+      value, so the user program cannot be continued with the go
+      command without parameters. This function can be called with
+      jump instructions in addition to subroutine calls. The function
+      has no parameters.</span>
+    </p>
 
 
 <a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
@@ -362,10 +563,10 @@ paranccsal. A funkciónak nincsenek paraméterei.</p>
 
 <p>Feltételes visszatérés a monitor programhoz. A szubrutin ellenőrzi,
 hogy van-e olvasható vett karakter az UART áramkörben. Ha igen,
-kiüríti az UART-ot és meghívja a callin funkciót, vagyis visszatér a
-monitorhoz. Olyan program esetében használhatjuk, amely nem végez adat
-beolvasást a terminálról az UART-on keresztül. A funkciónak nincsenek
-paraméterei.</p>
+kiüríti az UART-ot és meghívja a _pm_callin funkciót, vagyis visszatér
+a monitorhoz. Olyan program esetében használhatjuk, amely nem végez
+adat beolvasást a terminálról az UART-on keresztül. A funkciónak
+nincsenek paraméterei.</p>
 
 
 <a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
