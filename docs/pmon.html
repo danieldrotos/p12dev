@@ -949,134 +949,249 @@ R10 0000_AB45
 
     <a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
 
-    <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
-UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
-paramétere.</p>
+    <p>
+      <span lang="hu">Az UART vevő állapotának vizsgálata. Azt mutatja
+      meg, hogy van-e az UART-ban beolvasható vett karakter. A
+      funkciónak nincs bemeneti paramétere.</span>
+
+      <span lang="en">Checks the UART receiver status. It shows
+      whether there are any characters received in the UART that can
+      be read. The function has no input parameters.</span>
+    </p>
 
     <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
     <ul>
-      <li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
+      <li>
+	<span lang="hu">F.C értéke 1, ha van vett karakter, egyébként
+	0.</span>
+	<span lang="en">F.C value is 1 if there is a received
+        character, otherwise 0.</span>
+      </li>
     </ul>
     
 
     <a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
     
-    <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
-      karakterre, a vevő állapotát előzőleg
+    <p>
+      <span lang="hu">Az UART vevő áramkörének kiolvasása. A szubrutin
+      nem vár új karakterre, a vevő állapotát előzőleg
       a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
-      vizsgálni. Nincs bemenő paramétere.</p>
+      vizsgálni. Nincs bemenő paramétere.</span>
+
+      <span lang="en">Reading the UART receiver circuit. The
+      subroutine does not wait for a new character, the receiver
+      status must be checked beforehand with
+      the <a href="#_pm_check_uart">_pm_check_uart</a> function. It
+      has no input parameters.</span>
+    </p>
 
     <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
     
     <ul>
-      <li>R0 a legrégebben vett karakter értéke.</li>
+      <li>
+	<span lang="hu">R0 a legrégebben vett karakter értéke.</span>
+	<span lang="en">R0 is the value of the oldest character
+	received.</span>
+      </li>
     </ul>
     
 
-<a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
+    <a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
 
-<p>Várakozás egy karakter vételére, majd a karakter kiolvasása az UART
-áramkörből.</p>
+    <p>
+      <span lang="hu">Várakozás egy karakter vételére, majd a karakter
+	kiolvasása az UART áramkörből.</span>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+      <span lang="en">Waiting for a character to be received, then
+      reading the character from the UART circuit.</span>
+    </p>
 
-<ul>
-<li>F.C értéke 1 lesz, jelezve, hogy volt vett karakter.</li>
-<li>R0 a beérkezett karakter kódja.</li>
-</ul>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-
-<a name="fn_output"><h3>Kimenet előállítása a terminálon</h3></a>
-
-
-<a name="_pm_putchar"><h4>0xf00e _pm_putchar</h4></a>
-
-<p>Egy karakter kiírása a terminálra (küldése UART-on). A szubrutin
-először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
-előző karakter küldése befejeződjön. Ezután átadja a küldendő
-  karaktert az UART-nak.</p>
-
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
-
-<ul>
-<li>R0 a küldendő karakter értéke (8 bites adat)</li>
-</ul>
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1 lesz, jelezve, hogy volt vett
+	karakter.</span>
+	<span lang="en">F.C will be 1, indicating that a character was
+	received.</span>
+      </li>
+      <li>
+	<span lang="hu">R0 a beérkezett karakter kódja.</span>
+	<span lang="en">R0 is the code of the received
+	character.</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_prints"><h4>0xf00f _pm_prints</h4></a>
-
-<p>Egy 0 végződésű karaktertömb (sztring) kiírása a terminálra. A
-szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
-  szekvenciák nem használhatók.</p>
-
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
-
-<ul>
-<li>R0 sztring címe.</li>
-</ul>
+    <a name="fn_output"><h3>
+	<span lang="hu">Kimenet előállítása a terminálon</span>
+	<span lang="en">Generating output on terminal</span>
+    </h3></a>
 
 
-<a name="_pm_printsnl"><h4>0xf010 _pm_printsnl</h4></a>
+    <a name="_pm_putchar"><h4>0xf00e _pm_putchar</h4></a>
 
-<p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
-  a terminálra. Escape szekvenciák nem használhatók.</p>
+    <p>
+      <span lang="hu">Egy karakter kiírása a terminálra (küldése
+      UART-on). A szubrutin először megvárja, hogy az UART küldő
+      áramköre szabad legyen, tehát az előző karakter küldése
+      befejeződjön. Ezután átadja a küldendő karaktert az
+      UART-nak.</span>
 
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+      <span lang="en">Write a character to the terminal (send it via
+      UART). The subroutine first waits for the UART's send circuit to
+      be free, so that the previous character is completed. Then it
+      passes the character to be sent to the UART.</span>
+    </p>
 
-<ul>
-<li>R0 sztring címe.</li>
-</ul>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 a küldendő karakter értéke (8 bites
+	adat)</span>
+	<span lang="en">R0 is the value of the character to be sent
+        (8-bit data)</span>
+      </li>
+    </ul>
+    
+
+    <a name="_pm_prints"><h4>0xf00f _pm_prints</h4></a>
+
+    <p>
+      <span lang="hu">Egy 0 végződésű karaktertömb (sztring) kiírása a
+      terminálra. A szubrutin a sztring tartalmát nem értelmezi, így
+      abban ú.n. escape szekvenciák nem használhatók.</span>
+
+      <span lang="en">Write a 0-terminated character array (string) to
+      the terminal. The subroutine does not interpret the contents of
+      the string, so so-called escape sequences cannot be used in
+      it.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 sztring címe.</span>
+	<span lang="en">R0 address of string.</span>
+      </li>
+    </ul>
 
 
-<a name="_pm_print_vhex"><h4>0xf011 _pm_print_vhex</h4></a>
+    <a name="_pm_printsnl"><h4>0xf010 _pm_printsnl</h4></a>
 
-<p>Egy 32 bites érték kiírása a terminálon hexadecimális
-számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
-számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
-  értékek nagybetűvel íródnak ki.</p>
+    <p>
+      <span lang="hu">Egy 0 végződésű karaktertömb, majd egy újsor
+	karakter (\n) kiírása a terminálra. Escape szekvenciák nem
+	használhatók.</span>
 
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+      <span lang="en">Writes a 0-terminated character array followed
+      by a newline character (\n) to the terminal. Escape sequences
+      cannot be used.</span>
+    </p>
 
-<ul>
-<li>R0 számérték</li>
-<li>R1 két tagolás jel között kiíródó jegyek száma</li>
-</ul>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-
-<a name="_pm_printd"><h4>0xf013 _pm_printd</h4></a>
-
-<p>Egy 32 bites, előjel nélküli (bináris) szám kiírása a terminálra
-tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
-  nullák nélkül.</p>
-
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
-
-<ul>
-<li>R0 számérték</li>
-</ul>
+    <ul>
+      <li>
+ 	<span lang="hu">R0 sztring címe.</span>
+	<span lang="en">R0 address of string.</span>
+     </li>
+    </ul>
 
 
-<a name="_pm_pes"><h4>0xf012 _pm_pes</h4></a>
+    <a name="_pm_print_vhex"><h4>0xf011 _pm_print_vhex</h4></a>
 
-<p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
-sztringnek a program kódjában közvetlenül a szubrutint meghívó CALL
-utasítás után kell lennie. A szubrutin a sztring záró nullája utáni
-címre fog visszatérni. A funkciónak sem bemeneti, sem kimeneti
-paraméterei nincsenek. Helyes használatára egy példa:</p>
+    <p>
+      <span lang="hu">Egy 32 bites érték kiírása a terminálon
+      hexadecimális számrendszerben, 8 jegyen, bevezető nullákkal. A
+      szubrutin a számjegyek között _ (aláhúzás) karaktert használ
+      tagolásra. Az a-f értékek nagybetűvel íródnak ki.</span>
 
-<samp>
+      <span lang="en">Print a 32-bit value to the terminal in
+      hexadecimal, 8 digits, with leading zeros. The subroutine uses _
+      (underscore) characters between digits for delimitation. Values
+      ​​a-f are printed in uppercase.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="en">R0 value</span>
+      </li>
+      <li>
+	<span lang="hu">R1 két tagolás jel között kiíródó jegyek
+	száma</span>
+	<span lang="en">R1 number of characters to be printed between
+	two punctuation marks
+	</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_printd"><h4>0xf013 _pm_printd</h4></a>
+
+    <p>
+      <span lang="hu">Egy 32 bites, előjel nélküli (bináris) szám
+      kiírása a terminálra tízes számrendszerben, az értéktől függő
+      számú számjeggyel, bevezető nullák nélkül.</span>
+
+      <span lang="en">Print a 32-bit, unsigned (binary) number to the
+      terminal in decimal, with a number of digits depending on the
+      value and without leading zeros.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="en">R0 value</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_pes"><h4>0xf012 _pm_pes</h4></a>
+
+    <p>
+      <span lang="hu">Beágyazott, 0 végződésű karaktertömb kiírása a
+      terminálra. A sztringnek a program kódjában közvetlenül a
+      szubrutint meghívó CALL utasítás után kell lennie. A szubrutin a
+      sztring záró nullája utáni címre fog visszatérni. A funkciónak
+      sem bemeneti, sem kimeneti paraméterei nincsenek. Helyes
+      használatára egy példa:</span>
+
+      <span lang="en">Writes a nested, 0-terminated character array to
+      the terminal. The string must be in the program code immediately
+      after the CALL instruction that calls the subroutine. The
+      subroutine will return to the address after the trailing zero of
+      the string. The function has neither input nor output
+      parameters. Here is an example of its correct usage:</span>
+    </p>
+
+    <samp>
 _pm_pes  equ     0xf012
 
-        nop</p>
+        nop
         call    _pm_pes
         db      ”Hello World”
         mvzl    r0,12
         ...
-</samp>
+    </samp>
 
-<p>A sztringet a CALL-t követő DB direktívával kell létrehozni, kettős
-idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
+    <p>
+      <span lang="hu">A sztringet a CALL-t követő DB direktívával kell
+	létrehozni, kettős idézőjelek között, ami biztosítja a záró 0
+	érték elhelyezését.</span>
+
+      <span lang="en">The string must be created with the DB directive
+      following the CALL, enclosed in double quotes, which ensures the
+      placement of the trailing 0 value.</span>
+    </p>
 
 
 <a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
