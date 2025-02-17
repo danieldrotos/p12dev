@@ -1373,342 +1373,544 @@ _pm_pesf  = 0xf015
     </p>
 
 
-<a name="appendix"><h1>Melléklet</h1></a>
+    <a name="appendix"><h1>
+	<span lang="hu">Melléklet</span>
+	<span lang="en">Appendix</span>
+    </h1></a>
 
-<h2>Monitor szubrutinok abc sorrendben</h2>
+    <h2>
+      <span lang="hu">Monitor szubrutinok abc sorrendben</span>
+      <span lang="en">Monitor subroutines in alphabetical order</span>
+    </h2>
 
-<table border=1>
-<tr>
-<th>név</th>
-<th>cím</th>
-<th>paraméterek</th>
-<th>eredmény</th>
-</tr>
-<tr>
-  <td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
-<td>0xf016</td>
-<td>R0 ascii kód</td>
-<td>R4 szegmens kód</td>
-</tr>
-<tr>
-  <td><a href="#_pm_callin">_pm_callin</a></td>
-<td>0xf000</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_check_uart">_pm_check_uart</a></td>
-<td>0xf008</td>
-<td>-</td>
-<td>F.C van adat</td>
-</tr>
-<tr>
-  <td><a href="#_pm_cold_start">_pm_cold_start</a></td>
-<td>0xf005</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
-<td>0xf001</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_getchar">_pm_getchar</a></td>
-<td>0xf002</td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
-<td>0xf009</td>
-<td>R0 karakter</td>
-<td>R0 érték, F.C helyes</td>
-</tr>
-<tr>
-  <td><a href="#_pm_htoi">_pm_htoi</a></td>
-<td>0xf00b</td>
-<td>R0 sztring</td>
-<td>R1 érték, F.C helyes</td>
-</tr>
-<tr>
-  <td><a href="#_pm_itobcd">_pm_itobcd</a></td>
-<td>0xf004</td>
-<td>R0 érték</td>
-<td>R0 érték</td>
-</tr>
-<tr>
-  <td><a href="#_pm_pes">_pm_pes</a></td>
-<td>0xf012</td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_pesf">_pm_pesf</a></td>
-<td>0xf015</td>
-<td>R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
-<td>0xf011</td>
-<td>R0 érték, R1 tagolás</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printd">_pm_printd</a></td>
-<td>0xf013</td>
-<td>R0 érték</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printf">_pm_printf</a></td>
-<td>0xf014</td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_prints">_pm_prints</a></td>
-<td>0xf00f</td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printsnl">_pm_printsnl</a></td>
-<td>0xf010</td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_putchar">_pm_putchar</a></td>
-<td>0xf00e</td>
-<td>R0 karakter</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_read">_pm_read</a></td>
-<td>0xf00d</td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strchr">_pm_strchr</a></td>
-<td>0xf006</td>
-<td>R0 sztring, R1 karakter</td>
-<td>R1 cím, F.C van találat</td>
-</tr>
-<tr>
-  <td><a href="#_pm_streq">_pm_streq</a></td>
-<td>0xf007</td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strieq">_pm_strieq</a></td>
-<td>0xf00c</td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strlen">_pm_strlen</a></td>
-  <td>0xf019</td>
-  <td>R0 sztring</td>
-  <td>R4 karakterszám</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strpack">_pm_strpack</a></td>
-<td>0xf018</td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strunpack">_pm_strunpack</a></td>
-<td>0xf017</td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
-<td>0xf00a</td>
-<td>R0 érték</td>
-<td>R1 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_version">_pm_version</a></td>
-<td>0xf003</td>
-<td>-</td>
-<td>R0 verzió</td>
-</tr>
-</table>
+    <table border=1>
+      <tr>
+	<th><span lang="hu">név</span><span lang="en">name</span></th>
+	<th><span lang="hu">cím</span><span lang="en">address</span></th>
+	<th><span lang="hu">paraméterek</span><span lang="en">parameters</span></th>
+	<th><span lang="hu">eredmény</span><span lang="en">result</span></th>
+      </tr>
+      <tr>
+	<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
+	<td>0xf016</td>
+	<td>
+	  <span lang="hu">R0 ascii kód</span>
+	  <span lang="en">R0 ascii code</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 szegmens kód</span>
+	  <span lang="en">R4 segment code</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_callin">_pm_callin</a></td>
+	<td>0xf000</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
+	<td>0xf008</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">F.C van adat</span>
+	  <span lang="en">F.C data available</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
+	<td>0xf005</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
+	<td>0xf001</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_getchar">_pm_getchar</a></td>
+	<td>0xf002</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
+	<td>0xf009</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték, F.C helyes</span>
+	  <span lang="en">R0 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_htoi">_pm_htoi</a></td>
+	<td>0xf00b</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 érték, F.C helyes</span>
+	  <span lang="en">R1 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
+	<td>0xf004</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_pes">_pm_pes</a></td>
+	<td>0xf012</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_pesf">_pm_pesf</a></td>
+	<td>0xf015</td>
+	<td>
+	  <span lang="hu">R1..R12 adatok</span>
+	  <span lang="en">R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
+	<td>0xf011</td>
+	<td>
+	  <span lang="hu">R0 érték, R1 tagolás</span>
+	  <span lang="en">R0 value, R1 fregment</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printd">_pm_printd</a></td>
+	<td>0xf013</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printf">_pm_printf</a></td>
+	<td>0xf014</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_prints">_pm_prints</a></td>
+	<td>0xf00f</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
+	<td>0xf010</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_putchar">_pm_putchar</a></td>
+	<td>0xf00e</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_read">_pm_read</a></td>
+	<td>0xf00d</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strchr">_pm_strchr</a></td>
+	<td>0xf006</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 karakter</span>
+	  <span lang="en">R0 string, R1 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 cím, F.C van találat</span>
+	  <span lang="en">R1 address, F.C found</span>	  
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_streq">_pm_streq</a></td>
+	<td>0xf007</td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strieq">_pm_strieq</a></td>
+	<td>0xf00c</td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strlen">_pm_strlen</a></td>
+	<td>0xf019</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 karakterszám</span>
+	  <span lang="en">R4 length</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strpack">_pm_strpack</a></td>
+	<td>0xf018</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
+	<td>0xf017</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
+	<td>0xf00a</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 karakter</span>
+	  <span lang="en">R1 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_version">_pm_version</a></td>
+	<td>0xf003</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 verzió</span>
+	  <span lang="en">R0 version</span>
+	</td>
+      </tr>
+    </table>
 
 
-<h2>Monitor szubrutinok cím szerinti sorrendben</h2>
+    <h2>
+      <span lang="hu">Monitor szubrutinok cím szerinti sorrendben</span>
+      <span lang="en">Monitor subroutines in order of address</span>
+    </h2>
 
-<table border=1>
-<tr>
-<th>cím</th>
-<th>név</th>
-<th>paraméterek</th>
-<th>eredmény</th>
-</tr>
-<tr>
-<td>0xf000</td>
-<td><a href="#_pm_callin">_pm_callin</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf001</td>
-<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf002</td>
-<td><a href="#_pm_getchar">_pm_getchar</a></td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-<td>0xf003</td>
-<td><a href="#_pm_version">_pm_version</a></td>
-<td>-</td>
-<td>R0 verzió</td>
-</tr>
-<tr>
-<td>0xf004</td>
-<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
-<td>R0 érték</td>
-<td>R0 érték</td>
-</tr>
-<tr>
-<td>0xf005</td>
-<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf006</td>
-<td><a href="#_pm_strchr">_pm_strchr</a></td>
-<td>R0 sztring, R1 karakter</td>
-<td>R1 cím, F.C van találat</td>
-</tr>
-<tr>
-<td>0xf007</td>
-<td><a href="#_pm_streq">_pm_streq</a></td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-<td>0xf008</td>
-<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
-<td>-</td>
-<td>F.C van adat</td>
-</tr>
-<tr>
-<td>0xf009</td>
-<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
-<td>R0 karakter</td>
-<td>R0 érték, F.C helyes</td>
-</tr>
-<tr>
-<td>0xf00a</td>
-<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
-<td>R0 érték</td>
-<td>R1 karakter</td>
-</tr>
-<tr>
-<td>0xf00b</td>
-<td><a href="#_pm_htoi">_pm_htoi</a></td>
-<td>R0 sztring</td>
-<td>R1 érték, F.C helyes</td>
-</tr>
-<tr>
-<td>0xf00c</td>
-<td><a href="#_pm_strieq">_pm_strieq</a></td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-<td>0xf00d</td>
-<td><a href="#_pm_read">_pm_read</a></td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-<td>0xf00e</td>
-<td><a href="#_pm_putchar">_pm_putchar</a></td>
-<td>R0 karakter</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf00f</td>
-<td><a href="#_pm_prints">_pm_prints</a></td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf010</td>
-<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf011</td>
-<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
-<td>R0 érték, R1 tagolás</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf012</td>
-<td><a href="#_pm_pes">_pm_pes</a></td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf013</td>
-<td><a href="#_pm_printd">_pm_printd</a></td>
-<td>R0 érték</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf014</td>
-<td><a href="#_pm_printf">_pm_printf</a></td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf015</td>
-<td><a href="#_pm_pesf">_pm_pesf</a></td>
-<td>R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf016</td>
-<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
-<td>R0 ascii kód</td>
-<td>R4 szegmens kód</td>
-</tr>
-<tr>
-<td>0xf017</td>
-<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<td>0xf018</td>
-<td><a href="#_pm_strpack">_pm_strpack</a></td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strlen">_pm_strlen</a></td>
-  <td>0xf019</td>
-  <td>R0 sztring</td>
-  <td>R4 karakterszám</td>
-</tr>
-</table>
-
-<hr>
+    <table border=1>
+      <tr>
+	<th><span lang="hu">név</span><span lang="en">name</span></th>
+	<th><span lang="hu">cím</span><span lang="en">address</span></th>
+	<th><span lang="hu">paraméterek</span><span lang="en">parameters</span></th>
+	<th><span lang="hu">eredmény</span><span lang="en">result</span></th>
+      </tr>
+      <tr>
+	<td>0xf000</td>
+	<td><a href="#_pm_callin">_pm_callin</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf001</td>
+	<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf002</td>
+	<td><a href="#_pm_getchar">_pm_getchar</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf003</td>
+	<td><a href="#_pm_version">_pm_version</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 verzió</span>
+	  <span lang="hu">R0 version</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf004</td>
+	<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf005</td>
+	<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf006</td>
+	<td><a href="#_pm_strchr">_pm_strchr</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 karakter</span>
+	  <span lang="en">R0 string, R1 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 cím, F.C van találat</span>
+	  <span lang="en">R1 address, F.C found</span>	  
+	</td>
+      </tr>
+      <tr>
+	<td>0xf007</td>
+	<td><a href="#_pm_streq">_pm_streq</a></td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf008</td>
+	<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">F.C van adat</span>
+	  <span lang="en">F.C data available</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf009</td>
+	<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték, F.C helyes</span>
+	  <span lang="en">R0 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00a</td>
+	<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 karakter</span>
+	  <span lang="en">R1 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00b</td>
+	<td><a href="#_pm_htoi">_pm_htoi</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 érték, F.C helyes</span>
+	  <span lang="en">R1 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00c</td>
+	<td><a href="#_pm_strieq">_pm_strieq</a></td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00d</td>
+	<td><a href="#_pm_read">_pm_read</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00e</td>
+	<td><a href="#_pm_putchar">_pm_putchar</a></td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf00f</td>
+	<td><a href="#_pm_prints">_pm_prints</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf010</td>
+	<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf011</td>
+	<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
+	<td>
+	  <span lang="hu">R0 érték, R1 tagolás</span>
+	  <span lang="en">R0 value, R1 fregment</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf012</td>
+	<td><a href="#_pm_pes">_pm_pes</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf013</td>
+	<td><a href="#_pm_printd">_pm_printd</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf014</td>
+	<td><a href="#_pm_printf">_pm_printf</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf015</td>
+	<td><a href="#_pm_pesf">_pm_pesf</a></td>
+	<td>
+	  <span lang="hu">R1..R12 adatok</span>
+	  <span lang="en">R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf016</td>
+	<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
+	<td>
+	  <span lang="hu">R0 ascii kód</span>
+	  <span lang="en">R0 ascii code</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 szegmens kód</span>
+	  <span lang="en">R4 segment code</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf017</td>
+	<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf018</td>
+	<td><a href="#_pm_strpack">_pm_strpack</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf019</td>
+	<td><a href="#_pm_strlen">_pm_strlen</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 karakterszám</span>
+	  <span lang="en">R4 length</span>
+	</td>
+      </tr>
+    </table>
+    
+    <hr>
 </body>
 </html>
