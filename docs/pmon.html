@@ -1173,98 +1173,204 @@ R10 0000_AB45
       parameters. Here is an example of its correct usage:</span>
     </p>
 
+    
     <samp>
 _pm_pes  equ     0xf012
 
         nop
-        call    _pm_pes
+        ces     _pm_pes
         db      ”Hello World”
         mvzl    r0,12
         ...
     </samp>
 
     <p>
-      <span lang="hu">A sztringet a CALL-t követő DB direktívával kell
+      <span lang="hu"><a href="p2223.html#CALL">CALL</a> helyett
+      célszerű a <a href="p2223.html#CES">CES</a> utasítást használni,
+      amely a CALL-al megegyező módon működik, azonban lehetővé teszi
+      a szimulátor számára a visszatérési cím meghatározását, így a
+      next utasítás használható lesz a lépésenkénti futtatásra.</span>
+
+      <span lang="en">Instead of <a href="p2223.html#CALL">CALL</a> it
+      is advisable to use the <a href="p2223.html#CES">CES</a>
+      instruction, which works in the same way as CALL, but allows the
+      simulator to specify the return address, so the next command
+      can be used to step execution.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A sztringet a CALL/CES-t
+	követő <a href="asm.html#dir_dx">DB</a> direktívával kell
 	létrehozni, kettős idézőjelek között, ami biztosítja a záró 0
 	érték elhelyezését.</span>
 
-      <span lang="en">The string must be created with the DB directive
-      following the CALL, enclosed in double quotes, which ensures the
-      placement of the trailing 0 value.</span>
+      <span lang="en">The string must be created with
+      the <a href="asm.html#dir_dx">DB</a> directive following the
+      CALL/CES, enclosed in double quotes, which ensures the placement
+      of the trailing 0 value.</span>
     </p>
 
 
-<a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
+    <a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
 
-<p>Formázott szöveg kiírása a terminálra. A szövegben elhelyezhetők
-formázó utasítások (% jellel kezdve), amelyek egy adat megfelelő
-formátumban való kiírását eredményezik. Az adatokat az R1..R12
-regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
-  szubrutin, amennyi formázó utasítás van a szövegben.</p>
+    <p>
+      <span lang="hu">Formázott szöveg kiírása a terminálra. A
+      szövegben elhelyezhetők formázó utasítások (% jellel kezdve),
+      amelyek egy adat megfelelő formátumban való kiírását
+      eredményezik. Az adatokat az R1..R12 regiszterekben adhatjuk át,
+      amelyekből sorban annyit használ fel a szubrutin, amennyi
+      formázó utasítás van a szövegben.</span>
 
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>ek:</p>
+      <span lang="en">Print formatted text to the terminal. Formatting
+      instructions (starting with the % sign) can be placed in the
+      string, which result in the printing of a data in the
+      appropriate format. The data can be transferred in the registers
+      R1..R12, of which the subroutine uses as many of the formatting
+      instructions are in the text.</span>
+    </p>
 
-<ul>
-<li>R0 a formátum szöveg címe.</li>
-<li>R1-R12 a formázó utasításokhoz szükséges adatok értékei</li>
-</ul>
+    <p><span lang="hu">Bemenetek</span><span lang="en">Inputs</span>:</p>
 
-<p>A szubrutin által kezelt formázó utasítások és paraméterek
-  ismertetését lásd a <a href="lib_out.html#printf">printf könyvtári
-  függvény</a> leírásánál.
+    <ul>
+      <li>
+	<span lang="hu">R0 a formátum szöveg címe.</span>
+	<span lang="en">R0 address of the format string.</span>
+      </li>
+      <li>
+	<span lang="hu">R1-R12 a formázó utasításokhoz szükséges
+	adatok értékei</span>
+	<span lang="en">R1-R12 are the values ​​of the data required for
+	formatting instructions</span>
+      </li>
+    </ul>
+
+    <p>
+      <span lang="hu">A szubrutin által kezelt formázó utasítások és
+      paraméterek ismertetését lásd
+      a <a href="lib_out.html#printf">printf könyvtári függvény</a>
+      leírásánál.</span>
+
+      <span lang="en">For a description of the formatting instructions
+      and parameters handled by the subroutine, see the description of
+      the <a href="lib_out.html#printf">printf library
+      function</a>.</span>
+    </p>
 
 
-<a name="_pm_pesf"><h4>0xf015 _pm_pesf</h4></a>
+    <a name="_pm_pesf"><h4>0xf015 _pm_pesf</h4></a>
 
-<p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
-formázó szövegnek közvetlenül a CALL utasítás után kell lennie, a
-további paraméterek a printf szubrutinéval egyeznek (ez a funkció az
-R0 regiszterben nem vár bemenő adatot).</p>
+    <p>
+      <span lang="hu">Beágyazott, 0 végződésű formázó szöveg kiírása a
+      terminálra. A formázó szövegnek közvetlenül a CALL/CES utasítás
+      után kell lennie, a további paraméterek
+      a <a href="#_pm_printf">printf</a> szubrutinéval egyeznek (ez a
+      funkció az R0 regiszterben nem vár bemenő adatot).</span>
 
-<samp>
+      <span lang="en">Prints embedded, 0-terminated formatting string
+      to the terminal. The formatting string must be immediately after
+      the CALL/CES instruction, the additional parameters are the same
+      as those of the <a href="#_pm_printf">printf</a> subroutine
+      (this function does not expect input data in the R0
+      register).</span>
+    </p>
+
+    <samp>
 UART_CPB = 0xff44
 _pm_pesf  = 0xf015
 
          ld      r1,UART_CPB
          mov     r2,r1
-         call    _pm_pesf
-         db      ”Uart cpb= %d (0x%x)\n”
+         ces     _pm_pesf
+         .db      ”Uart cpb= %d (0x%x)\n”
          nop
          ...
-</samp>
+    </samp>
+
+    
+    <a name="fn_other"><h3>
+	<span lang="hu">Egyéb függvények</span>
+	<span lang="en">Miscellaneous functions</span>
+    </h3></a>
 
 
-<a name="fn_other"><h3>Egyéb függvények</h3></a>
+    <a name="_pm_itobcd"><h4>0xf004 _pm_itobcd</h4></a>
+
+    <p>
+      <span lang="hu">Előjel nélküli bináris kódolású szám átalakítása
+      BCD kódolásúra. Az R0 regiszterben megadott bemeneti adat
+      maximum 99999999 lehet, az eredmény az R0 regiszterben
+      keletkezik.</span>
+
+      <span lang="en">Converting an unsigned binary number to BCD. The
+      input data specified in the R0 register can be a maximum of
+      99999999, the result is generated in the R0 register .</span>
+    </p>
 
 
-<a name="_pm_itobcd"><h4>0xf004 _pm_itobcd</h4></a>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-<p>Előjel nélküli bináris kódolású szám átalakítása BCD kódolásúra. Az
-R0 regiszterben megadott bemeneti adat maximum 99999999 lehet, az
-eredmény az R0 regiszterben keletkezik.</p>
+    <ul>
+      <li>
+	<span lang="hu">R0 bináris számérték</span>
+	<span lang="en">R0 binary coded value</span>
+      </li>
+    </ul>
 
+    <p><span lang="hu">Kimenet</span><span lang="en">Output</span>:</p>
 
-<a name="_pm_ascii2seg"><h4>0xf016 _pm_ascii2seg</h4></a>
+    <ul>
+      <li>
+	<span lang="hu">R0 bcd kód</span>
+	<span lang="en">R0 bcd coded value</span>
+      </li>
+    </ul>
 
-<p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
-  karakter kijelzőn való megjelenítéséhez használhatunk.</p>
+    <a name="_pm_ascii2seg"><h4>0xf016 _pm_ascii2seg</h4></a>
 
-<p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+    <p>
+      <span lang="hu">ASCII kód átalakítása hét szegmenses kódra,
+	amelyet a megadott
+	karakter <a href="computer_v2.html#display">kijelzőn</a> való
+	megjelenítéséhez használhatunk.</span>
 
-<ul>
-<li>R0 ASCII kód</li>
-</ul>
+      <span lang="en">Convert ASCII code to seven-segment code, which
+      can be used to display the specified character on the
+      <a href="computer_v2.html#display">display</a>.</span>
+    </p>
 
-<p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-<ul>
-<li>R4 hét szegmenses kód</li>
-</ul>
+    <ul>
+      <li>
+	<span lang="hu">R0 ASCII kód</span>
+	<span lang="en">R0 ASCII code</span>
+      </li>
+    </ul>
 
-<p>Megjegyezzük, hogy a kijelzőn nem minden karakter jeleníthető meg,
-ezek esetében a kimenet 0 lesz. Néhány esetben a kis- és a
-nagybetűkhöz ugyanazt az eredményt kapjuk (pl e, E), ha csak a
-karakter egyik formája jeleníthető meg.</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R4 hét szegmenses kód</span>
+	<span lang="en">R4 seven-segment code</span>
+      </li>
+    </ul>
+
+    <p>
+      <span lang="hu">Megjegyezzük, hogy a kijelzőn nem minden
+      karakter jeleníthető meg, ezek esetében a kimenet 0 lesz. Néhány
+      esetben a kis- és a nagybetűkhöz ugyanazt az eredményt kapjuk
+      (pl e, E), ha csak a karakter egyik formája jeleníthető meg,
+      lásd a <a href="lib_bsp.html#dsp_ascii2seg">dsp_ascii2seg</a>
+      függvény leírását.</span>
+
+      <span lang="en">Note that not all characters can be displayed on
+      the display, in which case the output will be 0. In some cases,
+      we get the same result for both lowercase and uppercase letters
+      (e.g. e, E), if only one form of the character can be displayed,
+      see the <a href="lib_bsp.html#dsp_ascii2seg">dsp_ascii2seg</a>
+      function description.</span>
+    </p>
 
 
 <a name="appendix"><h1>Melléklet</h1></a>
