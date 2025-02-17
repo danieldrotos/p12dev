@@ -105,11 +105,21 @@
       </li>
     </ul>
 
-    <p>Decimális szám leírását tartalmazó sztring átalakítása
-    számmá. A számnak pozitívnak kell lennie, előjel karaktert nem
-    tartalmazhat. Ha a sztring nem tartalmaz hibás, érvénytelen
-    karaktert, akkor a flag regiszter C bitje 1 lesz. Ellenkező
-    esetben a konverzió befejeződik a hibás karakternél.</p>
+    <p>
+      <span lang="hu">Decimális szám leírását tartalmazó sztring
+      átalakítása számmá. A számnak pozitívnak kell lennie, előjel
+      karaktert nem tartalmazhat. Ha a sztring nem tartalmaz hibás,
+      érvénytelen karaktert, akkor a flag regiszter C bitje 1
+      lesz. Ellenkező esetben a konverzió befejeződik a hibás
+      karakternél.</span>
+
+      <span lang="en">Convert a string containing a description of a
+      decimal number to a number. The number must be positive, and
+      must not contain a sign character. If the string does not
+      contain any invalid characters, then bit C of the flag register
+      will be set to 1. Otherwise, the conversion will end at the
+      invalid character.</span>
+    </p>
 
 
     <a name="htoi"><h3>htoi</h3></a>
@@ -127,12 +137,21 @@
       </li>
     </ul>
 
-    <p>Hexadecimális szám leírását tartalmazó sztring átalakítása
-      számmá. A számnak pozitívnak kell lennie, előjel karaktert nem
-      tartalmazhat. Az a-f számjegyek kis és nagybetűk is lehetnek. Ha
-      a sztring nem tartalmaz hibás, érvénytelen karaktert, akkor a
-      flag regiszter C bitje 1 lesz. Ellenkező esetben a konverzió
-      befejeződik a hibás karakternél.</p>
+    <p>
+      <span lang="hu">Hexadecimális szám leírását tartalmazó sztring
+      átalakítása számmá. A számnak pozitívnak kell lennie, előjel
+      karaktert nem tartalmazhat. Az a-f számjegyek kis és nagybetűk
+      is lehetnek. Ha a sztring nem tartalmaz hibás, érvénytelen
+      karaktert, akkor a flag regiszter C bitje 1 lesz. Ellenkező
+      esetben a konverzió befejeződik a hibás karakternél.</span>
+
+      <span lang="en">Convert a string containing a hexadecimal number
+      to a number. The number must be positive and cannot contain a
+      sign character. The digits a-f can be either upper or lower
+      case. If the string does not contain any invalid characters, bit
+      C of the flag register will be set to 1. Otherwise, the
+      conversion will end at the invalid character.</span>
+    </p>
 
     
     <a name="str_chr"><h3>str_chr</h3></a>
@@ -150,12 +169,24 @@
       </li>
     </ul>
 
-    <p>Az R1 regiszterben lévő karakter keresése az R0 címen kezdődő
-    sztringben, a kis- és a nagybetűk különbözőnek számítanak. Ha a
-    keresett karakter megtalálható a szövegben, akkor az R4 a karakter
-    tartalmazó szó címe lesz, az R5 pedig a karakter indexe a
-    szóban. Ha nincs találat, az R4 és R5 0 lesz. A találatot a flag
-    regiszter C bitjének 1 értéke jelzi.</p>
+    <p>
+      <span lang="hu">Az R1 regiszterben lévő karakter keresése az R0
+      címen kezdődő sztringben, a kis- és a nagybetűk különbözőnek
+      számítanak. Ha a keresett karakter megtalálható a szövegben,
+      akkor az R4 a karakter tartalmazó szó címe lesz, az R5 pedig a
+      karakter indexe a szóban. Ha nincs találat, az R4 és R5 0
+      lesz. A találatot a flag regiszter C bitjének 1 értéke
+      jelzi.</span>
+
+      <span lang="en">Search for the character in register R1 in the
+      string starting at address which is in R0, uppercase and
+      lowercase letters are considered to be different. If the
+      searched character is found in the string, then R4 will be the
+      address of the word containing the character, and R5 will be the
+      index of the character in the memory word. If there is no match,
+      R4 and R5 will be 0. A match is indicated by the value of 1 in
+      bit C of the flag register.</span>
+    </p>
 
     
     <a name="str_eq"><h3>str_eq</h3></a>
@@ -173,9 +204,15 @@
       </li>
     </ul>
 
-    <p>Két sztring összehasonlítása, a kis- és a nagybetűk
-    különbözőnek számítanak. Egyezés esetén a flag regiszter C bitje 1
-    lesz.</p>
+    <p>
+      <span lang="hu">Két sztring összehasonlítása, a kis- és a
+      nagybetűk különbözőnek számítanak. Egyezés esetén a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Compare two strings, lowercase and uppercase
+      letters are considered different. If there is a match, bit C of
+      the flag register will be set to 1.</span>
+    </p>
 
     
     <a name="str_ieq"><h3>str_ieq</h3></a>
@@ -193,9 +230,15 @@
       </li>
     </ul>
 
-    <p>Két sztring összehasonlítása, a kis- és a nagybetűk
-    megegyezőnek számítanak. Egyezés esetén a flag regiszter C bitje 1
-    lesz.</p>
+    <p>
+      <span lang="hu">Két sztring összehasonlítása, a kis- és a
+      nagybetűk megegyezőnek számítanak. Egyezés esetén a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Compare two strings, lowercase and uppercase
+      letters are considered the same. If there is a match, bit C of
+      the flag register will be set to 1.</span>
+    </p>
 
     
     <a name="str_len"><h3>str_len</h3></a>
@@ -213,8 +256,13 @@
       </li>
     </ul>
 
-    <p>String hosszának meghatározása. A függvény a sztringben lévő
-    karakterek számát adja.</p>
+    <p>
+      <span lang="hu">String hosszának meghatározása. A függvény a
+	sztringben lévő karakterek számát adja.</span>
+
+      <span lang="en">Determines the length of a string. The function
+      returns the number of characters in the string.</span>
+    </p>
 
     
     <a name="str_size"><h3>str_size</h3></a>
@@ -232,8 +280,15 @@
       </li>
     </ul>
 
-    <p>A függvény egy sztring által elfoglalt memória hely méretét
-    adja meg, beleértve a sztringet záró 0 értékű szót is.</p>
+    <p>
+      <span lang="hu">A függvény egy sztring által elfoglalt memória
+	hely méretét adja meg, beleértve a sztringet záró 0 értékű
+	szót is.</span>
+
+      <span lang="en">The function returns the size of the memory
+      space occupied by a string, including the 0-valued word that
+      terminates the string.</span>
+    </p>
 
 
     <a name="str_getchar"><h3>str_getchar</h3></a>
