@@ -138,9 +138,15 @@
       </li>
     </ul>
 
-    <p>Elmenti a kurzor aktuális pozícióját. Az elmentett pozícióba a
+    <p>
+      <span lang="hu">Elmenti a kurzor aktuális pozícióját. Az elmentett pozícióba a
       <a href="#tu_restore_cursor>">tu_restore_cursor</a> függvénnyel
-      lehet a kurzort vissza mozgatni.</p>
+      lehet a kurzort vissza mozgatni.</span>
+
+      <span lang="en">Saves the current cursor position. The cursor
+      can be moved back to the saved position using the
+      <a href="#tu_restore_cursor>">tu_restore_cursor</a> function.</span>
+    </p>
 
     
     <a name="tu_restore_cursor"><h3>tu_restore_cursor</h3></a>
@@ -158,9 +164,14 @@
       </li>
     </ul>
 
-    <p>A kurzort mozgatja arra a pozícióra, melyet előzőleg a
+    <p>
+      <span lang="hu">A kurzort mozgatja arra a pozícióra, melyet előzőleg a
       <a href="#tu_save_cursor">tu_save_cursor</a> függvény
-      segítségével elmentettünk.</p>
+      segítségével elmentettünk.</span>
+
+      <span lang="en">Moves the cursor to the position previously saved using the
+      <a href="#tu_save_cursor">tu_save_cursor</a> function.</span>
+    </p>
 
 
     <a name="tu_hide"><h3>tu_hide</h3></a>
@@ -178,7 +189,11 @@
       </li>
     </ul>
 
-    <p>A kurzor megjelenítését kikapcsolja.</p>
+    <p>
+      <span lang="hu">A kurzor megjelenítését kikapcsolja.</span>
+
+      <span lang="en">Turns off the cursor display.</span>
+    </p>
 
 
     <a name="tu_show"><h3>tu_show</h3></a>
@@ -196,7 +211,11 @@
       </li>
     </ul>
 
-    <p>A kurzor megjelenítését bekapcsolja.</p>
+    <p>
+      <span lang="hu">A kurzor megjelenítését bekapcsolja.</span>
+
+      <span lang="en">Turns on the cursor display.</span>
+    </p>
 
 
     <a name="tu_clear_screen"><h3>tu_clear_screen</h3></a>
@@ -214,8 +233,15 @@
       </li>
     </ul>
 
-    <p>Letörli a képenyőt, a képernyő az aktuális háttérszínű lesz. A
-    kurzort a bal felső sarokba mozgatja.</p>
+    <p>
+      <span lang="hu">Letörli a képenyőt, a képernyő az aktuális
+	háttérszínű lesz. A kurzort a bal felső sarokba
+	mozgatja.</span>
+
+      <span lang="en">Clears the screen, the screen will be filled
+      with the current background color. Moves the cursor to the upper
+      left corner.</span>
+    </p>
 
     
     <a name="tu_clear_char"><h3>tu_clear_char</h3></a>
@@ -233,8 +259,15 @@
       </li>
     </ul>
 
-    <p>A kurzor aktuális pozíciójára szöközt ír, vagyis az ott lévő
-    karakterhelyet törli. A kurzor pozíciója nem változik.</p>
+    <p>
+      <span lang="hu">A kurzor aktuális pozíciójára szöközt ír, vagyis
+	az ott lévő karakterhelyet törli. A kurzor pozíciója nem
+	változik.</span>
+
+      <span lang="en">Writes a space at the current cursor position,
+      i.e. deletes the character there. The cursor position does not
+      change.</span>
+    </p>
 
     
     <a name="tu_go_left"><h3>tu_go_left</h3></a>
@@ -252,8 +285,13 @@
       </li>
     </ul>
 
-    <p>A kurzort az R0-ban megadott számú karakter hellyel balra
-    mozgatja.</p>
+    <p>
+      <span lang="hu">A kurzort az R0-ban megadott számú karakter
+	hellyel balra mozgatja.</span>
+
+      <span lang="en">Moves the cursor to the left by the number of
+      characters specified in R0.</span>
+    </p>
 
 
     <a name="tu_go_right"><h3>tu_right</h3></a>
@@ -271,8 +309,13 @@
       </li>
     </ul>
 
-    <p>A kurzort az R0-ban megadott számú karakter hellyel jobbra
-    mozgatja.</p>
+    <p>
+      <span lang="hu">A kurzort az R0-ban megadott számú karakter
+	hellyel jobbra mozgatja.</span>
+
+      <span lang="en">Moves the cursor to the right the number of
+      characters specified in R0.</span>
+    </p>
 
 
     <a name="tu_go_up"><h3>tu_go_up</h3></a>
@@ -290,8 +333,13 @@
       </li>
     </ul>
 
-    <p>A kurzort az R0-ban megadott számú karakter hellyel felfelé
-    mozgatja.</p>
+    <p>
+      <span lang="hu">A kurzort az R0-ban megadott számú karakter hellyel felfelé
+      mozgatja.</span>
+
+      <span lang="en">Moves the cursor up the number of characters
+      specified in R0.</span>
+    </p>
 
 
     <a name="tu_go_down"><h3>tu_go_down</h3></a>
@@ -309,8 +357,13 @@
       </li>
     </ul>
 
-    <p>A kurzort az R0-ban megadott számú karakter hellyel lefelé
-    mozgatja.</p>
+    <p>
+      <span lang="hu">A kurzort az R0-ban megadott számú karakter
+	hellyel lefelé mozgatja.</span>
+
+      <span lang="en">Moves the cursor down the number of characters
+      specified in R0.</span>
+    </p>
 
 
     <a name="tu_go"><h3>tu_go</h3></a>
@@ -328,8 +381,14 @@
       </li>
     </ul>
 
-    <p>A kurzort a paraméterekben megadott pozícióra mozgatja. A bal
-    felső sarok koordinátája: x=1, y=1.</p>
+    <p>
+      <span lang="hu">A kurzort a paraméterekben megadott pozícióra
+	mozgatja. A bal felső sarok koordinátája: x=1, y=1.</span>
+
+      <span lang="en">Moves the cursor to the position specified in
+      the parameters. The coordinates of the upper left corner are:
+      x=1, y=1.</span>
+    </p>
 
 
     <a name="tu_color"><h3>tu_color</h3></a>
@@ -347,20 +406,43 @@
       </li>
     </ul>
 
-    <p>Beállítja az előtér és a háttér színt, amelyek a következő
-    kiírástól kezdve jutnak érvényre. A 0-7 közötti értékek a három
-    alap szín (0.bit=piros, 1.bit=zöld, 2.bit=kék) keveréséből
-    adódnak, a 8-15 közötti értékek ugyanezeket a színeket
-    eredményezik "nagy intenzitással". A megjelenített színek az
-    alkalmazott terminaál programtól függnek. Egyes programok esetén az
-    alkalmazott szín profil konfigurálható is lehet.</p>
+    <p>
+      <span lang="hu">Beállítja az előtér és a háttér színt, amelyek a
+      következő kiírástól kezdve jutnak érvényre. A 0-7 közötti
+      értékek a három alap szín (0.bit=piros, 1.bit=zöld, 2.bit=kék)
+      keveréséből adódnak, a 8-15 közötti értékek ugyanezeket a
+      színeket eredményezik "nagy intenzitással". A megjelenített
+      színek az alkalmazott terminaál programtól függnek. Egyes
+      programok esetén az alkalmazott szín profil konfigurálható is
+      lehet.</span>
 
-    <p>Ha az előtér vagy a háttér szín paraméter negatív, akkor az a
-      szín nem módosul.</p>
+      <span lang="en">Sets the foreground and background colors, which
+      will take effect from the next printout. Values ​​between 0-7 are
+      a mixture of the three primary colors (0.bit=red, 1.bit=green,
+      2.bit=blue), while values ​​between 8-15 produce the same colors
+      with "high intensity". The colors displayed depend on the
+      terminal program used. In some programs, the color profile 
+      may be configurable.</span>
+    </p>
 
-    <p>Az alábbi ábrán láthatók a kiválasztható háttér és előtér szín
-      kombinációk. Az első hexadecimális számjegy a háttér színe, a
-      második az előtér színe.</p>
+    <p>
+      <span lang="hu">Ha az előtér vagy a háttér szín paraméter
+	negatív, akkor az a szín nem módosul.</span>
+
+      <span lang="en">If the foreground or background color parameter
+      is negative, that color will not be changed.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az alábbi ábrán láthatók a kiválasztható háttér
+      és előtér szín kombinációk. Az első hexadecimális számjegy a
+      háttér színe, a második az előtér színe.</span>
+
+      <span lang="en">The following figure shows the available
+      background and foreground color combinations. The first
+      hexadecimal digit is the background color, the second is the
+      foreground color.</span>
+    </p>
 
     <p><img src="colors.png" border="0"></p>
     
@@ -381,9 +463,17 @@
       </li>
     </ul>
 
-    <p>Az előtér (betű) szín beállítása a következő kiírás számára. A
-      szín paramétert a <a href="#tu_color">tu_color</a> függvénynél
-      ismertetett módon kell megadni.</p>
+    <p>
+      <span lang="hu">Az előtér (betű) szín beállítása a következő
+      kiírás számára. A szín paramétert
+      a <a href="#tu_color">tu_color</a> függvénynél ismertetett módon
+      kell megadni.</span>
+
+      <span lang="en">Sets the foreground (font) color for the
+      following outputs. The color parameter must be specified as
+      described for the <a href="#tu_color">tu_color</a>
+      function.</span>
+    </p>
 
 
     <a name="tu_bg"><h3>tu_bg</h3></a>
@@ -401,9 +491,15 @@
       </li>
     </ul>
 
-    <p>A háttér szín beállítása a következő kiírás számára. A szín
-      paramétert a <a href="#tu_color">tu_color</a> függvénynél
-      ismertetett módon kell megadni.</p>
+    <p>
+      <span lang="hu">A háttér szín beállítása a következő kiírás
+      számára. A szín paramétert a <a href="#tu_color">tu_color</a>
+      függvénynél ismertetett módon kell megadni.</span>
+
+      <span lang="en">Sets the background color for the following
+      printouts. The color parameter must be specified as described
+      for the <a href="#tu_color">tu_color</a> function.</span>
+    </p>
 
 
     <a name="tu_wob"><h3>tu_wob</h3></a>
@@ -421,8 +517,13 @@
       </li>
     </ul>
 
-    <p>Fekete alapon fehér szín beállítása a következő kiírás
-    számára.</p>
+    <p>
+      <span lang="hu">Fekete alapon fehér szín beállítása a következő
+	kiírás számára.</span>
+
+      <span lang="en">Set white on black background for the following
+      printout.</span>
+    </p>
 
     
     <a name="tu_bow"><h3>tu_bow</h3></a>
@@ -440,8 +541,13 @@
       </li>
     </ul>
 
-    <p>Fehér alapon fekete szín beállítása a következő kiírás
-    számára.</p>
+    <p>
+      <span lang="hu">Fehér alapon fekete szín beállítása a következő
+	kiírás számára.</span>
+
+      <span lang="en">Set black on white background for the following
+      printout.</span>
+    </p>
 
 
     <a name="tu_gob"><h3>tu_gob</h3></a>
@@ -459,8 +565,13 @@
       </li>
     </ul>
 
-    <p>Fekete alapon zöld szín beállítása a következő kiírás
-    számára.</p>
+    <p>
+      <span lang="hu">Fekete alapon zöld szín beállítása a következő
+	kiírás számára.</span>
+
+      <span lang="en">Set green on black background for the following
+      statement.</span>
+    </p>
 
 
 <!--
