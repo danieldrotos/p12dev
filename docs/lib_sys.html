@@ -138,9 +138,17 @@
       </li>
     </ul>
 
-    <p>Visszatérés a felhasználói programból a monitorhoz. A függvény
-    nem tér vissza, azonban a program a <tt>go</tt> monitor paranccsal
-    folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Visszatérés a felhasználói programból a
+      monitorhoz. A függvény nem tér vissza, azonban a program
+      a <tt>go</tt> monitor paranccsal folytatható a hívás utáni
+      utasítástól.</span>
+
+      <span lang="en">Return from the user program to the monitor. The
+      function does not return, but the program can be continued from
+      the statement following the call with the <tt>go</tt> monitor
+      command.</span>
+    </p>
     
 
     <a name="monitor_by_uart"><h3>monitor_by_uart</h3></a>
@@ -158,10 +166,20 @@
       </li>
     </ul>
 
-    <p>Feltételes visszatérés a felhasználói programból a monitorhoz,
-    ha a soros vonalon van beolbasható karakter. A függvény nem tér
-    vissza, azonban a program a <tt>go</tt> monitor paranccsal
-    folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Feltételes visszatérés a felhasználói programból
+      a monitorhoz, ha a soros vonalon van beolbasható karakter. A
+      függvény nem tér vissza, azonban a program
+      a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
+      folytatható a hívás utáni utasítástól.</span>
+
+      <span lang="en">Conditional return from the user program to the
+      monitor if there is a readable character on the serial line. The
+      function does not return, but the program can be continued from
+      the statement after the call with
+      the <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor
+      command.</span>
+    </p>
 
     
     <a name="monitor_by_button"><h3>monitor_by_button</h3></a>
@@ -179,10 +197,20 @@
       </li>
     </ul>
 
-    <p>Feltételes visszatérés a felhasználói programból a monitorhoz,
-      ha az R0-ban megadott sorszámú nyomógmb megnyomódik. A függvény
-      nem tér vissza, azonban a program a <tt>go</tt> monitor paranccsal
-      folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Feltételes visszatérés a felhasználói programból
+      a monitorhoz, ha az R0-ban megadott sorszámú nyomógmb
+      megnyomódik. A függvény nem tér vissza, azonban a program
+      a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
+      folytatható a hívás utáni utasítástól.</span>
+
+      <span lang="en">Conditional return from the user program to the
+      monitor if the pushbutton with the number specified in R0 is
+      pressed. The function does not return, but the program can be
+      continued from the instruction following the call with the
+      monitor command
+      <a href="pmon.html#cmd_go"><tt>go</tt></a>.</span>
+    </p>
 
     
     <a name="monitor_version"><h3>monitor_version</h3></a>
@@ -200,8 +228,15 @@
       </li>
     </ul>
 
-    <p>A pmon monitor program verziószámát adja meg. Az eredmény
-    1. bájtja a fő verziószám, a 0. bájt pedig az al verziószám.</p>
+    <p>
+      <span lang="hu">A pmon monitor program verziószámát adja meg. Az
+	eredmény 1. bájtja a fő verziószám, a 0. bájt pedig az al
+	verziószám.</span>
+
+      <span lang="en">Returns the version number of the pmon monitor
+      program. The 1st byte of the result is the major version number,
+      and the 0th byte is the minor version number.</span>
+    </p>
 
     
     <hr>
