@@ -5,6 +5,7 @@
 	;; 	    monitor_by_uart   ()
 	;;          monitor_by_button (R0:btn)
 	;; R4:ver   monitor_version   ()
+	;;          exit              ()
 	;;
 	
 	
@@ -63,5 +64,8 @@ monitor_version::
 	mov	r4,r0
 	pop	r0
 	pop	pc
+
+exit::
+	jmp	_pm_cold_start
 	
 	.ends

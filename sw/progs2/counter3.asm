@@ -53,6 +53,9 @@ cyc:
 	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,0			; number of checked button
 	call	monitor_by_button
+	mvzl	r0,1
+	call	btn_posedge
+	C call	exit
 	st	r10,GPIO.PORTA
 	st	r10,GPIO.PORTB
 	mov	r1,r10

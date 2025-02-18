@@ -9,7 +9,7 @@ fi
 function tt()
 {
     sleep 1
-    xfce4-terminal -T "$1" -x telnet localhost "$2" &
+    xfce4-terminal -T "$1" -x telnet localhost "$2" 2>/dev/null &
 }
 
 i=0
