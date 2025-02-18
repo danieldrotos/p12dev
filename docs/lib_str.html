@@ -294,7 +294,7 @@
     <a name="str_getchar"><h3>str_getchar</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string, R1=index</span>
 	<span lang="hu">R0=sztring, R1=index</span>
@@ -306,15 +306,24 @@
       </li>
     </ul>
 
-    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
-    karakterét adja, az első karakter sorszáma 0. Ha a sorszám
-    nagyobb, mint a sztring hossza, akkor 0 lesz az eredmény.</p>
+    <p>
+      <span lang="hu">A függvény normál/pakolt formájú sztringnek egy
+      adott sorszámú karakterét adja, az első karakter sorszáma 0. Ha
+      a sorszám nagyobb, mint a sztring hossza, akkor 0 lesz az
+      eredmény.</span>
+
+      <span lang="en">The function returns a character with a given
+      sequence number of a string in normal/packed form, the sequence
+      number of the first character is 0. If the sequence number is
+      greater than the length of the string, then the result will be
+      0.</span>
+    </p>
 
     
     <a name="str_setchar"><h3>str_setchar</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string, R1=index, R2=char</span>
 	<span lang="hu">R0=sztring, R1=index, R2=karakter</span>
@@ -326,17 +335,24 @@
       </li>
     </ul>
 
-    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
-    (első karakter sorszáma 0) karakterét lecseréli a megadott
-    karakterre. Ha a sorszám nagyobb a sztring hosszánál, akkor nem
-    történik módosítás.
+    <p>
+      <span lang="hu">A függvény normál/pakolt formájú sztringnek egy
+      adott sorszámú (első karakter sorszáma 0) karakterét lecseréli a
+      megadott karakterre. Ha a sorszám nagyobb a sztring hosszánál,
+      akkor nem történik módosítás.</span>
+
+      <span lang="en">The function replaces a character with a given
+      sequence number (the first character has sequence number 0) of a
+      normal/packed string with the specified character. If the
+      sequence number is greater than the length of the string, then
+      no modification is made.</span>
     </p>
 
     
     <a name="str_packed"><h3>str_packed</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string</span>
 	<span lang="hu">R0=sztring</span>
@@ -348,16 +364,22 @@
       </li>
     </ul>
 
-    <p>A függvény megvizsgálja, hogy a paraméterül megadott helyen
-    kezdődő sztring pakolt formátumú-e, ha igen, a C flag 1 lesz. Az
-    üres sztring nem pakolt formátumú.
+    <p>
+      <span lang="hu">A függvény megvizsgálja, hogy a paraméterül
+      megadott helyen kezdődő sztring pakolt formátumú-e, ha igen, a C
+      flag 1 lesz. Az üres sztring nem pakolt formátumú.</span>
+
+      <span lang="en">The function checks whether the string starting
+      at the position specified as the parameter is in packed format,
+      if so, the C flag will be 1. The empty string is not
+      packed.</span>
     </p>
 
     
     <a name="str_unpack"><h3>str_unpack</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=input string, R1=output string</span>
 	<span lang="hu">R0=bemeneti sztring, R1=kimeneti sztring</span>
@@ -368,16 +390,21 @@
       </li>
     </ul>
 
-    <p>A függvény átalakít egy normál/pakolt sztringet normál
-    formára. A kimeneti buffer méretét nem ellenőrzni, a megfelelő
-    tárterületről a hívás előtt kell gondoskodni.
+    <p>
+      <span lang="hu">A függvény átalakít egy normál/pakolt sztringet
+      normál formára. A kimeneti buffer méretét nem ellenőrzni, a
+      megfelelő tárterületről a hívás előtt kell gondoskodni.</span>
+
+      <span lang="en">The function converts a normal/packed string to
+      normal form. The size of the output buffer is not checked,
+      adequate storage space must be provided before the call.</span>
     </p>
 
     
     <a name="str_pack"><h3>str_pack</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=input string, R1=output string</span>
 	<span lang="hu">R0=bemeneti sztring, R1=kimeneti sztring</span>
@@ -388,9 +415,14 @@
       </li>
     </ul>
 
-    <p>A függvény átalakít egy normál/pakolt sztringet pakolt
-    formára. A kimeneti buffer méretét nem ellenőrzni, a megfelelő
-    tárterületről a hívás előtt kell gondoskodni.
+    <p>
+      <span lang="hu">A függvény átalakít egy normál/pakolt sztringet
+      pakolt formára. A kimeneti buffer méretét nem ellenőrzni, a
+      megfelelő tárterületről a hívás előtt kell gondoskodni.</span>
+
+      <span lang="en">The function converts a normal/packed string to
+      packed form. The size of the output buffer is not checked,
+      adequate storage space must be provided before the call.</span>
     </p>
 
     
