@@ -88,117 +88,225 @@
     <a href="computer_v1.html?lang=en">EN</a>
   </p>
 
-<h1>Mikroszámítógép v1</h1>
+  <h1>
+    <span lang="hu">Mikroszámítógép v1</span>
+    <span lang="en">Microcomputer v1</span>
+  </h1>
     
-  <p>A mikroprocesszort kiegészítve néhány alkatrésszel,
-    mikroszámítógépet alakítunk ki.</p>
+    <p>
+      <span lang="hu">A mikroprocesszort kiegészítve néhány alkatrésszel,
+	mikroszámítógépet alakítunk ki.</span>
 
-  <p>A processzort memóriával, GPIO áramkörökkel, az eszközöket
-    összekötő buszt pedig címdekóderrel egészítjük ki.</p>
+      <span lang="en">By adding a few components to the
+      microprocessor, we create a microcomputer.</span>
+    </p>
 
-  <h1>Memória</h1>
+    <p>
+      <span lang="hu">A processzort memóriával, GPIO áramkörökkel, az
+	eszközöket összekötő buszt pedig címdekóderrel egészítjük
+	ki.</span>
 
-  <p>A processzor memória illesztőjére (MA, MDI, MDO, MWE)
-    kapcsolódó memória alkatrész fogja tárolni a futtatott programot,
-    valamint a feldolgozott adatokat. A memóriát az FPGA-n alakítjuk
-    ki, a lefordított program kódját pedig beillesztjük az
-    alkatrészbe. Ez azt jelenti, hogy a program megváltoztatásakor a
-    memória alkatrészt újra el kell készíteni.</p>
+      <span lang="en">The processor is supplemented with memory, GPIO
+      circuits, and the bus connecting the devices is supplemented
+      with an address decoder.</span>
+    </p>
 
-    <p>A memória kapacitása 512 szó, a címzéshez így 9 cím bitre van
-      szükség. Minden szó 32 bites.</p>
+    <h1>
+      <span lang="hu">Memória</span>
+      <span lang="en">Memory</span>
+    </h1>
+    
+    <p>
+      <span lang="hu">A processzor memória illesztőjére (MA, MDI, MDO,
+      MWE) kapcsolódó memória alkatrész fogja tárolni a futtatott
+      programot, valamint a feldolgozott adatokat. A memóriát az
+      FPGA-n alakítjuk ki, a lefordított program kódját pedig
+      beillesztjük az alkatrészbe. Ez azt jelenti, hogy a program
+      megváltoztatásakor a memória alkatrészt újra el kell
+      készíteni.</span>
+
+      <span lang="en">The memory component connected to the
+      processor's <!-- ' --> memory interface (MA, MDI, MDO, MWE) will
+      store the executed program and the processed data. The memory is
+      designed on the FPGA, and the compiled program code is inserted
+      into the component. This means that when the program changes,
+      the memory component must be re-created.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A memória kapacitása 512 szó, a címzéshez így 9
+	cím bitre van szükség. Minden szó 32 bites.</span>
+
+      <span lang="en">The memory capacity is 512 words, so 9 address
+      bits are required for addressing. Each word is 32 bits.</span>
+    </p>
     
     <h2>GPIO</h2>
     
-  <p>A külvilággal való kapcsolattartást a memória illesztőre
-    kapcsolt GPIO (General Purpose Input Output) áramkörök
-    valósítják meg.</p>
+    <p>
+      <span lang="hu">A külvilággal való kapcsolattartást a memória
+      illesztőre kapcsolt GPIO (General Purpose Input Output)
+      áramkörök valósítják meg.</span>
+
+      <span lang="en">Communication with the outside world is achieved
+      by GPIO (General Purpose Input Output) circuits connected to the
+      memory interface.</span>
+    </p>
   
-  <h3>Kimenetek</h3>
+    <h3>
+      <span lang="hu">Kimenetek</span>
+      <span lang="en">Outputs</span>
+    </h3>
   
-  <p>A kimeneti kivezetéseket egy 4 regiszterből álló “memória”
-    valósítja meg, amelyből mind a 4 regiszter kimenetei ki vannak
-    vezetve. Ezek a PORTA, PORTB, PORTC, PORTD nevet viselik. A
-    regiszterek tartalma írható (memória írás utasítással), valamint
-    vissza is olvasható a tartalmuk.</p>
+    <p>
+      <span lang="hu">A kimeneti kivezetéseket egy 4 regiszterből álló
+      “memória” valósítja meg, amelyből mind a 4 regiszter kimenetei
+      ki vannak vezetve. Ezek a PORTA, PORTB, PORTC, PORTD nevet
+      viselik. A regiszterek tartalma írható (memória írás
+      utasítással), valamint vissza is olvasható a tartalmuk.</span>
+
+      <span lang="en">The output pins are implemented by a "memory"
+      consisting of 4 registers, from which the outputs of all 4
+      registers are derived. These are called PORTA, PORTB, PORTC,
+      PORTD. The contents of the registers can be written (with the
+      memory write instruction) and their contents can be read
+      back.</span>
+    </p>
   
-  <p>A 4 regiszter 4 egymást követő címen található, a kezdőcímet a
-    címdekóder határozza meg:</p>
+    <p>
+      <span lang="hu">A 4 regiszter 4 egymást követő címen található,
+	a kezdőcímet a címdekóder határozza meg:</span>
+
+      <span lang="en">The 4 registers are located at 4 consecutive
+      addresses, the starting address is determined by the address
+      decoder:</span>
+    </p>
   
-<table border=1>
-<tr>
-<td>Offszet</td>
-</td>
-<td>Port</td>
-</tr>
-<tr>
-<td>0</td>
-<td>PORTA</td>
-</tr>
-<tr>
-<td>1</td>
-<td>PORTB</td>
-</tr>
-<tr>
-<td>2</td>
-<td>PORTC</td>
-</tr>
-<tr>
-<td>3</td>
-<td>PORTD</td>
-</tr>
-</tbody>
-</table>
+    <table border=1>
+      <tr>
+	<th><span lang="hu">Offszet</span><span lang="en">Offset</span></th>
+	<th>Port</th>
+      </tr>
+      <tr>
+	<td>0</td>
+	<td>PORTA</td>
+      </tr>
+      <tr>
+	<td>1</td>
+	<td>PORTB</td>
+      </tr>
+      <tr>
+	<td>2</td>
+	<td>PORTC</td>
+      </tr>
+      <tr>
+	<td>3</td>
+	<td>PORTD</td>
+      </tr>
+    </table>
 
-<h3>Bemenetek</h3>
+    <h3>
+      <span lang="hu">Bemenetek</span>
+      <span lang="en">Inputs</span>
+    </h3>
 
-<p>Bemenetként szintén regisztert használunk. A regiszter olvasásakor
-a bemeneti vezetékek állapota eltárolódik a regiszterben (mintavétel),
-a processzor ennek a tartalmát fogja megkapni. A bemeneti GPIO
-áramkörben egy regiszter van, így egy 32 bites bemenő adathoz lehet
-vele hozzáférni. A számítógépben két ilyen áramkört kapcsolunk a
-buszra, így két bemeneti portot kapunk (PORTI, PORTJ).</p>
+    <p>
+      <span lang="hu">Bemenetként szintén regisztert használunk. A
+      regiszter olvasásakor a bemeneti vezetékek állapota eltárolódik
+      a regiszterben (mintavétel), a processzor ennek a tartalmát
+      fogja megkapni. A bemeneti GPIO áramkörben egy regiszter van,
+      így egy 32 bites bemenő adathoz lehet vele hozzáférni. A
+      számítógépben két ilyen áramkört kapcsolunk a buszra, így két
+      bemeneti portot kapunk (PORTI, PORTJ).</span>
 
-<h2>Címdekóder</h2>
+      <span lang="en">We also use a register as an input. When reading
+      the register, the state of the input wires is stored in the
+      register (sampling), the processor will receive its
+      contents. The input GPIO circuit has a register, so it can
+      access a 32-bit input data. In the computer, we connect two such
+      circuits to the bus, so we get two input ports (PORTI,
+      PORTJ).</span>
+    </p>
 
-<p>A címdekóder a processzor cím kimenetének ADDR[15:12] kivezetéseit
-használja, így 64 Ki szó tartományban 4 Ki szavas szeleteket választ
-szét, egy kimenete egy 4 Ki szavas cím tartományban lesz aktív. Az
-eszközök a következő címeken lesznek elérhetők:</p>
+    <h2>
+      <span lang="hu">Címdekóder</span>
+      <span lang="en">Address decoder</span>
+    </h2>
 
-<table border=1>
-<tr>
-<td>Cím tartomány</td>
-<td>Eszköz</td>
-</tr>
-<tr>
-<td>0x0000 0000 - 0x0000 0fff</td>
-<td>Memóra</td>
-</tr>
-<tr>
-<td>0x0000 d000 - 0x0000 dfff</td>
-<td>Bemeneti port: PORTJ</td>
-</tr>
-<tr>
-<td>0x0000 e000 - 0x0000 efff</td>
-<td>Bemeneti port: PORTI</td>
-</tr>
-<tr>
-<td>0x0000 f000 - 0x0000 ffff</td>
-<td>Kimeneti portok:<br />0xf000: PORTA<br />0xf001: PORTB<br />0xf002: PORTC<br />0xf003: PORTD</td>
-</tr>
-</table>
+    <p>
+      <span lang="hu">A címdekóder a processzor cím kimenetének
+      ADDR[15:12] kivezetéseit használja, így 64 Ki szó tartományban 4
+      Ki szavas szeleteket választ szét, egy kimenete egy 4 Ki szavas
+      cím tartományban lesz aktív. Az eszközök a következő címeken
+      lesznek elérhetők:</span>
 
-<p>Mivel a felsőbb helyi értékű cím bitek a dekódolásban nem vesznek
-részt, az eszközök a további 64 Ki szavas tartományokban is
-megjelennek.</p>
+      <span lang="en">The address decoder uses the processor address
+      output ADDR[15:12] pins, thus separating 4 Ki word slices in a
+      64 Ki word range, one output of which will be active in a 4 Ki
+      word address range. The devices will be available at the
+      following addresses:</span>
+    </p>
 
-<h2>Diagnosztika</h2>
+    <table border=1>
+      <tr>
+	<th><span lang="hu">Cím tartomány</span><span lang="en">Address range</span></th>
+	<th><span lang="hu">Eszköz</span><span lang="en">Device</span></th>
+      </tr>
+      <tr>
+	<td>0x0000 0000 - 0x0000 0fff</td>
+	<td><span lang="hu">Memóra</span><span lang="en">Memory</span></td>
+      </tr>
+      <tr>
+	<td>0x0000 d000 - 0x0000 dfff</td>
+	<td><span lang="hu">Bemeneti port: PORTJ</span>
+	  <span lang="en">Input port: PORTJ</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0x0000 e000 - 0x0000 efff</td>
+	<td><span lang="hu">Bemeneti port: PORTI</span>
+	  <span lang="en">Input port: PORTI</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0x0000 f000 - 0x0000 ffff</td>
+	<td><span lang="hu">Kimeneti portok:</span>
+	  <span lang="en">Output ports:</span><br />
+	  0xf000: PORTA<br />0xf001: PORTB<br />0xf002: PORTC<br />0xf003: PORTD</td>
+      </tr>
+    </table>
+    
+    <p>
+      <span lang="hu">Mivel a felsőbb helyi értékű cím bitek a
+      dekódolásban nem vesznek részt, az eszközök a további 64 Ki
+      szavas tartományokban is megjelennek.</span>
 
-<p>A CPU tesztelésre használható ki- és bemenetei a számítógépben is
-hozzáférhetőek. A TRS bemetekre adott 4 bites kód által meghatározott
-adatok megjelennek a TR és a TREG kimeneteken (részletesen lásd a
-mikroprocesszor leírásában).</p>
+      <span lang="en">Since the high-order address bits are not
+      involved in the decoding, the devices appear in the additional
+      64 Ki word ranges.</span>
+    </p>
+    
+    <h2>
+      <span lang="hu">Diagnosztika</span>
+      <span lang="en">Diagnostics</span>
+    </h2>
 
+    <p>
+      <span lang="hu">A CPU tesztelésre használható ki- és bemenetei a
+      számítógépben is hozzáférhetőek. A TRS bemetekre adott 4 bites
+      kód által meghatározott adatok megjelennek a TR és a
+      TREG kimeneteken (részletesen lásd a
+      <a href="p1516.html#diag">mikroprocesszor</a>
+      leírásában).</span>
+
+      <span lang="en">The CPU's <!--'--> test inputs and outputs are
+      also accessible in the computer. Data specified by the 4-bit
+      code given to the TRS inputs is displayed on the TR and TREG
+      outputs (see the
+      <a href="p1516.html#diag">microprocessor</a> description for
+      details).</span>
+    </p>
+
+    <hr>
 </body>
 </html>
