@@ -26,22 +26,32 @@
 	}
 	return ""; // Return empty string if cookie not found
     }
-    const $htmlTag = document.querySelector("#html-tag")
-    const urlParams = new URL(window.location.toLocaleString()).searchParams;
-    const lvar= urlParams.get('lang');
-    if (lvar=="" || lvar==null)
-	lvar= getCookie("p12dev_lang");
-    switch(lvar) {
-    case "hu":
-	$htmlTag.lang = "hu";
-	$htmlTag.classList.add("hungarianLang");
-	setCookie("p12dev_lang", "hu");
-	break;
-    default:
-	$htmlTag.classList.add("englishLang");
-	setCookie("p12dev_lang", "en");
-	break;
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
     }
+    set_lang();
   </script>
   <head>
     <meta charset="utf-8">
