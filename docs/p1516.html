@@ -4,15 +4,15 @@
   <script>
     function setCookie(name, value) {
 	let date = new Date();
-	 // Calculate expiration date
+	// Calculate expiration date
 	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
 	let expires = "expires=" + date.toUTCString();
-	 // Set the cookie
+	// Set the cookie
 	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
     function getCookie(name) {
 	let cookieName = name + "=";
-	 // Decode the cookie string
+	// Decode the cookie string
 	let decodedCookie = decodeURIComponent(document.cookie);
 	let ca = decodedCookie.split(';');
 	for(let i = 0; i <ca.length; i++) {
@@ -60,24 +60,24 @@
   </head>
 
   <body>
- 
+    
     <p>
       <a href="index.html">Index</a>
       |
-    <a href="devenv.html"><span lang="hu">Fejlesztés</span>
-      <span lang="en">Development</span></a>
-    |
-    <a href="p2223.html">CPU</a>
-    |
-    <a href="computer_v2.html"><span lang="hu">Számítógép</span>
-      <span lang="en">Computer</span></a>
-    |
-    <a href="asm.html">Assembler</a>
-    |
-    <a href="pmon.html">Monitor</a>
-    |
-    <a href="lib.html"><span lang="hu">Függvények</span>
-      <span lang="en">Library</span></a>
+      <a href="devenv.html"><span lang="hu">Fejlesztés</span>
+	<span lang="en">Development</span></a>
+      |
+      <a href="p2223.html">CPU</a>
+      |
+      <a href="computer_v2.html"><span lang="hu">Számítógép</span>
+	<span lang="en">Computer</span></a>
+      |
+      <a href="asm.html">Assembler</a>
+      |
+      <a href="pmon.html">Monitor</a>
+      |
+      <a href="lib.html"><span lang="hu">Függvények</span>
+	<span lang="en">Library</span></a>
     </p>
 
     <hr>
@@ -89,735 +89,1427 @@
     </p>
 
 
-<h1>P1516 mikroprocesszor</h1>
-
-<p>A mikroprocesszor egy RISC felépítésű (LOAD/STORE), Neumann
-architektúrájú 32 bites soft processzor, amelyet FPGA-val valósítunk
-meg.</p>
-
-
-<h1>A mikroprocesszor részei</h1>
-
-<p>A mikroprocesszor a szokásos építőelemekből áll.</p>
-
-<h2>Ütemező, vezérlő</h2>
-
-<p>Az ütemező állítja elő a vezérlő jeleket a processzor többi eleme
-számára. Az ütemező állapot kódokat állít elő a működési fázisok
-jelzésére, az állapotok a CLK bemenetre adott órajel hatására követik
-egymást. Az állapotok bináris sorszáma a CLKstat kimeneten jelenik
-meg. A RESET bemenet az ütemezőt alaphelyzetbe állítja.</p>
-
-<p>A vezérlőhöz tartozik még az ún. utasítás regiszter, amely a
-beolvasott utasítást tárolja a végrehajtás idejére.</p>
-
-<h2>Memória illesztő</h2>
-
-<p>Mivel a processzor Neumann architektúrájú, ezért csak egy memória
-illesztővel rendelkezik. Ezen az illesztőn keresztül olvassa be az
-utasításokat, és ezen az illesztőn keresztül végzi el memória írási és
-olvasási műveleteket is.</p>
-
-<p>Az illesztő az <b>MA</b> kimeneteken adja ki a művelethez
-használandó memória címet (32 bites). Írás esetén a memóriába
-tárolandó adat az
-  <b>MDO</b> kimeneteken jelenik meg (32 bit). Ebben az esetben az
-  <b>MWE</b> kimenet magas szintű lesz (írás jelzés).</p>
-
-<p>Olvasás műveletnél a megcímzett memória tartalmát az <b>MDI</b>
-bemenetre kell juttatni, ekkor az <b>MWE</b> kimenet alacsony
-lesz. Mind írás, mind olvasás esetén megjelenik az <b>MCLK</b>
-kimeneten egy impulzus, ennek felfutó éle használható a memória
-számára beíró jelként, illetve a pufferelt kimenetű memóriák esetén a
-kimeneti puffer beírására.</p>
-
-<h3>Memória szervezés</h3>
-
-<p>A processzor által kezelt memória 32 bites szélességű, minden 32
-bites rekesznek külön címe van. Memória műveletnél a processzor a
-megcímzett rekeszből 32 bites adatot olvas be, illetve 32 bites adatot
-ír ki.</p>
-
-<h2>Regiszterek</h2>
-
-<p>A processzor állapota a belső regiszterekben tárolódik. A regiszter
-készlet 16 db 32 bites regiszterből áll. A regiszterek elnevezése: R0,
-R1...R15.</p>
-
-<h3>Speciális regiszterek</h3>
-
-<h4>PC</h4>
-
-<p>A processzor az R15 regisztert használja program számlálóként
-(Program Counter), ezért ennek tartalma minden utasítás
-végrehajtásakor eggyel növekszik.</p>
-
-<h4>LR</h4>
-
-<p>A CALL utasítás a visszatéréshez szükséges címet az R14 (Link
-Regiszter) regiszterbe menti.</p>
-
-<h4>SP</h4>
-
-<p>A processzor nem használ verem műveleteket, a verem megszervezése a
-programozó feladata. Az ehhez szükséges verem mutató (Stack Pointer)
-céljára bármelyik regiszter felhasználható. A programok megírásakor az
-R13 regisztert használtuk SP-ként.</p>
-
-<h2>Aritmetikai-logikai egység</h2>
-
-<p>Az adat manipulációs műveleteket az ALU végzi, amely 32 bites egész
-(előjeles és előjel nélküli) adatokkal tud műveleteket végezni. Az
-ALU-nak 3 adat bemenete van: Rd, Ra, Rb. Az Rd bemenetre az eredményt
-eltároló regiszter eredeti (művelet előtti) értékét kell kötni. Az Ra
-és Rb bemenetekre a művelet operandusaként használt regiszterek értéke
-kerül. Az egy operandusú műveletek csak az Ra bemenetet használják,
-míg a két operandusú műveletek az Ra és az Rb értékeket használják
-fel. Az operandus nélküli műveleteknél az eredmény a változatlan Rd
-bemeneti érték lesz.</p>
-
-<h3>FLAG regiszter</h3>
-
-<p>Az aritmetikai egység a műveletek eredményének jellemzőit a FLAG
-regiszterben tárolja el. Ez a regiszter nem része az általános
-regiszter készletnek, a tartalmához az utasítások speciális módon
-férhetnek csak hozzá.</p>
-
-<h4>Carry flag (C)</h4>
-
-<p>Aritmetikai műveletek után azt jelzi, hogy előjel nélkülinek
-tekintve az operandusokat, volt-e túlcsordulás (1: volt, 0: nem
-volt).</p>
-
-<h4>Overflow flag (O)</h4>
-
-<p>Aritmetikai műveletek után azt jelzi, hogy előjelesnek tekintve az
-operandusokat, volt-e túlcsordulás (1: volt, 0: nem volt).</p>
-
-<h4>Sign flag (S)</h4>
-
-<p>Aritmetikai műveletek után után az eredmény előjelét jelzi (1:
-negatív, 0: pozitív)</p>
-
-<h4>Zero flag (Z)</h4>
-
-<p>Aritmetikai és logikai műveletek után azt jelzi, hogy az eredmény
-nulla-e (1: igen, 0: nem)</p>
-
-<h1>A mikroprocesszor működése</h1>
-
-<p>Az utasítások végrehajtása a következő fázisokból áll.</p>
-<h2>Fetch</h2>
-
-<p>Ebben a fázisban a processzor elvégzi a soron következő utasítás
-  beolvasását.  Az MA kimeneten megjelenik az R15 regiszter tartalma,
-  az MWE kimenet alacsony szintű lesz, míg az MCLK kimeneten
-  megjelenik egy felfutó él.</p>
-
-<h2>Dekódolás</h2>
-
-<p>A következő fázisban fetch során megcímzett memória tartalom
-megjelenik az MDI bemeneten, ezt a processzor eltárolja az utasítás
-regiszterben. Ezzel egyidejűleg az R15 tartalma eggyel nő.</p>
-
-<h2>Számítás</h2>
-
-<p>Az utasítás regiszter által meghatározott regiszterek tartalma
-megjelenik az ALU bemenetein, ezek az adatok áthaladnak az ALU-ban
-lévő aritmetikai hálózatokon. Ezek mindegyike kombinációs (nem
-sorrendi) hálózat, de több szintű felépítésük miatt a kimeneti
-eredmények megjelenéséhez több idő kell. Ennek kivárására szolgál a
-“számítás” fázis.</p>
-
-<p>Az utasítás regiszter tartalma azt is meghatározza, hogy az ALU
-kimenetén melyik hálózat eredménye jelenjen meg.</p>
-
-<h2>Memória művelet</h2>
-
-<p>Ha az utasítás memória műveletet ír elő, akkor az ebben a fázisban
-zajlik le. Az <b>MA</b> kimeneten az utasításban meghatározott
-regiszter tartalma jelenik meg címként, írás esetén az MDO kimenetekre
-az utasításban megadott (kiírandó) regiszter tartalma kapcsolódik. Az
-<b>MWE</b> kimenet az elvégzendő műveletnek megfelelő értékű lesz. Az
-<b>MCLK</b> kimeneten megjelenik egy felfutó él. Olvasáskor a memóriának a
-címzett rekesz tartalmát az <b>MDI</b> bemenetre kell kapcsolnia, és ott kell
-tartania a következő fázis ideje alatt is. Ezért az <b>MA</b> kimeneteken a
-cím fennmarad a következő fetch fázis elejéig.</p>
-
-<p>Ha nincs szükség memória műveletre, akkor ebben a fázisban semmi
-sem történik. Ez megnöveli az aritmetikai eredmények kiszámításához
-rendelkezésre álló időt.</p>
-
-<h2>Eredmény tárolás</h2>
-
-<p>Az utasítás eredménye vagy az ALU kimenetén megjelent adat, vagy
-memória olvasásnál az MDI bemenetek állapota. Az eredmény tárolási
-(visszaírási, Write-Back) fázisban ez az érték beíródik az utasítás
-által meghatározott regiszterbe. Néhány utasításnak nincs eredménye,
-ezeknél az írás nem zajlik le (pl. memóriába írás, “nincs művelet”
-utasítás). Aritmetikai utasításoknál az ALU által előállított
-jelzőbitek is beíródnak a flag regiszterbe.</p>
-
-<h2>Utasítások</h2>
-
-<p>A processzor utasítás készlete 8 utasításból áll. Minden utasítás
-kódja 32 bites, egy memória rekeszben tárolódik.</p>
-
-<h3>Feltételes végrehajtás</h3>
-
-<p>Minden utasítás ellátható egy feltétellel, ekkor a memória írási és
-a visszaírási műveletek csak akkor hajtódnak végre, ha a feltétel
-teljesül. A feltétel megadja, hogy mely jelzőbit milyen értéke esetén
-lesz igaz. A feltétel elhelyezkedése az utasítás kódjában a
-következő:</p>
-
-
-<p>FFVC.---- ----.---- ----.---- ----.----</p>
-
-
-<p>Az F jelű bitek jelölik ki a flag bitet:</p>
-
-
-<ul>
-<li>00: S jelzőbit</li>
-<li>01: C jelzőbit</li>
-<li>10: Z jelzőbit</li>
-<li>11: O jelzőbit</li>
-</ul>
-
-
-<p>A feltétel akkor teljesül, ha a kiválasztott jelzőbit értéke
-egyezik az utasításban lévő V bit értékével. A feltételt a vezérlő
-csak akkor veszi figyelembe, ha a kódban a C jelű bit 1, egyébként az
-utasítás feltétel nélkül hajtódik végre.</p>
-
-<h3>Utasítások</h3>
-
-<h4>NOP</h4>
-
-<p>“Nincs művelet” utasítás, hatására a memória, és a visszaírási
-fázisban nincs művelet.</p>
-
-
-<ul>
-<li>Művelet: nincs</li>
-</ul>
-
-<ul>
-<li>Kódja: FFVC.0000 DDDD.AAAA BBBB.OOOO.OXXX XXXX.XXXX<br />Az
-FFVC bitek a végrehajtás feltételét adják meg, a DDDD, AAAA és
-BBBB bitek 4 bites bináris kóddal megadják az ALU 3 bemeneteként
-felhasznált regiszterek sorszámát. Az OOOOO bitek az ALU műveletei
-közül választanak ki egyet.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<p>Az utasítás diagnosztikai célra használható, segítségével meg lehet
-figyelni az ALU be- és kimeneti értékeit.</p>
-
-<h4>LD Rd,Ra</h4>
-
-<p>LOAD memory to register. Memória tartalom regiszterbe való
-beolvasására használható utasítás.</p>
-
-
-<ul>
-<li>Művelet: Rd:= mem[Ra]</li>
-<li>Kódja: FFVC.0001 DDDD.AAAA XXXX.XXXX XXXX.XXXX<br />A DDDD bitek
-az Rd regiszter, míg az AAAA bitek az Ra regiszter sorszámát adják
-meg.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>ST Rd,Ra</h4>
-
-<p>STORE register to memory. Egy regiszter memóriába írására
-használható utasítás.</p>
-
-
-<ul>
-<li>Művelet: mem[Rd]:= Ra</li>
-<li>Kódja: FFVC.0010 DDDD.AAAA XXXX.XXXX XXXX.XXXX</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>MOV Rd,Ra</h4>
-
-<p>MOVE register to register. Regiszter másolás utasítás, az Ra
-regiszter értékét átmásolja az Rd regiszterbe.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra</li>
-<li>Kódja: FFVC.0011 DDDD.AAAA XXXX.XXXX XXXX.XXXX</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>LDL0 Rd,adat</h4>
-
-<p>LOAD low half, set high half 0. Konstans adat regiszterbe írásához
-használható, az adat az utasításban található. Az adat 16 bites, a
-megadott regiszter alsó helyi értékű felére kerül, a regiszter felső
-helyi értékű fele 0 lesz.</p>
-
-
-<ul>
-<li>Művelet: Rd:= 0.adat</li>
-<li>Kódja: FFVC.0100 DDDD.XXXX LLLL.LLLL LLLL.LLLL<br />A DDDD bitek
-választják ki a módosítandó regisztert, az L jelű bitek tartalmazzák a
-16 bites konstanst.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>LDL Rd,adat</h4>
-
-<p>LOAD low half of register. Konstans adat regiszterbe írásához
-használható, az adat az utasításban található. Az adat 16 bites, a
-megadott regiszter alsó helyiértékű felére kerül, a regiszter felső
-helyiértékű fele nem változik.</p>
-
-
-<ul>
-<li>Művelet: Rd:= High(Rd).adat</li>
-<li>Kódja: FFVC.0101 DDDD.XXXX LLLL.LLLL LLLL.LLLL<br />A DDDD bitek
-választják ki a módosítandó regisztert, az L jelű bitek tartalmazzák a
-16 bites konstanst.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>LDH Rd,adat</h4>
-
-<p>LOAD high half of register. Konstans adat regiszterbe írásához
-használható, az adat az utasításban található. Az adat 16 bites, a
-megadott regiszter felső helyi értékű felére kerül, a regiszter alsó
-helyi értékű fele nem változik.</p>
-
-
-<ul>
-<li>Művelet: Rd:= adat.Low(Rd)</li>
-<li>Kódja: FFVC.0110 DDDD.XXXX LLLL.LLLL LLLL.LLLL<br />A DDDD bitek
-választják ki a módosítandó regisztert, az L jelű bitek tartalmazzák a
-16 bites konstanst.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<h4>CALL cím</h4>
-
-<p>Szubrutin hívás. Mivel a processzor memóriában lévő vermet nem
-kezel, a visszatérési címet (az R15 megnövelt értékét, amely a CALL-t
-követő utasítás címét tartalmazza) a memória fázisban átmásolja,
-beírja az R14 regiszterbe. Egymásba ágyazott szubrutin hívások esetén
-az R14 mentéséről a programozónak kell gondoskodnia.</p>
-
-
-<ul>
-<li>Művelet: R14:= R15; R15:= cím</li>
-<li>Kódja: FFVC.1AAA AAAA.AAAA AAAA.AAAA AAAA.AAAA<br />Az utasításban
-szereplő A bitek az R15 alsó helyi értékű 27 bitjébe kerünekl. A
-legfelső 5 helyi érték 0 lesz.</li>
-<li>Módosított jelzőbitek: -</li>
-</ul>
-
-
-<p>Az utasítás kódjában csak 27 bites cím helyezhető el, ezért csak a
-memória tartomány első 32-ed részében lévő szubrutint lehet
-meghívni.</p>
-
-
-<p>A szubrutinból való visszatéréshez az R14 (LR) értét kell bemásolni
-az R15-be (PC) egy MOV utasítással.</p>
-
-<h3>Aritmetikai, logikai utasítások</h3>
-
-<p>Ezek az utasítások az ALU kimenetén megjelenő adatot használják a
-visszaírási fázisban. Az utasítások kódja:</p>
-
-
-<p>FFVC.0111 DDDD.AAAA BBBB.OOOO OXXX.XXXX</p>
-
-
-<p>Az FFVC bitek a végrehajtási feltételt adják meg, a DDDD az
-eredményt tároló regiszter száma, az AAAA és BBBB bitek pedig az
-operandusokat tartalmazó regiszterek sorszámai. Az OOOOO bitek
-választják ki, hogy az ALU hálózatai közül melyik eredményét
-használjuk. Ez alapján maximum 32 művelet lehetséges, de ennél
-jelenleg kevesebb van megvalósítva.</p>
-
-
-<h4>ADD Rd,Ra,Rb</h4>
-
-<p>Összeadás átvitel nélkül.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra+Rb</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0000 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>ADC Rd,Ra,Rb</h4>
-
-<p>Összeadás átvitellel.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra+Rb+C</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0000 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>SUB Rd,Ra,Rb</h4>
-
-<p>Kivonás átvitel nélkül.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra-Rb</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0001 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>SBB Rd,Ra,Rb</h4>
-
-<p>Kivonás átvitellel.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra-Rb-C</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0001 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>INC Rd,Ra</h4>
-
-<p>Növelés eggyel. Az Ra regiszter eggyel növelt értéke az Rd
-regiszterbe kerül. Az Ra és az Rd ugyanaz is lehet.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra+1</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0010 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>DEC Rd,Ra</h4>
-
-<p>Csökkentés eggyel. Az Ra regiszter eggyel csökkentett értéke az Rd
-regiszterbe kerül. Az Ra és az Rd ugyanaz is lehet.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra-1</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0010 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-
-</ul>
-
-
-<h4>AND Rd,Ra,Rb</h4>
-
-<p>Bitenkénti és művelet. Az eredmény egyes helyi értékei a két
-operandus ugyanazon helyi értékein lévő két bit közötti logikai ÉS
-művelet eredményeként keletkeznek. Bit(ek) vizsgálatára, illetve
-bit(ek) 0-ba állítására használható.</p>
-
-
-<ul>
-<li>Művelet: Rd[i]:= Ra[i]&amp;Rb[i]</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0011 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: Z</li>
-</ul>
-
-
-<h4>OR Rd,Ra,Rb</h4>
-
-<p>Bitenkénti vagy művelet. Az eredmény egyes helyi értékei a két
-operandus ugyanazon helyi értékein lévő két bit közötti logikai VAGY
-művelet eredményeként keletkeznek. Bit(ek) 1-be állítására
-használható.</p>
-
-
-<ul>
-<li>Művelet: Rd[i]:= Ra[i]|Rb[i]</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0011 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: Z</li>
-</ul>
-
-<h4>XOR Rd,Ra,Rb</h4>
-
-<p>Bitenkénti kizáró vagy művelet. Az eredmény egyes helyi értékei a
-két operandus ugyanazon helyi értékein lévő két bit közötti logikai
-KIZÁRÓ VAGY művelet eredményeként keletkeznek. Bit(ek)
-összehasonlítására, illetve negálására használható.</p>
-
-
-<ul>
-<li>Művelet: Rd[i]:= Ra[i]^Rb[i]</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0100 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: Z</li>
-</ul>
-
-
-<h4>SHL Rd,Ra</h4>
-
-<p>Bitenkénti (logikai) eltolás, egy bittel balra. Az Ra regiszter
-minden bitje egy helyi értékkel feljebb lép, a 0-ik bit 0 lesz. A
-legfelső helyi értékű bit a C jelzőbitbe másolódik. Az eredmény az Rd
-regiszterbe kerül.</p>
-
-
-<p><img title="" src="shl.svg" alt="shl.png" /></p>
-
-
-<ul>
-<li>Művelet: C:= Ra[31]; Rd[i]:= Ra[i-1]; Rd[0]= 0</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0100 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z</li>
-</ul>
-
-
-<h4>SHR Rd,Ra</h4>
-
-<p>Bitenkénti (logikai) eltolás, egy bittel jobbra. Az Ra regiszter
-minden bitje egy helyi értékkel lejjebb lép, a 31-ik bit 0 lesz. A
-legalsó helyi értékű bit a C jelzőbitbe másolódik. Az eredmény az Rd
-regiszterbe kerül.</p>
-
-
-<p><img title="" src="shr.svg" alt="shr.png" /></p>
-
-
-<ul>
-<li>Művelet: C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= 0</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0101 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z</li>
-</ul>
-
-
-<h4>SHA Rd,Ra</h4>
-
-<p>Bitenkénti (aritmetikai) eltolás, egy bittel jobbra. Az Ra
-regiszter minden bitje egy helyi értékkel lejjebb lép, a 31-ik bit nem
-változik. A legalsó helyi értékű bit a C jelzőbitbe másolódik. Az
-eredmény az Rd regiszterbe kerül.</p>
-
-
-<p><img title="" src="sha.svg" alt="sha.png" /></p>
-
-
-<ul>
-<li>Művelet: C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= Ra[31]</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.1000 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z</li>
-</ul>
-
-
-<h4>ROL Rd,Ra</h4>
-
-<p>Forgatás egy bittel balra, a C jelzőbiten keresztül. Az Ra
-regiszter tartalmának minden bitje egy helyi értékkel balra lép. A
-legfelső helyi értékű bit a C jelzőbitbe kerül, aminek az eredeti
-értéke lép be a legalsó helyi értékre. Az eredmény az Rd regiszterbe
-kerül.</p>
-
-
-<p><img title="" src="rol.svg" alt="rol.png" /></p>
-
-
-<ul>
-<li>Művelet: C:= Ra[31]; Rd[i]:= Ra[i-1]; Rd[0]= C</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0101 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z</li>
-</ul>
-
-
-<h4>ROR Rd,Ra</h4>
-
-<p>Forgatás egy bittel jobbra, a C jelzőbiten keresztül. Az Ra
-regiszter talmának minden bitje egy helyi értékkel jobbra lép. A
-legalsó helyi értékű bit a C jelzőbitbe kerül, aminek az eredeti
-értéke lép be a legfelső helyi értékre. Az eredmény az Rd regiszterbe
-kerül.</p>
-
-
-<p><img title="" src="ror.svg" alt="ror.png" /></p>
-
-
-<ul>
-<li>Művelet: C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= C</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA XXXX.0110 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z</li>
-</ul>
-
-
-<h4>MUL Rd,Ra,Rb</h4>
-
-<p>32 bites adatok szorzása. A 64 bites eredmény alsó 32 bitjét
-számolja ki.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra*Rb</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0110 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>DIV Rd,Ra,Rb</h4>
-
-<p>32 bites adatok osztása, az eredmény egész részét számolja ki.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Ra/Rb</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0111 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>CMP Rd,Ra,Rb</h4>
-
-<p>Összehasonlítás. A művelet a SUB utasítással egyezik, de az
-eredmény nem íródik be az Rd regiszterbe, csak a jelzőbitek tárolódnak
-el.</p>
-
-
-<ul>
-<li>Művelet: Rd:= Rd; FLAGS:= Ra-Rb</li>
-<li>Kódja: FFVC.0111 DDDD.AAAA BBBB.0111 1XXX.XXXX<br />Az utasításban
-meg kell adni az Rd regiszter sorszámát is (DDDD bitek), az eredmény
-ennek a regiszternek a tartalma lesz, amely saját magába íródik
-vissza.</li>
-<li>Módosított jelzőbitek: C,Z,S,O</li>
-</ul>
-
-
-<h4>SETC</h4>
-
-<p>A C jelzőbit 1-be állítása.</p>
-
-
-<ul>
-<li>Művelet: C:= 1</li>
-<li>Kódja: FFVC.0111 XXXX.XXXX XXXX.1000 1XXX.XXXX</li>
-<li>Módosított jelzőbitek: C</li>
-</ul>
-
-
-<h4>CLRC</h4>
-
-<p>A C jelzőbit 0-ba állítása.</p>
-
-
-<ul>
-<li>Művelet: C:= 0</li>
-<li>Kódja: FFVC.0111 XXXX.XXXX XXXX.1001 0XXX.XXXX</li>
-<li>Módosított jelzőbitek: C</li>
-</ul>
-
-<a name="diag"><h2>Diagnosztika</h2></a>
-
-<p>A processzor működése nyomon követhető a teszt kimeneteken
-megjelenő jelek megfigyelésével.</p>
-
-<h3>CLKstat</h3>
-
-<p> A CLKstat kimenetek az egymás utáni fázisok sorszámát adják
-bináris kódban.</p>
-
-<h3>TREG</h3>
-
-<p>A TREG kimeneteken a 16 regiszter egyikének értéke nyerhető ki, a
-regiszter sorszámát a TRS bemenetekre kell kapcsolni, 4 bites bináris
-kódban.</p>
-
-<h3>TR</h3>
-
-<p>A TR kivezetéseken a processzor valamely belső adatát lehet
-megjeleníteni, a megfelelő adatot a TRS bementekre adott 4 bites
-bináris kóddal lehet kiválasztani.</p>
-
-
-<table border=1>
-<tr>
-<td>TRS bemenet értke</td>
-<td>TR kimeneteken megjelenő adat</td>
-</tr>
-<tr>
-<td>0</td>
-<td>R15 (PC) értéke</td>
-</tr>
-<tr>
-<td>1</td>
-<td>R14 (LR) értéke</td>
-</tr>
-<tr>
-<td>2</td>
-<td>R13 regiszter értéke (általában SP)</td>
-</tr>
-<tr>
-<td>4</td>
-<td>IC (utasítás regiszter) értéke</td>
-</tr>
-<tr>
-<td>5</td>
-<td>ALU kimenete</td>
-</tr>
-<tr>
-<td>6</td>
-<td>Utasítás eredménye</td>
-</tr>
-<tr>
-<td>7</td>
-<td>Visszaírásnál használt adat</td>
-</tr>
-<tr>
-<td>8</td>
-<td>ENA (utasítás feltétel értéke), Rd, Ra, Rb regiszterek sorszámai</td>
-</tr>
-<tr>
-<td>9</td>
-<td>Az Rd regiszter értéke</td>
-</tr>
-<tr>
-<td>10 (A)</td>
-<td>Az Ra regiszter értéke</td>
-</tr>
-<tr>
-<td>11 (B)</td>
-<td>Az Rb regiszter értéke</td>
-</tr>
-<tr>
-<td>12 (C)</td>
-<td>Az ütemező kimenő vezérlő jelei</td>
-</tr>
-<tr>
-<td>13 (D)</td>
-<td>MA (memória illesztő cím kimenete)</td>
-</tr>
-<tr>
-<td>14 (E)</td>
-<td>MDO (memória illesztő adat kimenete)</td>
-</tr>
-<tr>
-<td>15 (F)</td>
-<td>MDI (memória illesztő adat bemenete)</td>
-</tr>
-</table>
-
-<hr>
+    <h1>
+      <span lang="hu">P1516 mikroprocesszor</span>
+      <span lang="hu">P1516 microprocessor</span>
+    </h1>
+
+    <p>
+      <span lang="hu">A mikroprocesszor egy RISC felépítésű
+      (LOAD/STORE), Neumann architektúrájú 32 bites soft processzor,
+      amelyet FPGA-val valósítunk meg.</span>
+
+      <span lang="en">The microprocessor is a RISC-based (LOAD/STORE),
+      Neumann architecture 32-bit soft processor implemented with
+      FPGA.</span>
+    </p>
+
+
+    <h1>
+      <span lang="hu">A mikroprocesszor részei</span>
+      <span lang="en">Parts of the microprocessor</span>
+    </h1>
+
+    <p>
+      <span lang="hu">A mikroprocesszor a szokásos építőelemekből
+      áll.</span>
+
+      <span lang="en">The microprocessor consists of the usual
+      building blocks.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Ütemező, vezérlő</span>
+      <span lang="en">Scheduler, controller</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Az ütemező állítja elő a vezérlő jeleket a
+      processzor többi eleme számára. Az ütemező állapot kódokat állít
+      elő a működési fázisok jelzésére, az állapotok a CLK bemenetre
+      adott órajel hatására követik egymást. Az állapotok bináris
+      sorszáma a CLKstat kimeneten jelenik meg. A RESET bemenet az
+      ütemezőt alaphelyzetbe állítja.</span>
+
+      <span lang="en">The scheduler generates control signals for the
+      other elements of the processor. The scheduler generates status
+      codes to indicate the operating phases, the states follow each
+      other in response to the clock signal given to the CLK
+      input. The binary sequence number of the states is displayed on
+      the CLKstat output. The RESET input resets the scheduler.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A vezérlőhöz tartozik még az ún. utasítás
+	regiszter, amely a beolvasott utasítást tárolja a végrehajtás
+	idejére.</span>
+
+      <span lang="en">The controller also includes the so-called
+      instruction register, which stores the read instruction for
+      execution.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Memória illesztő</span>
+      <span lang="en">Memory interafce</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Mivel a processzor Neumann architektúrájú, ezért
+      csak egy memória illesztővel rendelkezik. Ezen az illesztőn
+      keresztül olvassa be az utasításokat, és ezen az illesztőn
+      keresztül végzi el memória írási és olvasási műveleteket
+      is.</span>
+
+      <span lang="en">Since the processor has a Neumann architecture,
+      it has only one memory interface. It reads instructions through
+      this interface and also performs memory read and write
+      operations through this interface.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az illesztő az <b>MA</b> kimeneteken adja ki a művelethez
+      használandó memória címet (32 bites). Írás esetén a memóriába
+      tárolandó adat az
+      <b>MDO</b> kimeneteken jelenik meg (32 bit). Ebben az esetben az
+      <b>MWE</b> kimenet magas szintű lesz (írás jelzés).</span>
+
+      <span lang="en">The adapter outputs the memory address (32 bits)
+      to be used for the operation on the <b>MA</b> outputs. In case
+      of writing, the data to be stored in the memory appears on
+      the <b>MDO</b> outputs (32 bits). In this case, the
+      <b>MWE</b> output will be high (write signal).</span>
+    </p>
+
+    <p>
+      <span lang="hu">Olvasás műveletnél a megcímzett memória
+      tartalmát az <b>MDI</b> bemenetre kell juttatni, ekkor
+      az <b>MWE</b> kimenet alacsony lesz. Mind írás, mind olvasás
+      esetén megjelenik az <b>MCLK</b> kimeneten egy impulzus, ennek
+      felfutó éle használható a memória számára beíró jelként, illetve
+      a pufferelt kimenetű memóriák esetén a kimeneti puffer
+      beírására.</span>
+
+      <span lang="en">For a read operation, the contents of the
+      addressed memory must be sent to the <b>MDI</b> input, at which
+      time the <b>MWE</b> output will be low. In both write and read a
+      pulse appears on the <b>MCLK</b> output, the rising edge of
+      which can be used as a write signal for the memory, or in the
+      case of memories with buffered output to write the output
+      buffer.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">Memória szervezés</span>
+      <span lang="en">Memory organization</span>
+    </h3>
+
+    <p>
+      <span lang="hu">A processzor által kezelt memória 32 bites
+      szélességű, minden 32 bites rekesznek külön címe van. Memória
+      műveletnél a processzor a megcímzett rekeszből 32 bites adatot
+      olvas be, illetve 32 bites adatot ír ki.</span>
+
+      <span lang="en">The memory managed by the processor is 32-bit
+      wide, each 32-bit slot has a separate address. During a memory
+      operation, the processor reads 32-bit data from the addressed
+      slot, and writes 32-bit data.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Regiszterek</span>
+      <span lang="en">Registers</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A processzor állapota a belső regiszterekben
+      tárolódik. A regiszter készlet 16 db 32 bites regiszterből
+      áll. A regiszterek elnevezése: R0, R1...R15.</span>
+
+      <span lang="en">The processor's <!--'--> state is stored in
+      internal registers. The register set consists of 16 32-bit
+      registers. The registers are named: R0, R1...R15.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">Speciális regiszterek</span>
+      <span lang="en">Special registers</span>
+    </h3>
+
+    <h4>PC</h4>
+
+    <p>
+      <span lang="hu">A processzor az R15 regisztert használja program
+      számlálóként (Program Counter), ezért ennek tartalma minden
+      utasítás végrehajtásakor eggyel növekszik.</span>
+
+      <span lang="en">The processor uses register R15 as a program
+      counter, so its contents are incremented by one each time an
+      instruction is executed.</span>
+    </p>
+
+    <h4>LR</h4>
+
+    <p>
+      <span lang="hu">A CALL utasítás a visszatéréshez szükséges címet
+	az R14 (Link Regiszter) regiszterbe menti.</span>
+
+      <span lang="en">The CALL instruction stores the return address
+      in register R14 (Link Register).</span>
+    </p>
+
+    <h4>SP</h4>
+
+    <p>
+      <span lang="hu">A processzor nem használ verem műveleteket, a
+      verem megszervezése a programozó feladata. Az ehhez szükséges
+      verem mutató (Stack Pointer) céljára bármelyik regiszter
+      felhasználható. A programok megírásakor az R13 regisztert
+      használtuk SP-ként.</span>
+
+      <span lang="en">The processor does not use stack operations, the
+      stack is organized by the programmer. Any register can be used
+      for the required stack pointer. When writing the programs, the
+      R13 register was used as SP.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Aritmetikai-logikai egység</span>
+      <span lang="en">Arithmetic-logic unit</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Az adat manipulációs műveleteket az ALU végzi,
+      amely 32 bites egész (előjeles és előjel nélküli) adatokkal tud
+      műveleteket végezni. Az ALU-nak 3 adat bemenete van: Rd, Ra,
+      Rb. Az Rd bemenetre az eredményt eltároló regiszter eredeti
+      (művelet előtti) értékét kell kötni. Az Ra és Rb bemenetekre a
+      művelet operandusaként használt regiszterek értéke kerül. Az egy
+      operandusú műveletek csak az Ra bemenetet használják, míg a két
+      operandusú műveletek az Ra és az Rb értékeket használják fel. Az
+      operandus nélküli műveleteknél az eredmény a változatlan Rd
+      bemeneti érték lesz.</span>
+
+      <span lang="en">Data manipulation operations are performed by
+      the ALU, which can operate on 32-bit integer (signed and
+      unsigned) data. The ALU has 3 data inputs: Rd, Ra, Rb. The
+      original value (before the operation) of the register storing
+      the result must be connected to the Rd input. The values ​​of the
+      registers used as the operands of the operation are connected to
+      the Ra and Rb inputs. One operand operations use only the Ra
+      input, while two operand operations use the Ra and Rb values. In
+      the case of operations without an operand, the result will be
+      the unchanged Rd input value.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">FLAG regiszter</span>
+      <span lang="en">FLAG register</span>
+    </h3>
+
+    <p>
+      <span lang="hu">Az aritmetikai egység a műveletek eredményének
+      jellemzőit a FLAG regiszterben tárolja el. Ez a regiszter nem
+      része az általános regiszter készletnek, a tartalmához az
+      utasítások speciális módon férhetnek csak hozzá.</span>
+
+      <span lang="en">The arithmetic unit stores the characteristics
+      of the operation result in the FLAG register. This register is
+      not part of the general register set, its contents can only be
+      accessed by instructions in a special way.</span>
+    </p>
+
+    <h4>Carry flag (C)</h4>
+
+    <p>
+      <span lang="hu">Aritmetikai műveletek után azt jelzi, hogy
+      előjel nélkülinek tekintve az operandusokat, volt-e túlcsordulás
+      (1: volt, 0: nem volt).</span>
+
+      <span lang="en">After arithmetic operations, indicates whether
+      there was an overflow, considering the operands as unsigned (1:
+      there was, 0: there was not).</span>
+    </p>
+
+    <h4>Overflow flag (O)</h4>
+
+    <p>
+      <span lang="hu">Aritmetikai műveletek után azt jelzi, hogy
+	előjelesnek tekintve az operandusokat, volt-e túlcsordulás (1:
+	volt, 0: nem volt).</span>
+
+      <span lang="en">After arithmetic operations, indicates whether
+      there was an overflow, considering the operands as signed (1:
+      there was, 0: there was not).</span>
+    </p>
+
+    <h4>Sign flag (S)</h4>
+
+    <p>
+      <span lang="hu">Aritmetikai műveletek után után az eredmény
+	előjelét jelzi (1: negatív, 0: pozitív)</span>
+
+      <span lang="en">After arithmetic operations, indicates the sign
+      of the result (1: negative, 0: positive)</span>
+    </p>
+
+    <h4>Zero flag (Z)</h4>
+
+    <p>
+      <span lang="hu">Aritmetikai és logikai műveletek után azt jelzi,
+	hogy az eredmény nulla-e (1: igen, 0: nem)</span>
+
+      <span lang="en">After arithmetic and logical operations,
+      indicates whether the result is zero (1: yes, 0: no)</span>
+    </p>
+
+    <h1>
+      <span lang="hu">A mikroprocesszor működése</span>
+      <span lang="en">Operation of the microprocessor</span>
+    </h1>
+
+    <p>
+      <span lang="hu">Az utasítások végrehajtása a következő
+      fázisokból áll.</span>
+
+      <span lang="en">The execution of instructions consists of the
+      following phases.</span>
+    </p>
+
+
+    <h2>Fetch</h2>
+
+    <p>
+      <span lang="hu">Ebben a fázisban a processzor elvégzi a soron
+      következő utasítás beolvasását.  Az MA kimeneten megjelenik az
+      R15 regiszter tartalma, az MWE kimenet alacsony szintű lesz, míg
+      az MCLK kimeneten megjelenik egy felfutó él.</span>
+
+      <span lang="en">In this phase, the processor reads the next
+      instruction in the sequence. The MA output displays the contents
+      of the R15 register, the MWE output goes low, and the MCLK
+      output displays a rising edge.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Dekódolás</span>
+      <span lang="en">Decoding</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A következő fázisban fetch során megcímzett
+      memória tartalom megjelenik az MDI bemeneten, ezt a processzor
+      eltárolja az utasítás regiszterben. Ezzel egyidejűleg az
+      R15 tartalma eggyel nő.</span>
+
+      <span lang="en">In the next phase, the memory contents addressed
+      during fetch appear on the MDI input, which the processor stores
+      in the instruction register. At the same time, the contents of
+      R15 are incremented by one.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Számítás</span>
+      <span lang="en">Calculation</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Az utasítás regiszter által meghatározott
+      regiszterek tartalma megjelenik az ALU bemenetein, ezek az
+      adatok áthaladnak az ALU-ban lévő aritmetikai hálózatokon. Ezek
+      mindegyike kombinációs (nem sorrendi) hálózat, de több szintű
+      felépítésük miatt a kimeneti eredmények megjelenéséhez több idő
+      kell. Ennek kivárására szolgál a “számítás” fázis.</span>
+
+      <span lang="en">The contents of the registers specified by the
+      instruction register are displayed on the ALU inputs, and these
+      data are passed through the arithmetic networks in the ALU. All
+      of these are combinational (not sequential) networks, but due to
+      their multi-level structure, it takes more time to display the
+      output results. The “calculation” phase is used to wait for
+      this.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az utasítás regiszter tartalma azt is
+	meghatározza, hogy az ALU kimenetén melyik hálózat eredménye
+	jelenjen meg.</span>
+
+      <span lang="en">The contents of the instruction register also
+      determines which network result is displayed at the ALU
+      output.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Memória művelet</span>
+      <span lang="en">Memory operation</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Ha az utasítás memória műveletet ír elő, akkor
+      az ebben a fázisban zajlik le. Az <b>MA</b> kimeneten az
+      utasításban meghatározott regiszter tartalma jelenik meg
+      címként, írás esetén az MDO kimenetekre az utasításban megadott
+      (kiírandó) regiszter tartalma kapcsolódik. Az
+      <b>MWE</b> kimenet az elvégzendő műveletnek megfelelő értékű lesz. Az
+      <b>MCLK</b> kimeneten megjelenik egy felfutó él. Olvasáskor a
+      memóriának a címzett rekesz tartalmát az <b>MDI</b> bemenetre
+      kell kapcsolnia, és ott kell tartania a következő fázis ideje
+      alatt is. Ezért az <b>MA</b> kimeneteken a cím fennmarad a
+      következő fetch fázis elejéig.</span>
+
+      <span lang="en">If the instruction requires a memory operation,
+      it takes place in this phase. The contents of the register
+      specified in the instruction are displayed on the <b>MA</b>
+      output as an address, and in the case of writing, the contents
+      of the register specified in the instruction (to be written) are
+      connected to the MDO outputs.  The <b>MWE</b> output will have a
+      value corresponding to the operation to be performed.  A rising
+      edge appears on the <b>MCLK</b> output. When reading, the memory
+      must switch the contents of the addressed slot to the <b>MDI</b>
+      input and hold it there during the next phase. Therefore, the
+      address on the <b>MA</b> outputs will remain until the beginning
+      of the next fetch phase.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Ha nincs szükség memória műveletre, akkor ebben
+      a fázisban semmi sem történik. Ez megnöveli az aritmetikai
+      eredmények kiszámításához rendelkezésre álló időt.</span>
+
+      <span lang="en">If no memory operation is required, nothing
+      happens in this phase. This increases the time available for
+      calculating arithmetic results.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Eredmény tárolás</span>
+      <span lang="en">Write-back</span>
+    </h2>
+
+    <p>
+      <span lang="hu">Az utasítás eredménye vagy az ALU kimenetén
+      megjelent adat, vagy memória olvasásnál az MDI bemenetek
+      állapota. Az eredmény tárolási (visszaírási, Write-Back)
+      fázisban ez az érték beíródik az utasítás által meghatározott
+      regiszterbe. Néhány utasításnak nincs eredménye, ezeknél az írás
+      nem zajlik le (pl. memóriába írás, “nincs művelet”
+      utasítás). Aritmetikai utasításoknál az ALU által előállított
+      jelzőbitek is beíródnak a flag regiszterbe.</span>
+
+      <span lang="en">The result of the instruction is either the data
+      displayed on the ALU output or the state of the MDI inputs when
+      reading from memory. In the result storage (Write-Back) phase,
+      this value is written to the register specified by the
+      instruction. Some instructions have no result, in these cases
+      the write is not performed (e.g. write to memory, “no operation”
+      instruction). In the case of arithmetic instructions, the flag
+      bits generated by the ALU are also written to the flag
+      register.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Utasítások</span>
+      <span lang="en">Instructions</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A processzor utasítás készlete 8 utasításból
+	áll. Minden utasítás kódja 32 bites, egy memória rekeszben
+	tárolódik.</span>
+
+      <span lang="en">The processor instruction set consists of 8
+      instructions. Each instruction code is 32 bits long and is
+      stored in one memory location.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">Feltételes végrehajtás</span>
+      <span lang="en">Conditional execution</span>
+    </h3>
+
+    <p>
+      <span lang="hu">Minden utasítás ellátható egy feltétellel, ekkor
+      a memória írási és a visszaírási műveletek csak akkor hajtódnak
+      végre, ha a feltétel teljesül. A feltétel megadja, hogy mely
+      jelzőbit milyen értéke esetén lesz igaz. A feltétel
+      elhelyezkedése az utasítás kódjában a következő:</span>
+
+      <span lang="en">Each instruction can be equipped with a
+      condition, in which case the memory write and write back
+      operations are only executed if the condition is met. The
+      condition specifies which flag bit will be equal to which
+      value. The condition is located in the instruction code as
+      follows:</span>
+    </p>
+
+
+    <p><tt>FFVC.---- ----.---- ----.---- ----.----</tt></p>
+
+
+    <p>
+      <span lang="hu">Az F jelű bitek jelölik ki a flag bitet:</span>
+
+      <span lang="en">The bits marked F indicate the flag bit:</span>
+    </p>
+
+
+    <ul>
+      <li>00: S bit</li>
+      <li>01: C bit</li>
+      <li>10: Z bit</li>
+      <li>11: O bit</li>
+    </ul>
+
+
+    <p>
+      <span lang="hu">A feltétel akkor teljesül, ha a kiválasztott
+      jelzőbit értéke egyezik az utasításban lévő V bit értékével. A
+      feltételt a vezérlő csak akkor veszi figyelembe, ha a kódban a C
+      jelű bit 1, egyébként az utasítás feltétel nélkül hajtódik
+      végre.</span>
+
+      <span lang="en">The condition is met if the value of the
+      selected flag bit matches the value of the V bit in the
+      instruction. The condition is only considered by the controller
+      if the bit marked C in the code is 1, otherwise the instruction
+      is executed unconditionally.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">Utasítások</span>
+      <span lang="en">Instructions</span>
+    </h3>
+
+    <h4>NOP</h4>
+
+    <p>
+      <span lang="hu">“Nincs művelet” utasítás, hatására a memória, és
+	a visszaírási fázisban nincs művelet.</span>
+
+      <span lang="en">“No operation” instruction, causing no action in
+      the memory and the writeback phase.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet: nincs</span>
+	<span lang="en">Operation: none</span></li>
+      <li>
+	<span lang="hu">Kódja: <tt>FFVC.0000 DDDD.AAAA BBBB.OOOO.OXXX
+	XXXX.XXXX</tt><br />Az FFVC bitek a végrehajtás feltételét
+	adják meg, a DDDD, AAAA és BBBB bitek 4 bites bináris kóddal
+	megadják az ALU 3 bemeneteként felhasznált regiszterek
+	sorszámát. Az OOOOO bitek az ALU műveletei közül választanak
+	ki egyet.</span>
+	<span lang="en">Code: <tt>FFVC.0000 DDDD.AAAA
+        BBBB.OOOO.OXXX XXXX.XXXX</tt><br />The FFVC bits specify the
+        execution condition , the DDDD, AAAA and BBBB bits specify the
+        serial numbers of the registers used as ALU 3 inputs in 4-bit
+          binary code. The OOOOO bits select one of the ALU operations.</span>
+      </li>
+      <li>
+	<span lang="hu">Módosított jelzőbitek</span><span lang="en">Modified flag bits</span>: -
+      </li>
+    </ul>
+
+
+    <p>
+      <span lang="hu">Az utasítás diagnosztikai célra használható,
+	segítségével meg lehet figyelni az ALU be- és kimeneti
+	értékeit.</span>
+
+      <span lang="en">The instruction can be used for diagnostic
+      purposes, allowing you to monitor the input and output values ​​of
+      the ALU.</span>
+    </p>
+
+    <h4>LD Rd,Ra</h4>
+
+    <p>LOAD memory to register.
+      <span lang="hu">Memória tartalom regiszterbe való
+	beolvasására használható utasítás.</span>
+      <span lang="en">Instruction used to read memory contents into a
+      register.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= mem[Ra]</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>: <tt>FFVC.0001
+	DDDD.AAAA XXXX.XXXX XXXX.XXXX</tt><br /> <span lang="hu">A
+	DDDD bitek az Rd regiszter, míg az AAAA bitek az Ra regiszter
+	  sorszámát adják meg.</span>
+	<span lang="en">The DDDD bits specify the sequence number of
+	the Rd register, while the AAAA bits specify the sequence
+	number of the Ra register.</span>
+      </li>
+      <li><span lang="hu">Módosított jelzőbitek</span><span lang="en">Modified flag bits</span>: -</li>
+    </ul>
+
+
+    <h4>ST Rd,Ra</h4>
+
+    <p>STORE register to memory.
+      <span lang="hu">Egy regiszter memóriába írására használható
+	utasítás.</span>
+
+      <span lang="en">A command used to write a register to
+      memory.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      mem[Rd]:= Ra</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>: <tt>FFVC.0010
+      DDDD.AAAA XXXX.XXXX XXXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <h4>MOV Rd,Ra</h4>
+
+    <p>
+      MOVE register to register.
+      <span lang="hu">Regiszter másolás utasítás, az Ra regiszter
+	értékét átmásolja az Rd regiszterbe.</span>
+
+      <span lang="en">Register copy instruction, copies the value of
+      register Ra to register Rd.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0011 DDDD.AAAA XXXX.XXXX XXXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <h4>LDL0 Rd,adat</h4>
+
+    <p>
+      LOAD low half, set high half 0.
+      <span lang="hu">Konstans adat regiszterbe írásához használható,
+      az adat az utasításban található. Az adat 16 bites, a megadott
+      regiszter alsó helyi értékű felére kerül, a regiszter felső
+      helyi értékű fele 0 lesz.</span>
+
+      <span lang="en">It can be used to write constant data to a
+      register, the data is contained in the instruction. The data is
+      16 bits, the specified register is placed in the lower half of
+      the register, the upper half of the register is set to 0.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= 0.adat</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>: <tt>FFVC.0100
+	  DDDD.XXXX LLLL.LLLL LLLL.LLLL</tt><br />
+	<span lang="hu">A DDDD bitek választják ki a módosítandó
+	regisztert, az L jelű bitek tartalmazzák a 16 bites
+	konstanst.</span>
+	<span lang="en">The DDDD bits select the register to be
+        modified, the L bits contain the 16-bit constant.</span>
+      </li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <h4>LDL Rd,adat</h4>
+
+    <p>
+      LOAD low half of register.
+      <span lang="hu">Konstans adat regiszterbe írásához használható,
+      az adat az utasításban található. Az adat 16 bites, a megadott
+      regiszter alsó helyiértékű felére kerül, a regiszter felső
+      helyiértékű fele nem változik.</span>
+
+      <span lang="en">It can be used to write constant data to a
+      register, the data is contained in the instruction. The data is
+      16 bits, and is placed in the lower half of the specified
+      register, while the upper half of the register remains
+      unchanged.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= High(Rd).adat</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0101 DDDD.XXXX LLLL.LLLL LLLL.LLLL</tt><br />
+	<span lang="hu">A DDDD bitek választják ki a módosítandó
+	regisztert, az L jelű bitek tartalmazzák a 16 bites
+	konstanst.</span>
+	<span lang="en">The DDDD bits select the register to be
+          modified, the L bits contain the 16-bit constant.</span>
+      </li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <h4>LDH Rd,adat</h4>
+
+    <p>
+      LOAD high half of register.
+
+      <span lang="hu">Konstans adat regiszterbe írásához használható,
+      az adat az utasításban található. Az adat 16 bites, a megadott
+      regiszter felső helyi értékű felére kerül, a regiszter alsó
+      helyi értékű fele nem változik.</span>
+
+      <span lang="en">It can be used to write constant data to a
+      register, the data is contained in the instruction. The data is
+      16 bits, and is placed in the upper-order half of the specified
+      register, while the lower-order half of the register remains
+      unchanged.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= adat.Low(Rd)</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0110 DDDD.XXXX LLLL.LLLL LLLL.LLLL</tt><br />
+	<span lang="hu">A DDDD bitek választják ki a módosítandó
+	regisztert, az L jelű bitek tartalmazzák a 16 bites
+	konstanst.</span>
+	<span lang="en">The DDDD bits select the register to be
+        modified, the L bits contain the 16-bit constant.</span>
+      </li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <h4>CALL cím</h4>
+
+    <p>
+      <span lang="hu">Szubrutin hívás. Mivel a processzor memóriában
+      lévő vermet nem kezel, a visszatérési címet (az R15 megnövelt
+      értékét, amely a CALL-t követő utasítás címét tartalmazza) a
+      memória fázisban átmásolja, beírja az R14 regiszterbe. Egymásba
+      ágyazott szubrutin hívások esetén az R14 mentéséről a
+      programozónak kell gondoskodnia.</span>
+
+      <span lang="en">Subroutine call. Since the processor does not
+      manage the stack in memory, the return address (the incremented
+      value of R15, which contains the address of the instruction
+      following the CALL) is copied and written into the R14 register
+      in the memory phase. In the case of nested subroutine calls, the
+      programmer must ensure that R14 is saved.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      R14:= R15; R15:= cím</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.1AAA AAAA.AAAA AAAA.AAAA AAAA.AAAA</tt><br />
+	<span lang="hu">Az utasításban szereplő A bitek az R15 alsó
+	helyi értékű 27 bitjébe kerünekl. A legfelső 5 helyi érték
+	0 lesz.</span>
+	<span lang="en">The A bits in the instruction are mapped to
+        the lower 27 bits of R15. The upper 5 bits are 0.</span>
+      </li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      -</li>
+    </ul>
+
+
+    <p>
+      <span lang="hu">Az utasítás kódjában csak 27 bites cím
+      helyezhető el, ezért csak a memória tartomány első 32-ed
+      részében lévő szubrutint lehet meghívni.</span>
+
+      <span lang="en">Only a 27-bit address can be placed in the
+      instruction code, so only a subroutine in the first 32nd of the
+      memory range can be called.</span>
+    </p>
+
+
+    <p>
+      <span lang="hu">A szubrutinból való visszatéréshez az R14 (LR)
+	értét kell bemásolni az R15-be (PC) egy MOV
+	utasítással.</span>
+
+      <span lang="en">To return from the subroutine, the value of R14
+      (LR) must be copied to R15 (PC) with a MOV instruction.</span>
+    </p>
+
+    <h3>
+      <span lang="hu">Aritmetikai, logikai utasítások</span>
+      <span lang="en">Arithmetic, logical instructions</span>
+    </h3>
+
+    <p>
+      <span lang="hu">Ezek az utasítások az ALU kimenetén megjelenő
+	adatot használják a visszaírási fázisban. Az utasítások
+	kódja:</span>
+
+      <span lang="en">These instructions use the data that appears at
+      the ALU output in the writeback phase. The instructions
+      code:</span>
+    </p>
+
+
+    <p><tt>FFVC.0111 DDDD.AAAA BBBB.OOOO OXXX.XXXX</tt></p>
+
+
+    <p>
+      <span lang="hu">Az FFVC bitek a végrehajtási feltételt adják
+      meg, a DDDD az eredményt tároló regiszter száma, az AAAA és
+      BBBB bitek pedig az operandusokat tartalmazó regiszterek
+      sorszámai. Az OOOOO bitek választják ki, hogy az ALU hálózatai
+      közül melyik eredményét használjuk. Ez alapján maximum 32
+      művelet lehetséges, de ennél jelenleg kevesebb van
+      megvalósítva.</span>
+
+      <span lang="en">The FFVC bits specify the execution condition,
+      DDDD is the number of the register storing the result, and the
+      AAAA and BBBB bits are the serial numbers of the registers
+      containing the operands. The OOOOO bits select which of the ALU
+      networks results to use. Based on this, a maximum of 32
+      operations are possible, but fewer than this are currently
+      implemented.</span>
+    </p>
+
+
+    <h4>ADD Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Összeadás átvitel nélkül.</span>
+
+      <span lang="en">Add without carry.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra+Rb</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0000 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>ADC Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Összeadás átvitellel.</span>
+
+      <span lang="hu">Add with carry.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra+Rb+C</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0000 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>SUB Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Kivonás átvitel nélkül.</span>
+
+      <span lang="en">Subtraction without carry.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra-Rb</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0001 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>SBB Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Kivonás átvitellel.</span>
+
+      <span lang="en">Subtraction with carry.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra-Rb-C</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0001 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>INC Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Növelés eggyel. Az Ra regiszter eggyel növelt
+	értéke az Rd regiszterbe kerül. Az Ra és az Rd ugyanaz is
+	lehet.</span>
+
+      <span lang="en">Increment by one. The value of the Ra register
+      increased by one is placed in the Rd register. Ra and Rd can be
+      the same.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra+1</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0010 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>DEC Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Csökkentés eggyel. Az Ra regiszter eggyel
+	csökkentett értéke az Rd regiszterbe kerül. Az Ra és az Rd
+	ugyanaz is lehet.</span>
+
+      <span lang="en">Decrement by one. The value of the Ra register,
+      decremented by one, is placed in the Rd register. Ra and Rd can
+      be the same.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra-1</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0010 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+
+    </ul>
+
+
+    <h4>AND Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti és művelet. Az eredmény egyes helyi
+      értékei a két operandus ugyanazon helyi értékein lévő két bit
+      közötti logikai ÉS művelet eredményeként keletkeznek. Bit(ek)
+      vizsgálatára, illetve bit(ek) 0-ba állítására
+      használható.</span>
+
+      <span lang="en">Bitwise AND operation. Each local value of the
+      result is the result of a logical AND operation between two bits
+      at the same bit positions ​​of the two operands. It can be used to
+      examine bit(s) or to set bit(s) to 0.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd[i]:= Ra[i]&amp;Rb[i]</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0011 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      Z</li>
+    </ul>
+
+
+    <h4>OR Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti vagy művelet. Az eredmény egyes helyi
+      értékei a két operandus ugyanazon helyi értékein lévő két bit
+      közötti logikai VAGY művelet eredményeként keletkeznek. Bit(ek)
+      1-be állítására használható.</span>
+
+      <span lang="en">A bitwise OR operation. Each local value of the
+      result is the result of a logical OR operation between two bits
+      at the same bit position ​​of the two operands. It can be used to
+      set bit(s) to 1.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd[i]:= Ra[i]|Rb[i]</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0011 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      Z</li>
+    </ul>
+
+    <h4>XOR Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti kizáró vagy művelet. Az eredmény
+      egyes helyi értékei a két operandus ugyanazon helyi értékein
+      lévő két bit közötti logikai KIZÁRÓ VAGY művelet eredményeként
+      keletkeznek. Bit(ek) összehasonlítására, illetve negálására
+      használható.</span>
+
+      <span lang="en">Bitwise exclusive OR operation. The result is
+      the result of a logical EXCLUSIVE OR operation between two bits
+      at the same bit position of the two operands. It can be used to
+      compare or negate bit(s).</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd[i]:= Ra[i]^Rb[i]</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0100 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      Z</li>
+    </ul>
+
+
+    <h4>SHL Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti (logikai) eltolás, egy bittel
+      balra. Az Ra regiszter minden bitje egy helyi értékkel feljebb
+      lép, a 0-ik bit 0 lesz. A legfelső helyi értékű bit a C
+      jelzőbitbe másolódik. Az eredmény az Rd regiszterbe
+      kerül.</span>
+
+      <span lang="en">Bitwise (logical) shift, one bit to the
+      left. Each bit of the Ra register is moved up by one place
+      value, the 0th bit becomes 0. The most significant bit is copied
+      into the C flag bit. The result is placed in the Rd
+      register.</span>
+    </p>
+
+
+    <p><img title="" src="shl.svg" alt="shl.png" /></p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= Ra[31]; Rd[i]:= Ra[i-1]; Rd[0]= 0</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0100 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z</li>
+    </ul>
+
+
+    <h4>SHR Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti (logikai) eltolás, egy bittel
+      jobbra. Az Ra regiszter minden bitje egy helyi értékkel lejjebb
+      lép, a 31-ik bit 0 lesz. A legalsó helyi értékű bit a C
+      jelzőbitbe másolódik. Az eredmény az Rd regiszterbe
+      kerül.</span>
+
+      <span lang="en">Bitwise (logical) shift, one bit to the
+      right. Each bit of the Ra register is shifted down by one bit
+      position, the 31st bit becomes 0. The least significant bit is
+      copied into the C flag bit. The result is placed in the Rd
+      register.</span>
+    </p>
+
+
+    <p><img title="" src="shr.svg" alt="shr.png" /></p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= 0</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0101 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z</li>
+    </ul>
+
+
+    <h4>SHA Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Bitenkénti (aritmetikai) eltolás, egy bittel
+      jobbra. Az Ra regiszter minden bitje egy helyi értékkel lejjebb
+      lép, a 31-ik bit nem változik. A legalsó helyi értékű bit a C
+      jelzőbitbe másolódik. Az eredmény az Rd regiszterbe
+      kerül.</span>
+
+      <span lang="en">Bitwise (arithmetic) shift, one bit to the
+      right. Each bit of the Ra register is shifted down by one bit
+      position, the 31st bit is not changed. The least significant bit
+      is copied into the C flag bit. The result is placed in the Rd
+      register.</span>
+    </p>
+
+
+    <p><img title="" src="sha.svg" alt="sha.png" /></p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= Ra[31]</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.1000 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z</li>
+    </ul>
+
+
+    <h4>ROL Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Forgatás egy bittel balra, a C jelzőbiten
+      keresztül. Az Ra regiszter tartalmának minden bitje egy helyi
+      értékkel balra lép. A legfelső helyi értékű bit a C jelzőbitbe
+      kerül, aminek az eredeti értéke lép be a legalsó helyi
+      értékre. Az eredmény az Rd regiszterbe kerül.</span>
+
+      <span lang="en">Rotate one bit to the left, via flag bit C. Each
+      bit in the contents of register Ra is shifted to the left by one
+      bit position. The highest significant bit is placed in flag bit
+      C, whose original value is placed in the lowest bit
+      position. The result is placed in register Rd.</span>
+    </p>
+
+
+    <p><img title="" src="rol.svg" alt="rol.png" /></p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= Ra[31]; Rd[i]:= Ra[i-1]; Rd[0]= C</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0101 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z</li>
+    </ul>
+
+
+    <h4>ROR Rd,Ra</h4>
+
+    <p>
+      <span lang="hu">Forgatás egy bittel jobbra, a C jelzőbiten
+      keresztül. Az Ra regiszter talmának minden bitje egy helyi
+      értékkel jobbra lép. A legalsó helyi értékű bit a C jelzőbitbe
+      kerül, aminek az eredeti értéke lép be a legfelső helyi
+      értékre. Az eredmény az Rd regiszterbe kerül.</span>
+
+      <span lang="en">Rotate one bit to the right, via flag bit
+      C. Each bit in the register Ra is shifted to the right by one
+      bit position. The least significant bit is placed in flag bit C,
+      whose original value is placed in the highest bit position. The
+      result is placed in register Rd.</span>
+    </p>
+
+
+    <p><img title="" src="ror.svg" alt="ror.png" /></p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= Ra[0]; Rd[i]:= Ra[i+1]; Rd[31]= C</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA XXXX.0110 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z</li>
+    </ul>
+
+
+    <h4>MUL Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">32 bites adatok szorzása. A 64 bites eredmény
+	alsó 32 bitjét számolja ki.</span>
+
+      <span lang="en">Multiply 32-bit data. Calculates the lower 32
+      bits of the 64-bit result.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Ra*Rb</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0110 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    
+    <h4>CMP Rd,Ra,Rb</h4>
+
+    <p>
+      <span lang="hu">Összehasonlítás. A művelet a SUB utasítással
+      egyezik, de az eredmény nem íródik be az Rd regiszterbe, csak a
+      jelzőbitek tárolódnak el.</span>
+
+      <span lang="en">Comparison. The operation is the same as the SUB
+      instruction, but the result is not written to the Rd register,
+      only the flag bits are modified.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      Rd:= Rd; FLAGS:= Ra-Rb</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 DDDD.AAAA BBBB.0111 1XXX.XXXX</tt><br />
+	<span lang="hu">Az utasításban meg kell adni az Rd regiszter
+	sorszámát is (DDDD bitek), az eredmény ennek a regiszternek a
+	tartalma lesz, amely saját magába íródik vissza.</span>
+	<span lang="en">The instruction must also specify the serial
+        number of the Rd register (DDDD bits), the result will be the
+        content of this register, which is written back into
+        itself.</span>
+      </li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C,Z,S,O</li>
+    </ul>
+
+
+    <h4>SETC</h4>
+
+    <p>
+      <span lang="hu">A C jelzőbit 1-be állítása.</span>
+
+      <span lang="en">Set flag bit C to 1.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= 1</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 XXXX.XXXX XXXX.1000 1XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C</li>
+    </ul>
+
+
+    <h4>CLRC</h4>
+
+    <p>
+      <span lang="hu">A C jelzőbit 0-ba állítása.</span>
+
+      <span lang="en">Setting flag bit C to 0.</span>
+    </p>
+
+
+    <ul>
+      <li><span lang="hu">Művelet</span><span lang="en">Operation</span>:
+      C:= 0</li>
+      <li><span lang="hu">Kódja</span><span lang="en">Code</span>:
+	<tt>FFVC.0111 XXXX.XXXX XXXX.1001 0XXX.XXXX</tt></li>
+      <li><span lang="hu">Módosított
+      jelzőbitek</span><span lang="en">Modified flag bits</span>:
+      C</li>
+    </ul>
+
+    <a name="diag"><h2>
+	<span lang="hu">Diagnosztika</span>
+	<span lang="en">Diagnostics</span>
+    </h2></a>
+
+    <p>
+      <span lang="hu">A processzor működése nyomon követhető a teszt
+	kimeneteken megjelenő jelek megfigyelésével.</span>
+
+      <span lang="en">The operation of the processor can be monitored
+      by observing the signals appearing on the test outputs.</span>
+    </p>
+
+    <h3>CLKstat</h3>
+
+    <p>
+      <span lang="hu">A CLKstat kimenetek az egymás utáni fázisok
+	sorszámát adják bináris kódban.</span>
+
+      <span lang="en">The CLKstat outputs provide the sequential phase
+      numbers in binary code.</span>
+    </p>
+
+    <h3>TREG</h3>
+
+    <p>
+      <span lang="hu">A TREG kimeneteken a 16 regiszter egyikének
+      értéke nyerhető ki, a regiszter sorszámát a TRS bemenetekre kell
+      kapcsolni, 4 bites bináris kódban.</span>
+
+      <span lang="en">The value of one of the 16 registers can be
+      obtained at the TREG outputs, the register number must be
+      connected to the TRS inputs, in 4-bit binary code.</span>
+    </p>
+
+    <h3>TR</h3>
+
+    <p>
+      <span lang="hu">A TR kivezetéseken a processzor valamely belső
+      adatát lehet megjeleníteni, a megfelelő adatot a TRS bementekre
+      adott 4 bites bináris kóddal lehet kiválasztani.</span>
+
+      <span lang="en">Some internal data of the processor can be
+      displayed on the TR pins, the corresponding data can be selected
+      with a 4-bit binary code given to the TRS inputs.</span>
+    </p>
+
+
+    <table border=1>
+      <tr>
+	<th><span lang="hu">TRS bemenet</span><span lang="en">TRS input</span></th>
+	<th><span lang="hu">TR kimenet</span><span lang="en">TR output</span></th>
+      </tr>
+      <tr>
+	<td>0</td>
+	<td>
+	  <span lang="hu">R15 (PC) értéke</span>
+	  <span lang="en">value of R15 (PC)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>1</td>
+	<td>
+	  <span lang="hu">R14 (LR) értéke</span>
+	  <span lang="en">value of R14 (LR)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>2</td>
+	<td>
+	  <span lang="hu">R13 regiszter értéke (általában SP)</span>
+	  <span lang="en">value of R13 (usually SP)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>4</td>
+	<td>
+	  <span lang="hu">IC (utasítás regiszter) értéke</span>
+	  <span lang="en">value IC (instruction register)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>5</td>
+	<td>
+	  <span lang="hu">ALU kimenete</span>
+	  <span lang="en">output of the ALU</span>
+	</td>
+      </tr>
+      <tr>
+	<td>6</td>
+	<td>
+	  <span lang="hu">Utasítás eredménye</span>
+	  <span lang="en">Result of the instruction</span>
+	</td>
+      </tr>
+      <tr>
+	<td>7</td>
+	<td>
+	  <span lang="hu">Visszaírásnál használt adat</span>
+	  <span lang="en">Write-back data</span>
+	</td>
+      </tr>
+      <tr>
+	<td>8</td>
+	<td>
+	  <span lang="hu">ENA (utasítás feltétel értéke), Rd, Ra, Rb
+	  regiszterek sorszámai</span>
+	  <span lang="en">ENA (instruction condition value), Rd, Ra, Rb
+	    register numbers</span>
+	</td>
+      </tr>
+      <tr>
+	<td>9</td>
+	<td>
+	  <span lang="hu">Az Rd regiszter értéke</span>
+	  <span lang="en">Value of the Rd register</span>
+	</td>
+      </tr>
+      <tr>
+	<td>10 (A)</td>
+	<td>
+	  <span lang="hu">Az Ra regiszter értéke</span>
+	  <span lang="en">Value of the Ra register</span>
+	</td>
+      </tr>
+      <tr>
+	<td>11 (B)</td>
+	<td>
+	  <span lang="hu">Az Rb regiszter értéke</span>
+	  <span lang="en">Value of the Rb register</span>
+	</td>
+      </tr>
+      <tr>
+	<td>12 (C)</td>
+	<td>
+	  <span lang="hu">Az ütemező kimenő vezérlő jelei</span>
+	  <span lang="en">Output control signals of the scheduler</span>
+	</td>
+      </tr>
+      <tr>
+	<td>13 (D)</td>
+	<td>
+	  <span lang="hu">MA (memória illesztő cím kimenete)</span>
+	  <span lang="en">MA (memory interafce address output)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>14 (E)</td>
+	<td>
+	  <span lang="hu">MDO (memória illesztő adat kimenete)</span>
+	  <span lang="en">MDO (memory interface data output)</span>
+	</td>
+      </tr>
+      <tr>
+	<td>15 (F)</td>
+	<td>
+	  <span lang="hu">MDI (memória illesztő adat bemenete)</span>
+	  <span lang="en">MDI (memory interface data input)</span>
+	</td>
+      </tr>
+    </table>
+
+    <hr>
 
   </body>
 </html>
