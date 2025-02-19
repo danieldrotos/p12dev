@@ -977,24 +977,6 @@ function new_symbol($name, $value, $type)
 }
 
 
-function mk_symbol($name, $value, $type= "S")
-{
-    global $syms, $fin, $lnr, $segment;
-    $skey= arri($segment,'id').$name;
-    $s= arri($syms, /*$name*/$skey);
-    if (is_array($s))
-    {
-        ddie("Redefinition of symbol $name", 9);
-    }
-    $sym= new_symbol($name, $value, $type);
-    $sym['segid']= arri($segment, 'id');
-    $sym['owner']= arri($segment, 'id');
-    $syms[$skey]= $sym;
-    debug("Symbol {$name} created at {$skey}");
-    return $sym;
-}
-
-
 function symbol_to_table(&$sym, $skey)
 {
     global $syms, $fin, $lnr;
@@ -1051,7 +1033,7 @@ function make_sym_global($w)
         return; // alreay global
     }
     if (is_array($sg) && is_array($sl))
-        ddie("Redefinition of global symbol ($w)");
+        ddie("Redefinition of global symbol $w (defined at {$sg['fin']}:{$sg['lnr']})");
     debug("Exporting symbol \"$w\"");
     $sl['segid']= false;
     unset($syms[arri($segment,'id').$w]);
@@ -1136,6 +1118,63 @@ function define_symbol($name, $value, $type, $inseg_id=false, $pfin='', $plnr=''
     return $skey;
 }
 
+function create_symbol($name, $value, $type)
+{
+    global $syms, $fin, $lnr, $segment;
+    if ($name=='') return '';
+    $inseg_id= arri($segment, 'id');
+    $skey= $inseg_id.$name;
+    $es= arri($syms,$skey);
+    if ($es != '')
+    {
+        ddie("Redefinition of symbol $name (defined at {$es['fin']}:{$es['lnr']})", 9);
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $fin;
+    $s['lnr']= $lnr;
+    if ($inseg_id!='')
+    {
+        $s['segid']= $inseg_id;
+        $s['owner']= $inseg_id;
+    }
+    if ($inseg_id===false) 
+    {
+        $s['type']= $type;
+        $s['value']= $value;
+        $s['extern']= false;
+        $s['defined']= true;
+    }
+    $syms[$skey]= $s;
+    return $skey;
+}
+
+function create_global_symbol($name, $value, $type)
+{
+    global $syms, $fin, $lnr, $segment;
+    if ($name=='') return '';
+    $es= arri($syms,$name);
+    if ($es != '')
+    {
+        ddie("Redefinition of symbol $name (defined at {$es['fin']}:{$es['lnr']})", 9);
+    }
+    $s= new_symbol($name, $value, $type);
+    $s['fin']= $fin;
+    $s['lnr']= $lnr;
+    $s['segid']= false;
+    $s['owner']= false;
+    $s['type']= $type;
+    $s['value']= $value;
+    $s['extern']= false;
+    $s['defined']= true;
+    $inseg_id= arri($segment, 'id');
+    if ($inseg_id!='')
+    {
+        $s['owner']= $inseg_id;
+    }
+    $syms[$name]= $s;
+    return $name;
+}
+
 
 function mk_mem($addr, $icode=0, $error= false)
 {
@@ -1207,15 +1246,15 @@ function proc_asm_line($l)
             $xaddr= sprintf("%x", $addr);
             debug("proc_asm_line; found label=$n at addr=$xaddr");
             mk_mem($addr);
-            if ($commas > 1)
+            if (($commas > 1) /*|| ($segment===false)*/)
             {
-                $label= /*mk*/define_symbol($n, $addr, "L");
+                $label= /*define*/create_global_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
-                make_sym_global($n);
+                //make_sym_global($n);
             }
             else
             {
-                $label= /*mk*/define_symbol($n, $addr, "L");
+                $label= /*define*/create_symbol($n, $addr, "L");
                 $mem[$addr]['tags'][$n]= $n;
                 debug("$n still be local");
             }
@@ -1279,11 +1318,13 @@ function proc_asm_line($l)
                 return;
             $val= intval($w,0);
             debug("proc_asm_line; EQU W=$W w=$w val=$val");
-            /*mk*/define_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             if ($W=="==")
-                make_sym_global($prew);
+                create_global_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
             else
+            {
+                create_symbol($prew, $val, (($W=="=")||($W=="=="))?"=":"S");
                 debug("$prew still be local (W=$W)");
+            }
             debug("proc_asm_line; SYMBOL $prew=$val");
             $ok= true;
             return;

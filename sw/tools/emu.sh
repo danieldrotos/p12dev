@@ -9,7 +9,7 @@ fi
 function tt()
 {
     sleep 1
-    xfce4-terminal -T "$1" -x telnet localhost "$2" &
+    xfce4-terminal -T "$1" -x telnet localhost "$2" 2>/dev/null &
 }
 
 i=0
@@ -28,8 +28,6 @@ if [ "$1" = "-n" ]; then
 fi
 
 tt "UART" 5555 &
-tt "cmd1" 6666 &
-tt "cmd2" 6666 &
 
 I="-I if=rom[0xffff]"
-$SIM -t2 -Z6666 -S uart=0,port=5555 $I $GOPT -e "uart0_check_often=1" $1 ${PMON}/pmon
+$SIM -t2 -z6666 -S uart=0,port=5555 $I $GOPT -e "uart0_check_often=1" -u n4ddr $1 ${PMON}/pmon

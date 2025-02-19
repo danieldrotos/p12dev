@@ -5,7 +5,7 @@ használhatunk. Windows-on a geany is alkalmazható. Az Open funkcióval
 megnyithatók a szerkesztendő fájlok.
 
 
-## 1. Projekt létrehozása
+## Projekt létrehozása
 
 
 Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
@@ -18,22 +18,22 @@ Töltsük ki/módosítsuk a `prj.mk` fájlt. Paraméterek:
 - `INSTS` a szimulációban lefuttatandó utasítások száma.
 
 
-## 2. Írjuk meg a programot
+## Írjuk meg a programot
 
 A `PRG` paraméterben megadott néven (és helyre) mentsük el a fájlt
 **.asm** kiterjesztéssel. Az irodalomjegyzékből használjuk a
 
-[pcpu](https://danieldrotos.github.io/p12dev/p2223.html)
+[cpu](https://danieldrotos.github.io/p12dev/p2223.html)
 
 anyagot, amiben megtaláljuk a CPU utasításait, és a
 
-[pasm](https://danieldrotos.github.io/p12dev/asm.html)
+[asm](https://danieldrotos.github.io/p12dev/asm.html)
 
 dokumentumot, amiben az assembler pszeudó utasításai vannak leírva. A
 fordításhoz az alább szereplő eljárást használjuk!
 
 
-## 3. Fordítás, szimuláció
+## Fordítás, szimuláció
 
 A műveletet parancssorból a
 
@@ -56,37 +56,50 @@ A fordításnak a gtkwave bezárásakor lesz vége, a geany-ban ez után
 folytathatjuk a munkát.
 
 
-## 4. Egyéb műveletek
-
-A fordítás és a szimuláció eredményének letörlése:
+## Egyéb műveletek
 
 ```
-make clean
+make progs        ; a monitor és a példák lefordítása
+make sw           ; csak a szoftver lefordítása
+make hw           ; csak a hardver lefordítása, szimuláció nélkül
+make compile      ; szoftver és a hardver terv lefordítása szimuláció nélkül
+make sim          ; csak a hardver lefordítása és szimulációja
+make show         ; a VCD fájl megjelenítése a gtkwave-el
+make iss          ; az alkalmazás szimulációja uCsim-el
+make emu          ; uCsim, az FPGA kártya kép megjelenítésével
+make clean        ; a generált fájlok letörlése
 ```
 
-Geany esetén: "Összeállítás" menü "Make egyéni céllal"
-(Shift-Ctrl-F9), majd írjuk be a clean célt.
 
-A szoftver és a hardver terv lefordítása szimuláció nélkül:
+## Utasításkészlet szimuláció
 
-```
-make compile
-```
-
-Csak a hardver lefordítása és szimulációja:
+A hardveres szimuláció mellett a rendszer szoftveresen is szimulálható
+uCsim szimulátor segítségével. A művelet a következő paranccsal indítható:
 
 ```
-make sim
+make iss
 ```
 
-Csak a hardver lefordítása, szimuláció nélkül:
+Elindítja a szimulációt és három terminál ablakot nyit meg, **UART**,
+**cmd1** és **cmd2** címmel. Az UART ablak az szimulált uarthoz
+csatlakozik, ebben nyomjuk meg az ENTER billentyűt, hogy megkapjuk a
+monitor promptot. A program elindításához adjuk ki a
 
 ```
-make hw
+g kezdőcím
 ```
 
-Csak a szoftver lefordítása:
+monitor parancsot, hexadecimális cím használatával. A cmd1 és cmd2
+ablakok a szimulátor vezérlésére használhatók, a dokumentáció a
+következő címen található:
 
-```
-make sw
-```
+http://www.ucsim.hu
+
+
+## FPGA megvalósítás
+
+Az FPGA megvalósítás lefordításához és kártyára való letöltéséhez
+használjuk a fejlesztőrendszer részletes leírását tartalmazó
+dokumentációt:
+
+[dev](https://danieldrotos.github.io/p12dev/devenv.html)

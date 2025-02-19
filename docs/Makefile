@@ -15,3 +15,7 @@ generator:
 
 segchars.html: $(PMON)/pmon.p2h $(PROGS)/genseg.p2h
 	$(UCSIM) -Iif='rom[0xffff]' -Suart=0,out='segchars.html',raw -G $(PMON)/pmon $(PROGS)/genseg
+
+clean:
+	$(RM) *~
+	$(RM) *.bak

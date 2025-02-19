@@ -2,24 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       lvar= "en";
-       $htmlTag.classList.add("englishLang")
-       break
-   }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -30,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -104,9 +138,17 @@
       </li>
     </ul>
 
-    <p>Visszatérés a felhasználói programból a monitorhoz. A függvény
-    nem tér vissza, azonban a program a <tt>go</tt> monitor paranccsal
-    folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Visszatérés a felhasználói programból a
+      monitorhoz. A függvény nem tér vissza, azonban a program
+      a <tt>go</tt> monitor paranccsal folytatható a hívás utáni
+      utasítástól.</span>
+
+      <span lang="en">Return from the user program to the monitor. The
+      function does not return, but the program can be continued from
+      the statement following the call with the <tt>go</tt> monitor
+      command.</span>
+    </p>
     
 
     <a name="monitor_by_uart"><h3>monitor_by_uart</h3></a>
@@ -124,10 +166,20 @@
       </li>
     </ul>
 
-    <p>Feltételes visszatérés a felhasználói programból a monitorhoz,
-    ha a soros vonalon van beolbasható karakter. A függvény nem tér
-    vissza, azonban a program a <tt>go</tt> monitor paranccsal
-    folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Feltételes visszatérés a felhasználói programból
+      a monitorhoz, ha a soros vonalon van beolbasható karakter. A
+      függvény nem tér vissza, azonban a program
+      a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
+      folytatható a hívás utáni utasítástól.</span>
+
+      <span lang="en">Conditional return from the user program to the
+      monitor if there is a readable character on the serial line. The
+      function does not return, but the program can be continued from
+      the statement after the call with
+      the <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor
+      command.</span>
+    </p>
 
     
     <a name="monitor_by_button"><h3>monitor_by_button</h3></a>
@@ -145,10 +197,20 @@
       </li>
     </ul>
 
-    <p>Feltételes visszatérés a felhasználói programból a monitorhoz,
-      ha az R0-ban megadott sorszámú nyomógmb megnyomódik. A függvény
-      nem tér vissza, azonban a program a <tt>go</tt> monitor paranccsal
-      folytatható a hívás utáni utasítástól.</p>
+    <p>
+      <span lang="hu">Feltételes visszatérés a felhasználói programból
+      a monitorhoz, ha az R0-ban megadott sorszámú nyomógmb
+      megnyomódik. A függvény nem tér vissza, azonban a program
+      a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
+      folytatható a hívás utáni utasítástól.</span>
+
+      <span lang="en">Conditional return from the user program to the
+      monitor if the pushbutton with the number specified in R0 is
+      pressed. The function does not return, but the program can be
+      continued from the instruction following the call with the
+      monitor command
+      <a href="pmon.html#cmd_go"><tt>go</tt></a>.</span>
+    </p>
 
     
     <a name="monitor_version"><h3>monitor_version</h3></a>
@@ -166,8 +228,39 @@
       </li>
     </ul>
 
-    <p>A pmon monitor program verziószámát adja meg. Az eredmény
-    1. bájtja a fő verziószám, a 0. bájt pedig az al verziószám.</p>
+    <p>
+      <span lang="hu">A pmon monitor program verziószámát adja meg. Az
+	eredmény 1. bájtja a fő verziószám, a 0. bájt pedig az al
+	verziószám.</span>
+
+      <span lang="en">Returns the version number of the pmon monitor
+      program. The 1st byte of the result is the major version number,
+      and the 0th byte is the minor version number.</span>
+    </p>
+
+    
+    <a name="exit"><h3>exit</h3></a>
+    
+    <ul>
+      <li><span lang="en">Input(s):</span>
+	<span lang="hu">Bemenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+      <li><span lang="en">Output(s):</span>
+	<span lang="hu">Kimenet(ek):</span>
+	<span lang="en">-</span>
+	<span lang="hu">-</span>
+      </li>
+    </ul>
+
+    <p>
+      <span lang="hu">Kilépés a programból, feltétel nélküli és
+      végleges visszatérés a monitorhoz.</span>
+
+      <span lang="en">Exit the program, unconditional and
+	final return to the monitor.</span>
+    </p>
 
     
     <hr>

@@ -2,24 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       lvar= "en";
-       $htmlTag.classList.add("englishLang")
-       break
-   }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -30,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -103,11 +137,21 @@
       </li>
     </ul>
 
-    <p>Decimális szám leírását tartalmazó sztring átalakítása
-    számmá. A számnak pozitívnak kell lennie, előjel karaktert nem
-    tartalmazhat. Ha a sztring nem tartalmaz hibás, érvénytelen
-    karaktert, akkor a flag regiszter C bitje 1 lesz. Ellenkező
-    esetben a konverzió befejeződik a hibás karakternél.</p>
+    <p>
+      <span lang="hu">Decimális szám leírását tartalmazó sztring
+      átalakítása számmá. A számnak pozitívnak kell lennie, előjel
+      karaktert nem tartalmazhat. Ha a sztring nem tartalmaz hibás,
+      érvénytelen karaktert, akkor a flag regiszter C bitje 1
+      lesz. Ellenkező esetben a konverzió befejeződik a hibás
+      karakternél.</span>
+
+      <span lang="en">Convert a string containing a description of a
+      decimal number to a number. The number must be positive, and
+      must not contain a sign character. If the string does not
+      contain any invalid characters, then bit C of the flag register
+      will be set to 1. Otherwise, the conversion will end at the
+      invalid character.</span>
+    </p>
 
 
     <a name="htoi"><h3>htoi</h3></a>
@@ -125,12 +169,21 @@
       </li>
     </ul>
 
-    <p>Hexadecimális szám leírását tartalmazó sztring átalakítása
-      számmá. A számnak pozitívnak kell lennie, előjel karaktert nem
-      tartalmazhat. Az a-f számjegyek kis és nagybetűk is lehetnek. Ha
-      a sztring nem tartalmaz hibás, érvénytelen karaktert, akkor a
-      flag regiszter C bitje 1 lesz. Ellenkező esetben a konverzió
-      befejeződik a hibás karakternél.</p>
+    <p>
+      <span lang="hu">Hexadecimális szám leírását tartalmazó sztring
+      átalakítása számmá. A számnak pozitívnak kell lennie, előjel
+      karaktert nem tartalmazhat. Az a-f számjegyek kis és nagybetűk
+      is lehetnek. Ha a sztring nem tartalmaz hibás, érvénytelen
+      karaktert, akkor a flag regiszter C bitje 1 lesz. Ellenkező
+      esetben a konverzió befejeződik a hibás karakternél.</span>
+
+      <span lang="en">Convert a string containing a hexadecimal number
+      to a number. The number must be positive and cannot contain a
+      sign character. The digits a-f can be either upper or lower
+      case. If the string does not contain any invalid characters, bit
+      C of the flag register will be set to 1. Otherwise, the
+      conversion will end at the invalid character.</span>
+    </p>
 
     
     <a name="str_chr"><h3>str_chr</h3></a>
@@ -148,12 +201,24 @@
       </li>
     </ul>
 
-    <p>Az R1 regiszterben lévő karakter keresése az R0 címen kezdődő
-    sztringben, a kis- és a nagybetűk különbözőnek számítanak. Ha a
-    keresett karakter megtalálható a szövegben, akkor az R4 a karakter
-    tartalmazó szó címe lesz, az R5 pedig a karakter indexe a
-    szóban. Ha nincs találat, az R4 és R5 0 lesz. A találatot a flag
-    regiszter C bitjének 1 értéke jelzi.</p>
+    <p>
+      <span lang="hu">Az R1 regiszterben lévő karakter keresése az R0
+      címen kezdődő sztringben, a kis- és a nagybetűk különbözőnek
+      számítanak. Ha a keresett karakter megtalálható a szövegben,
+      akkor az R4 a karakter tartalmazó szó címe lesz, az R5 pedig a
+      karakter indexe a szóban. Ha nincs találat, az R4 és R5 0
+      lesz. A találatot a flag regiszter C bitjének 1 értéke
+      jelzi.</span>
+
+      <span lang="en">Search for the character in register R1 in the
+      string starting at address which is in R0, uppercase and
+      lowercase letters are considered to be different. If the
+      searched character is found in the string, then R4 will be the
+      address of the word containing the character, and R5 will be the
+      index of the character in the memory word. If there is no match,
+      R4 and R5 will be 0. A match is indicated by the value of 1 in
+      bit C of the flag register.</span>
+    </p>
 
     
     <a name="str_eq"><h3>str_eq</h3></a>
@@ -171,9 +236,15 @@
       </li>
     </ul>
 
-    <p>Két sztring összehasonlítása, a kis- és a nagybetűk
-    különbözőnek számítanak. Egyezés esetén a flag regiszter C bitje 1
-    lesz.</p>
+    <p>
+      <span lang="hu">Két sztring összehasonlítása, a kis- és a
+      nagybetűk különbözőnek számítanak. Egyezés esetén a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Compare two strings, lowercase and uppercase
+      letters are considered different. If there is a match, bit C of
+      the flag register will be set to 1.</span>
+    </p>
 
     
     <a name="str_ieq"><h3>str_ieq</h3></a>
@@ -191,9 +262,15 @@
       </li>
     </ul>
 
-    <p>Két sztring összehasonlítása, a kis- és a nagybetűk
-    megegyezőnek számítanak. Egyezés esetén a flag regiszter C bitje 1
-    lesz.</p>
+    <p>
+      <span lang="hu">Két sztring összehasonlítása, a kis- és a
+      nagybetűk megegyezőnek számítanak. Egyezés esetén a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Compare two strings, lowercase and uppercase
+      letters are considered the same. If there is a match, bit C of
+      the flag register will be set to 1.</span>
+    </p>
 
     
     <a name="str_len"><h3>str_len</h3></a>
@@ -211,8 +288,13 @@
       </li>
     </ul>
 
-    <p>String hosszának meghatározása. A függvény a sztringben lévő
-    karakterek számát adja.</p>
+    <p>
+      <span lang="hu">String hosszának meghatározása. A függvény a
+	sztringben lévő karakterek számát adja.</span>
+
+      <span lang="en">Determines the length of a string. The function
+      returns the number of characters in the string.</span>
+    </p>
 
     
     <a name="str_size"><h3>str_size</h3></a>
@@ -230,14 +312,21 @@
       </li>
     </ul>
 
-    <p>A függvény egy sztring által elfoglalt memória hely méretét
-    adja meg, beleértve a sztringet záró 0 értékű szót is.</p>
+    <p>
+      <span lang="hu">A függvény egy sztring által elfoglalt memória
+	hely méretét adja meg, beleértve a sztringet záró 0 értékű
+	szót is.</span>
+
+      <span lang="en">The function returns the size of the memory
+      space occupied by a string, including the 0-valued word that
+      terminates the string.</span>
+    </p>
 
 
     <a name="str_getchar"><h3>str_getchar</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string, R1=index</span>
 	<span lang="hu">R0=sztring, R1=index</span>
@@ -249,15 +338,24 @@
       </li>
     </ul>
 
-    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
-    karakterét adja, az első karakter sorszáma 0. Ha a sorszám
-    nagyobb, mint a sztring hossza, akkor 0 lesz az eredmény.</p>
+    <p>
+      <span lang="hu">A függvény normál/pakolt formájú sztringnek egy
+      adott sorszámú karakterét adja, az első karakter sorszáma 0. Ha
+      a sorszám nagyobb, mint a sztring hossza, akkor 0 lesz az
+      eredmény.</span>
+
+      <span lang="en">The function returns a character with a given
+      sequence number of a string in normal/packed form, the sequence
+      number of the first character is 0. If the sequence number is
+      greater than the length of the string, then the result will be
+      0.</span>
+    </p>
 
     
     <a name="str_setchar"><h3>str_setchar</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string, R1=index, R2=char</span>
 	<span lang="hu">R0=sztring, R1=index, R2=karakter</span>
@@ -269,17 +367,24 @@
       </li>
     </ul>
 
-    <p>A függvény normál/pakolt formájú sztringnek egy adott sorszámú
-    (első karakter sorszáma 0) karakterét lecseréli a megadott
-    karakterre. Ha a sorszám nagyobb a sztring hosszánál, akkor nem
-    történik módosítás.
+    <p>
+      <span lang="hu">A függvény normál/pakolt formájú sztringnek egy
+      adott sorszámú (első karakter sorszáma 0) karakterét lecseréli a
+      megadott karakterre. Ha a sorszám nagyobb a sztring hosszánál,
+      akkor nem történik módosítás.</span>
+
+      <span lang="en">The function replaces a character with a given
+      sequence number (the first character has sequence number 0) of a
+      normal/packed string with the specified character. If the
+      sequence number is greater than the length of the string, then
+      no modification is made.</span>
     </p>
 
     
     <a name="str_packed"><h3>str_packed</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=string</span>
 	<span lang="hu">R0=sztring</span>
@@ -291,16 +396,22 @@
       </li>
     </ul>
 
-    <p>A függvény megvizsgálja, hogy a paraméterül megadott helyen
-    kezdődő sztring pakolt formátumú-e, ha igen, a C flag 1 lesz. Az
-    üres sztring nem pakolt formátumú.
+    <p>
+      <span lang="hu">A függvény megvizsgálja, hogy a paraméterül
+      megadott helyen kezdődő sztring pakolt formátumú-e, ha igen, a C
+      flag 1 lesz. Az üres sztring nem pakolt formátumú.</span>
+
+      <span lang="en">The function checks whether the string starting
+      at the position specified as the parameter is in packed format,
+      if so, the C flag will be 1. The empty string is not
+      packed.</span>
     </p>
 
     
     <a name="str_unpack"><h3>str_unpack</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=input string, R1=output string</span>
 	<span lang="hu">R0=bemeneti sztring, R1=kimeneti sztring</span>
@@ -311,16 +422,21 @@
       </li>
     </ul>
 
-    <p>A függvény átalakít egy normál/pakolt sztringet normál
-    formára. A kimeneti buffer méretét nem ellenőrzni, a megfelelő
-    tárterületről a hívás előtt kell gondoskodni.
+    <p>
+      <span lang="hu">A függvény átalakít egy normál/pakolt sztringet
+      normál formára. A kimeneti buffer méretét nem ellenőrzni, a
+      megfelelő tárterületről a hívás előtt kell gondoskodni.</span>
+
+      <span lang="en">The function converts a normal/packed string to
+      normal form. The size of the output buffer is not checked,
+      adequate storage space must be provided before the call.</span>
     </p>
 
     
     <a name="str_pack"><h3>str_pack</h3></a>
 
     <ul>
-      <li><spanlang="en">Input(s):</span>
+      <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=input string, R1=output string</span>
 	<span lang="hu">R0=bemeneti sztring, R1=kimeneti sztring</span>
@@ -331,9 +447,14 @@
       </li>
     </ul>
 
-    <p>A függvény átalakít egy normál/pakolt sztringet pakolt
-    formára. A kimeneti buffer méretét nem ellenőrzni, a megfelelő
-    tárterületről a hívás előtt kell gondoskodni.
+    <p>
+      <span lang="hu">A függvény átalakít egy normál/pakolt sztringet
+      pakolt formára. A kimeneti buffer méretét nem ellenőrzni, a
+      megfelelő tárterületről a hívás előtt kell gondoskodni.</span>
+
+      <span lang="en">The function converts a normal/packed string to
+      packed form. The size of the output buffer is not checked,
+      adequate storage space must be provided before the call.</span>
     </p>
 
     

@@ -2,24 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       lvar= "en";
-       $htmlTag.classList.add("englishLang")
-       break
-   }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -30,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -104,8 +138,15 @@
       </li>
     </ul>
 
-    <p>Előjel nélküli egész számok osztása: R2= R0/R1. Az osztó (R1)
-    nem lehet 0. Az osztás maradéka az R3 regiszterbe kerül.</p>
+    <p>
+      <span lang="hu">Előjel nélküli egész számok osztása: R2=
+      R0/R1. Az osztó (R1) nem lehet 0. Az osztás maradéka az R3
+      regiszterbe kerül.</span>
+
+      <span lang="en">Dividing unsigned integers: R2= R0/R1. The
+      divisor (R1) cannot be 0. The remainder of the division is
+      placed in the R3 register.</span>
+    </p>
 
 
     <a name="rand"><h3>rand</h3></a>
@@ -123,7 +164,12 @@
       </li>
     </ul>
 
-    <p>32 bites, előjel nélküli véletlen szám generálása.</p>
+    <p>
+      <span lang="hu">32 bites, előjel nélküli véletlen szám
+      generálása.</span>
+
+      <span lang="en">Generate a 32-bit unsigned random number.</span>
+    </p>
 
 
     <a name="rand_max"><h3>rand_max</h3></a>
@@ -141,8 +187,14 @@
       </li>
     </ul>
 
-    <p>32 bites, előjel nélküli véletlen szám generálása, amely a
-    0 és a maximum (paraméter) értékhatárok közé esik.</p>
+    <p>
+      <span lang="hu">32 bites, előjel nélküli véletlen szám
+	generálása, amely a 0 és a maximum (paraméter) értékhatárok
+	közé esik.</span>
+
+      <span lang="en">Generate a 32-bit unsigned random number that
+      falls between 0 and the maximum (parameter) value limits.</span>
+    </p>
 
 
     <a name="srand"><h3>srand</h3></a>
@@ -160,9 +212,15 @@
       </li>
     </ul>
 
-    <p>A véletlen szám generátor aktuális értékének beállítása. A
-    következő rand hívás a véletlen szekvencia következő értékét fogja
-    adni.</p>
+    <p>
+      <span lang="hu">A véletlen szám generátor aktuális értékének
+      beállítása. A következő rand hívás a véletlen szekvencia
+      következő értékét fogja adni.</span>
+
+      <span lang="en">Sets the current value of the random number
+      generator. The next rand call will return the next value of the
+      random sequence.</span>
+    </p>
 
         
     <hr>

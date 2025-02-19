@@ -2,24 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       lvar= "en";
-       $htmlTag.classList.add("englishLang")
-       break
-   }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -30,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -103,9 +137,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-    számjegy (0-9) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
-    lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy számjegy (0-9) ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a digit (0-9) character. If so, bit
+      C of register flag will be set to 1.</span>
+    </p>    
 
 
     <a name="islower"><h3>islower</h3></a>
@@ -123,9 +163,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      kisbetű (a-z) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
-      lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy kisbetű (a-z) ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a lowercase letter (a-z). If so, bit
+      C of register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="isupper"><h3>isupper</h3></a>
@@ -143,9 +189,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      nagybetű (A-Z) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
-      lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy nagybetű (A-Z) ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for an uppercase letter (A-Z). If so,
+      bit C of register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="isalpha"><h3>isalpha</h3></a>
@@ -163,9 +215,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      betű (a-z, A-Z) ascii kódja-e. Ha igen, a flag regiszter C bitje 1
-      lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy betű (a-z, A-Z) ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a letter (a-z, A-Z). If so, bit C of
+      register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="isalpha"><h3>isalnum</h3></a>
@@ -183,9 +241,16 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      betű vagy szám (a-z, A-Z, 0-9) ascii kódja-e. Ha igen, a flag
-      regiszter C bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy betű vagy szám (a-z, A-Z, 0-9) ascii kódja-e. Ha
+      igen, a flag regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a letter or number (a-z, A-Z,
+      0-9). If yes, bit C of the flag register will be set to
+      1.</span>
+    </p>    
 
     
     <a name="isblank"><h3>isblank</h3></a>
@@ -203,9 +268,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      szóköz/tabulátor ascii kódja-e. Ha igen, a flag regiszter C
-      bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy szóköz/tabulátor ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a space or tab. If so, bit C of
+      register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="isprint"><h3>isprint</h3></a>
@@ -223,9 +294,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      nyomtatható karakter ascii kódja-e. Ha igen, a flag regiszter C
-      bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy nyomtatható karakter ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a printable character. If so, bit C
+      of register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="ispunct"><h3>ispunct</h3></a>
@@ -243,9 +320,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      írásjel karakter ascii kódja-e. Ha igen, a flag regiszter C
-      bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy írásjel karakter ascii kódja-e. Ha igen, a flag
+      regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a punctuation character. If so, bit
+      C of register flag will be set to 1.</span>
+    </p>    
 
     
     <a name="isspace"><h3>isspace</h3></a>
@@ -263,9 +346,16 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      elválasztó jel karakter ascii kódja-e. Ha igen, a flag regiszter
-      C bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy elválasztó (üres hely) jel karakter ascii
+      kódja-e. Ha igen, a flag regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a separator character (any character
+      that makes space). If so, bit C of the flag register will be set
+      to 1.</span>
+    </p>    
 
     
     <a name="isxdigit"><h3>isxdigit</h3></a>
@@ -283,9 +373,15 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód vizsgálata, hogy az egy
-      hexadecimális számjegy karakter ascii kódja-e. Ha igen, a flag
-      regiszter C bitje 1 lesz.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód vizsgálata,
+      hogy az egy hexadecimális számjegy karakter ascii kódja-e. Ha
+      igen, a flag regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Check the character code in register R0 to see
+      if it is the ASCII code for a hexadecimal digit character. If it
+      is, bit C of the flag register will be set to 1.</span>
+    </p>    
 
     
     <a name="tolower"><h3>tolower</h3></a>
@@ -303,8 +399,13 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód átalakítása kisbetűsre, ha
-    a bemeneti adat egy nagybetű kódja.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód átalakítása
+	kisbetűsre, ha a bemeneti adat egy nagybetű kódja.</span>
+
+      <span lang="en">Convert the character code in register R0 to
+      lowercase if the input data is an uppercase character.</span>
+    </p>    
 
     
     <a name="toupper"><h3>toupper</h3></a>
@@ -322,8 +423,13 @@
       </li>
     </ul>
 
-    <p>Az R0 regiszterben lévő karakterkód átalakítása nagybetűsre, ha
-      a bemeneti adat egy kisbetű kódja.</p>    
+    <p>
+      <span lang="hu">Az R0 regiszterben lévő karakterkód átalakítása
+	nagybetűsre, ha a bemeneti adat egy kisbetű kódja.</span>
+
+      <span lang="en">Convert the character code in register R0 to
+      uppercase if the input data is a lowercase character.</span>
+    </p>    
 
     
     <hr>

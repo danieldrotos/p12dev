@@ -2,18 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   const lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       $htmlTag.classList.add("englishLang")
-       break
-   }
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -24,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -98,9 +138,15 @@
       </li>
     </ul>
 
-    <p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy
-    van-e az UART-ban beolvasható vett karakter, ha igen, a flag
-    regiszter C bitje 1 lesz.</p>
+    <p>
+      <span lang="hu">Az UART vevő állapotának vizsgálata. Azt mutatja
+      meg, hogy van-e az UART-ban beolvasható vett karakter, ha igen,
+      a flag regiszter C bitje 1 lesz.</span>
+
+      <span lang="en">Checks the UART receiver status. It shows
+      whether there is a character received in the UART that can be
+      read, if so, bit C of the flag register will be set to 1.</span>
+    </p>
 
     
     <a name="getchar"><h3>getchar</h3></a>
@@ -118,8 +164,13 @@
       </li>
     </ul>
 
-    <p>Várakozás egy karakter vételére, majd a karakter kiolvasása az
-    UART áramkörből.</p>
+    <p>
+      <span lang="hu">Várakozás egy karakter vételére, majd a karakter
+	kiolvasása az UART áramkörből.</span>
+
+      <span lang="en">Waiting for a character to be received, then
+      reading the character from the UART circuit.</span>
+    </p>
 
     
     <a name="read"><h3>read</h3></a>
@@ -137,9 +188,17 @@
       </li>
     </ul>
 
-    <p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
-    karakterre, a vevő állapotát előzőleg az input_avail funkcióval
-    kell vizsgálni.</p>
+    <p>
+      <span lang="hu">Az UART vevő áramkörének kiolvasása. A szubrutin
+	nem vár új karakterre, a vevő állapotát előzőleg
+	az <a href="#input_avail">input_avail</a> funkcióval kell
+	vizsgálni.</span>
+
+      <span lang="en">Reading the UART receiver circuit. The
+      subroutine does not wait for a new character, the receiver
+      status must be checked beforehand with
+      the <a href="#input_avail">input_avail</a> function.</span>
+    </p>
 
 
     <a name="le_init"><h3>le_init</h3></a>
@@ -157,9 +216,15 @@
       </li>
     </ul>
 
-    <p>A sor beolvasó függvény számára beállítja a beolvasáshoz
-    használandó puffer címét és méretét. A puffert üresre állítja, így
-    a sor beolvasása elkezdhető.</p>
+    <p>
+      <span lang="hu">A sor beolvasó függvény számára beállítja a
+      beolvasáshoz használandó puffer címét és méretét. A puffert üresre
+      állítja, így a sor beolvasása elkezdhető.</span>
+
+      <span lang="en">Sets the address and size of the buffer to be
+      used for reading for the line editor function. Sets the buffer
+      to empty so that the line can be read.</span>
+    </p>
 
 
     <a name="le_start"><h3>le_start</h3></a>
@@ -177,8 +242,13 @@
       </li>
     </ul>
 
-    <p>A sor beolvasó függvény által használt puffert kiüríti, így új
-    beolvasás kezdhető.</p>
+    <p>
+      <span lang="hu">A sor beolvasó függvény által használt puffert
+	kiüríti, így új beolvasás kezdhető.</span>
+
+      <span lang="en">Emptys the buffer used by the line reader
+      function so that a new read can be started.</span>
+    </p>
 
 
     <a name="le_read"><h3>le_read</h3></a>
@@ -196,10 +266,17 @@
       </li>
     </ul>
 
-    <p>Megvizsgálja, hogy van-e beolvasható karakter, ha igen,
-    elhelyezi a sor pufferben, amíg az meg nem telik. Kezeli a
-    backspace törlő billentyűt. Ha a bevitel közben megnyomták az
-    ENTER-t, akkor a C flag-et 1-be állítja.</p>
+    <p>
+      <span lang="hu">Megvizsgálja, hogy van-e beolvasható karakter,
+      ha igen, elhelyezi a sor pufferben, amíg az meg nem
+      telik. Kezeli a backspace törlő billentyűt. Ha a bevitel közben
+      megnyomták az ENTER-t, akkor a C flag-et 1-be állítja.</span>
+
+      <span lang="en">Checks if there is a readable character, if so,
+      places it in the line buffer until it is full. Handles the
+      backspace key. If ENTER is pressed during input, sets the
+      C flag to 1.</span>
+    </p>
 
 
     <hr>

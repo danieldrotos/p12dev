@@ -2,18 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   const lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       $htmlTag.classList.add("englishLang")
-       break
-   }
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta charset="utf-8">
@@ -24,6 +62,8 @@
   <body>
  
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -44,7 +84,7 @@
     
    
       <table border=0>
-      <tr><td><a href="#move_group">Adatmozgatás</a>:</td>
+	<tr><td><a href="#move_group"><span lang="hu">Adatmozgatás</span><span lang="en">Data movement</span></a>:</td>
       <td><a class="inst" href="#MOV"><span class="mov">MOV</span></a>
     <a class="inst" href="#MVH"><span class="mov">MVH</span></a>
     <a class="inst" href="#MVL"><span class="mov">MVL</span></a>
@@ -65,17 +105,17 @@
     <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
       </td></tr>
       
-    <tr><td><a href="#call_group">Szubrutinhívás</a>:</td>
+	<tr><td><a href="#call_group"><span lang="hu">Szubrutinhívás</span><span lang="en">Subroutine call</span></a>:</td>
     <td><a class="inst" href="#CALL"><span class="call">CALL</span></a>
     <a class="inst" href="#CES"><span class="call">CES</span></a>
     </td></tr>
     
-    <tr><td><a href="#mem_group">Memória</a>:</td>
+	<tr><td><a href="#mem_group"><span lang="hu">Memória</span><span lang="en">Memory</span></a>:</td>
     <td><a class="inst" href="#LD"><span class="mem">LD</span></a>
     <a class="inst" href="#ST"><span class="mem">ST</span></a>
     </td></tr>
     
-    <tr><td><a href="#alu_group">Aritmetika</a>:</td>
+	<tr><td><a href="#alu_group"><span lang="hu">Aritmetika</span><span lang="en">Arithmetic</span></a>:</td>
     <td><a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
     <a class="inst" href="#ADC"><span class="alu2">ADC</span></a>
     <a class="inst" href="#PLUS"><span class="alu2">PLUS</span></a>
@@ -104,7 +144,7 @@
     
     
     <p>
-      Mind:
+      <span lang="hu">Mind</span><span lang="en">All</span>:
       <a class="inst" href="#ADC"><span class="alu2">ADC</span></a>
       <a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
       <a class="inst" href="#AND"><span class="alu2">AND</span></a>
@@ -150,6 +190,12 @@
       <a class="inst" href="#ZEB"><span class="mov">ZEB</span></a>
       <a class="inst" href="#ZEW"><span class="mov">ZEW</span></a>
     </p>
+
+    <p><a href="codesheet.html">
+      <span lang="en">p2223 instruction code sheet</span>
+      <span lang="hu">A p2223 processzor utasításainak kódolása</span>
+      </a>
+    </p>
     
     <hr>
 
@@ -159,244 +205,547 @@
       <a href="p2223.html?lang=en">EN</a>
     </p>
 
-    <h1>P2223 mikroprocesszor</h1>
+    <h1>
+      <span lang="en">P2223 microprocessor</span>
+      <span lang="hu">P2223 mikroprocesszor</span>
+    </h1>
     
 
-    <p>A mikroprocesszor egy RISC felépítésű (load/store), Neumann
-      architektúrájú, 32 bites szoft processzor,
+    <p lang="hu">A mikroprocesszor egy RISC felépítésű (load/store),
+      Neumann architektúrájú, 32 bites szoft processzor,
       amelyet <a href="computer_v2.html#fpga">FPGA-val</a>
       valósíthatunk meg.</p>
+
+    <p lang="en">The microprocessor is a RISC (load/store) Neumann
+    architecture, 32-bit software processor, which can be implemented
+    with an <a href="computer_v2.html#fpga">FPGA</a>.</p>
     
     <p><img src="cpu_block.png" alt="cpu_block" /></p>
     
-    <h1>A mikroprocesszor részei</h1>
+    <h1>
+      <span lang="hu">A mikroprocesszor részei</span>
+      <span lang="hu">Parts of the microprocessor</span>
+    </h1>
     
-    <p>A mikroprocesszor az alábbi építőelemekből áll.</p>
+    <p lang="hu">A mikroprocesszor az alábbi építőelemekből áll.</p>
+
+    <p lang="en">The microprocessor consists of the following building
+    blocks.</p>
     
-    <h2>Ütemező, vezérlő</h2>
-    
-    <p>Az ütemező állítja elő a vezérlő jeleket a processzor többi
-      eleme számára. Az ütemező állapot kódokat állít elő a működési
-      fázisok jelzésére, az állapotok a <b>clk</b> bemenetre adott
-      órajel hatására követik egymást. Az állapotok bináris sorszáma a
+    <h2>
+      <span lang="hu">Ütemező, vezérlő</span>
+      <span lang="en">Scheduler, controller</span>
+    </h2>
+
+    <p>
+    <span lang="hu">Az ütemező állítja elő a vezérlő jeleket a processzor
+      többi eleme számára. Az ütemező állapot kódokat állít elő a
+      működési fázisok jelzésére, az állapotok a <b>clk</b> bemenetre
+      adott órajel hatására követik egymást. Az állapotok bináris
+      sorszáma a
       <b>clk_stat</b> kimeneten jelenik meg. A <b>reset</b> bemenet az
-      ütemezőt alaphelyzetbe állítja.</p>
+      ütemezőt alaphelyzetbe állítja.</span>
     
-    <p>A vezérlőhöz tartozik még az ún. utasítás regiszter, amely a
-      beolvasott utasítást tárolja a végrehajtás idejére.</p>
+    <span lang="en">The scheduler generates control signals for the other
+      elements of the processor. The scheduler generates status codes
+      to indicate the operating phases, the states follow each other
+      in response to the clock signal given to the <b>clk</b>
+      input. The binary sequence number of the states appears on the
+      <b>clk_stat</b> output. The <b>reset</b> input resets the
+      scheduler.</span>
+    </p>
+
+    <p>
+    <span lang="hu">A vezérlőhöz tartozik még az ún. utasítás
+      regiszter, amely a beolvasott utasítást tárolja a végrehajtás
+      idejére.</span>
+
+    <span lang="en">The controller also includes the so-called
+    instruction register, which stores the code of the instruction for
+    the duration of execution.</span>
+    </p>
     
-    <h2>Memória illesztő</h2>
+    <h2>
+      <span lang="hu">Memória illesztő</span>
+      <span lang="en">Memory interface</span>
+    </h2>
     
-    <p>Mivel a processzor Neumann architektúrájú, ezért csak egy
-      memória illesztővel rendelkezik. Ezen az illesztőn keresztül
-      olvassa be az utasításokat, és ezen az illesztőn keresztül végzi
-      el memória írási és olvasási műveleteket is. Az illesztő az
+    <p><span lang="hu">Mivel a processzor Neumann architektúrájú,
+      ezért csak egy memória illesztővel rendelkezik. Ezen az
+      illesztőn keresztül olvassa be az utasításokat, és ezen az
+      illesztőn keresztül végzi el memória írási és olvasási
+      műveleteket is. Az illesztő az
       <b>mbus_aout</b> kimeneteken adja ki a művelethez használandó
       memória címet (32 bites). Írás esetén a memóriába tárolandó adat
       az
       <b>mbus_dout</b> kimeneteken jelenik meg (32 bit). Ebben az
       esetben az <b>mbus_wen</b> kimenet magas szintű lesz (írás
       jelzés). Olvasás műveletnél a megcímzett memória tartalmát az
-      <b>mbus_din</b> bemenetre kell juttatni, ekkor az <b>mbus_wen</b>
-      kimenet alacsony lesz.</p>
+      <b>mbus_din</b> bemenetre kell juttatni, ekkor
+      az <b>mbus_wen</b> kimenet alacsony lesz.</span>
+
+      <span lang="en">Since the processor has a Neumann architecture,
+	it has only one memory interface. It reads instructions
+	through this interface, and it also performs memory read and
+	write operations through the same interface. The interface outputs
+	the memory address (32 bits) to be used for the operation on
+	the
+	<b>mbus_aout</b> outputs. In case of writing, the data to be
+	stored in the memory appears on the
+	<b>mbus_dout</b> outputs (32 bits). In this case,
+	the <b>mbus_wen</b> output will be high (write signal). In
+	case of a read operation, the contents of the addressed memory
+	must be sent to the
+	<b>mbus_din</b> input, in which case the <b>mbus_wen</b>
+	output will be low.</span>
+    </p>
     
-    <h3>Memória szervezés</h3>
+    <h3>
+      <span lang="hu">Memória szervezés</span>
+      <span lang="en">Memory organization</span>
+    </h3>
     
-    <p>A processzor által kezelt memória 32 bites szélességű, minden
-      32 bites rekesznek külön címe van. Memória műveletnél a processzor
-      a megcímzett rekeszből 32 bites adatot olvas be, illetve 32 bites
-      adatot ír ki.</p>
+    <p>
+      <span lang="hu">A processzor által kezelt memória 32 bites
+      szélességű, minden 32 bites rekesznek külön címe van. Memória
+      műveletnél a processzor a megcímzett rekeszből 32 bites adatot
+      olvas be, illetve 32 bites adatot ír ki.</span>
+
+      <span lang="en">The memory managed by the processor is 32-bit
+      wide, each 32-bit slot has a separate address. During a memory
+      operation, the processor reads 32-bit data from the addressed
+	slot, and writes 32-bit data.</span>
+    </p>
     
-    <p><img title="" src="mem_hu.svg" alt="" /></p>
+    <p>
+      <span lang="hu"><img title="" src="mem_hu.svg" alt="" /></span>
+      <span lang="en"><img title="" src="mem_en.svg" alt="" /></span>
+    </p>
     
-    <h2>Regiszterek</h2>
+    <h2>
+      <span lang="hu">Regiszterek</span>
+      <span lang="en">Registers</span>
+    </h2>
     
-    <p>A processzor állapota a belső regiszterekben tárolódik. A
-      regiszter készlet 16 db 32 bites regiszterből áll. A regiszterek
-      elnevezése: R0, R1...R15.</p>
+    <p>
+      <span lang="hu">A processzor állapota a belső regiszterekben
+      tárolódik. A regiszter készlet 16 db 32 bites regiszterből
+      áll. A regiszterek elnevezése: R0, R1...R15.</span>
+
+      <span lang="en">The processor state is stored in internal
+      registers. The register set consists of 16 registers, 32 bits
+      each. They are named as R0, R1...R15.</span>
+    </p>
 
     <p><img title="" src="progmodel2.svg" alt="" /></p>
     
 
-    <h3>Speciális regiszterek</h3>
+    <h3>
+      <span lang="hu">Speciális regiszterek</span>
+      <span lang="en">Special registers</span>
+    </h3>
     
     <h4>PC</h4>
     
-    <p>A processzor az R15 regisztert használja program számlálóként
-      (Program Counter), ezért ennek tartalma minden utasítás
-      végrehajtásakor eggyel növekszik.</p>
+    <p>
+      <span lang="hu">A processzor az R15 regisztert használja
+      program számlálóként (Program Counter), ezért ennek tartalma
+	minden utasítás végrehajtásakor eggyel növekszik.</span>
+
+      <span lang="en">The processor uses register R15 as a program
+	counter (Program Counter), so its contents are incremented by
+	one each time an instruction is executed.</span>
+    </p>
     
     <h4>LR</h4>
     
-    <p>A CALL utasítás a visszatéréshez szükséges címet az R14 (Link
-      Regiszter) regiszterbe menti.</p>
+    <p>
+      <span lang="hu">A CALL utasítás a visszatéréshez szükséges címet
+	az R14 (Link Register) regiszterbe menti.</span>
+
+      <span lang="en">The CALL instruction saves the return address in
+	the R14 register (Link Register).</span>
+    </p>
 
     <h4>SP</h4>
 
-    <p>A processzor nem használ verem műveleteket, a verem
-      megszervezése a programozó feladata. Az ehhez szükséges verem
-      mutató (Stack Pointer) céljára bármelyik regiszter
+    <p>
+      <span lang="hu">A processzor nem használ verem műveleteket, a
+      verem megszervezése a programozó feladata. Az ehhez szükséges
+      verem mutató (Stack Pointer) céljára bármelyik regiszter
       felhasználható. A programok megírásakor az R13 regisztert
-      használtuk SP-ként.</p>
+	használtuk SP-ként.</span>
 
-    <a name="sfr"><h3>Egyéb speciális regiszterek</h3></a>
+      <span lang="en">The processor does not use stack operations,
+	implmentating the stack is the programmer's
+	responsibility. Any register can be used as stack pointer with
+	appropriate addressing modes. When writing the programs, we
+	used register R13 as SP.</span>
+    </p>
 
-    <p>A processzoron belül 16 speciális regiszterhez lehet
-      hozzáférni, ezek között vannak írható és olvasható, illetve csak
-      olvasható típusú regiszterek is. A speciális regisztereket
-      az <a class="inst" href="#RDS"><span class="mov">RDS</span></a>
-      és <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
-      utasításokkal lehet kezelni. Az <a class="inst"
+    <a name="sfr"><h3>
+	<span lang="hu">Egyéb speciális regiszterek (SFR)</span>
+	<span lang="en">Special function registers (SFR)</span>
+    </h3></a>
+
+    <p>
+      <span lang="hu">A processzoron belül 16 speciális regiszterhez
+      lehet hozzáférni, ezek között vannak írható és olvasható,
+      illetve csak olvasható típusú regiszterek is. A speciális
+      regisztereket az <a class="inst"
+      href="#RDS"><span class="mov">RDS</span></a> és <a class="inst"
+      href="#WRS"><span class="mov">WRS</span></a> utasításokkal lehet
+      kezelni. Az <a class="inst"
       href="#RDS"><span class="mov">RDS</span></a> használható a
       regiszter kiolvasására, ugyanis ez az utasítás a megadott
       speciális regisztert egy általános regiszterbe másolja át. Az
       írható speciális regiszterek a <a class="inst"
       href="#WRS"><span class="mov">WRS</span></a> utasítással
       módosíthatók, amely az egyik általános regisztert a megadott
-      speciális regiszterbe másolja.</p>
+      speciális regiszterbe másolja.</span>
+
+      <span lang="en">Within the processor, 16 special registers can
+	be accessed, including writable, readable, and read-only
+	registers. Special registers can be manipulated with
+	the <a class="inst"
+	href="#RDS"><span class="mov">RDS</span></a>
+	and <a class="inst"
+	href="#WRS"><span class="mov">WRS</span></a>
+	instructions. <a class="inst"
+	href="#RDS"><span class="mov">RDS</span></a> can be used to
+	read a register, as this instruction copies the specified
+	special register into a general register.  Writable special
+	registers can be modified with the <a class="inst"
+	href="#WRS"><span class="mov">WRS</span></a> instruction,
+	which copies one of the general registers into the specified
+	special register.</span>
+    </p>
 
     <h4>SFR[0] Flag register (SFLAG)</h4>
 
-    <p>A 0 sorszámú speciális regiszter a <a href="#flag">Flag
-      regiszter</a>, leírását lásd
-      az <a href="#alu">Aritmetikai-logikai egység</a> fejezetben.</p>
+    <p>
+      <span lang="hu">A 0 sorszámú speciális regiszter
+      a <a href="#flag">Flag regiszter</a>, leírását lásd
+      az <a href="#alu">Aritmetikai-logikai egység</a>
+      fejezetben.</span>
+
+      <span lang="en">The special register with number 0 is
+      the <a href="#flag">Flag register</a>, see its description in
+      the <a href="#alu">Arithmetic-Logic Unit</a> chapter.</span>
+    </p>
 
     <h4>SFR[1] Version register (SVER)</h4>
 
-    <p>Csak olvasható regiszter, a processzor verziószámát
-    tartalmazza. A regiszter 3. bájtja mindig 0. A 2. bájt tartalmazza
-    a fő verzió számot, az 1. byte pedig az al verzió számot. A
-    0. bájt a kiadás sorszáma.</p>
+    <p>
+      <span lang="hu">Csak olvasható regiszter, a processzor
+    verziószámát tartalmazza. A regiszter 3. bájtja mindig 0. A
+    2. bájt tartalmazza a fő verzió számot, az 1. byte pedig az al
+    verzió számot. A 0. bájt a kiadás sorszáma.</span>
+
+      <span lang="en">Read-only register, contains the processor
+      version number. The 3. byte of the register is always 0. The
+      2. byte contains the major version number and the 1. byte
+      contains the minor version number. The 0. byte is the release
+      number.</span>
+    </p>
     
     <h4>SFR[2] Feature register 1 (SFEAT1)</h4>
 
-    <p>Csak olvasható regiszter, 1 értékű bitjei azt jelzik, hogy
-    egyes adott funkciók a processzorban rendelkezésre állnak-e.</p>
+    <p>
+      <span lang="hu">Csak olvasható regiszter, 1 értékű bitjei azt
+	jelzik, hogy egyes adott funkciók a processzorban
+	rendelkezésre állnak-e.</span>
+
+      <span lang="en">A read-only register, its bits with a value of 1
+	indicate whether certain functions are available in the
+	processor.</span>
+    </p>
 
     <h5>Bit 0. Getb extension</h5>
 
-    <p>A bit 1 értékű, ha a <a class="inst" href="#GETB"><span class="mov">GETB</span></a> utasítás különféle változatai (<a class="inst" href="#GETB"><span class="mov">GETB</span></a>,
-    <a class="inst" href="#GETBS"><span class="mov">GETBS</span></a>, <a class="inst" href="#GETBZ"><span class="mov">GETBZ</span></a>)
-    rendelkezésre állnak.</p>
+    <p>
+      <span lang="hu">A bit 1 értékű, ha a <a class="inst"
+    href="#GETB"><span class="mov">GETB</span></a> utasítás különféle
+    változatai (<a class="inst"
+    href="#GETB"><span class="mov">GETB</span></a>,
+    <a class="inst"
+    href="#GETBS"><span class="mov">GETBS</span></a>, <a class="inst"
+    href="#GETBZ"><span class="mov">GETBZ</span></a>) rendelkezésre
+    állnak.</span>
+
+      <span lang="en">The bit is set to 1 if different versions of the
+	<a class="inst" href="#GETB"><span class="mov">GETB</span></a>
+	instruction (<a class="inst"
+	href="#GETB"><span class="mov">GETB</span></a>,
+	<a class="inst"
+	   href="#GETBS"><span class="mov">GETBS</span></a>, <a class="inst"
+	   href="#GETBZ"><span class="mov">GETBZ</span></a>)
+	   are available.</span>
+    </p>
 
     <h5>Bit 1. SFR</h5>
 
-    <p>A bit 1 értékű, ha a speciális regiszterek, valamint a
-    kezelésükhöz
-    szükséges <a class="inst" href="#RDS"><span class="mov">RDS</span></a>, <a class="inst" href="#WRS"><span class="mov">WRS</span></a>
-    utasítások rendelkezésre állnak.</p>
+    <p>
+      <span lang="hu">A bit 1 értékű, ha a speciális regiszterek,
+    valamint a kezelésükhöz szükséges <a class="inst"
+    href="#RDS"><span class="mov">RDS</span></a>, <a class="inst"
+    href="#WRS"><span class="mov">WRS</span></a> utasítások
+    rendelkezésre állnak.</span>
+
+      <span lang="en">The bit is set to 1 if the special registers and
+	the <a class="inst"
+	href="#RDS"><span class="mov">RDS</span></a>
+	and <a class="inst"
+	href="#WRS"><span class="mov">WRS</span></a> instructions
+	required to manage them are available.</span>
+    </p>
 
     <h5>Bit 2. Flag32</h5>
 
-    <p>A bit 1 értékű, ha a Flag regiszter 32 bites.</p>
+    <p>
+      <span lang="hu">A bit 1 értékű, ha a Flag regiszter 32
+	bites.</span>
+
+      <span lang="en">The bit is set to 1 if the Flag register is 32
+      bits.</span>
+    </p>
 
     <h5>Bit 3. CES instruction</h5>
 
-    <p>A bit 1 értékű, ha
-    a <a class="inst" href="#CES"><span class="call">CES</span></a> utasítást ismeri a
-    processzor.</p>
+    <p>
+      <span lang="hu">A bit 1 értékű, ha a <a class="inst"
+    href="#CES"><span class="call">CES</span></a> utasítást ismeri a
+	processzor.</span>
+
+      <span lang="en">The bit is set to 1 if the <a class="inst"
+	href="#CES"><span class="call">CES</span></a> instruction is
+	known to the processor.</span>
+    </p>
     
     <h4>SFR[3] Feature regiszter 2 (SFEAT2)</h4>
 
-    <p>Csak olvasható regiszter, későbbi fejlesztésekhez fenntartva,
-    értéke 0.</p>
+    <p>
+      <span lang="hu">Csak olvasható regiszter, későbbi
+	fejlesztésekhez fenntartva, értéke 0.</span>
 
-    <p>A 3..15 sorszámú regiszterek nincsenek megvalósítva, a
-    sorszámok a későbbi fejlesztésekhez vannak fenntartva.</p>
+      <span lang="en">Read-only register, reserved for future
+	developments, value 0.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A 3..15 sorszámú regiszterek nincsenek
+	megvalósítva, a sorszámok a későbbi fejlesztésekhez vannak
+	fenntartva.</span>
+
+      <span lang="en">Registers with serial numbers 3..15 are not
+	implemented, they are reserved for later developments.</span>
+    </p>
 
     
-    <a name="alu"><h2>Aritmetikai-logikai egység</h2></a>
+    <a name="alu"><h2>
+	<span lang="hu">Aritmetikai-logikai egység</span>
+	<span lang="en">Aritmetic-logic unit</span>
+    </h2></a>
     
-    <p>Az adat manipulációs műveleteket az ALU végzi, amely 32 bites
-    egész (előjeles és előjel nélküli) adatokkal tud műveleteket
-    végezni. Az ALU-nak 3 adat bemenete van: <b>di</b>, <b>bi</b> és
-    az <b>im</b>.</p>
+    <p>
+      <span lang="hu">Az adat manipulációs műveleteket az ALU végzi,
+    amely 32 bites egész (előjeles és előjel nélküli) adatokkal tud
+    műveleteket végezni. Az ALU-nak 3 adat bemenete
+    van: <b>di</b>, <b>bi</b> és az <b>im</b>.</span>
 
-    <p>A <b>di</b> bemenetre az eredményt eltároló regiszter eredeti
-      (művelet előtti) értékét kell kötni. Az <b>bi</b> bemenetre a
-      művelet operandusaként használt regiszter értéke
-      kerül. A <b>bi</b> bemenetet olyan utasításoknál használja az
-      ALU, amelyeknek regiszter operandusa van. A konstans operandusú
-      utasításoknál a <b>bi</b> helyett a 16 bites <b>im</b>bemenet
-      értéke lesz az operandus. Az <b>im</b> bemenetet az ALU 32
-      bitesre konvertálja, a konvertálás módja a művelettől függ. Az
-      egy operandusú műveletek csak a <b>di</b> bemenetet használják,
-      míg a két operandusú műveletek a <b>di</b> és
-      a <b>bi</b>/<b>im</b> értékeket használják fel. Az operandus
+      <span lang="en">Data manipulation operations are performed by
+	the ALU, which can operate on 32-bit integer data (signed and
+	unsigned).  The ALU has 3 data inputs: <b>di</b>, <b>bi</b>,
+	and <b>im</b>.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A <b>di</b> bemenetre az eredményt eltároló
+      regiszter eredeti (művelet előtti) értékét kell
+      kötni. Az <b>bi</b> bemenetre a művelet operandusaként használt
+      regiszter értéke kerül. A <b>bi</b> bemenetet olyan
+      utasításoknál használja az ALU, amelyeknek regiszter operandusa
+      van. A konstans operandusú utasításoknál a <b>bi</b> helyett a
+      16 bites <b>im</b>bemenet értéke lesz az operandus. Az <b>im</b>
+      bemenetet az ALU 32 bitesre konvertálja, a konvertálás módja a
+      művelettől függ. Az egy operandusú műveletek csak a <b>di</b>
+      bemenetet használják, míg a két operandusú műveletek a <b>di</b>
+      és a <b>bi</b>/<b>im</b> értékeket használják fel. Az operandus
       nélküli műveleteknél az eredmény a változatlan <b>di</b>
-      bemeneti érték lesz.</p>
+      bemeneti érték lesz.</span>
+
+      <span lang="en">The <b>di</b> input must be connected to the
+	original (before the operation) value of the register which
+	will be storing the result. The <b>bi</b> input is the
+	register value used as the operand of the
+	operation. The <b>bi</b> input is used by the ALU for
+	instructions that have a register operand. For instructions
+	with a constant operand the 16-bit <b>im</b> input value will
+	be the operand instead of <b>bi</b>. The <b>im</b> input is
+	converted by the ALU to 32 bits, the conversion method depends
+	on the operation.  One-operand operations use only
+	the <b>di</b> input, while two-operand operations use
+	the <b>di</b> and the <b>bi</b>/<b>im</b> values. For
+	operations without an operand the result will be the
+	unchanged <b>di</b> input value.</span>
+    </p>
 
     <p><img title="" src="alu.png" alt="" /></p>
     
-    <p>Az <b>fi</b> bemenetre a flag regiszter művelet előtti értéke
-      kerül, míg az <b>op</b> az elvégzendő művelet kódja. Az eredmény
-      a <b>res</b> kimeneten jelenik meg, az <b>fo</b> kimenet a flag
-      regiszter új értékét adja. A
+    <p>
+      <span lang="hu">Az <b>fi</b> bemenetre a flag regiszter művelet
+      előtti értéke kerül, míg az <b>op</b> az elvégzendő művelet
+      kódja. Az eredmény a <b>res</b> kimeneten jelenik meg,
+      az <b>fo</b> kimenet a flag regiszter új értékét adja. A
       <b>flag_en</b> és a <b>wb_en</b> kimenetek azt mutatják, hogy az
-      utasítás módosítja-e a flag, illetve az eredmény regisztert.</p>
-    
-    <a name="flag"><h3>FLAG regiszter</h3></a>
+      utasítás módosítja-e a flag, illetve az eredmény
+      regisztert.</span>
 
-    <p>Az aritmetikai egység a műveletek eredményének jellemzőit a
-    FLAG regiszterben tárolja el. Ez a regiszter nem része az
-    általános regiszter készletnek, a tartalmához az utasítások
-    speciális módon férhetnek csak hozzá. A flag regiszter 32 bites,
-    az alább felsorolt biteken kívüli egyéb bitek tetszőleges célra
-    hsználhatók.</p>
+      <span lang="en">The <b>fi</b> input takes the value of the flag
+	register before the operation , while <b>op</b> is the code of
+	the operation to be performed . The result is displayed on
+	the <b>res</b> output, the <b>fo</b> output gives the new
+	value of the flag register.  The <b>flag_en</b>
+	and <b>wb_en</b> outputs indicate whether the instruction
+	modifies the flag or the result register.</span>
+    </p>
+    
+    <a name="flag"><h3>
+	<span lang="hu">FLAG regiszter</span>
+	<span lang="en">FLAG register</span>
+    </h3></a>
+
+    <p>
+      <span lang="hu">Az aritmetikai egység a műveletek eredményének
+    jellemzőit a FLAG regiszterben tárolja el. Ez a regiszter nem
+    része az általános regiszter készletnek, a tartalmához az
+    utasítások speciális módon férhetnek csak hozzá. A flag regiszter
+    32 bites, az alább felsorolt biteken kívüli egyéb bitek
+    tetszőleges célra hsználhatók.</span>
+
+      <span lang="en">The arithmetic unit stores the characteristics
+      of the result of the operations in the FLAG register. This
+      register is not part of the general register set, its contents
+      can only be accessed by instructions in a special way. The flag
+      register is 32 bits, the bits other than those listed below can
+      be used for any purpose.</span>
+    </p>
 
     <h4>Carry flag (C)</h4>
 
-    <p>A Flag regiszter 1. bitje (Flag[1]). Aritmetikai műveletek után
-    azt jelzi, hogy előjel nélkülinek tekintve az operandusokat,
-    volt-e túlcsordulás (1: volt, 0: nem volt).</p>
+    <p>
+      <span lang="en">A Flag regiszter 1. bitje (Flag[1]). Aritmetikai
+    műveletek után azt jelzi, hogy előjel nélkülinek tekintve az
+    operandusokat, volt-e túlcsordulás (1: volt, 0: nem volt).</span>
+
+      <span lang="en">Bit 1 of the Flag register (Flag[1]). After
+	arithmetic operations, it indicates whether there was an
+	overflow, considering the operands as unsigned (1: there was,
+	0: there was not).</span>
+    </p>
 
     <h4>Overflow flag (O)</h4>
 
-    <p>A Flag regiszter 3. bitje (Flag[3]). Aritmetikai műveletek után
-    azt jelzi, hogy előjelesnek tekintve az operandusokat, volt-e
-    túlcsordulás (1: volt, 0: nem volt). </p>
+    <p>
+      <span lang="hu">A Flag regiszter 3. bitje (Flag[3]). Aritmetikai
+    műveletek után azt jelzi, hogy előjelesnek tekintve az
+    operandusokat, volt-e túlcsordulás (1: volt, 0: nem volt).</span>
+
+      <span lang="en">Bit 3 of the Flag register (Flag[3]). After
+	arithmetic operations, it indicates whether there was an
+	overflow, considering the operands as signed (1: there was, 0:
+	there was not).</span>
+    </p>
 
     <h4>Sign flag (S)</h4>
 
-    <p>A Flag regiszter 0. bitje (Flag[0]). Aritmetikai és logikai
-    műveletek után után az eredmény 31. bitjét tartalmazza, vagyis
-    annak előjelét jelzi (1: negatív, 0: pozitív).</p>
+    <p>
+      <span lang="hu">A Flag regiszter 0. bitje (Flag[0]). Aritmetikai
+    és logikai műveletek után után az eredmény 31. bitjét tartalmazza,
+    vagyis annak előjelét jelzi (1: negatív, 0: pozitív).</span>
+
+      <span lang="en">Bit 0 of the Flag register (Flag[0]). After
+	arithmetic and logical operations, it contains the 31st bit of
+	the result, i.e. it indicates its sign (1: negative, 0:
+	positive).</span>
+    </p>
 
     <h4>Zero flag (Z)</h4>
 
-    <p>A Flag regiszter 2. bitje (Flag[2]). Aritmetikai és logikai
-    műveletek után azt jelzi, hogy az eredmény nulla-e (1: igen, 0:
-    nem).</p>
+    <p>
+      <span lang="hu">A Flag regiszter 2. bitje (Flag[2]). Aritmetikai
+    és logikai műveletek után azt jelzi, hogy az eredmény nulla-e (1:
+    igen, 0: nem).</span>
+
+      <span lang="en">Bit 2 of the Flag register (Flag[2]). After
+	arithmetic and logical operations, it indicates whether the
+	result is zero (1: yes, 0: no).</span>
+    </p>
 
     <h4>Up flag (U), Pre flag (P)</h4>
 
-    <p>U: a Flag regiszter 5. bitje (Flag[5]). P: a Flag regiszter
-    4. bitje (Flag[4]). Az <a class="inst"
+    <p>
+      <span lang="hu">U: a Flag regiszter 5. bitje (Flag[5]). P: a
+    Flag regiszter 4. bitje (Flag[4]). Az <a class="inst"
     href="#LD"><span class="mem">LD</span></a>/<a class="inst"
     href="#ST"><span class="mem">ST</span></a> utasítások konstans
     eltolású indexelt címzési módja esetén a báziscím regiszter
-    megváltoztatási módját határozzák meg.</p>
+    megváltoztatási módját határozzák meg.</span>
 
-    <h2>Utasítások</h2>
+      <span lang="en">U: bit 5 of the Flag register (Flag[5]). P: bit
+	4 of the Flag register (Flag[4]). The <a class="inst"
+	href="#LD"><span class="mem">LD</span></a>/<a class="inst"
+	href="#ST"><span class="mem">ST</span></a> instructions
+	specify the method of changing the base address register in
+	the case of constant offset indexed addressing mode.</span>
+    </p>
 
-    <p>A utasítások egyforma méretűek, minden utasítás kódja 32 bites,
-    egy memória rekeszben tárolódik. Az utasításkészlet főbb
-    csoportjai a következők:</p>
+    <h2>
+      <span lang="hu">Utasítások</span>
+      <span lang="en">Instructions</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A utasítások egyforma méretűek, minden utasítás
+    kódja 32 bites, egy memória rekeszben tárolódik. Az
+    utasításkészlet főbb csoportjai a következők:</span>
+
+      <span lang="en">The instructions are of the same size, each
+	instruction has a 32-bit code, and is stored in one memory
+	location. The main groups of the instruction set are as
+	follows:</span>
+    </p>
 
     <ul>
-      <li>Szubrutinhívás (<a class="inst"
-      href="#CALL"><span class="call">CALL</span></a>). A
-      szubrutinhívás olyan vezérlésátadás, amely a PC (R15) értékét
-      elmenti az LR (R14) regiszterbe. A memóriába való mentés a
-      programozó feladata.</li>
+      <li>
+	<span lang="hu">Szubrutinhívás (<a class="inst"
+        href="#CALL"><span class="call">CALL</span></a>). A
+        szubrutinhívás olyan vezérlésátadás, amely a PC (R15) értékét
+        elmenti az LR (R14) regiszterbe. A memóriába való mentés a
+        programozó feladata.</span>
+	<span lang="en">Subroutine call (<a class="inst"
+	href="#CALL"><span class="call">CALL</span></a>). A subroutine
+	call is a control transfer that saves the value of PC (R15) to
+	the LR (R14) register. Saving it to memory is the
+	responsibility of the programmer.</span>
+      </li>
       
-      <li>Memória művelet (<a class="inst"
+      <li>
+	<span lang="hu">Memória művelet (<a class="inst"
       href="#LD"><span class="mem">LD</span></a>, <a class="inst"
       href="#ST"><span class="mem">ST</span></a>). A memória és a
       regiszterek közötti adatátvitelt valósítják meg. Többféle
-      címzésmóddal használhatóak.</li>
+	  címzésmóddal használhatóak.</span>
+	<span lang="en">Memory operation (<a class="inst"
+	href="#LD"><span class="mem">LD</span></a>, <a class="inst"
+	href="#ST"><span class="mem">ST</span></a>). They implement
+	data transfer between memory and registers. They can be used
+	with several addressing modes.</span>
+      </li>
 
-      <li>Aritmetikai, logikai utasítások (<a class="inst"
+      <li>
+	<span lang="hu">Aritmetikai, logikai utasítások
+      (<a class="inst"
       href="#ADD"><span class="alu2">ADD</span></a>, <a class="inst"
       href="#SUB"><span class="alu2">SUB</span></a>, <a class="inst"
       href="#MOV"><span class="mov">MOV</span></a>, stb.). Különféle
@@ -404,31 +753,61 @@
       amelynek az eredménye egy megadott regiszterben (és
       a <a href="#flag">FLAG regiszterben</a>) tárolódik. Vannak egy
       és két operandusú műveletek, ahol a két operandusúak esetében a
-      második operandus regiszter vagy konstans lehet.</li>
+	  második operandus regiszter vagy konstans lehet.</span>
+	<span lang="en">Arithmetic, logical instructions
+        (<a class="inst"
+        href="#ADD"><span class="alu2">ADD</span></a>, <a class="inst"
+        href="#SUB"><span class="alu2">SUB</span></a>, <a class="inst"
+        href="#MOV"><span class="mov">MOV</span></a>, etc.). They
+        perform various data processing and register manipulation
+        operations, the result of which is stored in a specified
+        register (and the <a href="#flag">FLAG register</a>). There
+        are one and two-operand operations, where in the case of
+        two-operand ones, the second operand can be a register or a
+        constant.</span>
+      </li>
 
     </ul>
 
-    <h3>Feltételes végrehajtás</h3>
+    <h3>
+      <span lang="hu">Feltételes végrehajtás</span>
+      <span lang="hu">Conditional execution</span>
+    </h3>
 
-    <p>Minden utasításnak lehet egy feltétele, az utasítás csak akkor
-    végez állapot változtatást, illetve memória műveletet, ha a
-    megadott feltétel igaz értékű. A feltétel az utasítás kódszavának
-    legfelső 4 helyiértékű bitjén tárolódik. A lehetséges értékek
-    következők:</p>
+    <p>
+      <span lang="hu">Minden utasításnak lehet egy feltétele, az
+    utasítás csak akkor végez állapot változtatást, illetve memória
+    műveletet, ha a megadott feltétel igaz értékű. A feltétel az
+    utasítás kódszavának legfelső 4 helyiértékű bitjén tárolódik. A
+    lehetséges értékek következők:</span>
+
+    <span lang="en">Each instruction can have a condition, the
+      instruction will only perform a state change or memory operation
+      if the specified condition is true. The condition is stored in
+      the 4 most significant bits of the instruction's code word. The
+      possible values ​​are:</span>
+    </p>
 
     <table border="1">
       <tr>
-	<td>Kód</td>
-	<td>Feltétel</td>
-	<td>Flag</td>
-	<td>Működés pl. összehasonlítás esetén</td>
+	<th><span lang="hu">Kód</span><span lang="en">Code</span></th>
+	<th><span lang="hu">Feltétel</span><span lang="en">Condition</span></th>
+	<th>Flag</th>
+	<th>
+	  <span lang="hu">Működés pl. összehasonlítás esetén</span>
+	  <span lang="en">Operation e.g. in case of comparison</span>
+	</th>
       </tr>
       <tr>
 	<td>0</td>
 	<td>AL</td>
 	<td>-</td>
-	<td>Mindig igaz, az utasítás a Flag-ek értékétől függetlenül
-	végrehajtódik</td>
+	<td>
+	  <span lang="hu">Mindig igaz, az utasítás a Flag-ek értékétől
+	    függetlenül végrehajtódik</span>
+	  <span lang="en">Always true, the instruction is executed
+	  regardless of the value of Flags</span>
+	</td>
       </tr>
       <tr>
 	<td>1</td>
@@ -458,25 +837,33 @@
 	<td>5</td>
 	<td>MI</td>
 	<td>S=1</td>
-	<td>negatív eredmény (signed)</td>
+	<td><span lang="hu">negatív
+	eredmény</span><span lang="en">negative result</span>
+	(signed)</td>
       </tr>
       <tr>
 	<td>6</td>
 	<td>PL</td>
 	<td>S=0</td>
-	<td>pozitív eredmény (signed)</td>
+	<td><span lang="hu">pozitív
+	eredmény</span><span lang="en">positive result</span>
+	(signed)</td>
       </tr>
       <tr>
 	<td>7</td>
 	<td>VS</td>
 	<td>O=1</td>
-	<td>van túlcsordulás (signed)</td>
+	<td><span lang="hu">van
+	túlcsordulás</span><span lang="en">there is overflow</span>
+	(signed)</td>
       </tr>
       <tr>
 	<td>8</td>
 	<td>VC</td>
 	<td>O=0</td>
-	<td>nincs túlcsordulás (signed)</td>
+	<td><span lang="hu">nincs
+	túlcsordulás</span><span lang="en">there is no overflow</span>
+	(signed)</td>
       </tr>
       <tr>
 	<td>9</td>
@@ -518,15 +905,23 @@
 	<td>15</td>
 	<td>-</td>
 	<td>-</td>
-	<td>Feltétel nélküli utasítás, jelenleg nem használt, az
-	  utasításkészlet bővítésre fenntartva</td>
+	<td>
+	  <span lang="hu">Feltétel nélküli utasítás, az
+	    utasításkészlet bővítésre fenntartva</span>
+	  <span lang="en">Unconditional instruction, reserved for
+	    expansion of the instruction set</span>
+	</td>
       </tr>
     </table>
 
     
-    <h3>Vezérlésátadás</h3>
+    <h3>
+      <span lang="hu">Vezérlésátadás</span>
+      <span lang="en">Branching</span>
+    </h3>
     
-    <p>Szubrutinhívásra a <a class="inst"
+    <p>
+      <span lang="hu">Szubrutinhívásra a <a class="inst"
     href="#CALL"><span class="call">CALL</span></a> utasítást lehet
     használni, amely a PC-t (R15) elmenti az LR-ben (R14). Ha a
     szubrutin nem hív más rutinokat, akkor nincs más teendő. Ellenkező
@@ -535,20 +930,49 @@
     regisztert használjuk mutatóként, a mentés és a betöltés a memória
     kezelő utasítások megfelelő címzésmódjának használatával
     elvégezhető. Megjegyezzük, hogy verem mutatóként az R14 és R15
-    kivételével bármelyik regiszter használható.</p>
+	kivételével bármelyik regiszter használható.</span>
+
+      <span lang="en">To call a subroutine, the <a class="inst"
+      href="#CALL"><span class="call">CALL</span></a> instruction can
+      be used, which saves the PC (R15) in the LR (R14). If the
+      subroutine does not call other routines, then there is no other
+      action to take. Otherwise, the value of LR must be saved in the
+      stack data structure created in memory. For this purpose, the SP
+      (R13) register is used as a pointer, and saving and loading can
+      be done using the appropriate addressing mode of the memory
+      management instructions. Note that any register except R14 and
+      R15 can be used as a stack pointer.</span>
+    </p>
     
-    <p>Ugró utasítások nincsenek az utasítás készletben, bármely
-      utasítás ugrást végez (beleértve az <a class="inst"
-      href="#LD"><span class="mem">LD</span></a> utasítást is),
-      amelynek az R15 a cél regisztere, ahol az eredménye
-      tárolódik. Mivel minden utasítás lehet feltételes, így külön
-      feltételes vezérlésátadó utasításokra sincs szükség.</p>
+    <p>
+      <span lang="hu">Ugró utasítások nincsenek az utasítás
+      készletben, bármely utasítás ugrást végez (beleértve
+      az <a class="inst" href="#LD"><span class="mem">LD</span></a>
+      utasítást is), amelynek az R15 a cél regisztere, ahol az
+      eredménye tárolódik. Mivel minden utasítás lehet feltételes, így
+      külön feltételes vezérlésátadó utasításokra sincs
+	szükség.</span>
+
+      <span lang="en">There are no jump instructions in the
+      instruction set, any instruction will perform a jump (including
+      the <a class="inst" href="#LD"><span class="mem">LD</span></a>
+      instruction), whose destination register is R15, where its
+      result is stored. Since every instruction can be conditional,
+      there is no need for any separate conditional branch
+      instructions.</span>
+    </p>
 
     
-    <h1>Utasítások</h1>
+    <h1>
+      <span lang="hu">Utasítások</span>
+      <span lang="en">Instructions</span>
+    </h1>
 
     
-    <a name="move_group"><h3>Adatmozgatás</h3></a>
+    <a name="move_group"><h3>
+	<span lang="hu">Adatmozgatás</span>
+	<span lang="en">Data movement</span>
+    </h3></a>
     
     <a name="GETB"><h1>GETB get byte from register</h1></a>
     
@@ -569,12 +993,21 @@
 
     <p><img src="getb.svg"></p>
 
-    <p>Az utasítás az Rb regiszter kiválasztott bájtját az Rd
-      regiszterbe másolja, az Rd felső helyiértékű 3 bájtja nem
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter kiválasztott bájtját
+      az Rd regiszterbe másolja, az Rd felső helyiértékű 3 bájtja nem
       változik. Az Rb regiszter 4 bájtja közül a másoláshoz egyet
       lehet kiválasztani, vagy az Ri regiszter értékével, vagy egy 2
       bites konstanssal. Ha az Ri-vel választunk, akkor a processzor a
-      regiszternek csak az alsó két bitjét használja.</p>
+      regiszternek csak az alsó két bitjét használja.</span>
+
+      <span lang="en">The instruction copies the selected byte of the
+      Rb register into the Rd register, the upper 3 bytes of Rd are
+      not changed. One of the 4 bytes of the Rb register can be
+      selected for copying, either by the value of the Ri register or
+      by a 2-bit constant. If we select with Ri, the processor uses
+      only the lower two bits of the register.</span>
+    </p>
 
     <a name="GETBS"><h1>GETBS get byte from register, sign extended</h1></a>
 
@@ -596,13 +1029,23 @@
     
     <p><img src="getbs.svg"></p>
 
-    <p>Az utasítás az Rb regiszter kiválasztott bájtját az Rd
-      regiszterbe másolja, az Rd felső helyiértékű 3 bájtja az Rb
-      kiválasztott byte-jának 7. bitjével töltődik fel. Az Rb
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter kiválasztott bájtját
+      az Rd regiszterbe másolja, az Rd felső helyiértékű 3 bájtja az
+      Rb kiválasztott byte-jának 7. bitjével töltődik fel. Az Rb
       regiszter 4 bájtja közül a másoláshoz egyet lehet kiválasztani,
       vagy az Ri regiszter értékével, vagy egy 2 bites konstanssal. Ha
       az Ri-vel választunk, akkor a processzor a regiszternek csak az
-      alsó két bitjét használja.</p>
+      alsó két bitjét használja.</span>
+
+      <span lang="en">The instruction copies the selected byte of the
+	Rb register into the Rd register, the upper 3 bytes of Rd are
+	filled with the 7th bit of the selected byte of Rb. One of the
+	4 bytes of the Rb register can be selected for copying, either
+	by the value of the Ri register or by a 2-bit constant. If we
+	select with Ri, then the processor uses only the lower two
+	bits of the register.</span>
+    </p>
 
     <a name="GETBZ"><h1>GETBZ get byte from register, zero extended</h1></a>
 
@@ -623,12 +1066,21 @@
 
     <p><img src="getbz.svg"></p>
     
-    <p>Az utasítás az Rb regiszter kiválasztott bájtját az Rd
-      regiszterbe másolja, az Rd felső helyiértékű 3 bájtja 0 lesz. Az
-      Rb regiszter 4 bájtja közül a másoláshoz egyet lehet
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter kiválasztott bájtját
+      az Rd regiszterbe másolja, az Rd felső helyiértékű 3 bájtja 0
+      lesz. Az Rb regiszter 4 bájtja közül a másoláshoz egyet lehet
       kiválasztani, vagy az Ri regiszter értékével, vagy egy 2 bites
       konstanssal. Ha az Ri-vel választunk, akkor a processzor a
-      regiszternek csak az alsó két bitjét használja.</p>
+      regiszternek csak az alsó két bitjét használja.</span>
+
+      <span lang="en">The instruction copies the selected byte of the
+	Rb register to the Rd register, the upper 3 bytes of Rd will
+	be 0. One of the 4 bytes of the Rb register can be selected
+	for copying, either by the value of the Ri register or by a
+	2-bit constant. If we select with Ri, then the processor uses
+	only the lower two bits of the register.</span>
+    </p>
 
     <a name="GETF"><h1>GETF get flags</h1></a>
     
@@ -641,12 +1093,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás átmásolja a Flag regiszter értékét (beleértve az U
-      és P biteket is) a megadott Rd regiszterbe. A jelzőbitek a Flag
-      regiszter 0-5 bitjeit foglalják el, a regiszter azonban 8
-      bites. A 6-7 bitek tetszőleges 2 bites érték tárolására
-      használhatók. Az utasítás a Flag tartalmát az Rd[7:0] bitekbe
-      másolja, az Rd[31:8] bitek 0 értéket kapnak.</p>
+    <p>
+      <span lang="hu">Az utasítás átmásolja a Flag regiszter értékét
+      (beleértve az U és P biteket is) a megadott Rd regiszterbe. A
+      jelzőbitek a Flag regiszter 0-5 bitjeit foglalják el, a
+      regiszter azonban 32 bites. A 31-6 bitek tetszőleges érték
+      tárolására használhatók.</span>
+
+      <span lang="en">The instruction copies the value of the Flag
+	register (including the U and P bits) into the specified Rd
+	register.  The flag bits occupy bits 0-5 of the Flag register,
+	but the register is 32 bits long. Bits 31-6 can be used to
+	store any value.</span>
+    </p>
 
     <a name="MOV"><h1>MOV copy register to register</h1></a>
 
@@ -659,8 +1118,13 @@
       </tr>
     </table>
 
-    <p>Az utasítás az Rb regiszter (forrás) tartalmát átmásolja az Rd
-      (cél) regiszterbe.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter (forrás) tartalmát
+	átmásolja az Rd (cél) regiszterbe.</span>
+
+      <span lang="en">The instruction copies the contents of the Rb
+	register (source) to the Rd register (destination).</span>
+    </p>
     
     <a name="MVH"><h1>MVH load immediate into high</h1></a>
 
@@ -673,11 +1137,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amely az Rd regiszter felső helyiértékű 16
-      bitjébe kerül. A regiszter alsó helyiértékű 16 bitje változatlan
-      marad. A Flag regiszter nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amely az Rd regiszter felső
+      helyiértékű 16 bitjébe kerül. A regiszter alsó helyiértékű 16
+      bitje változatlan marad. A Flag regiszter nem módosul.</span>
+
+      <span lang="en">This instruction can be used to load a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which is placed in the upper 16 bits
+      of the Rd register. The lower 16 bits of the register remain
+      unchanged. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVL"><h1>MVL load immediate into low</h1></a>
 
@@ -690,11 +1162,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amely az Rd regiszter alsó helyiértékű 16
-      bitjébe kerül. A regiszter felső helyiértékű 16 bitje
-      változatlan marad. A Flag regiszter nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amely az Rd regiszter alsó
+      helyiértékű 16 bitjébe kerül. A regiszter felső helyiértékű 16
+      bitje változatlan marad. A Flag regiszter nem módosul.</span>
+
+      <span lang="en">The instruction can be used to load a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which is placed in the lower 16 bits
+      of the Rd register. The upper 16 bits of the register remain
+      unchanged. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVS"><h1>MVS load sign extended 16 bit immediate</h1></a>
     
@@ -707,11 +1187,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy signed 16 bites
-      konstans, amelyet a CPU előjel kiterjesztéssel 32 bitesre
-      alakít, ez az érték kerül az Rd regiszterbe. A Flag regiszter
-      nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      signed 16 bites konstans, amelyet a CPU előjel kiterjesztéssel
+      32 bitesre alakít, ez az érték kerül az Rd regiszterbe. A Flag
+      regiszter nem módosul.</span>
+
+      <span lang="en">This instruction can be used to load a register
+      with a constant. The second parameter of the instruction is a
+      signed 16-bit constant, which the CPU converts to a 32-bit
+      constant with sign extension, and this value is placed in the Rd
+      register. The Flag register is not modified.</span>
+    </p>
 
     <a name="MVZL"><h1>MVZL load zero extended 16 bit immediate</h1></a>
     
@@ -724,11 +1212,19 @@
       </tr>
     </table>
     
-    <p>Az utasítás egy regiszter konstanssal való feltöltésére
-      használható. Az utasítás második paramétere egy unsigned 16
-      bites konstans, amelyet a CPU 0 kiterjesztéssel 32 bitesre
-      alakít, ez az érték kerül az Rd regiszterbe. A Flag regiszter
-      nem módosul.</p>
+    <p>
+      <span lang="hu">Az utasítás egy regiszter konstanssal való
+      feltöltésére használható. Az utasítás második paramétere egy
+      unsigned 16 bites konstans, amelyet a CPU 0 kiterjesztéssel 32
+      bitesre alakít, ez az érték kerül az Rd regiszterbe. A Flag
+      regiszter nem módosul.</span>
+
+      <span lang="en">The instruction can be used to fill a register
+      with a constant. The second parameter of the instruction is an
+      unsigned 16-bit constant, which the CPU converts to 32-bit with
+      extension 0, and this value is placed in the Rd register. The
+      Flag register is not modified.</span>
+    </p>
 
     <a name="PUTB"><h1>PUTB set one byte of a register</h1></a>
     
@@ -750,12 +1246,21 @@
 
     <p><img src="putb.svg"></p>
     
-    <p>Az utasítás az Rb regiszter legalsó helyiértékű bájtját
-      átmásolja az Rd regiszter kiválasztott bátjába, úgy, hogy az Rd
-      többi bájtja nem változik. Az Rd módosítandó bájtjának sorszámát
-      az Ri regiszterrel (amelynek csak a legalsó két bitjét használja
-      a processzor), vagy egy két bites konstanssal választhatjuk
-      ki.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rb regiszter legalsó helyiértékű
+      bájtját átmásolja az Rd regiszter kiválasztott bátjába, úgy,
+      hogy az Rd többi bájtja nem változik. Az Rd módosítandó
+      bájtjának sorszámát az Ri regiszterrel (amelynek csak a legalsó
+      két bitjét használja a processzor), vagy egy két bites
+      konstanssal választhatjuk ki.</span>
+
+      <span lang="en">The instruction copies the least significant
+	byte of the Rb register into the selected byte of the Rd
+	register, leaving the other bytes of Rd unchanged. The number
+	of the byte of Rd to be modified can be selected using the Ri
+	register (only the two least bits of which are used by the
+	processor) or a two-bit constant.</span>
+    </p>
 
     <a name="RDS"><h1>RDS read special regiszter</h1></a>
     
@@ -770,8 +1275,15 @@
       
     </table>
     
-    <p>Az Rs sorszámú <a href="#sfr">speciális regiszter</a>
-    kiolvasása és átmásolása az Rd regiszterbe.</p>
+    <p>
+      <span lang="hu">Az Rs sorszámú <a href="#sfr">speciális
+	regiszter</a> kiolvasása és átmásolása az Rd
+	regiszterbe.</span>
+
+      <span lang="en">Read and copy the <a href="#sfr">special
+	  register</a> with serial number Rs into the Rd
+	  register.</span>
+    </p>
     
     <a name="SEB"><h1>SEB sign extend byte</h1></a>
     
@@ -786,10 +1298,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 8
-      bitjét előjel kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 8 bitjét előjel kiterjesztéssel kibővíti 32 bitre,
+      majd ezt az eredményt tárolja az Rd regiszterben
+      (felülíródik). A Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower 8 bits of the
+	contents of the Rd register to 32 bits by sign extension, and
+	then stores this result in the Rd register (it is
+	overwritten). The Flag register is not changed.</span>
+    </p>
 
     <a name="SED"><h1>SED sign extend double word</h1></a>
     
@@ -804,11 +1323,19 @@
       
     </table>
     
-    <p>Előjel kiterjesztés 32 bitről 64 bitre. Az utasítás az Rb
-      előjelével (Rb[31] bit) tölti fel az Rd minden bitjét, így az
-      Rd,Rb regiszterek együtt az Rb-nek a 64 bitre kiterjesztett
-      értékét fogják tartamazni. Az utasítás nem módosítja a Flag
-      regisztert.</p>
+    <p>
+      <span lang="hu">Előjel kiterjesztés 32 bitről 64 bitre. Az
+      utasítás az Rb előjelével (Rb[31] bit) tölti fel az Rd minden
+      bitjét, így az Rd,Rb regiszterek együtt az Rb-nek a 64 bitre
+      kiterjesztett értékét fogják tartamazni. Az utasítás nem
+      módosítja a Flag regisztert.</span>
+
+      <span lang="en">Sign extension from 32 bits to 64 bits. The
+	instruction fills each bit of Rd with the sign of Rb (Rb[31]
+	bits), so the Rd,Rb registers together will contain the 64-bit
+	extended value of Rb. The instruction does not modify the Flag
+	register.</span>
+    </p>
     
     <a name="SEW"><h1>SEW sign extend word</h1></a>
     
@@ -823,10 +1350,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 16
-      bitjét előjel kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 16 bitjét előjel kiterjesztéssel kibővíti 32 bitre,
+      majd ezt az eredményt tárolja az Rd regiszterben
+      (felülíródik). A Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower significant 16
+	bits of the contents of the Rd register to 32 bits by sign
+	extension, and then stores this result in the Rd register (it
+	is overwritten). The Flag register is not changed.</span>
+    </p>
 
     <a name="SETF"><h1>SETF copy register to flag register</h1></a>
     
@@ -839,12 +1373,17 @@
       </tr>
     </table>
     
-    <p>Az utasítás az Rd regiszter értékét a Flag regiszterbe
-      másolja. A használt Flag bitek a regiszter 0-5 bitjeit foglalják
-      el, de a regiszter 8 bites. A 6-7 bitek tetszőleges 2 bites
-      érték tárolására használhatók, vagyis a műveletben az Rd[7:0]
-      bitjei kerülnek a Flag regiszterbe, az Rd[31:8] bitek figyelmen
-      kívül maradnak.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter értékét a Flag
+      regiszterbe másolja. A használt Flag bitek a regiszter 0-5
+      bitjeit foglalják el, de a regiszter 32 bites. A 31-6 bitek
+      tetszőleges érték tárolására használhatók.</span>
+
+      <span lang="en">The instruction copies the value of the Rd
+	register to the Flag register. The Flag bits used occupy bits
+	0-5 of the register, but the register is 32-bit. Bits 31-6 can
+	be used to store any value.</span>
+    </p>
 
     <a name="WRS"><h1>WRS write special register</h1></a>
     
@@ -859,8 +1398,14 @@
       
     </table>
     
-    <p>Az Rd regiszter átmásolása az Rs sorszámú <a href="#sfr">speciális
-	regiszterbe</a>.</p>
+    <p>
+      <span lang="hu">Az Rd regiszter átmásolása az Rs
+	  sorszámú <a href="#sfr">speciális regiszterbe</a>.</span>
+
+      <span lang="en">Copy the register Rd to
+	  the <a href="#sfr">special register</a> with the serial
+	  number Rs.</span>
+    </p>
 
     <a name="ZEB"><h1>ZEB zero extend byte</h1></a>
     
@@ -875,10 +1420,17 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter tartalmának alsó helyiértékű 8
-      bitjét 0 kiterjesztéssel kibővíti 32 bitre, majd ezt az
-      eredményt tárolja az Rd regiszterben (felülíródik). A Flag
-      regiszter nem változik.</p>
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter tartalmának alsó
+      helyiértékű 8 bitjét 0 kiterjesztéssel kibővíti 32 bitre, majd
+      ezt az eredményt tárolja az Rd regiszterben (felülíródik). A
+      Flag regiszter nem változik.</span>
+
+      <span lang="en">The instruction extends the lower 8 bits of the
+	contents of the Rd register to 32 bits with an extension of 0,
+	and then stores this result in the Rd register (overwrites
+	it).  The Flag register is not changed.</span>
+    </p>
 
     <a name="ZEW"><h1>ZEW zero extend word</h1></a>
     
@@ -893,12 +1445,23 @@
       
     </table>
     
-    <p>Az Rd[15:0] bitjein lévő 16 bites adat 0 kiterjesztése 32
-      bitesre. Az eredmény az Rd regiszterbe kerül (felülíródik). Az
-      utasítás a Flag regisztert nem módosítja.</p>
+    <p>
+      <span lang="hu">Az Rd[15:0] bitjein lévő 16 bites adat 0
+      kiterjesztése 32 bitesre. Az eredmény az Rd regiszterbe kerül
+      (felülíródik). Az utasítás a Flag regisztert nem
+      módosítja.</span>
+
+      <span lang="en">The 16-bit data at bits Rd[15:0] is 0 extended
+	to 32 bits. The result is placed in the Rd register
+	(overwritten). The instruction does not modify the Flag
+	register.</span>
+    </p>
 
     
-    <a name="call_group"><h3>Szubrutinhívás</h3></a>
+    <a name="call_group"><h3>
+	<span lang="hu">Szubrutinhívás</span>
+	<span lang="en">Subroutine call</span>
+    </h3></a>
     
     <a name="CALL"><h1>CALL call subroutine</h1></a>
     
@@ -919,29 +1482,59 @@
       
     </table>
     
-    <p>Az utasítás működése az abszolút címzésmódú változat
-    esetén:</p>
+    <p>
+      <span lang="hu">Az utasítás működése az abszolút címzésmódú
+	változat esetén:</span>
+
+      <span lang="en">The operation of the instruction in the case of
+      the absolute addressing version:</span>
+    </p>
 
     <p>R14= R15<br />
       R15= zex(u24)</p>
 
-    <p>Ahol a zex() művelet a Zero Extension-t jelenti, vagyis az
-      utasításban szereplő unsigned 24 bites paramétert a CPU
-      nullákkal bővíti 32 bit méretűre. Ezzel az utasítással a memória
-      első 16 MB-ja érhető el.</p>
+    <p>
+      <span lang="hu">Ahol a zex() művelet a Zero Extension-t jelenti,
+      vagyis az utasításban szereplő unsigned 24 bites paramétert a
+      CPU nullákkal bővíti 32 bit méretűre. Ezzel az utasítással a
+      memória első 16 MB-ja érhető el.</span>
 
-    <p>Az utasítás működése relatív címzési mód esetén:</p>
+      <span lang="en">Where the zex() operation stands for Zero
+	Extension, meaning that the unsigned 24-bit parameter in the
+	instruction is expanded by the CPU with zeros to a size of 32
+	bits. With this instruction, the first 16 MB of the memory can
+	be accessed.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Az utasítás működése relatív címzési mód
+      esetén:</span>
+
+      <span lang="en">The operation of the instruction in relative
+	addressing mode:</span>
+    </p>
 
     <p>R14= R15<br />
       R15= Rd + sex(s20)</p>
 
-    <p>Ahol a sex() a Sign Extension műveletet jelenti, ami az
-      utasításban megadott signed 20 bites paramétert előjel
+    <p>
+      <span lang="hu">Ahol a sex() a Sign Extension műveletet jelenti,
+      ami az utasításban megadott signed 20 bites paramétert előjel
       megtartással bővíti 32 bites méretűre. Ha az Rd az R15, akkor
       figyelembe kell venni, hogy az R15 az összeadás elvégzésekor a
       következő utasítás címét tartalmazza. Az R15 használata lehetővé
       teszi pozíció független kód készítését, ahol az elérhető cím a
-      hívás helyétől ±0.5 MB távolságon belül lehet.</p>
+      hívás helyétől ±0.5 MB távolságon belül lehet.</span>
+
+      <span lang="en">Where sex() stands for Sign Extension operation,
+	which extends the signed 20-bit parameter specified in the
+	instruction to a 32-bit size with sign preservation.  If Rd is
+	R15, then it should be noted that R15 contains the address of
+	the next instruction when the addition is performed.  Using
+	R15 allows to create position-independent code, where the
+	accessible address can be within ±0.5 MB of the call
+	location.</span>
+    </p>
 
     <a name="CES"><h1>CES call subroutine with embedded string</h1></a>
     
@@ -962,7 +1555,9 @@
       
     </table>
     
-    <p>Az utasítás működése megegyezik a <a class="inst"
+    <p>
+      <span lang="hu">Az utasítás működése megegyezik
+      a <a class="inst"
       href="#CALL"><span class="call">CALL</span></a> utasítással,
       azonban feltételt nem lehet megadni, a
       szubrutinhívás <b>feltétel nélkül</b> megtörténik. Az utasítást
@@ -974,10 +1569,29 @@
       href="#CES"><span class="call">CES</span></a> utasítás
       használata segíti a szimulátort a visszatérési cím
       megállapításában, hogy a szubrutin a next paranccsal
-      lefuttatható legyen.</p>
+      lefuttatható legyen.</span>
+
+      <span lang="en">The operation of the instruction is the same as
+	the <a class="inst"
+	href="#CALL"><span class="call">CALL</span></a> instruction,
+	however, a condition cannot be specified, the subroutine call
+	is made <b>without a condition</b>. The instruction is useful
+	when there is an embedded string in memory immediately after
+	the call instruction which is the parameter of the
+	subroutine. Such subroutines do not return to the instruction
+	following the call, but to the string following it. Using
+	the <a class="inst"
+	href="#CES"><span class="call">CES</span></a> instruction
+	helps the simulator determine the return address so that the
+	subroutine can be executed with the simulator's next
+	command.</span>
+    </p>
 
     
-    <a name="mem_group"><h3>Memória kezelés</h3></a>
+    <a name="mem_group"><h3>
+	<span lang="hu">Memória kezelés</span>
+	<span lang="en">Memory operations</span>
+    </h3></a>
     
     <a name="LD"><h1>LD load memory to register</h1></a>
     
@@ -1034,27 +1648,59 @@
       
     </table>
     
-    <p>A memória címe megadható direkt, vagy indexelt
+    <p>
+      <span lang="hu">A memória címe megadható direkt, vagy indexelt
       címzésmóddal. Direkt címésmód esetén a cím mérete unsigned 16
       bit lehet, ami a címtér első 64 kB-jának az elérését teszi
-      lehetővé.</p>
+	lehetővé.</span>
 
-    <p>Indexelt címzésmód esetén a bázis cím az Ra regiszterben van,
-      amihez hozzáadódik egy eltolási érték, amely lehet az Rb
-      regiszter, vagy egy signed 16 bites konstans. Indexelt címzés
-      esetén kérhetjük a bázis regiszter módosítását. Ha regiszter
-      eltolást alkalmazunk, akkor az Ra változtatását az utasításban
-      adhatjuk meg, amely lehet pre-increment (növelés eggyel a cím
-      számítás előtt), pre-decrement (csökkentés eggyel a cím számítás
-      előtt), post-increment (növelés eggyel a cím számítás után),
-      vagy post-decrement (csökkentés eggyel a cím számítás
-      után). Ebben az esetben az utasítás módosítja mind az Rd, mind
-      az Ra regisztert. Ha az Rd és az Ra regiszter ugyanaz, akkor a
-      memóriából beolvasott adat felülírja a címet.</p>
+      <span lang="en">Memory addresses can be specified using direct
+      or indexed addressing. In direct addressing, the address size
+      can be unsigned 16 bits, which allows access to the first 64 KB
+      of the address space. </span>
+    </p>
 
-    <p>Konstans eltolás esetén a módosítás módját nem az utasítás,
-      hanem a FLAG regiszter U és P bitjei határozzák meg, erre utal a
-      fenti táblázatban a * jelölés:</p>
+    <p>
+      <span lang="hu">Indexelt címzésmód esetén a bázis cím az Ra
+      regiszterben van, amihez hozzáadódik egy eltolási érték, amely
+      lehet az Rb regiszter, vagy egy signed 16 bites
+      konstans. Indexelt címzés esetén kérhetjük a bázis regiszter
+      módosítását. Ha regiszter eltolást alkalmazunk, akkor az Ra
+      változtatását az utasításban adhatjuk meg, amely lehet
+      pre-increment (növelés eggyel a cím számítás előtt),
+      pre-decrement (csökkentés eggyel a cím számítás előtt),
+      post-increment (növelés eggyel a cím számítás után), vagy
+      post-decrement (csökkentés eggyel a cím számítás után). Ebben az
+      esetben az utasítás módosítja mind az Rd, mind az Ra
+      regisztert. Ha az Rd és az Ra regiszter ugyanaz, akkor a
+      memóriából beolvasott adat felülírja a címet.</span>
+
+      <span lang="en">In the case of indexed addressing, the base
+	address is in the Ra register, to which an offset value is
+	added, which can be the Rb register or a signed 16-bit
+	constant. In the case of indexed addressing, we can request
+	the modification of the base register. If we use a register
+	offset, then the change of Ra can be specified in the
+	instruction, which can be pre-increment (increase by one
+	before the address calculation), pre-decrement (decrease by
+	one before the address calculation), post-increment (increase
+	by one after the address calculation), or post-decrement
+	(decrease by one after the address calculation). In this case,
+	the instruction modifies both the Rd and Ra registers. If the
+	Rd and Ra registers are the same, the data read from the
+	memory overwrites the address.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Konstans eltolás esetén a módosítás módját nem
+      az utasítás, hanem a FLAG regiszter U és P bitjei határozzák
+      meg, erre utal a fenti táblázatban a * jelölés:</span>
+
+      <span lang="en">In the case of a constant offset, the
+	modification method is not determined by the instruction, but
+	by the U and P bits of the FLAG register, as indicated by the
+	* in the table above:</span>
+    </p>
 
     <table border="1">
       <thead>
@@ -1142,31 +1788,63 @@
     </table>
     
 
-    <p>A memória címe megadható direkt, vagy indexelt
+    <p>
+      <span lang="hu">A memória címe megadható direkt, vagy indexelt
       címzésmóddal. Direkt címésmód esetén a cím mérete unsigned 16
       bit lehet, ami a címtér első 64 kB-jának az elérését teszi
-      lehetővé.</p>
+      lehetővé.</span>
 
-    <p>Indexelt címzésmód esetén a bázis cím az Ra regiszterben van,
-      amihez hozzáadódik egy eltolási érték, amely lehet az Rb
-      regiszter, vagy egy signed 16 bites konstans. Indexelt címzés
-      esetén kérhetjük a bázis regiszter módosítását. Ha regiszter
-      eltolást alkalmazunk, akkor az Ra változtatását az utasításban
-      adhatjuk meg, amely lehet pre-increment (növelés eggyel a cím
-      számítás előtt), pre-decrement (csökkentés eggyel a cím számítás
-      előtt), post-increment (növelés eggyel a cím számítás után),
-      vagy post-decrement (csökkentés eggyel a cím számítás után).</p>
+      <span lang="en">Memory addresses can be specified using direct
+      or indexed addressing. In direct addressing, the address size
+      can be unsigned 16 bits, which allows access to the first 64 KB
+      of the address space.</span>
+    </p>
 
-    <p>Konstans eltolás esetén a módosítás módját nem az utasítás,
-      hanem a FLAG regiszter U és P bitjei határozzák meg, erre utal a
-      fenti táblázatban a * jelölés:</p>
+    <p>
+      <span lang="hu">Indexelt címzésmód esetén a bázis cím az Ra
+      regiszterben van, amihez hozzáadódik egy eltolási érték, amely
+      lehet az Rb regiszter, vagy egy signed 16 bites
+      konstans. Indexelt címzés esetén kérhetjük a bázis regiszter
+      módosítását. Ha regiszter eltolást alkalmazunk, akkor az Ra
+      változtatását az utasításban adhatjuk meg, amely lehet
+      pre-increment (növelés eggyel a cím számítás előtt),
+      pre-decrement (csökkentés eggyel a cím számítás előtt),
+      post-increment (növelés eggyel a cím számítás után), vagy
+      post-decrement (csökkentés eggyel a cím számítás után).</span>
+
+      <span lang="en">In the case of indexed addressing, the base
+	address is in the Ra register, to which is added an offset
+	value, which can be the Rb register or a signed 16-bit
+	constant. In the case of indexed addressing, we can request a
+	modification of the base register. If we use register offset,
+	then the change in Ra can be specified in the instruction,
+	which can be pre-increment (increase by one before the address
+	calculation), pre-decrement (decrease by one before the
+	address calculation), post-increment (increase by one after
+	the address calculation), or post-decrement (decrease by one
+	after the address calculation).</span>
+    </p>
+
+    <p>
+      <span lang="hu">Konstans eltolás esetén a módosítás módját nem
+      az utasítás, hanem a FLAG regiszter U és P bitjei határozzák
+      meg, erre utal a fenti táblázatban a * jelölés:</span>
+
+      <span lang="en">In the case of a constant offset, the
+	modification method is not determined by the instruction, but
+	by the U and P bits of the FLAG register, as indicated by the
+	* in the table above:</span>
+    </p>
 
     <table border="1">
       <thead>
 	<tr>
-	  <td>U</td>
-	  <td>P</td>
-	  <td>Ra módosítása: *Ra</td>
+	  <th>U</th>
+	  <th>P</th>
+	  <th>
+	    <span lang="hu">Ra módosítása: *Ra</span>
+	    <span lang="hu">Modification of Ra: *Ra</span>
+	  </th>
 	</tr>
 	<tr>
 	  <td>0</td>
@@ -1192,7 +1870,10 @@
     </table>
 
     
-    <a name="alu_group"><h3>Aritmetikai, logikai műveletek</h3></a>
+    <a name="alu_group"><h3>
+	<span lang="hu">Aritmetikai, logikai műveletek</span>
+	<span lang="en">Arithmetic, logic operations</span>
+    </h3></a>
     
     <a name="ADC"><h1>ADC add with carry</h1></a>
     
@@ -1213,10 +1894,18 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembevételével. Az első operandus
-      egyúttal az eredmény tárolási helye is (felülíródik). A második
-      operandus regiszter, vagy signed 16 bites konstans lehet. A
-      művelet mind a négy aritmetikai flag-et módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembevételével. Az első
+      operandus egyúttal az eredmény tárolási helye is
+      (felülíródik). A második operandus regiszter, vagy signed 16
+      bites konstans lehet. A művelet mind a négy aritmetikai flag-et
+      módosítja.</span>
+
+      <span lang="en">Addition with carry. The first operand is also
+	the storage location for the result (overwritten). The second
+	operand can be a register or a signed 16 bit constant. The
+	operation modifies all four arithmetic flags.</span>
+    </p>
 
     <a name="ADD"><h1>ADD add without carry</h1></a>
     
@@ -1237,10 +1926,19 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembe vétele nélkül. Az első operandus
-      egyúttal az eredmény tárolási helye is (felülíródik). A második
-      operandus regiszter, vagy signed 16 bites konstans lehet. A
-      művelet mind a négy aritmetikai flag-et módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembe vétele nélkül. Az
+      első operandus egyúttal az eredmény tárolási helye is
+      (felülíródik). A második operandus regiszter, vagy signed 16
+      bites konstans lehet. A művelet mind a négy aritmetikai flag-et
+      módosítja.</span>
+
+      <span lang="en">Addition without carry. The first operand is
+	also the storage location for the result (it is
+	overwritten). The second operand can be a register or a signed
+	16 bit constant. The operation modifies all four arithmetic
+	flags.</span>
+    </p>
 
     <a name="AND"><h1>AND bitwise and</h1></a>
     
@@ -1261,13 +1959,24 @@
       
     </table>
     
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy 16 bites
-      konstans lehet. A konstans 32 bitesre való kiterjesztése mindig
-      1-es értékű bitekkel történik. Az utasítás ebben a formában
-      bitek 0-ba állítására használható, ha a törlendő bitek a 0-15
-      pozíciók között találhatók.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy 16 bites konstans lehet. A konstans 32 bitesre való
+      kiterjesztése mindig 1-es értékű bitekkel történik. Az utasítás
+      ebben a formában bitek 0-ba állítására használható, ha a
+      törlendő bitek a 0-15 pozíciók között találhatók.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+	operands in the same position. The first operand is also the
+	storage location for the result (it is overwritten). The
+	second operand can be a register, or a 16-bit constant. The
+	constant is always expanded to 32-bit with bits with the value
+	1. The instruction in this form can be used to set bits to 0
+	if the bits to be cleared are located between positions
+	0-15.</span>
+    </p>
 
     <a name="BTST"><h1>BTST bit test with write-back</h1></a>
     
@@ -1288,14 +1997,26 @@
       
     </table>
     
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy unsigned 16
-      bites konstans lehet. A konstans 32 bitesre való kiterjesztése
-      mindig 0 értékű bitekkel történik. Az utasítás ebben a formában
-      bit értékének a vizsgálatára használható, ha a vizsgált bit a
-      0-15 pozíció között található. Az utasítás csak a Z és S flag-et
-      módosítja.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy unsigned 16 bites konstans lehet. A konstans 32 bitesre
+      való kiterjesztése mindig 0 értékű bitekkel történik. Az
+      utasítás ebben a formában bit értékének a vizsgálatára
+      használható, ha a vizsgált bit a 0-15 pozíció között
+      található. Az utasítás csak a Z és S flag-et módosítja.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+	operands in the same position. The first operand is also the
+	storage location for the result (it is overwritten). The
+	second operand can be a register, or an unsigned 16-bit
+	constant. The constant is always extended to 32-bit with bits
+	of value 0. The instruction in this form can be used to
+	examine the value of a bit if the examined bit is located
+	between positions 0-15. The instruction only modifies the Z
+	and S flags.</span>
+    </p>
 
     <a name="CLC"><h1>CLC clear C flag</h1></a>
     
@@ -1310,8 +2031,13 @@
       
     </table>
     
-    <p>Az utasítás 0 értéket ír a Flag regiszter C bitjébe. Más hatása
-      nincs.</p>
+    <p>
+      <span lang="hu">Az utasítás 0 értéket ír a Flag regiszter C
+	bitjébe. Más hatása nincs.</span>
+
+      <span lang="en">The instruction writes a value of 0 to bit C of
+	the Flag register. It has no other effect.</span>
+    </p>
 
     <a name="CMP"><h1>CMP compare</h1></a>
     
@@ -1334,12 +2060,21 @@
       
     </table>
     
-    <p>Az utasítás a két operandus összehasonlítására használható. A
-      működése megegyezik
-      a <a class="inst" href="#SUB"><span class="alu2">SUB</span></a> utasítással,
+    <p>
+      <span lang="hu">Az utasítás a két operandus összehasonlítására
+      használható. A működése megegyezik a <a class="inst"
+      href="#SUB"><span class="alu2">SUB</span></a> utasítással,
       azonban a kivonás eredményét nem tárolja, az első operandus
       regisztere (Rd) változatlan marad, csak a Flag regiszter
-      aritmetikai bitjei módosulnak.</p>
+      aritmetikai bitjei módosulnak.</span>
+
+      <span lang="en">The instruction can be used to compare two
+	operands. Its operation is the same as the <a class="inst"
+	href="#SUB"><span class="alu2">SUB</span></a> instruction, but
+	it does not store the result of the subtraction, the register
+	(Rd) of the first operand remains unchanged, only the
+	arithmetic bits of the Flag register are changed.</span>
+    </p>
     
     <a name="MUL"><h1>MUL multiply</h1></a>
     
@@ -1360,10 +2095,17 @@
       
     </table>
     
-    <p>Az utasítás a két operandus értékét szorozza össze, az eredmény
-      alsó helyiértékű 32 bitje az Rd regiszterbe kerül. Az eredmény
-      felső helyiértékű 32 bitje elvész. Az utasítás csak a Z és S
-      Flag biteket módosítja.</p>
+    <p>
+      <span lang="hu">Az utasítás a két operandus értékét szorozza
+      össze, az eredmény alsó helyiértékű 32 bitje az Rd regiszterbe
+      kerül. Az eredmény felső helyiértékű 32 bitje elvész. Az
+      utasítás csak a Z és S Flag biteket módosítja.</span>
+
+      <span lang="en">The instruction multiplies the values ​​of the two
+      operands and the lower 32 bits of the result are placed in the
+      Rd register. The upper 32 bits of the result are lost. The
+      instruction only modifies the Z and S Flag bits.</span>
+    </p>
 
     <a name="NEG"><h1>NEG sign change</h1></a>
     
@@ -1379,11 +2121,19 @@
       
     </table>
     
-    <p>Az utasítás a signed 32 bitesnek tekintett Rd regiszter
-      értékének az előjelét az ellenkezőjére állítja, az eredmény az
-      Rd regiszterbe kerül. A CPU a műveletet az Rd=0-Rd kivonás
-      elvégzésével számítja ki, a Flag biteket ennek megfelelően
-      állítja be.</p>
+    <p>
+      <span lang="hu">Az utasítás a signed 32 bitesnek tekintett Rd
+      regiszter értékének az előjelét az ellenkezőjére állítja, az
+      eredmény az Rd regiszterbe kerül. A CPU a műveletet az Rd=0-Rd
+      kivonás elvégzésével számítja ki, a Flag biteket ennek
+      megfelelően állítja be.</span>
+
+      <span lang="en">The instruction reverses the sign of the value
+      in the Rd register, which is considered a signed 32-bit
+      register, and the result is placed in the Rd register. The CPU
+      calculates the operation by Rd=0-Rd, setting the Flag bits
+      accordingly.</span>
+    </p>
 
     <a name="NOT"><h1>NOT bitwise complement</h1></a>
     
@@ -1399,9 +2149,15 @@
       
     </table>
     
-    <p>A művelet az Rd bitjeit egyenként negálja, az eredmény az Rd
-      regiszterbe kerül. Az utasítás csak a Z és S Flag biteket
-      módosítja.</p>
+    <p>
+      <span lang="hu">A művelet az Rd bitjeit egyenként negálja, az
+      eredmény az Rd regiszterbe kerül. Az utasítás csak a Z és S Flag
+      biteket módosítja.</span>
+
+      <span lang="en">The operation negates the bits of Rd one by one,
+      the result is placed in the Rd register. The instruction only
+      modifies the Z and S Flag bits.</span>
+    </p>
 
     <a name="OR"><h1>OR bitwise or</h1></a>
     
@@ -1422,13 +2178,23 @@
       
     </table>
     
-    <p>Logikai VAGY művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy 16 bites
-      konstans lehet. A konstans 32 bitesre való kiterjesztése mindig
-      0-s értékű bitekkel történik. Az utasítás ebben a formában bitek
-      1-be állítására használható, ha a beállítandó bitek a 0-15
-      pozíciók között találhatók.</p>
+    <p>
+      <span lang="hu">Logikai VAGY művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy 16 bites konstans lehet. A konstans 32 bitesre való
+      kiterjesztése mindig 0-s értékű bitekkel történik. Az utasítás
+      ebben a formában bitek 1-be állítására használható, ha a
+      beállítandó bitek a 0-15 pozíciók között találhatók.</span>
+
+      <span lang="en">Logical OR operation between the bits of the
+      operands in the same position. The first operand is also the
+      storage location for the result (it is overwritten). The second
+      operand can be a register, or a 16-bit constant. The constant is
+      always expanded to 32-bit with 0 bits. The instruction in this
+      form can be used to set bits to 1 if the bits to be set are in
+      positions 0-15.</span>
+    </p>
 
     <a name="PLUS"><h1>PLUS add without carry</h1></a>
     
@@ -1449,12 +2215,24 @@
       
     </table>
     
-    <p>Összeadás átvitel figyelembe vétele és a Flag regiszter
-      módosítása nélkül. Az első operandus egyúttal az eredmény
-      tárolási helye is (felülíródik). A második operandus regiszter,
-      vagy signed 16 bites konstans lehet. Az utasítás eredménye
-      megegyezik az <a class="inst" href="#ADD"><span class="alu2">ADD</span></a>
-      utasítás eredményével, azonban a Flag regisztert nem módosítja.</p>
+    <p>
+      <span lang="hu">Összeadás átvitel figyelembe vétele és a Flag
+      regiszter módosítása nélkül. Az első operandus egyúttal az
+      eredmény tárolási helye is (felülíródik). A második operandus
+      regiszter, vagy signed 16 bites konstans lehet. Az utasítás
+      eredménye megegyezik az <a class="inst"
+      href="#ADD"><span class="alu2">ADD</span></a> utasítás
+      eredményével, azonban a Flag regisztert nem módosítja.</span>
+
+      <span lang="en">Addition without taking into account carry and
+      without modifying the Flag register. The first operand is also
+      the storage location for the result (it is overwritten). The
+      second operand can be a register or a signed 16-bit
+      constant. The result of the instruction is the same as the
+      result of the <a class="inst"
+      href="#ADD"><span class="alu2">ADD</span></a> instruction, but
+      the Flag register is not modified.</span>
+    </p>
 
     <a name="ROL"><h1>ROL rotate left through carry</h1></a>
     
@@ -1471,10 +2249,19 @@
     
     <p><img title="" src="rol.svg" alt="rol.png" /></p>
     
-    <p>33 bites forgatás balra a C bittel együtt. A C Flag bit értéke
-      az Rd[31] bit forgatás előtti értéke lesz. A C Flag bit forgatás
-      előtti értéke az Rd[0] bitbe kerül. A forgatás után a Z és S
-      Flag bitek az Rd-nek megfelelő értéket veszik fel.</p>
+    <p>
+      <span lang="hu">33 bites forgatás balra a C bittel együtt. A C
+      Flag bit értéke az Rd[31] bit forgatás előtti értéke lesz. A C
+      Flag bit forgatás előtti értéke az Rd[0] bitbe kerül. A forgatás
+      után a Z és S Flag bitek az Rd-nek megfelelő értéket veszik
+      fel.</span>
+
+      <span lang="en">33-bit left rotation including the C bit. The C
+      Flag bit value will be the value of the Rd[31] bit before the
+      rotation. The C Flag bit value before the rotation is placed in
+      the Rd[0] bit. After the rotation, the Z and S Flag bits will
+      take the value corresponding to Rd.</span>
+    </p>
 
     <a name="ROR"><h1>ROR rotate right through carry</h1></a>
     
@@ -1491,10 +2278,19 @@
     
     <p><img title="" src="ror.svg" alt="ror.png" /></p>
     
-    <p>33 bites forgatás jobbra a C Flag bittel együtt. A C Flag
-      értéke az Rd[0] bit forgatás előtti értéke lesz. A C Flag bit
-      forgatás előtti értéke az Rd[31] bitbe kerül. A forgatás után a
-      Z és S Flag bitek az Rd-nek megfelelő értéket veszik fel.</p>
+    <p>
+      <span lang="hu">33 bites forgatás jobbra a C Flag bittel
+      együtt. A C Flag értéke az Rd[0] bit forgatás előtti értéke
+      lesz. A C Flag bit forgatás előtti értéke az Rd[31] bitbe
+      kerül. A forgatás után a Z és S Flag bitek az Rd-nek megfelelő
+      értéket veszik fel.</span>
+
+      <span lang="en">33-bit right rotation along with the C Flag
+      bit. The value of the C Flag bit will be the value of the Rd[0]
+      bit before the rotation. The value of the C Flag bit before the
+      rotation is put into the Rd[31] bit. After the rotation, the Z
+      and S Flag bits will take the value according the Rd.</span>
+    </p>
 
     <a name="SBB"><h1>SBB subtract with carry</h1></a>
     
@@ -1517,14 +2313,25 @@
       
     </table>
     
-    <p>Kivonás művelet. Az első operandus (Rd) egyúttal az eredmény
-      tárolási helye is (felülíródik). A második operandus egy 32
-      bites regiszter, vagy egy signed 16 bites konstans lehet,
+    <p>
+      <span lang="hu">Kivonás művelet. Az első operandus (Rd) egyúttal
+      az eredmény tárolási helye is (felülíródik). A második operandus
+      egy 32 bites regiszter, vagy egy signed 16 bites konstans lehet,
       amelyet a CPU előjel kiterjesztéssel alakít 32 bitesre. A
       második operandus negáltját adja hozzá az elsőhöz Rd=Rd+(-op2),
       úgy, hogy kezdő átvitelként a C Flag bitet használja fel. A
       kivonás után a C Flag 0 értéke jelenti azt, hogy túlcsordulás
-      keletkezett.</p>
+      keletkezett.</span>
+
+      <span lang="en">Subtraction operation. The first operand (Rd) is
+      also the storage location for the result (it is
+      overwritten). The second operand can be a 32-bit register or a
+      signed 16-bit constant, which the CPU converts to 32-bit by sign
+      extension. The negation of the second operand is added to the
+      first, Rd=Rd+(-op2), using the C Flag bit as the initial carry.
+      After the subtraction, a value of 0 in the C Flag means that an
+      overflow has occurred.</span>
+    </p>
     
     <a name="SEC"><h1>SEC set carry flag</h1></a>
     
@@ -1539,8 +2346,13 @@
       
     </table>
     
-    <p>Az utasítás a C Flag bitet 1 értékűre állítja. Más hatása
-    nincs.</p>
+    <p>
+      <span lang="hu">Az utasítás a C Flag bitet 1 értékűre
+      állítja. Más hatása nincs.</span>
+
+      <span lang="en">The instruction sets the C Flag bit to 1. It
+      has no other effect.<</span>
+    </p>
     
     <a name="SHA"><h1>SHA arithmetic (signed) shift right</h1></a>
     
@@ -1557,11 +2369,20 @@
     
     <p><img title="" src="sha.svg" alt="sha.png" /></p>
     
-    <p>Signed 32 bites adat aritmetikai (előjel tartó) eltolása jobbra
-      1 bittel. A C Flag bit az Rd[0] eltolás előtti értékét veszi
-      fel. Az Rd[31] bit értéke nem változik, a 32 bites adat
-      megtartja az előjelét. A Z és S Flag bitek az Rd eltolás utáni
-      értéke alapján kapnak értéket.</p>
+    <p>
+      <span lang="hu">Előjeles 32 bites adat aritmetikai (előjel tartó)
+      eltolása jobbra 1 bittel. A C Flag bit az Rd[0] eltolás előtti
+      értékét veszi fel. Az Rd[31] bit értéke nem változik, a 32 bites
+      adat megtartja az előjelét. A Z és S Flag bitek az Rd eltolás
+      utáni értéke alapján kapnak értéket.</span>
+
+      <span lang="en">Arithmetic (sign-retaining) shift of signed
+      32-bit data to the right by 1 bit. The C Flag bit takes the
+      value of Rd[0] before the shift. The value of the Rd[31] bit
+      does not change, the 32-bit data retains its sign. The Z and S
+      Flag bits are given values ​​based on the value of Rd after the
+      shift.</span>
+    </p>
 
     <a name="SHL"><h1>SHL shift left</h1></a>
     
@@ -1578,9 +2399,17 @@
     
     <p><img title="" src="shl.svg" alt="shl.png" /></p>
     
-    <p>Eltolás balra 1 bittel. A C Flag bit az Rd[31] eltolás előtti
-      értékét kapja, az Rd[0] bitje 0 lesz. A Z és S Flag bitek az Rd
-      eltolás utáni értékének megfelelően módosul.</p>
+    <p>
+      <span lang="hu">Eltolás balra 1 bittel. A C Flag bit az Rd[31]
+      eltolás előtti értékét kapja, az Rd[0] bitje 0 lesz. A Z és S
+      Flag bitek az Rd eltolás utáni értékének megfelelően
+      módosul.</span>
+
+      <span lang="en">Shift left by 1 bit. The C Flag bit gets the
+      value of Rd[31] before the shift, the Rd[0] bit becomes 0. The
+      Z and S Flag bits change according to the value of Rd after the
+      shift.</span>
+    </p>
 
     <a name="SHR"><h1>SHR logic (unsigned) shift right</h1></a>
     
@@ -1597,10 +2426,19 @@
     
     <p><img title="" src="shr.svg" alt="shr.png" /></p>
     
-    <p>Unsigned 32 bites adat eltolása jobbra 1 bittel. A C Flag bit
-      értéke az Rd[0] eltolás előtti értéke lesz. Az Rd[31] bit 0
-      értéket kap. A Z és az S Flag bitek az Rd eltolás utáni értéke
-      alapján kapnak értéket, vagyis a S Flag bit mindig 0 lesz.</p>
+    <p>
+      <span lang="hu">Előjel nélküli 32 bites adat eltolása jobbra 1
+      bittel. A C Flag bit értéke az Rd[0] eltolás előtti értéke
+      lesz. Az Rd[31] bit 0 értéket kap. A Z és az S Flag bitek az Rd
+      eltolás utáni értéke alapján kapnak értéket, vagyis a S Flag bit
+      mindig 0 lesz.</span>
+
+      <span lang="en">Shift unsigned 32-bit data to the right by 1
+      bit. The C Flag bit will be the value of Rd[0] before the
+      shift. The Rd[31] bit will be set to 0. The Z and S Flag bits
+      will be set to the value of Rd after the shift, so the S Flag
+      bit will always be 0.</span>
+    </p>
 
     <a name="SUB"><h1>SUB subtract without carry</h1></a>
     
@@ -1623,14 +2461,25 @@
       
     </table>
     
-    <p>Kivonás művelet az átvitel figyelmen kívül hagyásával. Az első
-      operandus (Rd) egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus egy 32 bites regiszter, vagy
-      egy signed 16 bites konstans lehet, amelyet a CPU előjel
-      kiterjesztéssel alakít 32 bitesre. A második operandus negáltját
-      adja hozzá az elsőhöz Rd=Rd+(-op2), úgy, hogy kezdő átvitelként
-      1 értéket használ fel. A kivonás után a C Flag 0 értéke jelenti
-      azt, hogy túlcsordulás keletkezett.</p>
+    <p>
+      <span lang="hu">Kivonás művelet az átvitel figyelmen kívül
+      hagyásával. Az első operandus (Rd) egyúttal az eredmény tárolási
+      helye is (felülíródik). A második operandus egy 32 bites
+      regiszter, vagy egy signed 16 bites konstans lehet, amelyet a
+      CPU előjel kiterjesztéssel alakít 32 bitesre. A második
+      operandus negáltját adja hozzá az elsőhöz Rd=Rd+(-op2), úgy,
+      hogy kezdő átvitelként 1 értéket használ fel. A kivonás után a C
+      Flag 0 értéke jelenti azt, hogy túlcsordulás keletkezett.</span>
+
+      <span lang="en">Subtraction operation ignoring the carry. The
+	first operand (Rd) is also the storage location for the result
+	(overwritten). The second operand can be a 32-bit register or
+	a signed 16-bit constant, which the CPU converts to 32-bit by
+	sign extension. The negation of the second operand is added to
+	the first, Rd=Rd+(-op2), using 1 as the initial carry. After
+	the subtraction, the C Flag value of 0 indicates that an
+	overflow has occurred.</span>
+    </p>
 
     <a name="SZ"><h1>SZ test of zero</h1></a>
     
@@ -1645,11 +2494,19 @@
       
     </table>
     
-    <p>Az utasítás az Rd regiszter értékének a 0-val való
-      összehasonlítására, illetve az előjelének a megállapítására
+    <p>
+      <span lang="hu">Az utasítás az Rd regiszter értékének a 0-val
+      való összehasonlítására, illetve az előjelének a megállapítására
       használható. Ha a regiszter 0, akkor a Z Flag bit 1 lesz,
       különben 0. Az S Flag bit az Rd[31] értékét veszi fel. Az Rd nem
-      változik.</p>
+      változik.</span>
+
+      <span lang="en">The instruction can be used to compare the value
+      of the register Rd with 0 and to determine its sign.  If the
+      register is 0, the Z Flag bit will be 1, otherwise it will be
+      0. The S Flag bit will take the value of Rd[31]. Rd will not
+      change.</span>
+    </p>
 
     <a name="TEST"><h1>TEST bitwise and without write back</h1></a>
     
@@ -1670,16 +2527,31 @@
       
     </table>
 
-    <p>Logikai ÉS művelet az operandusok azonos pozíciójú bitjei
-      között.  Az első operandus nem változik. A második operandus
-      regiszter, vagy unsigned 16 bites konstans lehet. A konstans 32
-      bitesre való kiterjesztése mindig 0 értékű bitekkel történik. Az
-      utasítás ebben a formában bit értékének a vizsgálatára
-      használható, ha a vizsgált bit a 0-15 pozíció között
-      található. Az utasítás csak a Z és S flag-et módosítja, az Rd
-      regiszter értéke változatlan marad. Az utasítás
-      a <a class="inst" href="#BTST"><span class="alu2">BTST</span></a> utasítással
-      megegyezően működik, az Rd módosítása nélkül.</p>
+    <p>
+      <span lang="hu">Logikai ÉS művelet az operandusok azonos
+      pozíciójú bitjei között.  Az első operandus nem változik. A
+      második operandus regiszter, vagy unsigned 16 bites konstans
+      lehet. A konstans 32 bitesre való kiterjesztése mindig 0 értékű
+      bitekkel történik. Az utasítás ebben a formában bit értékének a
+      vizsgálatára használható, ha a vizsgált bit a 0-15 pozíció
+      között található. Az utasítás csak a Z és S flag-et módosítja,
+      az Rd regiszter értéke változatlan marad. Az utasítás
+      a <a class="inst"
+      href="#BTST"><span class="alu2">BTST</span></a> utasítással
+      megegyezően működik, az Rd módosítása nélkül.</span>
+
+      <span lang="en">Logical AND operation between the bits of the
+      operands in the same position. The first operand is not
+      changed. The second operand can be a register or an unsigned
+      16-bit constant. The extension of the constant to 32 bits is
+      always done with 0 bits. The instruction in this form can be
+      used to test the value of a bit, if the tested bit is located
+      between positions 0-15. The instruction only modifies the Z and
+      S flags, the value of the Rd register remains unchanged. The
+      instruction works the same as the <a class="inst"
+      href="#BTST"><span class="alu2">BTST</span></a> instruction,
+      without modifying Rd.</span>
+    </p>
 
     <a name="XOR"><h1>XOR bitwise xor</h1></a>
     
@@ -1700,14 +2572,26 @@
       
     </table>
     
-    <p>Logikai XOR művelet az operandusok azonos pozíciójú bitjei
-      között. Az első operandus egyúttal az eredmény tárolási helye is
-      (felülíródik). A második operandus regiszter, vagy unsigned 16
-      bites konstans lehet. A konstans 32 bitesre való kiterjesztése
-      mindig 0 értékű bitekkel történik. Az utasítás ebben a formában
-      bit értékének a negálására használható, ha a negálandó bit a
-      0-15 pozíció között található. Az utasítás csak a Z és S flag-et
-      módosítja.</p>
+    <p>
+      <span lang="hu">Logikai XOR művelet az operandusok azonos
+      pozíciójú bitjei között. Az első operandus egyúttal az eredmény
+      tárolási helye is (felülíródik). A második operandus regiszter,
+      vagy unsigned 16 bites konstans lehet. A konstans 32 bitesre
+      való kiterjesztése mindig 0 értékű bitekkel történik. Az
+      utasítás ebben a formában bit értékének a negálására
+      használható, ha a negálandó bit a 0-15 pozíció között
+      található. Az utasítás csak a Z és S flag-et módosítja.</span>
+
+      <span lang="en">Logical XOR operation between the bits of the
+      operands in the same position. The first operand is also the
+      storage location for the result (it is overwritten). The second
+      operand can be a register, or an unsigned 16-bit constant. The
+      extension of the constant to 32 bits is always done with bits
+      with the value 0.  The instruction in this form can be used to
+      negate the value of a bit if the bit to be negated is between
+      positions 0-15. The instruction only modifies the Z and S
+      flags.</span>
+    </p>
 
 <hr>
 	

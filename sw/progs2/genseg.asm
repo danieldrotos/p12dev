@@ -133,7 +133,7 @@ done:
 	ces	eprints
 	.db	"</tr>\n\n</table>\n\n</body>\n</html>\n"
 
-exit:	
+_exit:	
 	mvzl	r0,'s'
 	st	r0,SIMIF.CMD_PAR
 	call	monitor

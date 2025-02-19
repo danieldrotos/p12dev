@@ -34,11 +34,11 @@ Open `prj.mk` file with a text editor and set project parameters:
 Create a file with name used in `PRG` parameter and with **.asm**
 extension and develop your software. Use CPU instructions documented in
 
-[pcpu](https://danieldrotos.github.io/p12dev/p2223.html)
+[cpu](https://danieldrotos.github.io/p12dev/p2223.html)
 
 and use assembler features and directives according to
 
-[pasm](https://danieldrotos.github.io/p12dev/asm.html)
+[asm](https://danieldrotos.github.io/p12dev/asm.html)
 
 
 ## Compiling and simulating
@@ -67,8 +67,11 @@ got the command prompt back.
 make progs        ; compile monitor and examples
 make sw           ; compile your app only
 make hw           ; compile hardware model only
+make compile      ; compile hw and sw without simulation
 make sim          ; run simulation
 make show         ; open gtkwave and show VCD file
+make iss          ; run uCsim to simulate your app
+make emu          ; run uCsim showing FPGA display
 make clean        ; delete compiled files
 ```
 
@@ -100,4 +103,6 @@ http://www.ucsim.hu
 ## FPGA implementation
 
 See documentation for detailed instructions how to compile and
-download system to an FPGA board.
+download system to an FPGA board:
+
+[dev](https://danieldrotos.github.io/p12dev/devenv.html)

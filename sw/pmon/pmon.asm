@@ -1,8 +1,5 @@
 	cpu	P2
 
-	version_main	=	1
-	version_sub	=	6
-	
 	IO_BEGIN	=	0xff00
 	UART_DR		=	0xff40
 	UART_CTRL	=	0xff41
@@ -30,7 +27,7 @@ _f000:	jmp	callin
 _f001:	jmp	enter_by_uart
 _f002:	jmp	getchar
 _f003:	jmp	version
-_f004:	jmp	itobcd
+_f004:	jmp	mon_itobcd
 _f005:	jmp	cold_start
 _f006:	jmp	strchr
 _f007:	jmp	streq
@@ -139,14 +136,20 @@ tr_is_off:
 	.db	"\e[40;37m"
 	mvzl	r0,LF
 	call	putchar
+
+	mvzl	r0,'_'
+	st	r0,SIMIF
+	ld	r0,SIMIF
+	cmp	r0,'v'
+	jz	skip_welcome
+	
 	rds	r0,sver
-	mvzl	r1,version_main
-	mvzl	r2,version_sub
-	getbz	r3,r0,2
-	getbz	r4,r0,1
-	getbz	r5,r0,0
+	getbz	r1,r0,2
+	getbz	r2,r0,1
+	getbz	r3,r0,0
 	mvzl	r0,msg_start
 	call	printf
+skip_welcome:	
 	;; Print addr if called from
 	ld	r0,called
 	sz	r0
@@ -1127,16 +1130,14 @@ cmd_f:
 ;;; v[er]
 cmd_v:
 	push	lr
-	mvzl	r1,version_main
-	mvzl	r2,version_sub
 	rds	r0,SVER
-	getbz	r3,r0,2
-	getbz	r4,r0,1
-	getbz	r5,r0,0
-	rds	r6,SFEAT1
-	rds	r7,SFEAT2
+	getbz	r1,r0,2
+	getbz	r2,r0,1
+	getbz	r3,r0,0
+	rds	r4,SFEAT1
+	rds	r5,SFEAT2
 	ces	pesf
-	.db	"pmon: %d.%d cpu: %d.%d.%d feat1: %x feat2: %x\n"
+	.db	"cpu: %d.%d.%d feat1: %x feat2: %x\n"
 	pop	pc
 	
 
@@ -1183,7 +1184,7 @@ div_ret:
 	;; Convert number to BCD
 	;; In : R0
 	;; Out: R0
-itobcd:
+mon_itobcd:
 	push	lr
 	push	r1
 	push	r2
@@ -2577,11 +2578,12 @@ pesf:
 
 
 version:
-	push	r1
-	mvzl	r0,version_sub
-	mvzl	r1,version_main
-	putb	r0,r1,1
-	pop	r1
+;	push	r1
+;	mvzl	r0,version_sub
+;	mvzl	r1,version_main
+;	putb	r0,r1,1
+	rds	r0,sver
+;	pop	r1
 	ret
 	
 
@@ -2613,7 +2615,7 @@ reg14:		dd	0
 reg15:		dd	0
 regf:		dd	0
 	
-msg_start:	db	"PMonitor v%d.%d (cpu v%d.%d.%d)\n"
+msg_start:	db	"PMonitor, cpu v%d.%d.%d\n"
 msg_stopat:	db	"Stop at: "
 msg_BS:		db	8,32,8,0
 prompt:		db	":"

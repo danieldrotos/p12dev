@@ -63,9 +63,7 @@ all: progs sw show
 
 compile: sw hw
 
-progs:
-	$(MAKE) -C sw/lib all
-	$(MAKE) -C sw/pmon all
+progs: comp_mon comp_lib
 	$(MAKE) -C sw/examples all
 	$(MAKE) -C sw/progs2 all
 
@@ -80,12 +78,12 @@ comp_mon: comp_pmon
 comp_lib:
 	$(MAKE) -C sw/lib all
 
-comp_app: $(PRG).p2h $(PRG).asc $(PRG).cdb
+comp_app: comp_mon comp_lib $(PRG).p2h $(PRG).asc $(PRG).cdb
 
-$(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l $(PMON)/pmon.p2h
+$(PRG).p2h: $(PRG).asm $(LIB)/plib.p2l
 	php $(TOOLS)/p2as.php -l -o $@ $(PRG).asm $(LIB)/plib.p2l
 
-sw: comp_pmon comp_lib comp_app
+sw: comp_app
 
 source:
 	php $(TOOLS)/source.php $(PRG).asc
@@ -104,10 +102,13 @@ hw: synth
 iss: sw
 	$(ISS) $(PRG)
 
+emu: sw
+	$(EMU) $(PRG)
+
 $(VCD): $(VVP)
 	vvp -n $(VVP)
 
-$(VVP): $(TB_VER) $(MODS_VER) prj.mk $(PRG).asc
+$(VVP): $(TB_VER) $(MODS_VER) prj.mk sw
 	iverilog \
 		-DPRG='"$(PRG).asc"' \
 		-DINSTS=$(INSTS) \
@@ -133,12 +134,8 @@ clean:
 	$(MAKE) -C sw/progs2 clean
 	$(MAKE) -C sw/pmon clean
 	$(MAKE) -C sw/tools clean
-	$(MAKE) -C hw/implement clean
 	$(MAKE) -C sw/lib clean
+	$(MAKE) -C hw clean
+	$(MAKE) -C docs clean
 	$(RM) $(clean_files)
-	$(RM) ./computer/*~ ./cpu1/*~ ./cpu2/*~
-	$(RM) ./hw/computer/*~ ./hw/cpu1/*~ ./hw/cpu2/*~
-	$(RM) ./hw/cpu2/*.asc ./hw/cpu2/*.cdb ./hw/cpu2/*.lst ./hw/cpu2/*.p2*
-	$(RM) ./hw/version.v  $(VCD) $(VVP)
-	$(RM) ./docs/*bak ./docs/*~
 	$(RM) vivado*.jou vivado*.log

@@ -8,13 +8,15 @@ DOC		= $(DOCS)
 PROGS		= $(PRJ)/sw/progs2
 
 ifeq ($(OS),Windows_NT)
-RM		= del /f /q
-RMR		= del /f /s /q
+RM		= php $(TOOLS)/tool.php -rm
+RMR		= php $(TOOLS)/tool.php -rm
 ISS		= $(TOOLS)/sim.bat
+EMU		= $(TOOLS)/emu.bat
 else
 RM		= rm -f
 RMR		= rm -f -r
 ISS		= $(TOOLS)/sim.sh
+EMU		= $(TOOLS)/emu.sh
 endif
 
 .SUFFIXES: .asm .v .asc .cdb .p2h .p2o .p2l

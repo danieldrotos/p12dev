@@ -62,7 +62,7 @@ function find_version()
     return "";
 }
 
-function gen_version()
+function gen_version_verilog()
 {
     $vf= find_version();
     if ($vf == '')
@@ -81,6 +81,60 @@ function gen_version()
     return $v;
 }
 
+function gen_version_asm()
+{
+    $vf= find_version();
+    if ($vf == '')
+        return "";
+    $v= file_get_contents($vf);
+    if ($v == '')
+        return "";
+    $v1= strtok($v, ".\n");
+    $v2= strtok(".\n");
+    $v3= strtok(".\n");
+
+    if ($v1!='') echo "VER_MAIN  = $v1\n";
+    if ($v2!='') echo "VER_SUB   = $v2\n";
+    if ($v3!='') echo "VER_REL   = $v3\n";
+
+    return $v;
+}
+
+function rrmdir($src)
+{
+    if ($src == '')
+        return;
+    $dir = opendir($src);
+    while(false !== ( $file = readdir($dir)) )
+    {
+        if (( $file != '.' ) && ( $file != '..' ))
+        {
+            $full = $src . '/' . $file;
+            if ( is_dir($full) )
+            {
+                rrmdir($full);
+            }
+            else
+            {
+                unlink($full);
+            }
+        }
+    }
+    closedir($dir);
+    rmdir($src);
+}
+
+function rm($src)
+{
+    if (($src == '') || ($src == '.') || ($src == '..'))
+        return;
+    if (!file_exists($src))
+        return;
+    if (is_dir($src))
+        rrmdir($src);
+    else
+        unlink($src);
+}
 
 if (isset($argv[0]))
 {
@@ -96,7 +150,21 @@ if (isset($argv[0]))
         }
         else if (($argv[$i] == "-gv") || ($argv[$i] == "-vg"))
         {
-            gen_version();
+            gen_version_verilog();
+        }
+        else if (($argv[$i] == "-va") || ($argv[$i] == "-av"))
+        {
+            gen_version_asm();
+        }
+        else if ($argv[$i] == "-rm")
+        {
+            for ($j=$i+1; $j<$argc; $j++)
+            {
+                foreach (glob($argv[$j], \GLOB_BRACE) as $filename)
+                {
+                    rm($filename);
+                }
+            }
         }
     }
 }

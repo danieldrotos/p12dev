@@ -1,12 +1,8 @@
-all:
+PRJ		= ../..
 
-ifeq ($(OS),Windows_NT)
-RM		= del /f /q
-RMR		= del /f /s /q
-else
-RM		= rm -f
-RMR		= rm -f -r
-endif
+include $(PRJ)/sw/common.mk
+
+all:
 
 clean:
 	$(RMR) *.cache

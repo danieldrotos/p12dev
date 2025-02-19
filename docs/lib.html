@@ -2,24 +2,56 @@
 <html id="html-tag" lang="en">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script>
-   const $htmlTag = document.querySelector("#html-tag")
-   const urlParams = new URL(window.location.toLocaleString()).searchParams;
-   var lvar= urlParams.get('lang');
-   switch(lvar) {
-     case "hu":
-       $htmlTag.lang = "hu"
-       $htmlTag.classList.add("hungarianLang")
-       break
-     default:
-       lvar= "en";
-       $htmlTag.classList.add("englishLang")
-       break
-   }
-   function lnk(cath,fn)
-    {
-      var l= 'lib_' + cath + '.html#' + fn + '?lang=' + lvar;
-      return l;
+    function setCookie(name, value) {
+	let date = new Date();
+	 // Calculate expiration date
+	date.setTime(date.getTime() + (/*days:*/1000 * 24 * 60 * 60 * 1000));
+	let expires = "expires=" + date.toUTCString();
+	 // Set the cookie
+	document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
+    function getCookie(name) {
+	let cookieName = name + "=";
+	 // Decode the cookie string
+	let decodedCookie = decodeURIComponent(document.cookie);
+	let ca = decodedCookie.split(';');
+	for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+		c = c.substring(1);
+	    }
+	    if (c.indexOf(cookieName) == 0) {
+		return c.substring(cookieName.length, c.length);
+	    }
+	}
+	return ""; // Return empty string if cookie not found
+    }
+    let $htmlTag = document.querySelector("#html-tag")
+    let urlParams = new URL(window.location.toLocaleString()).searchParams;
+    let url_lang= urlParams.get('lang');
+    let coo_lang= getCookie("p12dev_lang");
+    let lvar= "";
+    function set_lang()
+    {
+	if (url_lang!=null)
+	    lvar= url_lang;
+	else
+    	    lvar= coo_lang;
+	switch(lvar) {
+	case "hu": {
+	    $htmlTag.lang = "hu";
+	    $htmlTag.classList.add("hungarianLang");
+	    setCookie("p12dev_lang", "hu");
+	    break;
+	}
+	default: {
+	    $htmlTag.classList.add("englishLang");
+	    setCookie("p12dev_lang", "en");
+	    break;
+	}
+	}
+    }
+    set_lang();
   </script>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -30,6 +62,8 @@
   <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -88,13 +122,28 @@
       <span lang="hu">p2223 függvény könyvtár</span>
     </h1>
 
-    <p>A fejlesztőrendszerben a projekt alkalmazásának lefordítása
-    során a program kiegészül a rendszerben elérhető függvényekkel.</p>
+    <p>
+      <span lang="hu">A fejlesztőrendszerben a projekt alkalmazásának
+	lefordítása során a program kiegészül a rendszerben elérhető
+	függvényekkel.</span>
 
-    <p>Ezeken túl a <a href="pmon.html">pmon monitorprogram</a>
-    függvényei is hívhatók. Felhívjuk a figyelmet, hogy a hasonló
-    célra szolgáló monitor függvénynek és a könyvtári függvénynek a
-    paraméterezése eltérő lehet!</p>
+      <span lang="en">During the compilation of the project's
+      application in the development system, the program is
+      extended with the functions available in the system.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Ezeken túl a <a href="pmon.html">pmon
+      monitorprogram</a> függvényei is hívhatók. Felhívjuk a
+      figyelmet, hogy a hasonló célra szolgáló monitor függvénynek és
+      a könyvtári függvénynek a paraméterezése eltérő lehet!</span>
+
+      <span lang="en">In addition, the functions of
+      the <a href="pmon.html">pmon monitor program</a> can also be
+      called. Please note that the parameterization of the monitor
+      function and the library function serving a similar purpose may
+      be different!</span>
+    </p>
       
     <h2>
       <span lang="en">Output functions</span>
@@ -467,6 +516,10 @@
       </tr>
       <tr><td>R4:version</td>
 	<td><a href="lib_sys.html#monitor_version">monitor_version</a></td>
+	<td>()</td>
+      </tr>
+      <tr><td>-</td>
+	<td><a href="lib_sys.html#exit">exit</a></td>
 	<td>()</td>
       </tr>
     </table>

@@ -18,12 +18,14 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="p12.css">
-    <title>Computer v2</title>
+    <title>PMon monitor program</title>
   </head>
 
 <body>
 
     <p>
+      <a href="index.html">Index</a>
+      |
     <a href="devenv.html"><span lang="hu">Fejlesztés</span>
       <span lang="en">Development</span></a>
     |
@@ -75,20 +77,37 @@
   </p>
 
  
-<h1>PMon monitor program</h1>
+  <h1>PMon monitor program</h1>
   
-<p>A monitor program egy egyszerű firmware, amely lehetővé teszi az
-alkalmazói programnak a betöltését a számítógép memóriájába. Mivel a
-PMon a <a href="p2223.html">p2223 CPU</a> utasításait felhasználva
-íródott, és a felhasználóval
-az <a href="computer_v2.html#uart">UART</a> periférián keresztül
-tartja a kapcsolatot, ezért csak a <a href="p2223.html">p2223 típusú
-CPU</a>-t tartalmazó, <a href="computer_v2.html">v2 típusú
-számítógépen</a> használható.</p>
+    <p>
+      <span lang="hu">A monitor program egy egyszerű firmware, amely
+      lehetővé teszi az alkalmazói programnak a betöltését a
+      számítógép memóriájába. Mivel a PMon
+      a <a href="p2223.html">p2223 CPU</a> utasításait felhasználva
+      íródott, és a felhasználóval
+      az <a href="computer_v2.html#uart">UART</a> periférián keresztül
+      tartja a kapcsolatot, ezért csak a <a href="p2223.html">p2223
+      típusú CPU</a>-t tartalmazó, <a href="computer_v2.html">v2
+      típusú számítógépen</a> használható.</span>
 
-<h2>Felhasználói felület</h2>
+      <span lang="en">The monitor program is a simple firmware that
+      allows the application program to be loaded into the computer's
+      memory. Since PMon is written using the instructions of
+      the <a href="p2223.html">p2223 CPU</a> and communicates with the
+      user via the <a href="computer_v2.html#uart">UART</a>
+      peripheral, it can only be used on <a href="computer_v2.html">v2
+      type computer</a> with <a href="p2223.html">p2223 type
+      CPU</a>.</span>
+    </p>
 
-    <p>A számítógép <a href="computer_v2.html#uart">UART</a>
+    <h2>
+      <span lang="hu">Felhasználói felület</span>
+      <span lang="en">User interface</span>
+    </h2>
+
+    <p>
+      <span lang="hu">A
+      számítógép <a href="computer_v2.html#uart">UART</a>
       perifériájához az <a href="computer_v2.html#fpga">FPGA
       kártyán</a> egy USB-UART átalakító van kapcsolva, amelynek az
       USB portját összeköthetjük egy PC-vel. Az átalakító a PC
@@ -97,38 +116,90 @@ számítógépen</a> használható.</p>
       használható. A PC-n indítsunk el egy terminál emulátor programot
       (pl. TeraTerm, putty, stb.) és nyissuk meg az FPGA kártya
       csatlakoztatásakor létrejövő COM portot. Állítsuk be a
-      115200,N,8,1 paramétereket.</p>
+      115200,N,8,1 paramétereket.</span>
 
-  <p><img title="" src="vcp.svg" alt="" /></p>
+      <span lang="en">A USB-UART converter is connected to
+      the <a href="computer_v2.html#uart">UART</a> peripheral of
+      the <a href="computer_v2.html#fpga">FPGA board</a>, whose USB
+      port can be connected to a PC. The converter appears to the PC
+      operating system as a VCP (Virtual COM Port) device, which can
+      be used as an asynchronous serial peripheral. On the PC, start a
+      terminal emulator program (e.g. TeraTerm, putty, etc.) and open
+      the COM port created when the FPGA board is connected. Set the
+      parameters to 115200,N,8,1.</span>
+    </p>
 
-  <p>A PMon egy parancssoros program, amely a prompt kiírása után egy
-  parancs begépelését várja. Az ENTER lenyomása után értelmezi a beírt
-  utasítást és végrehajtja a megfelelő műveletet.</p>
+    <p><img title="" src="vcp.svg" alt="" /></p>
 
-  <p>A parancsok egy szóból állnak, amelyet szóközzel elválasztva
-    paraméter(ek) követhet(nek). A paramétereket szóközzel kell
-    elválasztani.</p>
+    <p>
+      <span lang="hu">A PMon egy parancssoros program, amely a prompt
+      kiírása után egy parancs begépelését várja. Az ENTER lenyomása
+      után értelmezi a beírt utasítást és végrehajtja a megfelelő
+      műveletet.</span>
 
-  <p>A parancsok a legtöbb esetben rövidíthetőek a szó első
-betűjével. A paraméterek általában számok, amelyeket hexadecimális
-számrendszerben kell beírni, 0x, H, $ és egyéb jelek
-nélkül. Tagolásként a beírt hexadecimális számokba írhatunk . vagy _
-jeleket, ezeket a monitor figyelmen kívül hagyja. Az A..F értékű
-jegyeket kis és nagybetűvel is beírhatjuk.</p>
+      <span lang="en">PMon is a command-line program that waits for a
+      command to be typed after displaying a prompt. After pressing
+      ENTER, it interprets the entered command and performs the
+      appropriate action.</span>
+    </p>
 
-  <p>A monitor által kiírt adatok mindig hexadecimális számrendszerben,
-nagybetűvel íródnak ki. A könnyebb olvashatóság érdekében a monitor
-által kiírt 32 bites értékek hexadecimális alakjában négy jegyenként
-egy _ jel van.</p>
+    <p>
+      <span lang="hu">A parancsok egy szóból állnak, amelyet szóközzel
+      elválasztva paraméter(ek) követhet(nek). A paramétereket
+      szóközzel kell elválasztani.</span>
 
-  <h2>Parancsok</h2>
+      <span lang="en">Commands consist of a single word, followed by
+      parameter(s), separated by a space. Parameters must be separated
+      by a space.</span>
+    </p>
 
-  <a name="cmd_help"><h3>h[elp],?</h3></a>
+    <p>
+      <span lang="hu">A parancsok a legtöbb esetben rövidíthetőek a
+      szó első betűjével. A paraméterek általában számok, amelyeket
+      hexadecimális számrendszerben kell beírni, 0x, H, $ és egyéb
+      jelek nélkül. Tagolásként a beírt hexadecimális számokba
+      írhatunk . vagy _ jeleket, ezeket a monitor figyelmen kívül
+      hagyja. Az A..F értékű jegyeket kis és nagybetűvel is
+      beírhatjuk.</span>
+
+      <span lang="en">Commands can be abbreviated in most cases with
+      the first letter of the word. Parameters are usually numbers
+      that should be entered in hexadecimal, without 0x, H, $, and
+      other symbols. As a separator, you can enter . or _ in the
+      entered hexadecimal numbers, which are ignored by the
+      monitor. The characters A..F can be entered in both upper and
+      lower case letters.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A monitor által kiírt adatok mindig
+      hexadecimális számrendszerben, nagybetűvel íródnak ki. A
+      könnyebb olvashatóság érdekében a monitor által kiírt 32 bites
+      értékek hexadecimális alakjában négy jegyenként egy _ jel
+      van.</span>
+
+      <span lang="en">The data displayed by the monitor is always in
+      hexadecimal, in uppercase.  For easier readability, the 32-bit
+      values ​​displayed by the monitor have a _ sign every four digits
+      in hexadecimal format.</span>
+    </p>
+
+    <h2>
+      <span lang="hu">Parancsok</span>
+      <span lang="en">Commands</span>
+    </h2>
+
+    <a name="cmd_help"><h3>h[elp],?</h3></a>
   
-<p>Kiírja a használható parancsok listáját és a szükséges, illetve
-  lehetséges paramétereket.</p>
+    <p>
+      <span lang="hu">Kiírja a használható parancsok listáját és a
+	szükséges, illetve lehetséges paramétereket.</span>
 
-<samp>
+      <span lang="en">Lists the available commands and the required
+      and possible parameters.</span>
+    </p>
+
+    <samp>
 PMonitor v1.1 (cpu: v2.2.7)
 :help
 m[em] addr [val]  Get/set memory
@@ -144,46 +215,69 @@ f [val]           Get/set flags
 v[er]             Print pmon and cpu version
 h[elp],?          Help
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_ver"><h3>v[er]</h3></a>
+    <a name="cmd_ver"><h3>v[er]</h3></a>
 
-    <p>Kiírja a monitor program és a CPU verzióját, valamint a CPU
-    feature regisztereinek az értékét:</p>
+    <p>
+      <span lang="hu">Kiírja a monitor program és a CPU verzióját,
+	valamint a CPU feature regisztereinek az értékét:</span>
 
-<samp>
+      <span lang="en">Lists the monitor program and CPU version, and
+      the values ​​of the CPU feature registers:</span>
+    </p>
+
+    <samp>
 :ver
 pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_mem"><h3>m[em] addr [val]</h3></a>
+    <a name="cmd_mem"><h3>m[em] addr [val]</h3></a>
 
-<p>Memória egy adott című rekeszének vizsgálata, vagy módosítása. Az
-első paraméter a vizsgált rekesz címe (hexadecimálisan). Ha a második
-paramétert nem adjuk meg, akkor a parancs a megadott című szót írja ki
-(a címmel együtt), ha megadjuk a második paramétert, akkor először az
-érték a memóriába kerül, majd ezután íródik ki (a már módosított)
-memória tartalom.</p>
+    <p>
+      <span lang="hu">Memória egy adott című rekeszének vizsgálata,
+      vagy módosítása. Az első paraméter a vizsgált rekesz címe
+      (hexadecimálisan). Ha a második paramétert nem adjuk meg, akkor
+      a parancs a megadott című szót írja ki (a címmel együtt), ha
+      megadjuk a második paramétert, akkor először az érték a
+      memóriába kerül, majd ezután íródik ki (a már módosított)
+      memória tartalom.</span>
 
-<samp>
+      <span lang="en">Examine or modify a memory location with a given
+      address. The first parameter is the address of the location to
+      be examined (in hexadecimal). If the second parameter is not
+      specified, the command prints the specified address (including
+      the address), if the second parameter is specified, the value is
+      first placed in memory, and then the (already modified) memory
+      content is printed.</span>
+    </p>
+
+    <samp>
 :m 1
 0000_0001 01D2_0093
 :m 1 deadbeef
 0000_0001 DEAD_BEEF
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_dump"><h3>d[ump] start [end]</h3></a>
+    <a name="cmd_dump"><h3>d[ump] start [end]</h3></a>
 
-<p>Egy adott memóriaterület tartalmát listázza ki. A kezdőcímet
-kötelező megadni. Ha a vég címet nem adjuk meg, akkor 17 egymás utáni
-szó értéke íródik ki.</p>
+    <p>
+      <span lang="hu">Egy adott memóriaterület tartalmát listázza
+      ki. A kezdőcímet kötelező megadni. Ha a vég címet nem adjuk meg,
+      akkor 17 egymás utáni szó értéke íródik ki.</span>
 
-<samp>
+      <span lang="en">Lists the contents of a given memory area. The
+      starting address is required. If the ending address is not
+      specified, then the values ​​of 17 consecutive words are
+      printed.</span>
+    </p>
+
+    <samp>
 :d 10
 0000_0010 0000_000A
 0000_0011 0000_0000
@@ -209,56 +303,110 @@ szó értéke íródik ki.</p>
 0000_0013 01F2_0003
 0000_0014 0000_0000
 :
-</samp>
+    </samp>
 
 
-<a name="cmd_load"><h3>l[oad]</h3></a>
+    <a name="cmd_load"><h3>l[oad]</h3></a>
 
-<p>Lefordított alkalmazói program betöltése a memóriába. A parancsnak
-nincs paramétere, a betöltéshez szükséges adatok a lefordított fájlban
-vannak. A parancs p2h formátumú fájl tartalmát várja, ezt az assembler
-segítségével állíthatjuk elő.</p>
+    <p>
+      <span lang="hu">Lefordított alkalmazói program betöltése a
+      memóriába. A parancsnak nincs paramétere, a betöltéshez
+      szükséges adatok a lefordított fájlban vannak. A parancs p2h
+      formátumú fájl tartalmát várja, ezt
+      az <a href="asm.html">assembler</a> segítségével állíthatjuk
+      elő.</span>
 
-<p>A parancs kiadása után várakozik, a fájl tartalmát a terminálon
-kell elküldeni. Erre használjuk a terminál emulátor megfelelő
-funkcióját. TeraTerm esetén pl. a File menü Send file pontja
-használható:</p>
+      <span lang="en">Loading a compiled application program into
+      memory. The command has no parameters, the data required for
+      loading is in the compiled file. The command expects the
+      contents of a file in p2h format, which can be generated using
+      the <a href="asm.html">assembler</a>.</span>
+    </p>
 
-<p><img title="" src="teraterm_sendfile.png" alt="" /></p>
+    <p>
+      <span lang="hu">A parancs kiadása után várakozik, a fájl
+      tartalmát a terminálon kell elküldeni. Erre használjuk a
+      terminál emulátor megfelelő funkcióját. TeraTerm esetén pl. a
+      File menü Send file pontja használható:</span>
 
-<p>Válasszuk ki a lefordított programból készült .p2h kiterjesztésű
-fájlt:</p>
+      <span lang="en">After issuing the command, it waits, the
+      contents of the file must be sent to the terminal. For this, we
+      use the appropriate function of the terminal emulator. In the
+      case of TeraTerm, for example, the File menu item Send file can
+      be used:</span>
+    </p>
 
-<p><img title="" src="teraterm_fileselect.png" alt="" /></p>
+    <p><img title="" src="teraterm_sendfile.png" alt="" /></p>
 
-<p>A program a soros vonalon elküldi a fájl tartalmát. A load parancs
-értelmezi a fájlban lévő rekordokat, ezeknek a típusát kiírja a
-terminálra. A memória tartalmat meghatározó rekordoknak megfelelően
-módosítja a memóriát. A fájl végét jelző rekord után kilép, és újra
-megjelenik a monitor promptja:</p>
+    <p>
+      <span lang="hu">Válasszuk ki a lefordított programból készült
+	.p2h kiterjesztésű fájlt:</span>
 
-<p><img title="" src="teraterm_sent.png" alt="" /></p>
+      <span lang="en">Select the file with the .p2h extension made
+      from the compiled program:</span>
+    </p>
+
+    <p><img title="" src="teraterm_fileselect.png" alt="" /></p>
+
+    <p>
+      <span lang="hu">A program a soros vonalon elküldi a fájl
+      tartalmát. A load parancs értelmezi a fájlban lévő rekordokat,
+      ezeknek a típusát kiírja a terminálra. A memória tartalmat
+      meghatározó rekordoknak megfelelően módosítja a memóriát. A fájl
+      végét jelző rekord után kilép, és újra megjelenik a monitor
+      promptja:</span>
+
+      <span lang="en">The program sends the contents of the file on
+      the serial line. The load command interprets the records in the
+      file, and prints their types to the terminal. It modifies the
+      memory according to the records that define the memory
+      contents. After the record indicating the end of the file, it
+      exits, and the monitor prompt reappears:</span>
+    </p>
+
+    <p><img title="" src="teraterm_sent.png" alt="" /></p>
 
 
-<a name="cmd_go"><h3>g[o],run [addr]</h3></a>
+    <a name="cmd_go"><h3>g[o],run [addr]</h3></a>
 
-<p>Ez a parancs a felhasználói programot indítja el a megadott
-címtől. Ha a program visszalép a monitorhoz a megfelelő szubrutin
-meghívásával, akkor ettől a ponttól a programot lehet folytatni. Ehhez
-nem kell megadni a go parancsnak paramétert. Ez a módszer nem működik,
-ha még nem volt átlépés a programról a monitorra.</p>
+    <p>
+      <span lang="hu">Ez a parancs a felhasználói programot indítja el
+      a megadott címtől. Ha a program visszalép a monitorhoz a
+      megfelelő szubrutin meghívásával, akkor ettől a ponttól a
+      programot lehet folytatni. Ehhez nem kell megadni a go
+      parancsnak paramétert. Ez a módszer nem működik, ha még nem volt
+      átlépés a programról a monitorra.</span>
+
+      <span lang="en">This command starts the user program from the
+      specified address. If the program returns to the monitor by
+      calling the appropriate subroutine, the program can be continued
+      from that point. You do not need to specify a parameter to the
+      go command for this. This method does not work if there has not
+      been a transition from the user program to the monitor
+      yet.</span>
+    </p>
 
 
-<a name="cmd_reg"><h3>r[eg[s]]</h3></a>
+    <a name="cmd_reg"><h3>r[eg[s]]</h3></a>
 
-<p>Kiírja azokat a regiszter értékeket, amelyeket a program betölt a
-go parancs hatására a felhasználói program indítása előtt. Ezeket az
-értékeket akkor menti el a monitor program, amikor a felhasználó
-program visszatér a monitorhoz a megfelelő szubrutin hívással. Az első
-sor arról tájékoztat, hogy ilyen mentés történt-e már, vagy még
-nem:</p>
+    <p>
+      <span lang="hu">Kiírja azokat a regiszter értékeket, amelyeket a
+	program betölt a <a href="#cmd_go">go</a> parancs hatására a
+	felhasználói program indítása előtt. Ezeket az értékeket akkor
+	menti el a monitor program, amikor a felhasználó program
+	visszatér a monitorhoz a megfelelő szubrutin hívással. Az első
+	sor arról tájékoztat, hogy ilyen mentés történt-e már, vagy
+	még nem:</span>
 
-<samp>
+      <span lang="en">Lists the register values ​​that the program loads
+	in response to the <a href="#cmd_go">go</a> command before
+	the user program starts. These values ​​are saved by the monitor
+	program when the user program returns to the monitor with the
+	appropriate subroutine call. The first line informs whether
+	such a save has already occurred or not:</span>
+    </p>
+
+    <samp>
 :r
 Monitor not called by user
 R0  0000_0000
@@ -280,12 +428,17 @@ PC  0000_0000
 F   0000_0000
 U0 P0 O0 Z0 C0 S0
 :
-</samp>
+    </samp>
 
-<p>Az utolsó sorban az egyes flag bitek értéke egyenként is látható. A
-monitor hívása után:</p>
+    <p>
+      <span lang="hu">Az utolsó sorban az egyes flag bitek értéke
+	egyenként is látható. A monitor hívása után:</span>
 
-<samp>
+      <span lang="en">The last line shows the value of each flag bit
+      individually. After calling the monitor:</span>
+    </p>
+
+    <samp>
 PMonitor v1.1 (cpu: v2.2.7)
 Stop at: 0000_0004
 :r
@@ -300,802 +453,1464 @@ PC  0000_0004
 F   0000_0000
 U0 P0 O0 Z0 C0 S0
 :
-</samp>
+    </samp>
 
-<p>A PC és az LR a hívás helyét követő utasításra mutat, ahonnan a
-felhasználói program folytatható. Ettől a címtől a programot a
-paraméter nélküli go parancs kiadásával folytathatjuk.</p>
+    <p>
+      <span lang="hu">A PC és az LR a hívás helyét követő utasításra
+      mutat, ahonnan a felhasználói program folytatható. Ettől a
+      címtől a programot a paraméter nélküli go parancs kiadásával
+      folytathatjuk.</span>
+
+      <span lang="en">PC and LR point to the instruction following the
+      call, from where the user program can be continued. From this
+      address, the program can be continued by issuing the go command
+      without parameters.</span>
+    </p>
 
 
-<a name="cmd_regs"><h3>rX|sp|lr|pc|f [val]</h3></a>
+    <a name="cmd_regs"><h3>rX|sp|lr|pc|f [val]</h3></a>
 
-<p>Az egyes regiszterek elmentett értékeit megjelenítő, illetve
-megváltoztató parancsok. A regiszter névben (rX) 0 és 15 közötti
-számokat használhatunk, az r13 helyett írhatunk sp nevet, az r14
-helyett lr-t, míg az r15 helyett a pc név is használható. A f név a
-Flag regiszter elmentett értékének kezelésére szolgál.</p>
+    <p>
+      <span lang="hu">Az egyes regiszterek elmentett értékeit
+      megjelenítő, illetve megváltoztató parancsok. A regiszter névben
+      (rX) 0 és 15 közötti számokat használhatunk, az r13 helyett
+      írhatunk sp nevet, az r14 helyett lr-t, míg az r15 helyett a pc
+      név is használható. A f név a Flag regiszter elmentett értékének
+      kezelésére szolgál.</span>
 
-<samp>
+      <span lang="en">Commands that display and change the saved
+      values of individual registers. In the register name (rX) we can
+      use numbers between 0 and 15, instead of r13 we can write the
+      name sp, instead of r14 we can write lr, while instead of r15 we
+      can use the name pc. The name f is used to manage the saved
+      value of the Flag register.</span>
+    </p>
+
+    <samp>
 :r10
 R10 0000_00D8
 :r10 ab_45
 R10 0000_AB45
 :
-</samp>
+    </samp>
 
 
-<h2>Monitor szolgáltatások</h2>
+    <h2>
+      <span lang="hu">Monitor szolgáltatások</span>
+      <span lang="en">Monitor services</span>
+    </h2>
 
-<p>A monitor programban található egyes szubrutinok a felhasználói
-programok fejlesztése során is hasznosak lehetnek, a megfelelő CALL
-utasításokkal meghívhatók. Az alábbiakban megadjuk a meghívható
-szubrutinok címeit és a funkciókat.</p>
+    <p>
+      <span lang="hu">A monitor programban található egyes szubrutinok
+      a felhasználói programok fejlesztése során is hasznosak
+      lehetnek, a megfelelő CALL utasításokkal meghívhatók. Az
+      alábbiakban megadjuk a meghívható szubrutinok címeit és a
+      funkciókat.</span>
 
-<p>Az egyes szubrutinok a bemenő és kimenő paraméterek átadására
-használt regisztereken, és a Flag regiszteren kívül egyéb
-regisztereket nem módosítanak, az esetleges ettől eltérő eseteket
-külön jelezzük.</p>
+      <span lang="en">Some subroutines in the monitor program may also
+      be useful during the development of user programs, and can be
+      called with the appropriate CALL instruction.  Below, we
+      provide the addresses and functions of the subroutines that can
+      be called.</span>
+    </p>
 
+    <p>
+      <span lang="hu">Az egyes szubrutinok a bemenő és kimenő
+      paraméterek átadására használt regisztereken, és a Flag
+      regiszteren kívül egyéb regisztereket nem módosítanak, az
+      esetleges ettől eltérő eseteket külön jelezzük.</span>
 
-<a name="fn_monitor"><h3>A monitor meghívása</h3></a>
-
-
-<a name="_pm_cold_start"><h4>0xf005 _pm_cold_start</h4></a>
-
-<p>Végleges kilépés az alkalmazói programból a monitor
-újraindításával. Kezdeti értékre állítja a monitor állapotát, így a
-felhasználói program a paraméterek nélküli go paranccsal nem
-folytatható. Ezt a funkciót szubrutinhívás mellett ugró utasításokkal
-is meghívhatjuk. A funkciónak nincsenek paraméterei.</p>
-
-
-<a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
-
-<p>Visszatérés a monitor programba a felhasználó program állapotának
-az elmentésével. Ezután a program folytatható a paraméter nélküli go
-paranccsal. A funkciónak nincsenek paraméterei.</p>
-
-
-<a name="_pm_enter_by_uart"><h4>0xf001 _pm_enter_by_uart</h4></a>
-
-<p>Feltételes visszatérés a monitor programhoz. A szubrutin ellenőrzi,
-hogy van-e olvasható vett karakter az UART áramkörben. Ha igen,
-kiüríti az UART-ot és meghívja a callin funkciót, vagyis visszatér a
-monitorhoz. Olyan program esetében használhatjuk, amely nem végez adat
-beolvasást a terminálról az UART-on keresztül. A funkciónak nincsenek
-paraméterei.</p>
+      <span lang="en">The individual subroutines do not modify the
+      registers used to pass input and output parameters, and other
+      registers except the Flag register, any cases that differ from
+      this are indicated separately.</span>
+    </p>
 
 
-<a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
-
-<p>A monitor program verziószámának lekérdezése. A függvény az R0
-regiszter 1. bájtjában helyezi el a fő verziószámot, a 0. bájtban
-pedig az al verziószámot.</p>
-
-
-<a name="fn_string"><h3>Sztring kezelés</h3></a>
+    <a name="fn_monitor"><h3>
+	<span lang="hu">A monitor meghívása</span>
+	<span lang="en">Call of the monitor</span>
+    </h3></a>
 
 
-<a name="_pm_strunpack"><h4>0xf017 _pm_strunpack</h4></a>
+    <a name="_pm_cold_start"><h4>0xf005 _pm_cold_start</h4></a>
 
-    <p>Normál vagy pakolt sztring átalakítása normál formátumra. A
-    megfelelő méretű kimeneti bufferről a hívás előtt kell
-    gondoskodni.</p>
+    <p>
+      <span lang="hu">Végleges kilépés az alkalmazói programból a
+      monitor újraindításával. Kezdeti értékre állítja a monitor
+      állapotát, így a felhasználói program a paraméterek nélküli go
+      paranccsal nem folytatható. Ezt a funkciót szubrutinhívás
+      mellett ugró utasításokkal is meghívhatjuk. A funkciónak
+      nincsenek paraméterei.</span>
 
-    <p>Bemenő paraméterek:</p>
+      <span lang="en">Final exit from the application program by
+      restarting the monitor. Sets the monitor state to its initial
+      value, so the user program cannot be continued with the go
+      command without parameters. This function can be called with
+      jump instructions in addition to subroutine calls. The function
+      has no parameters.</span>
+    </p>
+
+
+    <a name="_pm_callin"><h4>0xf000 _pm_callin</h4></a>
+
+    <p>
+      <span lang="hu">Visszatérés a monitor programba a felhasználó
+      program állapotának az elmentésével. Ezután a program
+      folytatható a paraméter nélküli go paranccsal. A funkciónak
+      nincsenek paraméterei.</span>
+
+      <span lang="en">Return to the monitor program by saving the user
+      program state. The program can then be continued with the
+      command go without parameters. The function has no
+      parameters.</span>
+    </p>
+
+
+    <a name="_pm_enter_by_uart"><h4>0xf001 _pm_enter_by_uart</h4></a>
+
+    <p>
+      <span lang="hu">Feltételes visszatérés a monitor programhoz. A
+      szubrutin ellenőrzi, hogy van-e olvasható vett karakter az UART
+      áramkörben. Ha igen, kiüríti az UART-ot és meghívja
+      a <a href="#_pm_callin">_pm_callin</a> funkciót, vagyis
+      visszatér a monitorhoz. Olyan program esetében használhatjuk,
+      amely nem végez adat beolvasást a terminálról az UART-on
+      keresztül. A funkciónak nincsenek paraméterei.</span>
+
+      <span lang="en">Conditional return to the monitor program. The
+      subroutine checks whether there is a readable character received
+      in the UART circuit. If so, it clears the UART and calls the
+	<a href="#_pm_callin">_pm_callin</a> function, i.e. returns to
+      the monitor. It can be used in a program that does not read data
+      from the terminal via the UART. The function has no
+      parameters.</span>
+    </p>
+
+
+    <a name="_pm_version"><h4>0xf003 _pm_version</h4></a>
+
+    <p>
+      <span lang="hu">A monitor program verziószámának lekérdezése. A
+      függvény az R0 regiszter 1. bájtjában helyezi el a fő
+      verziószámot, a 0. bájtban pedig az al verziószámot.</span>
+
+      <span lang="en">Querying the version number of the monitor
+      program. The function places the major version number in the 1st
+      byte of the R0 register, and the minor version number in the 0th
+      byte.</span>
+    </p>
+
+
+    <a name="fn_string"><h3>
+	<span lang="hu">Sztring kezelés</span>
+	<span lang="en">String functions</span>
+    </h3></a>
+
+
+    <a name="_pm_strunpack"><h4>0xf017 _pm_strunpack</h4></a>
+
+    <p>
+      <span lang="hu">Normál vagy pakolt sztring átalakítása normál
+    formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
+    kell gondoskodni.</span>
+
+      <span lang="en">Convert a normal or packed string to normal
+      format. An output buffer of the appropriate size must be
+      provided before the call.</span>
+    </p>
+
+    <p>
+      <span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+      parameters</span>:
+    </p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
-      <li>R1 kimeneti buffer címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 input string address</span>
+      </li>
+      <li>
+	<span lang="hu">R1 kimeneti buffer címe</span>
+	<span lang="en">R1 output buffer address</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
-    kezdeve.</p>
+    <p>
+      <span lang="hu">Az átalakított sztring az R1-ben megadott
+	memóriacímtől kezdeve.</span>
+
+      <span lang="en">The converted string starts at the memory
+      address specified in R1.</span>
+    </p>
 
     
-<a name="_pm_strpack"><h4>0xf018 _pm_strpack</h4></a>
+    <a name="_pm_strpack"><h4>0xf018 _pm_strpack</h4></a>
 
-    <p>Normál vagy pakolt sztring átalakítása pakolt formátumra. A
-    megfelelő méretű kimeneti bufferről a hívás előtt kell
-    gondoskodni.</p>
+    <p>
+      <span lang="hu">Normál vagy pakolt sztring átalakítása pakolt
+      formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
+      kell gondoskodni.</span>
 
-    <p>Bemenő paraméterek:</p>
+      <span lang="en">Convert a normal or packed string to packed
+      format. An output buffer of the appropriate size must be
+      provided before the call.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
-      <li>R1 kimeneti buffer címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 address of input string</span>
+      </li>
+      <li>
+	<span lang="hu">R1 kimeneti buffer címe</span>
+	<span lang="en">R1 address of output buffer</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
-    <p>Az átalakított sztring az R1-ben megadott memóriacímtől
-    kezdeve.</p>
+    <p>
+      <span lang="hu">Az átalakított sztring az R1-ben megadott
+	memóriacímtől kezdeve.</span>
+
+      <span lang="en">The converted string starts at the memory
+      address specified in R1.</span>
+    </p>
 
 
     <a name="_pm_strlen"><h4>0xf019 _pm_strlen</h4></a>
 
-    <p>Normál, vagy pakolt formátumú, 0 végződésű sztring
-    karaktereinek számát adja.</p>
+    <p>
+      <span lang="hu">Normál, vagy pakolt formátumú, 0 végződésű sztring
+      karaktereinek számát adja.</span>
 
-    <p>Bemenő paraméterek:</p>
+      <span lang="en">Returns the number of characters in a string in
+      normal or packed format, terminated by 0.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
 
     <ul>
-      <li>R0 bemeneti sztring címe</li>
+      <li>
+	<span lang="hu">R0 bemeneti sztring címe</span>
+	<span lang="en">R0 address of input string</span>
+      </li>
     </ul>
 
-    <p>Eredmény:</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
     <ul>
-      <li>R4 karakterek száma</li>
+      <li>
+	<span lang="hu">R4 karakterek száma</span>
+	<span lang="en">R4 number of characters</span>
+      </li>
     </ul>
 
     
-<a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
-
-  <p>Karakter első előfordulásának keresése egy szövegben.</p>
-
-  <p>Bemenő paraméterek:</p>
-
-<ul>
-<li>R0 keresett karakter</li>
-<li>R1 sztring kezdőcíme</li>
-</ul>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>R1 a megtalált karakter címe, ha nincs a szövegben, akkor 0.</li>
-<li>R2 a megtalált karakter indexe a szón belül (pakolt szöveg
-esetén), vagy 0, ha nincs találat.</li>
-<li>F.C találat esetén 1, egyébként 0</li>
-</ul>
-
-
-<a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
-
-<p>Sztringek összehasonlítása, a kis- és nagybetűk különbözőnek
-  számítanak.</p>
-
-<p>Bemenő paraméterek:</p>
-
-<ul>
-<li>R0, R1 az összehasonlítandó sztringek címei</li>
-</ul>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
-</ul>
-
-
-<a name="_pm_strieq"><h4>0xf00c _pm_strieq</h4></a>
-
-<p>Sztringek összehasonlítása, a kis- és nagybetűk egyezőnek
-  számítanak.</p>
-
-<p>Bemenő paraméterek:</p>
-
-<ul>
-<li>R0, R1 az összehasonlítandó sztringek címei</li>
-</ul>
-
-<p> Eredmény:</p>
-
-<ul>
-<li>F.C értéke 1, ha a sztringek megegyeznek, egyébként 0.</li>
-</ul>
-
-
-<a name="_pm_hexchar2value"><h4>0xf009 _pm_hexchar2value</h4></a>
-
-<p>Egy hexadecimális számjegy karakter kódjának szám értékre való
-  átalakítása.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 karakter ASCII kódja</li>
-</ul>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>R0 számérték</li>
-<li>F.C értéke 1, ha a karakter hexa karakter volt, egyébként 0</li>
-</ul>
-
-
-<a name="_pm_value2hexchar"><h4>0xf00a _pm_value2hexchar</h4></a>
-
-<p>Egy 0-15 közötti számérték átalakítása a megfelelő hexadecimális
-  számjegy ASCII kódjára.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 átalakítandó számérték. A szubrutin a regiszter 31:4 bitjeit
-nullázza.</li>
-</ul>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>R0 hexadecimális számjegy. A szubrutin a 10-15 közötti értékeket
-kisbetűre (a-f) alakítja.</li>
-</ul>
-
-
-<a name="_pm_htoi"><h4>0xf00b _pm_htoi</h4></a>
-
-<p>Hexadecimális szám jegyeit tartalmazó sztring átalakítása
-számértékké. A szövegben kis- és nagybetűk is használhatók (a-f, A-F),
-a tagolásra használt . (pont) vagy _ (aláhúzás) karakterek figyelmen
-kívül maradnak. Érvénytelen karakter esetén a feldolgozás megáll, az
-eredmény az addig feldolgozott sztring részletnek megfelelő
-  lesz.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 a sztring kezdőcíme</li>
-</ul>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>R1 a sztringnek megfelelő számérték.</li>
-<li>F.C értéke 1 lesz, ha a feldolgozás nem talált hibás karaktert,
-egyébként 0.</li>
-</ul>
-
-
-<a name="fn_input"><h3>Bemeneti adatok kezelése</h3></a>
-
-
-<a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
-
-<p>Az UART vevő állapotának vizsgálata. Azt mutatja meg, hogy van-e az
-UART-ban beolvasható vett karakter. A funkciónak nincs bemeneti
-paramétere.</p>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>F.C értéke 1, ha van vett karakter, egyébként 0.</li>
-</ul>
-
-
-<a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
-
-<p>Az UART vevő áramkörének kiolvasása. A szubrutin nem vár új
-  karakterre, a vevő állapotát előzőleg
-  a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
-  vizsgálni. Nincs bemenő paramétere.</p>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>R0 a legrégebben vett karakter értéke.</li>
-</ul>
-
-
-<a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
-
-<p>Várakozás egy karakter vételére, majd a karakter kiolvasása az UART
-áramkörből.</p>
-
-<p>Eredmény:</p>
-
-<ul>
-<li>F.C értéke 1 lesz, jelezve, hogy volt vett karakter.</li>
-<li>R0 a beérkezett karakter kódja.</li>
-</ul>
-
-
-<a name="fn_output"><h3>Kimenet előállítása a terminálon</h3></a>
-
-
-<a name="_pm_putchar"><h4>0xf00e _pm_putchar</h4></a>
-
-<p>Egy karakter kiírása a terminálra (küldése UART-on). A szubrutin
-először megvárja, hogy az UART küldő áramköre szabad legyen, tehát az
-előző karakter küldése befejeződjön. Ezután átadja a küldendő
-  karaktert az UART-nak.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 a küldendő karakter értéke (8 bites adat)</li>
-</ul>
-
-
-<a name="_pm_prints"><h4>0xf00f _pm_prints</h4></a>
-
-<p>Egy 0 végződésű karaktertömb (sztring) kiírása a terminálra. A
-szubrutin a sztring tartalmát nem értelmezi, így abban ú.n. escape
-  szekvenciák nem használhatók.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 sztring címe.</li>
-</ul>
-
-
-<a name="_pm_printsnl"><h4>0xf010 _pm_printsnl</h4></a>
-
-<p>Egy 0 végződésű karaktertömb, majd egy újsor karakter (\n) kiírása
-  a terminálra. Escape szekvenciák nem használhatók.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 sztring címe.</li>
-</ul>
-
-
-<a name="_pm_print_vhex"><h4>0xf011 _pm_print_vhex</h4></a>
-
-<p>Egy 32 bites érték kiírása a terminálon hexadecimális
-számrendszerben, 8 jegyen, bevezető nullákkal. A szubrutin a
-számjegyek között _ (aláhúzás) karaktert használ tagolásra. Az a-f
-  értékek nagybetűvel íródnak ki.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 számérték</li>
-<li>R1 két tagolás jel között kiíródó jegyek száma</li>
-</ul>
-
-
-<a name="_pm_printd"><h4>0xf013 _pm_printd</h4></a>
-
-<p>Egy 32 bites, előjel nélküli (bináris) szám kiírása a terminálra
-tízes számrendszerben, az értéktől függő számú számjeggyel, bevezető
-  nullák nélkül.</p>
-
-<p>Bemenet:</p>
-
-<ul>
-<li>R0 számérték</li>
-</ul>
-
-
-<a name="_pm_pes"><h4>0xf012 _pm_pes</h4></a>
-
-<p>Beágyazott, 0 végződésű karaktertömb kiírása a terminálra. A
-sztringnek a program kódjában közvetlenül a szubrutint meghívó CALL
-utasítás után kell lennie. A szubrutin a sztring záró nullája utáni
-címre fog visszatérni. A funkciónak sem bemeneti, sem kimeneti
-paraméterei nincsenek. Helyes használatára egy példa:</p>
-
-<samp>
+    <a name="_pm_strchr"><h4>0xf006 _pm_strchr</h4></a>
+
+    <p>
+      <span lang="hu">Karakter első előfordulásának keresése egy
+      szövegben.</span>
+
+      <span lang="en">Find the first occurrence of a character in a
+      string.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 keresett karakter</span>
+	<span lang="en">R0 character to search for</span>
+      </li>
+      <li>
+	<span lang="hu">R1 sztring kezdőcíme</span>
+	<span lang="en">R1 address of string</span>
+      </li>
+    </ul>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R1 a megtalált karakter címe, ha nincs a
+	szövegben, akkor 0.</span>
+	<span lang="en">R1 is the address of the found character, if
+          it is not in the string, then 0.</span>
+      </li>
+      <li>
+	<span lang="hu">R2 a megtalált karakter indexe a memóriaszón
+	  belül (pakolt szöveg esetén), vagy 0, ha nincs
+	  találat.</span>
+	<span lang="en">R2 is the index of the found character within
+        the memory word (in case of packed text), or 0 if no match is
+        found.</span>
+      </li>
+      <li>
+	<span lang="hu">F.C találat esetén 1, egyébként 0</span>
+	<span lang="en">F.C 1 if character is found, 0 otherwise</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_streq"><h4>0xf007 _pm_streq</h4></a>
+
+    <p>
+      <span lang="hu">Sztringek összehasonlítása, a kis- és nagybetűk
+	különbözőnek számítanak.</span>
+
+      <span lang="en">Compare strings, uppercase and lowercase are
+      considered different.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0, R1 az összehasonlítandó sztringek
+	címei</span>
+	<span lang="en">R0, R1 are the addresses of the strings to be
+	compared</span>
+      </li>
+    </ul>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a sztringek megegyeznek,
+	egyébként 0.</span>
+	<span lang="en">F.C is 1 if the strings match, otherwise
+	  0.</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_strieq"><h4>0xf00c _pm_strieq</h4></a>
+
+    <p>
+      <span lang="hu">Sztringek összehasonlítása, a kis- és nagybetűk
+	egyezőnek számítanak.</span>
+
+      <span lang="en">Compare strings, case-sensitive.</span>
+    </p>
+
+    <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
+    parameters</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0, R1 az összehasonlítandó sztringek
+	címei</span>
+	<span lang="en">R0, R1 are the addresses of the strings to be
+	compared</span>
+      </li>
+    </ul>
+
+    <p> <span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a sztringek megegyeznek,
+	egyébként 0.</span>
+	<span lang="en">F.C is 1 if the strings match, otherwise
+        0.</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_hexchar2value"><h4>0xf009 _pm_hexchar2value</h4></a>
+
+    <p>
+      <span lang="hu">Egy hexadecimális számjegy karakter kódjának
+      szám értékre való átalakítása.</span>
+
+      <span lang="en">Converting the character code of a hexadecimal
+      digit to a numeric value.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 karakter ASCII kódja</span>
+	<span lang="en">R0 ASCII code of character</span>
+      </li>
+    </ul>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="hu">R0 numerical value</span>	
+      </li>
+      <li>
+	<span lang="hu">F.C értéke 1, ha a karakter hexa karakter
+	volt, egyébként 0</span>
+	<span lang="en">F.C value is 1 if the character was a
+        hexadecimal character, otherwise 0</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_value2hexchar"><h4>0xf00a _pm_value2hexchar</h4></a>
+
+    <p>
+      <span lang="hu">Egy 0-15 közötti számérték átalakítása a
+	megfelelő hexadecimális számjegy ASCII kódjára.</span>
+
+      <span lang="en">Convert a numeric value between 0-15 to the
+      ASCII code of the corresponding hexadecimal digit.</span>
+    </p>
+    
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+    
+    <ul>
+      <li>
+	<span lang="hu">R0 átalakítandó számérték. A szubrutin a
+        regiszter 31:4 bitjeit nullázza.</span>
+	<span lang="en">R0 is the numerical value to be converted. The
+        subroutine sets bits 31:4 of register to zero.</span>
+      </li>
+    </ul>
+    
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    
+    <ul>
+      <li>
+	<span lang="hu">R0 hexadecimális számjegy. A szubrutin a 10-15
+	  közötti értékeket kisbetűre (a-f) alakítja.</span>
+	<span lang="en">R0 is a hexadecimal digit. The subroutine
+        converts values ​​between 10-15 to lowercase (a-f).</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_htoi"><h4>0xf00b _pm_htoi</h4></a>
+
+    <p>
+      <span lang="hu">Hexadecimális szám jegyeit tartalmazó sztring
+      átalakítása számértékké. A szövegben kis- és nagybetűk is
+      használhatók (a-f, A-F), a tagolásra használt . (pont) vagy _
+      (aláhúzás) karakterek figyelmen kívül maradnak. Érvénytelen
+      karakter esetén a feldolgozás megáll, az eredmény az addig
+      feldolgozott sztring részletnek megfelelő lesz.</span>
+
+      <span lang="en">Convert a string containing hexadecimal digits
+      into a numeric value. The string can be case-sensitive (a-f, A-F),
+      and the. (period) or _ (underscore) characters used for
+      segmentation are ignored. In case of an invalid character, the
+      processing stops, and the result will correspond to the string
+      fragment processed so far.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 a sztring kezdőcíme</span>
+	<span lang="en">R0 address of string</span>
+      </li>
+    </ul>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R1 a sztringnek megfelelő számérték.</span>
+	<span lang="en">R1 is the numeric value corresponding to the
+	string.</span>
+      </li>
+      <li>
+	<span lang="hu">F.C értéke 1 lesz, ha a feldolgozás nem talált
+	  hibás karaktert, egyébként 0.</span>
+	<span lang="en">F.C will be 1 if the processing did not find
+        any incorrect characters, otherwise it will be 0.</span>
+      </li>
+    </ul>
+
+
+    <a name="fn_input"><h3>
+	<span lang="hu">Bemeneti adatok kezelése</span>
+	<span lang="en">Processing input</span>
+    </h3></a>
+
+
+    <a name="_pm_check_uart"><h4>0xf008 _pm_check_uart</h4></a>
+
+    <p>
+      <span lang="hu">Az UART vevő állapotának vizsgálata. Azt mutatja
+      meg, hogy van-e az UART-ban beolvasható vett karakter. A
+      funkciónak nincs bemeneti paramétere.</span>
+
+      <span lang="en">Checks the UART receiver status. It shows
+      whether there are any characters received in the UART that can
+      be read. The function has no input parameters.</span>
+    </p>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1, ha van vett karakter, egyébként
+	0.</span>
+	<span lang="en">F.C value is 1 if there is a received
+        character, otherwise 0.</span>
+      </li>
+    </ul>
+    
+
+    <a name="_pm_read"><h4>0xf00d _pm_read</h4></a>
+    
+    <p>
+      <span lang="hu">Az UART vevő áramkörének kiolvasása. A szubrutin
+      nem vár új karakterre, a vevő állapotát előzőleg
+      a <a href="#_pm_check_uart">_pm_check_uart</a> funkcióval kell
+      vizsgálni. Nincs bemenő paramétere.</span>
+
+      <span lang="en">Reading the UART receiver circuit. The
+      subroutine does not wait for a new character, the receiver
+      status must be checked beforehand with
+      the <a href="#_pm_check_uart">_pm_check_uart</a> function. It
+      has no input parameters.</span>
+    </p>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+    
+    <ul>
+      <li>
+	<span lang="hu">R0 a legrégebben vett karakter értéke.</span>
+	<span lang="en">R0 is the value of the oldest character
+	received.</span>
+      </li>
+    </ul>
+    
+
+    <a name="_pm_getchar"><h4>0xf002 _pm_getchar</h4></a>
+
+    <p>
+      <span lang="hu">Várakozás egy karakter vételére, majd a karakter
+	kiolvasása az UART áramkörből.</span>
+
+      <span lang="en">Waiting for a character to be received, then
+      reading the character from the UART circuit.</span>
+    </p>
+
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">F.C értéke 1 lesz, jelezve, hogy volt vett
+	karakter.</span>
+	<span lang="en">F.C will be 1, indicating that a character was
+	received.</span>
+      </li>
+      <li>
+	<span lang="hu">R0 a beérkezett karakter kódja.</span>
+	<span lang="en">R0 is the code of the received
+	character.</span>
+      </li>
+    </ul>
+
+
+    <a name="fn_output"><h3>
+	<span lang="hu">Kimenet előállítása a terminálon</span>
+	<span lang="en">Generating output on terminal</span>
+    </h3></a>
+
+
+    <a name="_pm_putchar"><h4>0xf00e _pm_putchar</h4></a>
+
+    <p>
+      <span lang="hu">Egy karakter kiírása a terminálra (küldése
+      UART-on). A szubrutin először megvárja, hogy az UART küldő
+      áramköre szabad legyen, tehát az előző karakter küldése
+      befejeződjön. Ezután átadja a küldendő karaktert az
+      UART-nak.</span>
+
+      <span lang="en">Write a character to the terminal (send it via
+      UART). The subroutine first waits for the UART's send circuit to
+      be free, so that the previous character is completed. Then it
+      passes the character to be sent to the UART.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 a küldendő karakter értéke (8 bites
+	adat)</span>
+	<span lang="en">R0 is the value of the character to be sent
+        (8-bit data)</span>
+      </li>
+    </ul>
+    
+
+    <a name="_pm_prints"><h4>0xf00f _pm_prints</h4></a>
+
+    <p>
+      <span lang="hu">Egy 0 végződésű karaktertömb (sztring) kiírása a
+      terminálra. A szubrutin a sztring tartalmát nem értelmezi, így
+      abban ú.n. escape szekvenciák nem használhatók.</span>
+
+      <span lang="en">Write a 0-terminated character array (string) to
+      the terminal. The subroutine does not interpret the contents of
+      the string, so so-called escape sequences cannot be used in
+      it.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 sztring címe.</span>
+	<span lang="en">R0 address of string.</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_printsnl"><h4>0xf010 _pm_printsnl</h4></a>
+
+    <p>
+      <span lang="hu">Egy 0 végződésű karaktertömb, majd egy újsor
+	karakter (\n) kiírása a terminálra. Escape szekvenciák nem
+	használhatók.</span>
+
+      <span lang="en">Writes a 0-terminated character array followed
+      by a newline character (\n) to the terminal. Escape sequences
+      cannot be used.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+ 	<span lang="hu">R0 sztring címe.</span>
+	<span lang="en">R0 address of string.</span>
+     </li>
+    </ul>
+
+
+    <a name="_pm_print_vhex"><h4>0xf011 _pm_print_vhex</h4></a>
+
+    <p>
+      <span lang="hu">Egy 32 bites érték kiírása a terminálon
+      hexadecimális számrendszerben, 8 jegyen, bevezető nullákkal. A
+      szubrutin a számjegyek között _ (aláhúzás) karaktert használ
+      tagolásra. Az a-f értékek nagybetűvel íródnak ki.</span>
+
+      <span lang="en">Print a 32-bit value to the terminal in
+      hexadecimal, 8 digits, with leading zeros. The subroutine uses _
+      (underscore) characters between digits for delimitation. Values
+      ​​a-f are printed in uppercase.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="en">R0 value</span>
+      </li>
+      <li>
+	<span lang="hu">R1 két tagolás jel között kiíródó jegyek
+	száma</span>
+	<span lang="en">R1 number of characters to be printed between
+	two punctuation marks
+	</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_printd"><h4>0xf013 _pm_printd</h4></a>
+
+    <p>
+      <span lang="hu">Egy 32 bites, előjel nélküli (bináris) szám
+      kiírása a terminálra tízes számrendszerben, az értéktől függő
+      számú számjeggyel, bevezető nullák nélkül.</span>
+
+      <span lang="en">Print a 32-bit, unsigned (binary) number to the
+      terminal in decimal, with a number of digits depending on the
+      value and without leading zeros.</span>
+    </p>
+
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
+
+    <ul>
+      <li>
+	<span lang="hu">R0 számérték</span>
+	<span lang="en">R0 value</span>
+      </li>
+    </ul>
+
+
+    <a name="_pm_pes"><h4>0xf012 _pm_pes</h4></a>
+
+    <p>
+      <span lang="hu">Beágyazott, 0 végződésű karaktertömb kiírása a
+      terminálra. A sztringnek a program kódjában közvetlenül a
+      szubrutint meghívó CALL utasítás után kell lennie. A szubrutin a
+      sztring záró nullája utáni címre fog visszatérni. A funkciónak
+      sem bemeneti, sem kimeneti paraméterei nincsenek. Helyes
+      használatára egy példa:</span>
+
+      <span lang="en">Writes a nested, 0-terminated character array to
+      the terminal. The string must be in the program code immediately
+      after the CALL instruction that calls the subroutine. The
+      subroutine will return to the address after the trailing zero of
+      the string. The function has neither input nor output
+      parameters. Here is an example of its correct usage:</span>
+    </p>
+
+    
+    <samp>
 _pm_pes  equ     0xf012
 
-        nop</p>
-        call    _pm_pes
+        nop
+        ces     _pm_pes
         db      ”Hello World”
         mvzl    r0,12
         ...
-</samp>
+    </samp>
 
-<p>A sztringet a CALL-t követő DB direktívával kell létrehozni, kettős
-idézőjelek között, ami biztosítja a záró 0 érték elhelyezését.</p>
+    <p>
+      <span lang="hu"><a href="p2223.html#CALL">CALL</a> helyett
+      célszerű a <a href="p2223.html#CES">CES</a> utasítást használni,
+      amely a CALL-al megegyező módon működik, azonban lehetővé teszi
+      a szimulátor számára a visszatérési cím meghatározását, így a
+      next utasítás használható lesz a lépésenkénti futtatásra.</span>
+
+      <span lang="en">Instead of <a href="p2223.html#CALL">CALL</a> it
+      is advisable to use the <a href="p2223.html#CES">CES</a>
+      instruction, which works in the same way as CALL, but allows the
+      simulator to specify the return address, so the next command
+      can be used to step execution.</span>
+    </p>
+
+    <p>
+      <span lang="hu">A sztringet a CALL/CES-t
+	követő <a href="asm.html#dir_dx">DB</a> direktívával kell
+	létrehozni, kettős idézőjelek között, ami biztosítja a záró 0
+	érték elhelyezését.</span>
+
+      <span lang="en">The string must be created with
+      the <a href="asm.html#dir_dx">DB</a> directive following the
+      CALL/CES, enclosed in double quotes, which ensures the placement
+      of the trailing 0 value.</span>
+    </p>
 
 
-<a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
+    <a name="_pm_printf"><h4>0xf014 _pm_printf</h4></a>
 
-<p>Formázott szöveg kiírása a terminálra. A szövegben elhelyezhetők
-formázó utasítások (% jellel kezdve), amelyek egy adat megfelelő
-formátumban való kiírását eredményezik. Az adatokat az R1..R12
-regiszterekben adhatjuk át, amelyekből sorban annyit használ fel a
-  szubrutin, amennyi formázó utasítás van a szövegben.</p>
+    <p>
+      <span lang="hu">Formázott szöveg kiírása a terminálra. A
+      szövegben elhelyezhetők formázó utasítások (% jellel kezdve),
+      amelyek egy adat megfelelő formátumban való kiírását
+      eredményezik. Az adatokat az R1..R12 regiszterekben adhatjuk át,
+      amelyekből sorban annyit használ fel a szubrutin, amennyi
+      formázó utasítás van a szövegben.</span>
 
-<p>Bemenetek:</p>
+      <span lang="en">Print formatted text to the terminal. Formatting
+      instructions (starting with the % sign) can be placed in the
+      string, which result in the printing of a data in the
+      appropriate format. The data can be transferred in the registers
+      R1..R12, of which the subroutine uses as many of the formatting
+      instructions are in the text.</span>
+    </p>
 
-<ul>
-<li>R0 a formátum szöveg címe.</li>
-<li>R1-R12 a formázó utasításokhoz szükséges adatok értékei</li>
-</ul>
+    <p><span lang="hu">Bemenetek</span><span lang="en">Inputs</span>:</p>
 
-<p>A szubrutin által kezelt formázó utasítások és paraméterek
-  ismertetését lásd a <a href="lib_out.html#printf">printf könyvtári
-  függvény</a> leírásánál.
+    <ul>
+      <li>
+	<span lang="hu">R0 a formátum szöveg címe.</span>
+	<span lang="en">R0 address of the format string.</span>
+      </li>
+      <li>
+	<span lang="hu">R1-R12 a formázó utasításokhoz szükséges
+	adatok értékei</span>
+	<span lang="en">R1-R12 are the values ​​of the data required for
+	formatting instructions</span>
+      </li>
+    </ul>
+
+    <p>
+      <span lang="hu">A szubrutin által kezelt formázó utasítások és
+      paraméterek ismertetését lásd
+      a <a href="lib_out.html#printf">printf könyvtári függvény</a>
+      leírásánál.</span>
+
+      <span lang="en">For a description of the formatting instructions
+      and parameters handled by the subroutine, see the description of
+      the <a href="lib_out.html#printf">printf library
+      function</a>.</span>
+    </p>
 
 
-<a name="_pm_pesf"><h4>0xf015 _pm_pesf</h4></a>
+    <a name="_pm_pesf"><h4>0xf015 _pm_pesf</h4></a>
 
-<p>Beágyazott, 0 végződésű formázó szöveg kiírása a terminálra. A
-formázó szövegnek közvetlenül a CALL utasítás után kell lennie, a
-további paraméterek a printf szubrutinéval egyeznek (ez a funkció az
-R0 regiszterben nem vár bemenő adatot).</p>
+    <p>
+      <span lang="hu">Beágyazott, 0 végződésű formázó szöveg kiírása a
+      terminálra. A formázó szövegnek közvetlenül a CALL/CES utasítás
+      után kell lennie, a további paraméterek
+      a <a href="#_pm_printf">printf</a> szubrutinéval egyeznek (ez a
+      funkció az R0 regiszterben nem vár bemenő adatot).</span>
 
-<samp>
+      <span lang="en">Prints embedded, 0-terminated formatting string
+      to the terminal. The formatting string must be immediately after
+      the CALL/CES instruction, the additional parameters are the same
+      as those of the <a href="#_pm_printf">printf</a> subroutine
+      (this function does not expect input data in the R0
+      register).</span>
+    </p>
+
+    <samp>
 UART_CPB = 0xff44
 _pm_pesf  = 0xf015
 
          ld      r1,UART_CPB
          mov     r2,r1
-         call    _pm_pesf
-         db      ”Uart cpb= %d (0x%x)\n”
+         ces     _pm_pesf
+         .db      ”Uart cpb= %d (0x%x)\n”
          nop
          ...
-</samp>
+    </samp>
+
+    
+    <a name="fn_other"><h3>
+	<span lang="hu">Egyéb függvények</span>
+	<span lang="en">Miscellaneous functions</span>
+    </h3></a>
 
 
-<a name="fn_other"><h3>Egyéb függvények</h3></a>
+    <a name="_pm_itobcd"><h4>0xf004 _pm_itobcd</h4></a>
+
+    <p>
+      <span lang="hu">Előjel nélküli bináris kódolású szám átalakítása
+      BCD kódolásúra. Az R0 regiszterben megadott bemeneti adat
+      maximum 99999999 lehet, az eredmény az R0 regiszterben
+      keletkezik.</span>
+
+      <span lang="en">Converting an unsigned binary number to BCD. The
+      input data specified in the R0 register can be a maximum of
+      99999999, the result is generated in the R0 register .</span>
+    </p>
 
 
-<a name="_pm_itobcd"><h4>0xf004 _pm_itobcd</h4></a>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-<p>Előjel nélküli bináris kódolású szám átalakítása BCD kódolásúra. Az
-R0 regiszterben megadott bemeneti adat maximum 99999999 lehet, az
-eredmény az R0 regiszterben keletkezik.</p>
+    <ul>
+      <li>
+	<span lang="hu">R0 bináris számérték</span>
+	<span lang="en">R0 binary coded value</span>
+      </li>
+    </ul>
 
+    <p><span lang="hu">Kimenet</span><span lang="en">Output</span>:</p>
 
-<a name="_pm_ascii2seg"><h4>0xf016 _pm_ascii2seg</h4></a>
+    <ul>
+      <li>
+	<span lang="hu">R0 bcd kód</span>
+	<span lang="en">R0 bcd coded value</span>
+      </li>
+    </ul>
 
-<p>ASCII kód átalakítása hét szegmenses kódra, amelyet a megadott
-  karakter kijelzőn való megjelenítéséhez használhatunk.</p>
+    <a name="_pm_ascii2seg"><h4>0xf016 _pm_ascii2seg</h4></a>
 
-<p>Bemenet:</p>
+    <p>
+      <span lang="hu">ASCII kód átalakítása hét szegmenses kódra,
+	amelyet a megadott
+	karakter <a href="computer_v2.html#display">kijelzőn</a> való
+	megjelenítéséhez használhatunk.</span>
 
-<ul>
-<li>R0 ASCII kód</li>
-</ul>
+      <span lang="en">Convert ASCII code to seven-segment code, which
+      can be used to display the specified character on the
+      <a href="computer_v2.html#display">display</a>.</span>
+    </p>
 
-<p>Eredmény:</p>
+    <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
 
-<ul>
-<li>R4 hét szegmenses kód</li>
-</ul>
+    <ul>
+      <li>
+	<span lang="hu">R0 ASCII kód</span>
+	<span lang="en">R0 ASCII code</span>
+      </li>
+    </ul>
 
-<p>Megjegyezzük, hogy a kijelzőn nem minden karakter jeleníthető meg,
-ezek esetében a kimenet 0 lesz. Néhány esetben a kis- és a
-nagybetűkhöz ugyanazt az eredményt kapjuk (pl e, E), ha csak a
-karakter egyik formája jeleníthető meg.</p>
+    <p><span lang="hu">Eredmény</span><span lang="en">Result</span>:</p>
 
+    <ul>
+      <li>
+	<span lang="hu">R4 hét szegmenses kód</span>
+	<span lang="en">R4 seven-segment code</span>
+      </li>
+    </ul>
 
-<a name="appendix"><h1>Melléklet</h1></a>
+    <p>
+      <span lang="hu">Megjegyezzük, hogy a kijelzőn nem minden
+      karakter jeleníthető meg, ezek esetében a kimenet 0 lesz. Néhány
+      esetben a kis- és a nagybetűkhöz ugyanazt az eredményt kapjuk
+      (pl e, E), ha csak a karakter egyik formája jeleníthető meg,
+      lásd a <a href="lib_bsp.html#dsp_ascii2seg">dsp_ascii2seg</a>
+      függvény leírását.</span>
 
-<h2>Monitor szubrutinok abc sorrendben</h2>
-
-<table border=1>
-<tr>
-<th>név</th>
-<th>cím</th>
-<th>paraméterek</th>
-<th>eredmény</th>
-</tr>
-<tr>
-  <td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
-<td>0xf016</td>
-<td>R0 ascii kód</td>
-<td>R4 szegmens kód</td>
-</tr>
-<tr>
-  <td><a href="#_pm_callin">_pm_callin</a></td>
-<td>0xf000</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_check_uart">_pm_check_uart</a></td>
-<td>0xf008</td>
-<td>-</td>
-<td>F.C van adat</td>
-</tr>
-<tr>
-  <td><a href="#_pm_cold_start">_pm_cold_start</a></td>
-<td>0xf005</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
-<td>0xf001</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_getchar">_pm_getchar</a></td>
-<td>0xf002</td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
-<td>0xf009</td>
-<td>R0 karakter</td>
-<td>R0 érték, F.C helyes</td>
-</tr>
-<tr>
-  <td><a href="#_pm_htoi">_pm_htoi</a></td>
-<td>0xf00b</td>
-<td>R0 sztring</td>
-<td>R1 érték, F.C helyes</td>
-</tr>
-<tr>
-  <td><a href="#_pm_itobcd">_pm_itobcd</a></td>
-<td>0xf004</td>
-<td>R0 érték</td>
-<td>R0 érték</td>
-</tr>
-<tr>
-  <td><a href="#_pm_pes">_pm_pes</a></td>
-<td>0xf012</td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_pesf">_pm_pesf</a></td>
-<td>0xf015</td>
-<td>R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
-<td>0xf011</td>
-<td>R0 érték, R1 tagolás</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printd">_pm_printd</a></td>
-<td>0xf013</td>
-<td>R0 érték</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printf">_pm_printf</a></td>
-<td>0xf014</td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_prints">_pm_prints</a></td>
-<td>0xf00f</td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_printsnl">_pm_printsnl</a></td>
-<td>0xf010</td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_putchar">_pm_putchar</a></td>
-<td>0xf00e</td>
-<td>R0 karakter</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_read">_pm_read</a></td>
-<td>0xf00d</td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strchr">_pm_strchr</a></td>
-<td>0xf006</td>
-<td>R0 sztring, R1 karakter</td>
-<td>R1 cím, F.C van találat</td>
-</tr>
-<tr>
-  <td><a href="#_pm_streq">_pm_streq</a></td>
-<td>0xf007</td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strieq">_pm_strieq</a></td>
-<td>0xf00c</td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strlen">_pm_strlen</a></td>
-  <td>0xf019</td>
-  <td>R0 sztring</td>
-  <td>R4 karakterszám</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strpack">_pm_strpack</a></td>
-<td>0xf018</td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strunpack">_pm_strunpack</a></td>
-<td>0xf017</td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
-<td>0xf00a</td>
-<td>R0 érték</td>
-<td>R1 karakter</td>
-</tr>
-<tr>
-  <td><a href="#_pm_version">_pm_version</a></td>
-<td>0xf003</td>
-<td>-</td>
-<td>R0 verzió</td>
-</tr>
-</table>
+      <span lang="en">Note that not all characters can be displayed on
+      the display, in which case the output will be 0. In some cases,
+      we get the same result for both lowercase and uppercase letters
+      (e.g. e, E), if only one form of the character can be displayed,
+      see the <a href="lib_bsp.html#dsp_ascii2seg">dsp_ascii2seg</a>
+      function description.</span>
+    </p>
 
 
-<h2>Monitor szubrutinok cím szerinti sorrendben</h2>
+    <a name="appendix"><h1>
+	<span lang="hu">Melléklet</span>
+	<span lang="en">Appendix</span>
+    </h1></a>
 
-<table border=1>
-<tr>
-<th>cím</th>
-<th>név</th>
-<th>paraméterek</th>
-<th>eredmény</th>
-</tr>
-<tr>
-<td>0xf000</td>
-<td><a href="#_pm_callin">_pm_callin</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf001</td>
-<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf002</td>
-<td><a href="#_pm_getchar">_pm_getchar</a></td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-<td>0xf003</td>
-<td><a href="#_pm_version">_pm_version</a></td>
-<td>-</td>
-<td>R0 verzió</td>
-</tr>
-<tr>
-<td>0xf004</td>
-<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
-<td>R0 érték</td>
-<td>R0 érték</td>
-</tr>
-<tr>
-<td>0xf005</td>
-<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf006</td>
-<td><a href="#_pm_strchr">_pm_strchr</a></td>
-<td>R0 sztring, R1 karakter</td>
-<td>R1 cím, F.C van találat</td>
-</tr>
-<tr>
-<td>0xf007</td>
-<td><a href="#_pm_streq">_pm_streq</a></td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-<td>0xf008</td>
-<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
-<td>-</td>
-<td>F.C van adat</td>
-</tr>
-<tr>
-<td>0xf009</td>
-<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
-<td>R0 karakter</td>
-<td>R0 érték, F.C helyes</td>
-</tr>
-<tr>
-<td>0xf00a</td>
-<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
-<td>R0 érték</td>
-<td>R1 karakter</td>
-</tr>
-<tr>
-<td>0xf00b</td>
-<td><a href="#_pm_htoi">_pm_htoi</a></td>
-<td>R0 sztring</td>
-<td>R1 érték, F.C helyes</td>
-</tr>
-<tr>
-<td>0xf00c</td>
-<td><a href="#_pm_strieq">_pm_strieq</a></td>
-<td>R0, R1 sztringek</td>
-<td>F.C egyezés</td>
-</tr>
-<tr>
-<td>0xf00d</td>
-<td><a href="#_pm_read">_pm_read</a></td>
-<td>-</td>
-<td>R0 karakter</td>
-</tr>
-<tr>
-<td>0xf00e</td>
-<td><a href="#_pm_putchar">_pm_putchar</a></td>
-<td>R0 karakter</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf00f</td>
-<td><a href="#_pm_prints">_pm_prints</a></td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf010</td>
-<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
-<td>R0 sztring</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf011</td>
-<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
-<td>R0 érték, R1 tagolás</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf012</td>
-<td><a href="#_pm_pes">_pm_pes</a></td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf013</td>
-<td><a href="#_pm_printd">_pm_printd</a></td>
-<td>R0 érték</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf014</td>
-<td><a href="#_pm_printf">_pm_printf</a></td>
-<td>R0 sztring, R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf015</td>
-<td><a href="#_pm_pesf">_pm_pesf</a></td>
-<td>R1..R12</td>
-<td>-</td>
-</tr>
-<tr>
-<td>0xf016</td>
-<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
-<td>R0 ascii kód</td>
-<td>R4 szegmens kód</td>
-</tr>
-<tr>
-<td>0xf017</td>
-<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<td>0xf018</td>
-<td><a href="#_pm_strpack">_pm_strpack</a></td>
-<td>R0 sztring, R1 buffer</td>
-<td>-</td>
-</tr>
-<tr>
-  <td><a href="#_pm_strlen">_pm_strlen</a></td>
-  <td>0xf019</td>
-  <td>R0 sztring</td>
-  <td>R4 karakterszám</td>
-</tr>
-</table>
+    <h2>
+      <span lang="hu">Monitor szubrutinok abc sorrendben</span>
+      <span lang="en">Monitor subroutines in alphabetical order</span>
+    </h2>
 
-<hr>
+    <table border=1>
+      <tr>
+	<th><span lang="hu">név</span><span lang="en">name</span></th>
+	<th><span lang="hu">cím</span><span lang="en">address</span></th>
+	<th><span lang="hu">paraméterek</span><span lang="en">parameters</span></th>
+	<th><span lang="hu">eredmény</span><span lang="en">result</span></th>
+      </tr>
+      <tr>
+	<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
+	<td>0xf016</td>
+	<td>
+	  <span lang="hu">R0 ascii kód</span>
+	  <span lang="en">R0 ascii code</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 szegmens kód</span>
+	  <span lang="en">R4 segment code</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_callin">_pm_callin</a></td>
+	<td>0xf000</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
+	<td>0xf008</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">F.C van adat</span>
+	  <span lang="en">F.C data available</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
+	<td>0xf005</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
+	<td>0xf001</td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_getchar">_pm_getchar</a></td>
+	<td>0xf002</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
+	<td>0xf009</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték, F.C helyes</span>
+	  <span lang="en">R0 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_htoi">_pm_htoi</a></td>
+	<td>0xf00b</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 érték, F.C helyes</span>
+	  <span lang="en">R1 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
+	<td>0xf004</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_pes">_pm_pes</a></td>
+	<td>0xf012</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_pesf">_pm_pesf</a></td>
+	<td>0xf015</td>
+	<td>
+	  <span lang="hu">R1..R12 adatok</span>
+	  <span lang="en">R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
+	<td>0xf011</td>
+	<td>
+	  <span lang="hu">R0 érték, R1 tagolás</span>
+	  <span lang="en">R0 value, R1 fregment</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printd">_pm_printd</a></td>
+	<td>0xf013</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printf">_pm_printf</a></td>
+	<td>0xf014</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_prints">_pm_prints</a></td>
+	<td>0xf00f</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
+	<td>0xf010</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_putchar">_pm_putchar</a></td>
+	<td>0xf00e</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_read">_pm_read</a></td>
+	<td>0xf00d</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strchr">_pm_strchr</a></td>
+	<td>0xf006</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 karakter</span>
+	  <span lang="en">R0 string, R1 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 cím, F.C van találat</span>
+	  <span lang="en">R1 address, F.C found</span>	  
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_streq">_pm_streq</a></td>
+	<td>0xf007</td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strieq">_pm_strieq</a></td>
+	<td>0xf00c</td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strlen">_pm_strlen</a></td>
+	<td>0xf019</td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 karakterszám</span>
+	  <span lang="en">R4 length</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strpack">_pm_strpack</a></td>
+	<td>0xf018</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
+	<td>0xf017</td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
+	<td>0xf00a</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 karakter</span>
+	  <span lang="en">R1 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td><a href="#_pm_version">_pm_version</a></td>
+	<td>0xf003</td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 verzió</span>
+	  <span lang="en">R0 version</span>
+	</td>
+      </tr>
+    </table>
+
+
+    <h2>
+      <span lang="hu">Monitor szubrutinok cím szerinti sorrendben</span>
+      <span lang="en">Monitor subroutines in order of address</span>
+    </h2>
+
+    <table border=1>
+      <tr>
+	<th><span lang="hu">név</span><span lang="en">name</span></th>
+	<th><span lang="hu">cím</span><span lang="en">address</span></th>
+	<th><span lang="hu">paraméterek</span><span lang="en">parameters</span></th>
+	<th><span lang="hu">eredmény</span><span lang="en">result</span></th>
+      </tr>
+      <tr>
+	<td>0xf000</td>
+	<td><a href="#_pm_callin">_pm_callin</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf001</td>
+	<td><a href="#_pm_enter_by_uart">_pm_enter_by_uart</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf002</td>
+	<td><a href="#_pm_getchar">_pm_getchar</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf003</td>
+	<td><a href="#_pm_version">_pm_version</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 verzió</span>
+	  <span lang="hu">R0 version</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf004</td>
+	<td><a href="#_pm_itobcd">_pm_itobcd</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf005</td>
+	<td><a href="#_pm_cold_start">_pm_cold_start</a></td>
+	<td>-</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf006</td>
+	<td><a href="#_pm_strchr">_pm_strchr</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 karakter</span>
+	  <span lang="en">R0 string, R1 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 cím, F.C van találat</span>
+	  <span lang="en">R1 address, F.C found</span>	  
+	</td>
+      </tr>
+      <tr>
+	<td>0xf007</td>
+	<td><a href="#_pm_streq">_pm_streq</a></td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf008</td>
+	<td><a href="#_pm_check_uart">_pm_check_uart</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">F.C van adat</span>
+	  <span lang="en">F.C data available</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf009</td>
+	<td><a href="#_pm_hexchar2value">_pm_hexchar2value</a></td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>
+	  <span lang="hu">R0 érték, F.C helyes</span>
+	  <span lang="en">R0 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00a</td>
+	<td><a href="#_pm_value2hexchar">_pm_value2hexchar</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 karakter</span>
+	  <span lang="en">R1 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00b</td>
+	<td><a href="#_pm_htoi">_pm_htoi</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R1 érték, F.C helyes</span>
+	  <span lang="en">R1 value, F.C correct</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00c</td>
+	<td><a href="#_pm_strieq">_pm_strieq</a></td>
+	<td>
+	  <span lang="hu">R0, R1 sztringek</span>
+	  <span lang="en">R0, R1 strings</span>
+	</td>
+	<td>
+	  <span lang="hu">F.C egyezés</span>
+	  <span lang="en">F.C match</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00d</td>
+	<td><a href="#_pm_read">_pm_read</a></td>
+	<td>-</td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf00e</td>
+	<td><a href="#_pm_putchar">_pm_putchar</a></td>
+	<td>
+	  <span lang="hu">R0 karakter</span>
+	  <span lang="en">R0 character</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf00f</td>
+	<td><a href="#_pm_prints">_pm_prints</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf010</td>
+	<td><a href="#_pm_printsnl">_pm_printsnl</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf011</td>
+	<td><a href="#_pm_print_vhex">_pm_print_vhex</a></td>
+	<td>
+	  <span lang="hu">R0 érték, R1 tagolás</span>
+	  <span lang="en">R0 value, R1 fregment</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf012</td>
+	<td><a href="#_pm_pes">_pm_pes</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf013</td>
+	<td><a href="#_pm_printd">_pm_printd</a></td>
+	<td>
+	  <span lang="hu">R0 érték</span>
+	  <span lang="en">R0 value</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf014</td>
+	<td><a href="#_pm_printf">_pm_printf</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1..R12 adatok</span>
+	  <span lang="en">R0 string, R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf015</td>
+	<td><a href="#_pm_pesf">_pm_pesf</a></td>
+	<td>
+	  <span lang="hu">R1..R12 adatok</span>
+	  <span lang="en">R1..R12 values</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf016</td>
+	<td><a href="#_pm_ascii2seg">_pm_ascii2seg</a></td>
+	<td>
+	  <span lang="hu">R0 ascii kód</span>
+	  <span lang="en">R0 ascii code</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 szegmens kód</span>
+	  <span lang="en">R4 segment code</span>
+	</td>
+      </tr>
+      <tr>
+	<td>0xf017</td>
+	<td><a href="#_pm_strunpack">_pm_strunpack</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf018</td>
+	<td><a href="#_pm_strpack">_pm_strpack</a></td>
+	<td>
+	  <span lang="hu">R0 sztring, R1 buffer</span>
+	  <span lang="en">R0 string, R1 buffer</span>
+	</td>
+	<td>-</td>
+      </tr>
+      <tr>
+	<td>0xf019</td>
+	<td><a href="#_pm_strlen">_pm_strlen</a></td>
+	<td>
+	  <span lang="hu">R0 sztring</span>
+	  <span lang="en">R0 string</span>
+	</td>
+	<td>
+	  <span lang="hu">R4 karakterszám</span>
+	  <span lang="en">R4 length</span>
+	</td>
+      </tr>
+    </table>
+    
+    <hr>
 </body>
 </html>

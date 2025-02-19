@@ -1,12 +1,12 @@
 	.proc	P2
 
-btn		=	GPIO.BTN
+btn		==	GPIO.BTN
 dummy		=	12
 	
 	org	1
 	jmp	start		;start
 	db	dummy
-start:	
+start:
 	mvzl	r1,217
 	st	r1,UART.CPB
 	mvzl	r1,3		; turn on rx and tx
@@ -53,13 +53,27 @@ cyc:
 	call	monitor_by_uart		; enter monitor by uart
 	mvzl	r0,0			; number of checked button
 	call	monitor_by_button
+	mvzl	r0,1
+	call	btn_posedge
+	C call	exit
 	st	r10,GPIO.PORTA
 	st	r10,GPIO.PORTB
 	mov	r1,r10
 	mov	r2,r10
 	mov	r3,r10
+	mvzl	r0,'_'
+	st	r0,0xffff
+	ld	r0,0xffff
+	cmp	r0,'v'
+	jnz	p_nonv
+p_v:
+	ces	eprintf
+	.db	"%x %d\n"
+	jmp	p_done
+p_nonv:	
 	ces	eprintf
 	db	"%8x %10d %b\n"
+p_done:	
 	add	r10,1
 	jmp	cyc
 
