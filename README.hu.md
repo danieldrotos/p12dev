@@ -69,3 +69,37 @@ make iss          ; az alkalmazás szimulációja uCsim-el
 make emu          ; uCsim, az FPGA kártya kép megjelenítésével
 make clean        ; a generált fájlok letörlése
 ```
+
+
+## Utasításkészlet szimuláció
+
+A hardveres szimuláció mellett a rendszer szoftveresen is szimulálható
+uCsim szimulátor segítségével. A művelet a következő paranccsal indítható:
+
+```
+make iss
+```
+
+Elindítja a szimulációt és három terminál ablakot nyit meg, **UART**,
+**cmd1** és **cmd2** címmel. Az UART ablak az szimulált uarthoz
+csatlakozik, ebben nyomjuk meg az ENTER billentyűt, hogy megkapjuk a
+monitor promptot. A program elindításához adjuk ki a
+
+```
+g kezdőcím
+```
+
+monitor parancsot, hexadecimális cím használatával. A cmd1 és cmd2
+ablakok a szimulátor vezérlésére használhatók, a dokumentáció a
+következő címen található:
+
+http://www.ucsim.hu
+
+
+## FPGA megvalósítás
+
+Az FPGA megvalósítás lefordításához és kártyára való letöltéséhez
+használjuk a fejlesztőrendszer részletes leírását tartalmazó
+dokumentációt:
+
+[dev](https://danieldrotos.github.io/p12dev/devenv.html)
