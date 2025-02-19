@@ -1,6 +1,7 @@
 ### p12dev v2.2.15
 
 - assembler: fix checking symbol redefinition
+- documentation: translation
 
 ### p12dev v2.2.14
 
