@@ -69,6 +69,7 @@ module uart
 			  32'd39;
 `else
 	32'd216; // 25MHz -> 115200 Baud
+	//32'd433; // 50MHz -> 115200 Baud
 `endif
 	else
 	  if (wr & (addr==REG_CPB))
