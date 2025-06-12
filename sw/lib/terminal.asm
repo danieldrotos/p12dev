@@ -65,6 +65,23 @@ TU_SDOWN	==	-60	; // Scroll-DOWN
 TU_CSUP		==	-61	; // CTRL-Scroll-UP
 TU_CSDOWN	==	-62	; // CTRL-Scroll-DOWN
 
+COLOR_BLACK	==	0
+COLOR_RED	==	1
+COLOR_GREEN   	==	2
+COLOR_YELLOW  	==	3
+COLOR_BLUE    	== 	4
+COLOR_MAGENTA 	== 	5
+COLOR_CYAN    	== 	6
+COLOR_WHITE   	== 	7
+COLOR_BBLACK  	== 	60
+COLOR_BRED    	== 	61
+COLOR_BGREEN  	== 	62
+COLOR_BYELLOW 	== 	63
+COLOR_BBLUE   	== 	64
+COLOR_BMAGENTA	== 	65
+COLOR_BCYAN   	== 	66
+COLOR_BWHITE  	== 	67
+	
 tu_proc_esc::	.db	1	; bool if esc to be processed
 tu_esc_buflen:	.db	0	; esc buffer
 tu_esc_buffer:	.ds	100	; chars in esc buffer
