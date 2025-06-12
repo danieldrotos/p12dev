@@ -73,14 +73,14 @@ COLOR_BLUE    	== 	4
 COLOR_MAGENTA 	== 	5
 COLOR_CYAN    	== 	6
 COLOR_WHITE   	== 	7
-COLOR_BBLACK  	== 	60
-COLOR_BRED    	== 	61
-COLOR_BGREEN  	== 	62
-COLOR_BYELLOW 	== 	63
-COLOR_BBLUE   	== 	64
-COLOR_BMAGENTA	== 	65
-COLOR_BCYAN   	== 	66
-COLOR_BWHITE  	== 	67
+COLOR_BBLACK  	== 	8
+COLOR_BRED    	== 	9
+COLOR_BGREEN  	== 	10
+COLOR_BYELLOW 	== 	11
+COLOR_BBLUE   	== 	12
+COLOR_BMAGENTA	== 	13
+COLOR_BCYAN   	== 	14
+COLOR_BWHITE  	== 	15
 	
 tu_proc_esc::	.db	1	; bool if esc to be processed
 tu_esc_buflen:	.db	0	; esc buffer
