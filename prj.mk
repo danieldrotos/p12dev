@@ -1,3 +1,2 @@
-#PRG		= sw/progs2/counter3
-PRG		= adam
+PRG		= sw/progs2/counter3
 INSTS		= 25000
