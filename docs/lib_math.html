@@ -133,7 +133,7 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=quotient, R5=reminder</span>
+	<span lang="en">R4=quotient, R5=remainder</span>
 	<span lang="hu">R4=eredmény, R5=maradék</span>
       </li>
     </ul>
@@ -143,9 +143,9 @@
       R0/R1. Az osztó (R1) nem lehet 0. Az osztás maradéka az R3
       regiszterbe kerül.</span>
 
-      <span lang="en">Dividing unsigned integers: R2= R0/R1. The
-      divisor (R1) cannot be 0. The remainder of the division is
-      placed in the R3 register.</span>
+      <span lang="en">Dividing unsigned integers: R4= R0/R1. The
+      divisor (R1) must not be 0. The remainder of the division is
+      placed in the R5 register.</span>
     </p>
 
 
@@ -193,7 +193,7 @@
 	közé esik.</span>
 
       <span lang="en">Generate a 32-bit unsigned random number that
-      falls between 0 and the maximum (parameter) value limits.</span>
+      falls between 0 and the maximum value (inclusive).</span>
     </p>
 
 
@@ -203,7 +203,7 @@
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
 	<span lang="en">R0=seed</span>
-	<span lang="hu">R0=aktuális véletlen szám</span>
+	<span lang="hu">R0=seed</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
