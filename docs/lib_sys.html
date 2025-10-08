@@ -56,7 +56,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="p12.css">
-    <title>p2223 library: system functions</title>
+    <title>p2223 Library: System Functions</title>
   </head>
   
   <body>
@@ -144,9 +144,9 @@
       a <tt>go</tt> monitor paranccsal folytatható a hívás utáni
       utasítástól.</span>
 
-      <span lang="en">Return from the user program to the monitor. The
+      <span lang="en">Returns from the user program to the monitor. The
       function does not return, but the program can be continued from
-      the statement following the call with the <tt>go</tt> monitor
+      the instruction after the call with the <tt>go</tt> monitor
       command.</span>
     </p>
     
@@ -173,10 +173,10 @@
       a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
       folytatható a hívás utáni utasítástól.</span>
 
-      <span lang="en">Conditional return from the user program to the
-      monitor if there is a readable character on the serial line. The
-      function does not return, but the program can be continued from
-      the statement after the call with
+      <span lang="en">Performs a conditional return from the user
+      program to the monitor if there is a readable character on the
+      serial line. The function does not return, but the program can
+      be continued from the instruction following the call with
       the <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor
       command.</span>
     </p>
@@ -204,12 +204,13 @@
       a <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor paranccsal
       folytatható a hívás utáni utasítástól.</span>
 
-      <span lang="en">Conditional return from the user program to the
-      monitor if the pushbutton with the number specified in R0 is
-      pressed. The function does not return, but the program can be
-      continued from the instruction following the call with the
-      monitor command
-      <a href="pmon.html#cmd_go"><tt>go</tt></a>.</span>
+      <span lang="en">Performs a conditional return from the user
+      program to the monitor if the pushbutton with the number
+      specified in R0 is pressed. The function does not return, but
+      the program can be continued from the instruction following the
+      call with the
+      <a href="pmon.html#cmd_go"><tt>go</tt></a> monitor
+      command.</span>
     </p>
 
     
@@ -234,8 +235,9 @@
 	verziószám.</span>
 
       <span lang="en">Returns the version number of the pmon monitor
-      program. The 1st byte of the result is the major version number,
-      and the 0th byte is the minor version number.</span>
+      program. The high byte (byte 1) of the result is the major
+      version number, and the low byte (byte 0) is the minor version
+      number.</span>
     </p>
 
     
@@ -258,8 +260,8 @@
       <span lang="hu">Kilépés a programból, feltétel nélküli és
       végleges visszatérés a monitorhoz.</span>
 
-      <span lang="en">Exit the program, unconditional and
-	final return to the monitor.</span>
+      <span lang="en">Exits the program, performing an unconditional
+	and final return to the monitor.</span>
     </p>
 
     
