@@ -145,12 +145,12 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=number of button (0-15)</span>
+	<span lang="en">R0=button number (0-15)</span>
 	<span lang="hu">R0=nyomógomb sorszáma (0-15)</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">Flag.C=1 if pressed</span>
+	<span lang="en">Flag.C=1 if btn is pressed</span>
 	<span lang="hu">Flag.C=1 ha megnyomták</span>
       </li>
     </ul>
@@ -161,7 +161,7 @@
       megnyomott értéket adni.</span>
 
       <span lang="en">Testing for button presses. The function will
-      return a true value when called after detecting a button
+      return true value when called after detecting a button
       press.</span>
     </p>
     
@@ -171,7 +171,7 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=number of button (0-15)</span>
+	<span lang="en">R0=button number (0-15)</span>
 	<span lang="hu">R0=nyomógomb sorszáma (0-15)</span>
       </li>
       <li><span lang="en">Output(s):</span>
@@ -248,7 +248,7 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=number of switch (0-15)</span>
+	<span lang="en">R0=switch number (0-15)</span>
 	<span lang="hu">R0=kapcsoló sorszáma (0-15)</span>
       </li>
       <li><span lang="en">Output(s):</span>
@@ -264,8 +264,8 @@
       bekapcsolt értéket adni.</span>
 
       <span lang="en">Checking whether a switch is on. The function
-      will return true value when it is called after detecting that
-      the switch is on.</span>
+      will return true when called after detecting that
+      the switch is turned on.</span>
     </p>
 
 
@@ -274,7 +274,7 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0=number of switch (0-15)</span>
+	<span lang="en">R0=switch number (0-15)</span>
 	<span lang="hu">R0=kapcsoló sorszáma (0-15)</span>
       </li>
       <li><span lang="en">Output(s):</span>
@@ -290,7 +290,7 @@
       kikapcsolt értéket adni.</span>
 
       <span lang="en">Testing for switch off. The function will return
-      a value of off when it is called after detecting the switch
+      false value when it is called after detecting the switch turning
       off.</span>
     </p>
 
@@ -337,7 +337,7 @@
 	algoritmus alaphelyzetbe állítása.</span>
 
       <span lang="en">Resetting the algorithm that detects the change
-      in the state of the switches.</span>
+      in the state of switches.</span>
     </p>
 
     <hr>
@@ -350,7 +350,7 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: number of LED (0-23)</span>
+	<span lang="en">R0: LED number (0-23)</span>
 	<span lang="hu">R0: LED sorszáma (0-23)</span>
       </li>
       <li><span lang="en">Output(s):</span>
@@ -577,8 +577,8 @@
     <ul>
       <li><span lang="en">Input(s):</span>
 	<span lang="hu">Bemenet(ek):</span>
-	<span lang="en">R0: string, R1: buffer</span>
-	<span lang="hu">R0: sztring, R1: buffer</span>
+	<span lang="en">R0: string pointer, R1: buffer</span>
+	<span lang="hu">R0: sztring mutató, R1: buffer</span>
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
