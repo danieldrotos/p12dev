@@ -230,15 +230,15 @@
 
       <span lang="en">When using the <a name="opt_c"><b>-c</b></a>
       switch (compile only), the compiler will not give an error if a
-      symbol is used that is not defined. The output file compiled in
-      this way is not suitable for running the program, because it is
-      still half-finished. This corresponds to the so-called object
+      undefined symbol is used. The output file compiled in this way
+      is not suitable for running the program, as it is still
+      partially compiled. This corresponds to the so-called object
       file type used in other development systems. These files can be
       specified as source files in further compilations, and their
       contents will be included in the compiled program. In this case,
       it is recommended to give the output file the <tt>.p2o</tt>
       extension. By compiling several source or object files with the
-      -c switch we can create a library file, and it is recommended to
+      -c switch we can create a library file, which is recommended to
       name these files with the <tt>.p2l</tt> extension. Using the -c
       switch activates the effect of the <a href="#opt_k">-k</a>
       switch, so it is not necessary to use it.</span>
@@ -312,10 +312,11 @@
 
       <span lang="en">The <tt>label:</tt> (denoted by a colon at the
       end of the word) gives a name (label) to the memory location
-      where the instruction's codeword is located. It can be used to
-      specify the address for jumps and subroutine calls. The label
-      can also stand alone in the line, in which case it will indicate
-      the location of the next instruction in the source.</span>
+      where the instruction's <!-- ' --> codeword is located. It can
+      be used to specify the address for jumps and subroutine
+      calls. The label can also stand alone in the line, in which case
+      it will indicate the location of the next instruction in the
+      source.</span>
     </p>
 
     <p>
@@ -384,14 +385,14 @@
       the register number, e.g. R10. In the case of data, we can use
       symbols or constants created as labels.  Constants must start
       with a digit. The compiler considers constants starting with 0
-      as being in the 8th number system, those starting with 0b as
-      being in the binary number system (binary), while those starting
-      with 0x as being in the 16th (hexadecimal). To specify ASCII
-      codes, we can use the <tt>’b’</tt> form (the letter of the ASCII
-      code between single quotes). However, in such a case, we cannot
-      use so-called escape sequences or space! In the names of
-      symbols lowercase and uppercase letters are considered
-      different.</span>
+      as being in the octal number system (base 8), those starting
+      with 0b as being in the binary number system (binary), while
+      those starting with 0x as being hexadecimal number system (base
+      16). To specify ASCII codes, we can use the <tt>’b’</tt> form
+      (the letter of the ASCII code between single quotes). However,
+      in such a case, we cannot use so-called escape sequences or
+      spaces!  In the names of symbols lowercase and uppercase letters
+      are considered different.</span>
     </p>
 
 
@@ -410,12 +411,12 @@
       <tt>.CPU</tt> formában is használható.</span>
 
       <span lang="en">Some statements are not used to describe the
-      instructions of the processor, but control the operation of the
-      compiler, or have other results, they are called directives. In
-      the names of directives, the upper and lowercase letters are
-      considered the same. Directives whose names do not start with a
-      dot can also be specified starting with a dot, so for example
-      the directive <tt>CPU</tt> can also be used in the
+      instructions of the processor, rather they control the operation
+      of the compiler, or have other results. These are called
+      directives. In the names of directives, the upper and lowercase
+      letters are considered the same. Directives whose names do not
+      start with a dot can also be specified starting with a dot, so
+      for example the directive <tt>CPU</tt> can also be used in the
       form <tt>.CPU</tt>.</span>
     </p>
 
@@ -765,7 +766,7 @@ data1:  db      123              ; 8 bit data
       a segment into a global symbol. Its parameter is the name of the
       symbol. Only one parameter can be specified. If the symbol
       already exists in the global area, an error message will be
-      returned.</span>
+      given.</span>
     </p>
 
 
@@ -795,8 +796,8 @@ data1:  db      123              ; 8 bit data
       directory where the original source file is located. If it is
       not found there, it will search among the system files, which
       can be the <code>p12tool/include</code> subdirectory of the
-      user's home directory, or the <code>lib</code> subdirectory of
-      the development system.</span>
+      user's <!-- ' --> home directory, or the <code>lib</code>
+      subdirectory of the development system.</span>
     </p>
 
 
@@ -941,10 +942,10 @@ data1:  db      123              ; 8 bit data
       regiszterek közül az R13 helyett használhatjuk az SP, az R14
       helyett az LR, míg az R15 helyett a PC elnevezéseket is.</span>
 
-      <span lang="en">You don't need to use the # sign in constants,
-      just specify the numerical value or the name of the symbol.
-      Among the registers, you can use SP instead of R13, LR instead
-      of R14, and PC instead of R15.</span>
+      <span lang="en">You don't <!-- ' --> need to use the # sign in
+      constants, just specify the numerical value or the name of the
+      symbol.  Among the registers, you can use SP instead of R13, LR
+      instead of R14, and PC instead of R15.</span>
     </p>
 
     <table border=1 bgcolor="lightgrey">
