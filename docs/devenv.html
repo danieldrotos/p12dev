@@ -107,7 +107,7 @@
       processors are programmed and used with the p12dev development
       system. A package contains the hardware description in Verilog
       HDL and the tools for software development. The finished system
-      can be simulated at hardware or instruction level, or
+      can be simulated at the hardware or instruction level, or
       implemented on various <a href="computer_v2.html#fpga">FPGA
       boards</a>.</span>
     </p>
@@ -210,7 +210,7 @@
 	neve van megadva.</span>
       
       <span lang="en">in the line of <code>PRG</code> parameter, after the
-	= sign. Path in the file name sould be relative to root
+	= sign. Path in the file name should be relative to the root
 	directory of the package. Do not include the .asm extension in
 	the name. Name of the counter3 example is used from sw/progs2
 	directory by default. Change it to your app name.</span>
@@ -251,10 +251,10 @@
       utasítások számát definiálja. A megadott számú utasítás után a
       szimuláció leáll.</span>
     
-    <span lang="en">The parameter is located in prj.mk file. It's value
-      is a number, specifying number of CPU instructions to simulate
+    <span lang="en">The parameter is located in the prj.mk file. Its value
+      is a number, specifying the number of CPU instructions to simulate
       during hardware simulation. Simulation will stop after running
-      specifid number of instructions.</span>
+      a specified number of instructions.</span>
     </p>
 
     
@@ -269,7 +269,7 @@
       kell állítani.</span>
 
     <span lang="en">Parameter is in hw/hwconf.v file. It specifies
-      type of the CPU included in the computer. Value 1
+      the type of CPU included in the computer. Value 1
       selects <a href="p1516.html">p1516</a> type of CPU while value 2
       selects <a href="p2223.html">p2223</a>.</span>
     </p>
@@ -286,9 +286,9 @@
       állítani.</span>
 
     <span lang="en">Parameter is in hw/hwconf.v file. Value of this
-      parameter selects type of the
+      parameter selects the type of
       computer. Type <a href="computer_v1.html">v1 computer</a> can be
-      selected by set this parameter to 1. Value of 2
+      selected by setting this parameter to 1. Value of 2
       selects <a href="computer_v2.html">type v2</a>. Please note,
       that type v1 is now obsolete.</span>
     </p>
@@ -306,11 +306,11 @@
 	használt <a href="computer_v2.html@fpga">FPGA kártyák</a>
 	esetében.</span>
       
-      <span lang="en">Parameter is in hw/hwconf.v file. Value of this
+      <span lang="en">Parameter is in hw/hwconf.v file. The value of this
 	parameter specifies the width of the address bus of memory
 	that is connected to the CPU. The capacity of the memory will
-	be 2<sup>AW</sup> word. Use of value 17 defines 128 Kword
-	memory which reflects the memory size available
+	be 2<sup>AW</sup> words. Use of value 17 defines 128 Kword
+	memory, which reflects the memory size available
 	on <a href="computer_v2.html@fpga">FPGA boards</a>.</span>
     </p>
     
@@ -338,10 +338,10 @@
 	use <a href="computer_v2.html">v2 type of computer</a>
 	with <a href="p2223.html">p2223 processor</a>. This allows you
 	to operate the computer when no user program is loaded, and
-	makes possible to load in new user program. PMon is started by
+	makes it possible to load in a new user program. PMon is started by
 	a JMP 0xf03c instruction located at address 0 (code of it is
 	0x01f2f03c). You can start the machine with the user program
-	instead, if you overwrite the JMP at 0 with your program's
+	instead, if you overwrite the JMP at 0 with your program's <!-- ' -->
 	code by placing it at 0 with the following directive:</span>
     </p>
     
@@ -355,10 +355,10 @@
 	visszatérést legegyszerűbben az 0xf000 című szubrutin
 	meghívásával érhetjük el:</span>
     
-      <span lang="en">This method can be usefull for hardware or
-	instruction-level simulation. In this case you should provide
+      <span lang="en">This method can be useful for hardware or
+	instruction-level simulation. In this case, you should provide
 	some possibility to exit the user program and jump back to
-	monitor. The easiest way to return to the monitor is call
+	monitor. The easiest way to return to the monitor is to call
 	subroutine at 0xf000:</span>
     </p>
     
@@ -370,8 +370,8 @@
 	kell programoznunk az FPGA áramkört. A monitor elérésének
 	további módjait annak leírásában találjuk.</span>
       
-      <span lang="en">Without this, the application running on FPGA can not
-	be replaced and you have to reprogram the whole FPGA. Further
+      <span lang="en">Without this, the application running on the FPGA can not
+	be replaced, and you have to reprogram the whole FPGA. Further
 	ways to access the monitor program are described in its
 	documentation.</span>
     </p>
@@ -379,7 +379,7 @@
     <p>
       <pan lang="hu">Ha 0-tól eltérő kezdőcímet használunk, pl.</pan>
       
-      <span lang="en">If you place your program at address different than 0,
+      <span lang="en">If you place your program at an address other than 0,
 	like:</span>
     </p>
 
@@ -390,7 +390,7 @@
 	kiadásával indíthatjuk (paraméterként az ORG direktívával
 	megadott kezdőcímet használjuk):</span>
 	
-      <span lang="en">then your app can be started with appropriate monitor
+      <span lang="en">then your app can be started with the appropriate monitor
 	command (go), where you must use the address which was used in
 	the .org directive:</span>
     </p>
@@ -419,13 +419,13 @@
 	átalakítanunk a verilog számára szükséges formátumra.
       </span>
     
-      <span lang="en">Hardware simulation means gate level simulation of
-	the circuit.  It requires a verilog simulator, the development
-	system uses Icarus verilog software. Simulation takes several
+      <span lang="en">Hardware simulation means gate-level simulation of
+	the circuit.  It requires a Verilog simulator, the development
+	system uses Icarus Verilog software. Simulation takes several
 	steps. First, Icarus converts the model into an internal form
 	that is suitable for the simulation. This step needs the memory
 	content, so we need to compile the software first to generate
-	needed memory content file which the Icarus is able to read.
+	the needed memory content file, which Icarus can read.
       </span>
     </p>
 
@@ -437,9 +437,9 @@
 	után leáll.
       </span>
     
-      <span lang="en">In second step the simulation will run when
-	input signal values are applied to input of the circuit. The
-	simulation stops when CPU executes as many instructions as
+      <span lang="en">In the second step, the simulation will run when
+	input signal values are applied to the input of the circuit. The
+	simulation stops when the CPU executes as many instructions as
 	specified in the <code>INSTS</code> parameter.
       </span>
     </p>
@@ -453,9 +453,9 @@
       </span>
       
       <span lang="en">The simulation writes out values of internal signals
-	into an output file (dump file) which can be displayed in the
-	third step.  The whole process is controlled by a Makefile which
-	can be used form command line.
+	into an output file (dump file), which can be displayed in the
+	third step.  The whole process is controlled by a Makefile, which
+	can be used from the command line.
       </span>
     </p>
 
@@ -466,8 +466,8 @@
 	p12dev könyvtárba, akkor adjuk ki a:
       </span>
         
-      <span lang="en">Open a command window (e.g. PowerShell on windows)
-	and change working directory to root of the development
+      <span lang="en">Open a command window (e.g. PowerShell on Windows)
+	and change the working directory to the root of the development
 	system. For example, if the package is unzipped into p12dev on
 	Desktop, enter:
       </span>
@@ -481,7 +481,7 @@
       <span lang="hu">parancsot. Ha a szükséges szoftvereket telepítettünk,
 	a szimuláció és a megjelenítés a</span>
       
-      <span lang="en">command. If the required softwares are installed, the
+      <span lang="en">command. If the required softwares is installed, the
 	simulation and displaying the result can be done with:
       </span>
     </p>
@@ -494,8 +494,8 @@
 	idődiagram formájában kirajzolja és lehetővé teszi a gép
 	működésének vizsgálatát.</span>
       
-      <span lang="en">command. After the simulaton, gtkwave softwer is
-	started which displays content of the dump file on a time
+      <span lang="en">command. After the simulation, the gtkwave software is
+	started, which displays the content of the dump file on a time
 	diagram.</span>
     </p>
 
@@ -503,7 +503,7 @@
       <span lang="hu">A make parancs paramétere segítségével a folyamat
 	egyes lépései önállóan is lefuttathatók:</span>
       
-      <span lang="en">Using following parameters to make command, it is
+      <span lang="en">Using the following parameters to make command, it is
 	possible to run any step of the process separately:
       </span>
     </p>
@@ -537,7 +537,7 @@ make clean     ; remove generated files
 	(Verilog Test Module) fájl módosításával állíthatjuk elő.</span>
 	
       <span lang="en">You have to modify the tm.v (Verilog Test Module)
-	file to produce input signals for the computer, requied by the
+	file to produce input signals for the computer, required by the
 	tested app.</span>
     </p>
     
@@ -553,10 +553,10 @@ make clean     ; remove generated files
 	a futtatandó programot. A futtatást és a szimulátor elindítását
 	elvégezhetjük a fejlesztőrendszer gyökér könyvtárában a</span>
 
-      <span lang="en">The instruction level simulation is performed by the
-	&mu;Csim software. Code of the application must be compiled
-	before the simulation. Requied compilation and start of the
-	simulator can be done by following command (issued in root
+      <span lang="en">The instruction-level simulation is performed by the
+	&mu;Csim software. The code of the application must be compiled
+	before the simulation. Required compilation and start of the
+	simulator can be done by following command (issued in the root
 	directory of the development system):</span>
     </p>
 
@@ -571,8 +571,8 @@ make clean     ; remove generated files
       
       <span lang="en">After compilation of the app, the simulator
 	starts. The simulated memory is filled with the code of the
-	project's app and the monitor. Besides &mu;Csim (which runs in
-	the background), three terminal windows open,
+	project's <!-- ' --> app and the monitor. Besides &mu;Csim
+	(which runs in the background), three terminal windows open,
 	titled <b>UART</b>, <b>cmd1</b> and <b>cmd2</b>.</span>
     </p>
 
@@ -584,7 +584,7 @@ make clean     ; remove generated files
 	elindíthatjuk a programunkat a</span>
       
       <span lang="en">The UART window is connected to the simulated
-	uart. When you compile your app by keeping monitor start
+	UART. When you compile your app by keeping the monitor start
 	instruction, and press ENTER in this window, the monitor
 	prompt (colon) will appear. You can start your app with the
 	following monitor command:</span>
@@ -624,8 +624,8 @@ make clean     ; remove generated files
 	módja, hogy az egyik cmd ablakot függőlegesen felnagyítjuk
 	legalább 34 sor méretűre, majd kiadjuk a</span>
 	
-      <span lang="en">GPIO can be handled in several ways, one is the
-	use of interactive interface, which can be started by:</span>
+      <span lang="en">GPIO can be handled in several ways, one of which is the
+	use of an interactive interface, which can be started by:</span>
     </p>
     
 
@@ -636,8 +636,8 @@ make clean     ; remove generated files
 	két bemeneti portot. A bemeneti portok alsó 16 bitjét az alattuk
 	feltüntetett billentyűkkel válthajuk át.</span>
       
-      <span lang="en">command. Values of all GPIO port (2 inputs, 4
-	outputs) registers will appear (you should increase window size
+      <span lang="en">command. Values of all GPIO ports (2 inputs, 4
+	outputs) registers will appear (you should increase the window size
 	to at least 34 lines to make room for all). You can use
 	displayed keys to toggle input port bits.</span>
     </p>
@@ -681,8 +681,8 @@ set con boolean</samp></p>
 	(nyomógombok, kapcsolók).</span>
 
       <span lang="en">The yellow keys in the picture control the
-	simulator and the card's input devices (push buttons,
-	switches).</span>
+	simulator and the card's <!-- ' --> input devices (push
+	buttons, switches).</span>
     </p>
 
     
@@ -695,7 +695,7 @@ set con boolean</samp></p>
       <span lang="hu">Az FPGA kártyán való megvalósításhoz a
 	fejlesztőrendszerben kész Vivado projekteket találunk</span>
     
-      <span lang="en">You can find ready to use Vivado projects in the
+      <span lang="en">You can find ready-to-use Vivado projects in the
 	package to implement the computer on FPGA boards:</span>
     </p>
     
@@ -715,9 +715,8 @@ set con boolean</samp></p>
 	betöltendő alkalmazói program lefordításával állíthatunk elő.</span>
     
       <span lang="en">in hw/implement subdirectory. The projects are made
-	by Vivado version 2023.1, so you have to use this or newer
-	version. Memory content file is needed to compile the
-	implementation, which can be produced by compiling sw part of
+	by Vivado version 2023.1, so you have to use this version or newer. The memory content file is needed to compile the
+	implementation, which can be produced by compiling the SW part of
 	the package.</span>
     </p>
     
@@ -746,14 +745,14 @@ set con boolean</samp></p>
       <ol>
 	<li>Issue <code> make impl </code> command in p12dev directory.</li>
 	<li>Start Vivado (2013.1 or newer version).</li>
-	<li>Open appropriate project file (see above) according your board.</li>
+	<li>Open the appropriate project file (see above) according to your board.</li>
 	<li>Select Generate bitstream in the Project Manager (Flow menu).</li>
 	<li>Open Hardware Manager.</li>
 	<li>Connect your board with Open target.</li>
-	<li>Use Program device function to download compiled code to the board.</li>
+	<li>Use the Program device function to download compiled code to the board.</li>
 	<li>Open TeraTerm</li>
 	<li>Connect to the board with settings: 115200,N,8,1. Press ENTER
-	  and you will see the prompt of the monitor (a colon).</li>
+	  , and you will see the prompt of the monitor (a colon).</li>
 	<li>Use PMon commands to download your app code to the computer
 	  memory, and start it.</li>
       </ol>
@@ -765,7 +764,7 @@ set con boolean</samp></p>
 	példa programot tartalmazzák. A kész bit fájlokat a</span>
     
       <span lang="en">You can use precompiled bitfiles to program your
-	board, they contain PMon monitor and the counter3 example as the
+	board, they contain the PMon monitor and the counter3 example as the
 	user app. These bitfiles are available at:</span>
     </p>
     
@@ -806,7 +805,7 @@ set con boolean</samp></p>
 	segítségével használhatjuk a számítógépet.</span>
     
       <span lang="en">After starting Vivado, open the Hardware manager
-	and download selected bitfile to the board. After downloading,
+	and download the selected bitfile to the board. After downloading,
 	you can use the computer with the help of
 	the <a href="pmon.html">PMon monitor</a>.</span>
     </p>
