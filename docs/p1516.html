@@ -151,7 +151,7 @@
 
     <h2>
       <span lang="hu">Memória illesztő</span>
-      <span lang="en">Memory interafce</span>
+      <span lang="en">Memory interface</span>
     </h2>
 
     <p>
@@ -192,11 +192,11 @@
 
       <span lang="en">For a read operation, the contents of the
       addressed memory must be sent to the <b>MDI</b> input, at which
-      time the <b>MWE</b> output will be low. In both write and read a
-      pulse appears on the <b>MCLK</b> output, the rising edge of
-      which can be used as a write signal for the memory, or in the
-      case of memories with buffered output to write the output
-      buffer.</span>
+      time the <b>MWE</b> output will be low. In both write and read
+      operations a pulse appears on the <b>MCLK</b> output, the
+      rising edge of which can be used as a write signal for the
+      memory, or in the case of memories with buffered output to write
+      the output buffer.</span>
     </p>
 
     <h3>
@@ -213,7 +213,7 @@
       <span lang="en">The memory managed by the processor is 32-bit
       wide, each 32-bit slot has a separate address. During a memory
       operation, the processor reads 32-bit data from the addressed
-      slot, and writes 32-bit data.</span>
+      slot, or writes 32-bit data.</span>
     </p>
 
     <h2>
@@ -294,10 +294,10 @@
       the ALU, which can operate on 32-bit integer (signed and
       unsigned) data. The ALU has 3 data inputs: Rd, Ra, Rb. The
       original value (before the operation) of the register storing
-      the result must be connected to the Rd input. The values ​​of the
+      the result must be connected to the Rd input. The values of the
       registers used as the operands of the operation are connected to
-      the Ra and Rb inputs. One operand operations use only the Ra
-      input, while two operand operations use the Ra and Rb values. In
+      the Ra and Rb inputs. Single-operand operations use only the Ra
+      input, while dual-operand operations use the Ra and Rb values. In
       the case of operations without an operand, the result will be
       the unchanged Rd input value.</span>
     </p>
@@ -602,11 +602,12 @@
 	megadják az ALU 3 bemeneteként felhasznált regiszterek
 	sorszámát. Az OOOOO bitek az ALU műveletei közül választanak
 	ki egyet.</span>
-	<span lang="en">Code: <tt>FFVC.0000 DDDD.AAAA
-        BBBB.OOOO.OXXX XXXX.XXXX</tt><br />The FFVC bits specify the
-        execution condition , the DDDD, AAAA and BBBB bits specify the
-        serial numbers of the registers used as ALU 3 inputs in 4-bit
-          binary code. The OOOOO bits select one of the ALU operations.</span>
+	<span lang="en">Code: <tt>FFVC.0000 DDDD.AAAA BBBB.OOOO.OXXX
+        XXXX.XXXX</tt><br />The FFVC bits specify the execution
+        condition, the DDDD, AAAA and BBBB bits specify the indices of
+        the registers used as ALU's <!-- ' --> three inputs in 4-bit
+        binary code. The OOOOO bits select one of the ALU
+        operations.</span>
       </li>
       <li>
 	<span lang="hu">Módosított jelzőbitek</span><span lang="en">Modified flag bits</span>: -
@@ -864,7 +865,7 @@
 
       <span lang="en">These instructions use the data that appears at
       the ALU output in the writeback phase. The instructions
-      code:</span>
+      code is as follows:</span>
     </p>
 
 
