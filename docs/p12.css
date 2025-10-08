@@ -1,6 +1,9 @@
-html *
+body
 {
-    font-family: Serif, Sans-serif;
+    font-family: Sans-serif;
+    line-hight: 1.6;
+    color: #333;
+    margin: 40px;
 }
 
 body [lang=en], 
@@ -17,50 +20,64 @@ body [lang=hu] {
 }
 
 code {
-  background-color: #eee;
-  border: 1px solid #999;
-  font-family: monospace;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Courier New', monospace;
   white-space: pre;
 }
 
 samp {
   background-color: #eee;
   border: 1px solid #999;
+  border-radius: 6px;
   display: block;
   padding: 10px;
-  font-family: monospace;
+  margin: 15px 0;
+  font-family: 'Consolas', 'Courier New', monospace;
   white-space: pre;
+  color: #333;
 }
 
 #inst {
   padding: 4px;
-  font-family: monospace;
+  font-family: 'Consolas', 'Courier New', monospace;
   white-space: pre;
 }
 
 table {
     border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-td, th { padding: 5px; }
+td, th {
+    padding: 8px 5px;
+}
 
-tt { font-family: monospace }
+tt {
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #f9f9f9;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #c7254e;
+}
 
 .mov, .call, .mem, .alu1, .alu2 {
     border-radius: 3px;
     padding-left: 3px;
     padding-right: 3px;
     border: 1px solid #ddd;
-    font-family: monospace;
+    font-family: 'Consolas', 'Courier New', monospace;
 }
 
-.mov  { background-color: #dff; }
-.call { background-color: #fdf; }
-.mem  { background-color: #ffd; }
+.mov  { background-color: #d8fff0; }
+.call { background-color: #ffe0ff; }
+.mem  { background-color: #fffac8; }
 .alu1 { background-color: #ddf; }
 .alu2 { background-color: #dfd; }
 
-a.inst { text-decoration: none; }
+/*a.inst { text-decoration: none; }*/
 
 /* special span block to draw 7seg display picture */
 span.b {
@@ -70,6 +87,25 @@ span.b {
   padding: 10px;
   background-color: white;
   color: red;
-  font-family: monospace;
+  font-family: 'Consolas', 'Courier New', monospace;
   white-space: pre;
+}
+
+h1, h2, h3 {
+    border-bottom: 1px solid #ddd;
+    padding-botton: 5px;
+    color: #333;
+}
+
+h1 { font-size: 1.8em; }
+h3 { color: #0056b3; }
+
+p, li {
+    /*text-align: justify;*/
+    margin-bottom: 10px;
+}
+
+ul {
+    /*list-style-type: none;*/
+    /*padding-left: 0;*/
 }
