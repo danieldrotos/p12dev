@@ -221,8 +221,8 @@
 
       <span lang="en">Prints the value of the input 32-bit binary
       integer to the terminal in hexadecimal, 8 characters, with
-      leading zeros. It also prints a _ separator after every number
-      of characters specified in R1.</span>
+      leading zeros. It also prints a _ separator after every N
+      characters (where N is specified in R1).</span>
     </p>
 
     
@@ -276,9 +276,9 @@
       kimeneti paraméterei nincsenek. Helyes használatára egy
       példa:</span>
 
-      <span lang="en">Writes a nested, 0-terminated character array to
-      the terminal. The string must be in the program code immediately
-      after
+      <span lang="en">Writes an embedded, 0-terminated character array
+      to the terminal. The string must be in the program code
+      immediately after
       the <a href="p2223.html#CALL">CALL</a>/<a href="p2223.html#CES">CES</a>
       statement that calls the subroutine. The subroutine will return
       to the address after the trailing zero of the string. Escape
@@ -434,9 +434,9 @@
       with a digit other than 0. It specifies the number of character
       positions occupied by the text printed by the formatting
       instruction. In the case of %d, %u, the number is printed even
-      if it is longer. In the case of %x, %b, longer texts are
-      truncated from the left, so only the characters of the specified
-      number of lower part ​​are printed.</span>
+      if it is longer. In the case of %x, %b, truncation occurs from
+      the left for longer values; thus, only the specified number
+      of least significant charecters are printed.</span>
     </p>
 
     <samp>
@@ -532,10 +532,10 @@
       feltöltve.</span>
 
       <span lang="en">For number type formats (%u, %d, %x, %b), it has
-      an effect if the number sign is not displayed, the field width
-      is specified and it is greater than the length of the text. In
-      this case, the specified field length will be filled with 0
-      characters from the left.</span>
+      an effect if the number sign is not printed, the field width is
+      specified and it is greater than the length of the text. In this
+      case, the specified field length will be left-padded with '0'
+      characters.</span>
     </p>
 
     <samp>
@@ -572,13 +572,13 @@
 	szubrutinéval egyeznek, azonban ez a funkció az R0
 	regiszterben nem vár bemenő adatot.</span>
       
-      <span lang="en">Prints embedded, 0-terminated formatting text to
-      the terminal. The formatting text must be placed immediately
+      <span lang="en">Prints embedded, 0-terminated format string to
+      the terminal. The format string must be placed immediately
       after the <a href="p2223.html#CALL">CALL</a>
       (or <a href="p2223.html#CES">CES</a>) instruction, the
       additional parameters are the same as those of
       the <a href="#printf">printf</a> subroutine, but this function
-      does not require input data in the R0 register.</span>
+      does not require an input address in the R0 register.</span>
     </p>
 
     <samp>
