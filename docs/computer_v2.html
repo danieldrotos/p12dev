@@ -148,7 +148,7 @@
 
     <a name="memory"><h1>
 	<span lang="hu">Memória</span>
-	<span lang="hu">Memory</span>
+	<span lang="en">Memory</span>
     </h1></a>
 
     <p>
@@ -158,10 +158,10 @@
       lefordított program kódját pedig beillesztjük az
       alkatrészbe.</span>
 
-      <span lang="en">The memory connected to the processor's memory
-      interface will store the running program and the processed
-      data. The memory is designed on the FPGA, and the compiled
-      program code is inserted into the component.</span>
+      <span lang="en">The memory connected to the processor's <!-- '
+      --> memory interface will store the running program and the
+      processed data. The memory is designed on the FPGA, and the
+      compiled program code is inserted into the component.</span>
     </p>
 
     <p>
@@ -171,7 +171,7 @@
 
       <span lang="en">The memory capacity is 64 or 128 Kwords
       depending on the board, so 16 or 17 bits are required for
-      addressing.  Each word is 32 bits.</span>
+      addressing.  Each word is 32-bits.</span>
     </p>
 
     <a name="gpio"><h1>GPIO</h1></a>
@@ -263,8 +263,8 @@
       bemeneti portot kapunk:</span>
 
       <span lang="en">We also use a register as an input. When reading
-      the register, the state of the input wires is stored in the
-      register (sampling), the processor will receive its content. The
+      the register, the state of the input wires is sampled and stored
+      in the register, the processor will receive its content. The
       input GPIO circuit has a register, so it can access a 32-bit
       input data. In the computer, we connect two such circuits to the
       bus, so we get two input ports:</span>
@@ -321,11 +321,12 @@
       végérték elérését a túlcsordulás kimenet 1 értékűvé válása jelzi, a
 	kimenetet szoftverből kell törölni, törlésig 1 marad.</span>
 
-      <span lang="en">frequency.  The counting can be turned on or
-      off, and it goes from zero to the end value which can be set,
-      after which the counter is reset.  Reaching the end value is
-      indicated by the overflow output becoming 1, the output must be
-      cleared from software, and remains 1 until cleared.</span>
+      <span lang="en">frequency. The counting can be turned on or off,
+      and it goes from zero to the configurable end value which can be
+      set, after which the counter is reset.  Reaching the end value
+      is indicated by the overflow output being set to 1. This output
+      must be cleared from software, and remains 1 until
+      cleared.</span>
     </p>
 
     
@@ -359,8 +360,8 @@
       <li>TIMER.CTRL[1]: IEN, interrupt enable.
 	<span lang="hu">Ha a bit értéke 1, az áramkör irq kivezetése
 	  túlcsordulás esetén 1 lesz.</span>
-	<span lang="en">If the bit value is 1, the circuit's irq pin
-	  will be set to 1 in case of overflow.</span>
+	<span lang="en">If the bit value is 1, the circuit's <!-- '
+	  --> irq pin will be set to 1 in case of overflow.</span>
       </li>
       
       <li>TIMER.CTRL[31:2]: reserved.
@@ -419,23 +420,23 @@
       
       <li>TIMER.STAT[0]: EN, enable.
 	<span lang="hu">A CTRL[0] bit értéke, csak olvasható.</span>
-	<span lang="en">Value os the CTRL[0] bit, read only.</span>
+	<span lang="en">Value of the CTRL[0] bit, read-only.</span>
       </li>
       
       <li>TIMER.STAT[1]: OVF, overflow, read-only.
 	<span lang="hu">Olvasás esetén a túlcsordulási állapot értékét
 	kapjuk. A túlcsordulás akkor vált 1-re, amikor a számláló
 	  értéke egyezővé válik az AR regiszter értékével.</span>
-        <span lang="en"> In the case of reading, we get the overflow
-        condition value. Overflow becomes 1 when the counter value
-        becomes the same as the value of the AR register.</span>
+        <span lang="en">When reading, we get the overflow condition
+        value. Overflow becomes 1 when the counter value matches the
+        value of the AR register.</span>
       </li>
       
       <li>TIMER.STAT[1]: RSTO, reset overflow, write-only.
 	<span lang="hu">Írás művelet esetén ennek a bitnek az 1
 	értékűre való írásával tudjuk törölni a túlcsordulás
 	  állapotot.</span>
-	<span lang="en">In the case of a write operation, we can clear
+	<span lang="en">During a write operation, we can clear
 	  the overflow condition by writing this bit to 1.</span>
       </li>
       
@@ -445,15 +446,15 @@
     <a name="uart"><h1>UART</h1></a>
     
     <p>
-      <span lang="hu">Univerzális aszinkron soros adó- vevő
+      <span lang="hu">Univerzális aszinkron soros adó-vevő
       áramkör. Az áramkör vevő oldala egy 16 elemű belső FIFO-val van
       ellátva, amely kiolvasás előtt az utolsó 15 vett adatot tudja
       tárolni.</span>
 
-      <span lang="en">Universal asynchronous serial transceiver
-      circuit. The receiver side of the circuit is equipped with a
-      16-element internal FIFO, which can store the last 15 received
-      data before reading it out.</span>
+      <span lang="en">Universal Asynchronous Receiver/Transmitter
+      (UART) circuit. The receiver side of the circuit is equipped
+      with a 16-element internal FIFO, which can store the last 15
+      received data before reading it out.</span>
     </p>
     
     <h3>UART.DR, data register</h3>
@@ -528,7 +529,7 @@
 	<span lang="hu">A bit 1 értékű, ha van vett karakter, és az
 	  0.</span>
 	<span lang="en">The bit is 1 if there is a character received,
-        and 0 if not.</span>
+        and this charecter is 0.</span>
       </li>
       
       <li>UART.RSTAT[2]: RX_VALID,
@@ -647,7 +648,7 @@
 	portjainak felhasználási módja vezérelhető.</span>
 
       <span lang="en">The peripheral registers control how the
-      computer's output ports are used.</span>
+      computer's <!-- ' --> output ports are used.</span>
     </p>
     
     <h3>BRD_CTRL.OUT, output control</h3>
@@ -734,7 +735,7 @@
       közötti idő) egy előosztó segítségével beállítható.</span>
 
       <span lang="en">The peripheral contains a 32-bit up-counter,
-      whose operating frequency (i.e. the time between steps ) can be
+      whose operating frequency (i.e. the time between steps) can be
       set using a prescaler.</span>
     </p>
     
@@ -744,7 +745,7 @@
       egyezik meg. Ezek a számlálók csak akkor lépnek, ha nem nulla az
       értékük, a 0 elérésekor a számlálás leáll.</span>
 
-      <span lang="en">In addition, we can use 14 32-bit down counters
+      <span lang="en">In addition, we can use 14 32-bit down-counters
       whose frequency is the same as that of the clock counter.  These
       counters only move if their value is not zero, and counting
       stops when 0 is reached.</span>
@@ -771,12 +772,12 @@
     
     <p>
       <span lang="hu">A PRE regiszter értéke határozza meg az óra
-	működési frekvenciáját, két lépés között CNT+1 bemeneti órajel
+	működési frekvenciáját, két lépés között PRE+1 bemeneti órajel
 	telik el:</span>
 
       <span lang="en">The value of the PRE register determines the
-      operating frequency of the clock, CNT+1 input clock signal
-      elapses between two steps:</span>
+      operating frequency of the clock, PRE+1 input clock cycles
+      elapse between two steps:</span>
     </p>
     
     <p>
@@ -817,7 +818,8 @@
 
       <span lang="en">Countdown counters whose operating frequency
       matches the clock register. The counters only advance if their
-      value is not 0. When 0 is reached, the backcounter stops.</span>
+      value is not 0. When 0 is reached, the individual counter
+      stops.</span>
     </p>
     
     
@@ -844,8 +846,8 @@
       egy frekvenciaosztó áramkör készíti el.</span>
 
       <span lang="en">On the cards used, the oscillator produces a 100
-      MHz clock signal. From this, the computer's 25 MHz clock signal
-      is generated by a frequency divider circuit.</span>
+      MHz clock signal. From this, the computer's <!-- ' --> 25 MHz
+      clock signal is generated by a frequency divider circuit.</span>
     </p>
     
     <p>
