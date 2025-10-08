@@ -56,7 +56,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="p12.css">
-    <title>p2223 library: terminal functions</title>
+    <title>p2223 library: Terminal Functions</title>
   </head>
   
   <body>
@@ -144,7 +144,7 @@
       lehet a kurzort vissza mozgatni.</span>
 
       <span lang="en">Saves the current cursor position. The cursor
-      can be moved back to the saved position using the
+      can be restored to the saved position using the
       <a href="#tu_restore_cursor>">tu_restore_cursor</a> function.</span>
     </p>
 
@@ -169,7 +169,7 @@
       <a href="#tu_save_cursor">tu_save_cursor</a> függvény
       segítségével elmentettünk.</span>
 
-      <span lang="en">Moves the cursor to the position previously saved using the
+      <span lang="en">Restores the cursor to the position previously saved using the
       <a href="#tu_save_cursor">tu_save_cursor</a> function.</span>
     </p>
 
@@ -238,9 +238,9 @@
 	háttérszínű lesz. A kurzort a bal felső sarokba
 	mozgatja.</span>
 
-      <span lang="en">Clears the screen, the screen will be filled
-      with the current background color. Moves the cursor to the upper
-      left corner.</span>
+      <span lang="en">Clears the screen; it is be filled with the
+      current background color. The cursor moves to the upper left
+      corner.</span>
     </p>
 
     
@@ -265,8 +265,8 @@
 	változik.</span>
 
       <span lang="en">Writes a space at the current cursor position,
-      i.e. deletes the character there. The cursor position does not
-      change.</span>
+      effectively deleting the character there. The cursor position
+      does not change.</span>
     </p>
 
     
@@ -313,7 +313,7 @@
       <span lang="hu">A kurzort az R0-ban megadott számú karakter
 	hellyel jobbra mozgatja.</span>
 
-      <span lang="en">Moves the cursor to the right the number of
+      <span lang="en">Moves the cursor to the right by the number of
       characters specified in R0.</span>
     </p>
 
@@ -334,10 +334,10 @@
     </ul>
 
     <p>
-      <span lang="hu">A kurzort az R0-ban megadott számú karakter hellyel felfelé
-      mozgatja.</span>
+      <span lang="hu">A kurzort az R0-ban megadott számú karakter
+      hellyel felfelé mozgatja.</span>
 
-      <span lang="en">Moves the cursor up the number of characters
+      <span lang="en">Moves the cursor up by the number of characters
       specified in R0.</span>
     </p>
 
@@ -417,12 +417,12 @@
       lehet.</span>
 
       <span lang="en">Sets the foreground and background colors, which
-      will take effect from the next printout. Values ​​between 0-7 are
-      a mixture of the three primary colors (0.bit=red, 1.bit=green,
-      2.bit=blue), while values ​​between 8-15 produce the same colors
-      with "high intensity". The colors displayed depend on the
+      takes effect from the next printout. Values from 0 to 7 represent 
+      a mixture of the three primary colors (bit 0=red, bit 1=green,
+      bit 2=blue), while values from 8 to 15 produce the same colors
+      in "high intensity". The colors displayed depend on the
       terminal program used. In some programs, the color profile 
-      may be configurable.</span>
+      may also be configurable.</span>
     </p>
 
     <p>
@@ -430,7 +430,7 @@
 	negatív, akkor az a szín nem módosul.</span>
 
       <span lang="en">If the foreground or background color parameter
-      is negative, that color will not be changed.</span>
+      is negative, its color will not be changed.</span>
     </p>
 
     <p>
@@ -521,7 +521,7 @@
       <span lang="hu">Fekete alapon fehér szín beállítása a következő
 	kiírás számára.</span>
 
-      <span lang="en">Set white on black background for the following
+      <span lang="en">Sets white on black background for the following
       printout.</span>
     </p>
 
@@ -545,7 +545,7 @@
       <span lang="hu">Fehér alapon fekete szín beállítása a következő
 	kiírás számára.</span>
 
-      <span lang="en">Set black on white background for the following
+      <span lang="en">Sets black on white background for the following
       printout.</span>
     </p>
 
@@ -569,7 +569,7 @@
       <span lang="hu">Fekete alapon zöld szín beállítása a következő
 	kiírás számára.</span>
 
-      <span lang="en">Set green on black background for the following
+      <span lang="en">Sets green on black background for the following
       statement.</span>
     </p>
 
