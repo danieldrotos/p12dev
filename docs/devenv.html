@@ -56,7 +56,7 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="p12.css">
-    <title>How to use p1516/p2223 development environment</title>
+    <title>How to use the p1516/p2223 development environment</title>
   </head>
 
   <body>
@@ -105,7 +105,7 @@
 
     <span lang="en">Computers built with the p1516 and p2223
       processors are programmed and used with the p12dev development
-      system. A package contains the hardware description in Verilog
+      system. The package contains the hardware description in Verilog
       HDL and the tools for software development. The finished system
       can be simulated at the hardware or instruction level, or
       implemented on various <a href="computer_v2.html#fpga">FPGA
@@ -138,7 +138,7 @@
     
     <h2>
       <span lang="hu">A szükséges szoftverek</span>
-      <span lang="en">Required softwares</span>
+      <span lang="en">Required Software</span>
     </h2>
 
     <p>
@@ -193,10 +193,10 @@
       írjuk be a projektünk <a href="asm.html">assembly</a> nyelvű
       forrását tartalmazó fájl nevét:</span>
 
-    <span lang="en">Look for the prj.mk file in the root directory of
-      the development system and open it with a text editor. Enter the
-      name of your <a href="asm.html">assembly</a> source file,
-      like:</span>
+    <span lang="en">Use a text editor to open the prj.mk file, located
+      in the root directory of the development system. Enter the name
+      of your <a href="asm.html">assembly</a> source file, as
+      follows:</span>
     </p>
     
     <p><samp>PRG = sw/progs2/counter3</samp></p>
@@ -209,11 +209,12 @@
 	sw/progs2 alkönyvtárban található counter3 nevű példa program
 	neve van megadva.</span>
       
-      <span lang="en">in the line of <code>PRG</code> parameter, after the
-	= sign. Path in the file name should be relative to the root
-	directory of the package. Do not include the .asm extension in
-	the name. Name of the counter3 example is used from sw/progs2
-	directory by default. Change it to your app name.</span>
+      <span lang="en">in the line of <code>PRG</code> parameter, after
+	the = sign. The path in the file name must be relative to the
+	root directory of the package. Do not include the .asm
+	extension in the name. Tthe counter3 example from sw/progs2
+	directory is used by default. Change it to your
+	application's <!-- ' --> name.</span>
     </p>
 
     <p>
@@ -238,7 +239,7 @@
 	találhatók: <b>prj.mk</b> és <b>hw/hwconf.v</b>.</span>
       
       <span lang="en">Parameters affecting the system architecture and
-	the way it runs are in two separate files: <b>prj.mk</b>
+	the way it runs are located in two separate files: <b>prj.mk</b>
 	and <b>hw/hwconf.v</b>.</span>
     </p>
 
@@ -251,10 +252,10 @@
       utasítások számát definiálja. A megadott számú utasítás után a
       szimuláció leáll.</span>
     
-    <span lang="en">The parameter is located in the prj.mk file. Its value
-      is a number, specifying the number of CPU instructions to simulate
-      during hardware simulation. Simulation will stop after running
-      a specified number of instructions.</span>
+    <span lang="en">The parameter is located in the prj.mk file. Its
+      value is a number that specifies the number of CPU instructions
+      to simulate during hardware simulation. Simulation will stop
+      after running a specified number of instructions.</span>
     </p>
 
     
@@ -317,7 +318,7 @@
     
     <h3>
       <span lang="hu">Az assembly nyelvű program</span>
-      <span lang="en">Using assembly languge</span>
+      <span lang="en">Using the Assembly language</span>
     </h3>
 
     <p>
@@ -338,11 +339,12 @@
 	use <a href="computer_v2.html">v2 type of computer</a>
 	with <a href="p2223.html">p2223 processor</a>. This allows you
 	to operate the computer when no user program is loaded, and
-	makes it possible to load in a new user program. PMon is started by
-	a JMP 0xf03c instruction located at address 0 (code of it is
-	0x01f2f03c). You can start the machine with the user program
-	instead, if you overwrite the JMP at 0 with your program's <!-- ' -->
-	code by placing it at 0 with the following directive:</span>
+	makes it possible to load in a new user program. PMon is
+	started by a JMP 0xf03c instruction located at address 0 (code
+	of it is 0x01f2f03c). You can start the machine with the user
+	program instead, if you overwrite the JMP at address 0 with
+	your program's <!-- ' --> code by placing it at 0 with the
+	following directive:</span>
     </p>
     
     <p><samp>.org 0</samp></p>
@@ -452,10 +454,11 @@
 	kezelhetünk.
       </span>
       
-      <span lang="en">The simulation writes out values of internal signals
-	into an output file (dump file), which can be displayed in the
-	third step.  The whole process is controlled by a Makefile, which
-	can be used from the command line.
+      <span lang="en">The simulation writes out values of internal
+	signals into an output file (dump file), which can be
+	displayed and evaluated in the third step.  The whole process
+	is controlled by a Makefile, which can be used from the
+	command line.
       </span>
     </p>
 
@@ -481,7 +484,7 @@
       <span lang="hu">parancsot. Ha a szükséges szoftvereket telepítettünk,
 	a szimuláció és a megjelenítés a</span>
       
-      <span lang="en">command. If the required softwares is installed, the
+      <span lang="en">command. If the required software is installed, the
 	simulation and displaying the result can be done with:
       </span>
     </p>
@@ -571,9 +574,10 @@ make clean     ; remove generated files
       
       <span lang="en">After compilation of the app, the simulator
 	starts. The simulated memory is filled with the code of the
-	project's <!-- ' --> app and the monitor. Besides &mu;Csim
-	(which runs in the background), three terminal windows open,
-	titled <b>UART</b>, <b>cmd1</b> and <b>cmd2</b>.</span>
+	project's <!-- ' --> application code and the monitor. Besides
+	&mu;Csim (which runs in the background), three terminal
+	windows open, titled <b>UART</b>, <b>cmd1</b>
+	and <b>cmd2</b>.</span>
     </p>
 
     <p>
@@ -584,10 +588,10 @@ make clean     ; remove generated files
 	elindíthatjuk a programunkat a</span>
       
       <span lang="en">The UART window is connected to the simulated
-	UART. When you compile your app by keeping the monitor start
-	instruction, and press ENTER in this window, the monitor
-	prompt (colon) will appear. You can start your app with the
-	following monitor command:</span>
+	UART. If you compile your application while retaining the
+	monitor start instruction, pressing ENTER in this window will
+	monitor prompt (a colon). You can start your app
+	with the following monitor command:</span>
     </p>
 
     <p></p>
@@ -624,8 +628,9 @@ make clean     ; remove generated files
 	módja, hogy az egyik cmd ablakot függőlegesen felnagyítjuk
 	legalább 34 sor méretűre, majd kiadjuk a</span>
 	
-      <span lang="en">GPIO can be handled in several ways, one of which is the
-	use of an interactive interface, which can be started by:</span>
+      <span lang="en">The GPIO can be handled in several ways; one is
+	the use of an interactive interface, which can be started
+	by:</span>
     </p>
     
 
@@ -680,8 +685,8 @@ set con boolean</samp></p>
       vezérelhetjük a szimulátort, illetve a kártya bemeneti eszközeit
 	(nyomógombok, kapcsolók).</span>
 
-      <span lang="en">The yellow keys in the picture control the
-	simulator and the card's <!-- ' --> input devices (push
+      <span lang="en">The yellow keys in the image control the
+	simulator and the board's <!-- ' --> input devices (push
 	buttons, switches).</span>
     </p>
 
