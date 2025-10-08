@@ -56,7 +56,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="p12.css">
-    <title>p2223 library: string functions</title>
+    <title>p2223 Library: string functions</title>
   </head>
   
   <body>
@@ -132,7 +132,7 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=converted value, Flag.C=1 if successfull</span>
+	<span lang="en">R4=converted value, Flag.C=1 if successful</span>
 	<span lang="hu">R4=konvertált érték, Flag.C=1 ha sikeres</span>
       </li>
     </ul>
@@ -145,12 +145,12 @@
       lesz. Ellenkező esetben a konverzió befejeződik a hibás
       karakternél.</span>
 
-      <span lang="en">Convert a string containing a description of a
-      decimal number to a number. The number must be positive, and
-      must not contain a sign character. If the string does not
-      contain any invalid characters, then bit C of the flag register
-      will be set to 1. Otherwise, the conversion will end at the
-      invalid character.</span>
+      <span lang="en">Converts a string containing a decimal number
+      description to a number. The number must be positive and must
+      not contain a sign character. If the string does not contain any
+      invalid characters, then bit C of the flag register will be set
+      to 1. Otherwise, the conversion will end at the invalid
+      character.</span>
     </p>
 
 
@@ -164,7 +164,7 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=converted value, Flag.C=1 if successfull</span>
+	<span lang="en">R4=converted value, Flag.C=1 if successful</span>
 	<span lang="hu">R4=konvertált érték, Flag.C=1 ha sikeres</span>
       </li>
     </ul>
@@ -179,10 +179,11 @@
 
       <span lang="en">Convert a string containing a hexadecimal number
       to a number. The number must be positive and cannot contain a
-      sign character. The digits a-f can be either upper or lower
-      case. If the string does not contain any invalid characters, bit
-      C of the flag register will be set to 1. Otherwise, the
-      conversion will end at the invalid character.</span>
+      sign character. The digits 'a' through 'f' can be either upper
+      or lower case. If the string does not contain any invalid
+      characters, bit C of the flag register will be set to
+      1. Otherwise, the conversion will end at the invalid
+      character.</span>
     </p>
 
     
@@ -211,13 +212,13 @@
       jelzi.</span>
 
       <span lang="en">Search for the character in register R1 in the
-      string starting at address which is in R0, uppercase and
-      lowercase letters are considered to be different. If the
-      searched character is found in the string, then R4 will be the
-      address of the word containing the character, and R5 will be the
-      index of the character in the memory word. If there is no match,
-      R4 and R5 will be 0. A match is indicated by the value of 1 in
-      bit C of the flag register.</span>
+      string starting at address in R0, uppercase and lowercase
+      letters are considered to be different. If the searched
+      character is found in the string, then R4 will be the address of
+      the word containing the character, and R5 will be the index of
+      the character within the memory word. If there is no match, R4
+      and R5 will be 0. A match is indicated by setting bit C of the
+      flag register to 1.</span>
     </p>
 
     
@@ -241,7 +242,7 @@
       nagybetűk különbözőnek számítanak. Egyezés esetén a flag
       regiszter C bitje 1 lesz.</span>
 
-      <span lang="en">Compare two strings, lowercase and uppercase
+      <span lang="en">Compare two strings; lowercase and uppercase
       letters are considered different. If there is a match, bit C of
       the flag register will be set to 1.</span>
     </p>
@@ -267,7 +268,7 @@
       nagybetűk megegyezőnek számítanak. Egyezés esetén a flag
       regiszter C bitje 1 lesz.</span>
 
-      <span lang="en">Compare two strings, lowercase and uppercase
+      <span lang="en">Compare two strings; lowercase and uppercase
       letters are considered the same. If there is a match, bit C of
       the flag register will be set to 1.</span>
     </p>
@@ -283,7 +284,7 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=chars in string</span>
+	<span lang="en">R4=number of characters in string</span>
 	<span lang="hu">R4=karakterek száma</span>
       </li>
     </ul>
@@ -307,7 +308,7 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">R4=words in memory</span>
+	<span lang="en">R4=number of words in memory</span>
 	<span lang="hu">R4=memória szavak száma</span>
       </li>
     </ul>
@@ -318,7 +319,7 @@
 	szót is.</span>
 
       <span lang="en">The function returns the size of the memory
-      space occupied by a string, including the 0-valued word that
+      space occupied by a string, including the null word that
       terminates the string.</span>
     </p>
 
@@ -345,10 +346,9 @@
       eredmény.</span>
 
       <span lang="en">The function returns a character with a given
-      sequence number of a string in normal/packed form, the sequence
-      number of the first character is 0. If the sequence number is
-      greater than the length of the string, then the result will be
-      0.</span>
+      index of a normal/packed string, the index of the first
+      character is 0. If the index is greater than the length of the
+      string, the result is 0.</span>
     </p>
 
     
@@ -374,10 +374,10 @@
       akkor nem történik módosítás.</span>
 
       <span lang="en">The function replaces a character with a given
-      sequence number (the first character has sequence number 0) of a
-      normal/packed string with the specified character. If the
-      sequence number is greater than the length of the string, then
-      no modification is made.</span>
+      index (the first character has index 0) of a normal/packed
+      string with the specified character. If the sequence number is
+      greater than the length of the string, then no modification is
+      made.</span>
     </p>
 
     
@@ -391,8 +391,8 @@
       </li>
       <li><span lang="en">Output(s):</span>
 	<span lang="hu">Kimenet(ek):</span>
-	<span lang="en">F.C=1 if string is packed</span>
-	<span lang="hu">F.C=1 ha a sztring pakolt</span>
+	<span lang="en">Flag.C=1 if string is packed</span>
+	<span lang="hu">Flag.C=1 ha a sztring pakolt</span>
       </li>
     </ul>
 
@@ -403,7 +403,7 @@
 
       <span lang="en">The function checks whether the string starting
       at the position specified as the parameter is in packed format,
-      if so, the C flag will be 1. The empty string is not
+      if so, the C flag is set to 1. The empty string is not
       packed.</span>
     </p>
 
@@ -428,8 +428,8 @@
       megfelelő tárterületről a hívás előtt kell gondoskodni.</span>
 
       <span lang="en">The function converts a normal/packed string to
-      normal form. The size of the output buffer is not checked,
-      adequate storage space must be provided before the call.</span>
+      normal form. The size of the output buffer is not checked;
+      adequate storage space must be allocated before the call.</span>
     </p>
 
     
