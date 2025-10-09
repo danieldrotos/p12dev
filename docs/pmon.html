@@ -95,9 +95,9 @@
       memory. Since PMon is written using the instructions of
       the <a href="p2223.html">p2223 CPU</a> and communicates with the
       user via the <a href="computer_v2.html#uart">UART</a>
-      peripheral, it can only be used on <a href="computer_v2.html">v2
-      type computer</a> with <a href="p2223.html">p2223 type
-      CPU</a>.</span>
+      peripheral, it can only be used
+      on <a href="computer_v2.html">v2-type computer</a>
+      with <a href="p2223.html">p2223-type CPU</a>.</span>
     </p>
 
     <h2>
@@ -118,13 +118,13 @@
       csatlakoztatásakor létrejövő COM portot. Állítsuk be a
       115200,N,8,1 paramétereket.</span>
 
-      <span lang="en">A USB-UART converter is connected to
+      <span lang="en">An USB-UART converter is connected to
       the <a href="computer_v2.html#uart">UART</a> peripheral of
-      the <a href="computer_v2.html#fpga">FPGA board</a>, whose USB
+      the <a href="computer_v2.html#fpga">FPGA board</a>, and its USB
       port can be connected to a PC. The converter appears to the PC
       operating system as a VCP (Virtual COM Port) device, which can
       be used as an asynchronous serial peripheral. On the PC, start a
-      terminal emulator program (e.g. TeraTerm, putty, etc.) and open
+      terminal emulator program (e.g., TeraTerm, PuTTY, etc.) and open
       the COM port created when the FPGA board is connected. Set the
       parameters to 115200,N,8,1.</span>
     </p>
@@ -167,8 +167,8 @@
       that should be entered in hexadecimal, without 0x, H, $, and
       other symbols. As a separator, you can enter . or _ in the
       entered hexadecimal numbers, which are ignored by the
-      monitor. The characters A..F can be entered in both upper and
-      lower case letters.</span>
+      monitor. The digits A..F can be entered in both uppercase and
+      lowercase.</span>
     </p>
 
     <p>
@@ -180,8 +180,8 @@
 
       <span lang="en">The data displayed by the monitor is always in
       hexadecimal, in uppercase.  For easier readability, the 32-bit
-      values ​​displayed by the monitor have a _ sign every four digits
-      in hexadecimal format.</span>
+      values ​​displayed by the monitor include an underscore (_) after
+      every four hexadecimal digits.</span>
     </p>
 
     <h2>
@@ -249,8 +249,8 @@ pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
       <span lang="en">Examine or modify a memory location with a given
       address. The first parameter is the address of the location to
       be examined (in hexadecimal). If the second parameter is not
-      specified, the command prints the specified address (including
-      the address), if the second parameter is specified, the value is
+      specified, the command prints the specified address and its
+      content, if the second parameter is specified, the value is
       first placed in memory, and then the (already modified) memory
       content is printed.</span>
     </p>
@@ -358,7 +358,7 @@ pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
 
       <span lang="en">The program sends the contents of the file on
       the serial line. The load command interprets the records in the
-      file, and prints their types to the terminal. It modifies the
+      file and prints their types to the terminal. It modifies the
       memory according to the records that define the memory
       contents. After the record indicating the end of the file, it
       exits, and the monitor prompt reappears:</span>
@@ -373,7 +373,7 @@ pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
       <span lang="hu">Ez a parancs a felhasználói programot indítja el
       a megadott címtől. Ha a program visszalép a monitorhoz a
       megfelelő szubrutin meghívásával, akkor ettől a ponttól a
-      programot lehet folytatni. Ehhez nem kell megadni a go
+      programot lehet folytatni. Ehhez nem kell megadni a 'go'
       parancsnak paramétert. Ez a módszer nem működik, ha még nem volt
       átlépés a programról a monitorra.</span>
 
@@ -381,7 +381,7 @@ pmon: 1.4 cpu: 2.2.10 feat1: 0000000F feat2: 00000000
       specified address. If the program returns to the monitor by
       calling the appropriate subroutine, the program can be continued
       from that point. You do not need to specify a parameter to the
-      go command for this. This method does not work if there has not
+      'go' command for this. This method does not work if there has not
       been a transition from the user program to the monitor
       yet.</span>
     </p>
@@ -458,13 +458,13 @@ U0 P0 O0 Z0 C0 S0
     <p>
       <span lang="hu">A PC és az LR a hívás helyét követő utasításra
       mutat, ahonnan a felhasználói program folytatható. Ettől a
-      címtől a programot a paraméter nélküli go parancs kiadásával
-      folytathatjuk.</span>
+      címtől a programot a paraméter nélküli <a href="#cmd_go">go</a>
+      parancs kiadásával folytathatjuk.</span>
 
       <span lang="en">PC and LR point to the instruction following the
       call, from where the user program can be continued. From this
-      address, the program can be continued by issuing the go command
-      without parameters.</span>
+      address, the program can be continued by issuing
+      the <a href="#cmd_go">go</a> command without parameters.</span>
     </p>
 
 
@@ -538,17 +538,17 @@ R10 0000_AB45
     <p>
       <span lang="hu">Végleges kilépés az alkalmazói programból a
       monitor újraindításával. Kezdeti értékre állítja a monitor
-      állapotát, így a felhasználói program a paraméterek nélküli go
-      paranccsal nem folytatható. Ezt a funkciót szubrutinhívás
-      mellett ugró utasításokkal is meghívhatjuk. A funkciónak
-      nincsenek paraméterei.</span>
+      állapotát, így a felhasználói program a paraméterek
+      nélküli <a href="#cmd_go">go</a> paranccsal nem folytatható. Ezt
+      a funkciót szubrutinhívás mellett ugró utasításokkal is
+      meghívhatjuk. A funkciónak nincsenek paraméterei.</span>
 
       <span lang="en">Final exit from the application program by
       restarting the monitor. Sets the monitor state to its initial
-      value, so the user program cannot be continued with the go
-      command without parameters. This function can be called with
-      jump instructions in addition to subroutine calls. The function
-      has no parameters.</span>
+      value, so the user program cannot be continued with
+      the <a href="#cmd_go">go</a> command without parameters. This
+      function can be called with jump instructions in addition to
+      subroutine calls. The function has no parameters.</span>
     </p>
 
 
@@ -557,13 +557,13 @@ R10 0000_AB45
     <p>
       <span lang="hu">Visszatérés a monitor programba a felhasználó
       program állapotának az elmentésével. Ezután a program
-      folytatható a paraméter nélküli go paranccsal. A funkciónak
-      nincsenek paraméterei.</span>
+      folytatható a paraméter nélküli <a href="#cmd_go">go</a>
+      paranccsal. A funkciónak nincsenek paraméterei.</span>
 
       <span lang="en">Return to the monitor program by saving the user
       program state. The program can then be continued with the
-      command go without parameters. The function has no
-      parameters.</span>
+      command <a href="#cmd_go">go</a> without parameters. The
+      function has no parameters.</span>
     </p>
 
 
@@ -579,7 +579,7 @@ R10 0000_AB45
       keresztül. A funkciónak nincsenek paraméterei.</span>
 
       <span lang="en">Conditional return to the monitor program. The
-      subroutine checks whether there is a readable character received
+      subroutine checks whether there is a readable received character
       in the UART circuit. If so, it clears the UART and calls the
 	<a href="#_pm_callin">_pm_callin</a> function, i.e. returns to
       the monitor. It can be used in a program that does not read data
@@ -615,7 +615,7 @@ R10 0000_AB45
     formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
     kell gondoskodni.</span>
 
-      <span lang="en">Convert a normal or packed string to normal
+      <span lang="en">Converts a normal or packed string to normal
       format. An output buffer of the appropriate size must be
       provided before the call.</span>
     </p>
@@ -654,7 +654,7 @@ R10 0000_AB45
       formátumra. A megfelelő méretű kimeneti bufferről a hívás előtt
       kell gondoskodni.</span>
 
-      <span lang="en">Convert a normal or packed string to packed
+      <span lang="en">Converts a normal or packed string to packed
       format. An output buffer of the appropriate size must be
       provided before the call.</span>
     </p>
@@ -757,7 +757,7 @@ R10 0000_AB45
       </li>
       <li>
 	<span lang="hu">F.C találat esetén 1, egyébként 0</span>
-	<span lang="en">F.C 1 if character is found, 0 otherwise</span>
+	<span lang="en">F.C is 1 if character is found, 0 otherwise</span>
       </li>
     </ul>
 
@@ -802,7 +802,7 @@ R10 0000_AB45
       <span lang="hu">Sztringek összehasonlítása, a kis- és nagybetűk
 	egyezőnek számítanak.</span>
 
-      <span lang="en">Compare strings, case-sensitive.</span>
+      <span lang="en">Compare strings, case is ignored.</span>
     </p>
 
     <p><span lang="hu">Bemenő paraméterek</span><span lang="en">Input
@@ -870,7 +870,7 @@ R10 0000_AB45
       <span lang="hu">Egy 0-15 közötti számérték átalakítása a
 	megfelelő hexadecimális számjegy ASCII kódjára.</span>
 
-      <span lang="en">Convert a numeric value between 0-15 to the
+      <span lang="en">Converts a numeric value between 0-15 to the
       ASCII code of the corresponding hexadecimal digit.</span>
     </p>
     
@@ -881,7 +881,7 @@ R10 0000_AB45
 	<span lang="hu">R0 átalakítandó számérték. A szubrutin a
         regiszter 31:4 bitjeit nullázza.</span>
 	<span lang="en">R0 is the numerical value to be converted. The
-        subroutine sets bits 31:4 of register to zero.</span>
+        subroutine sets bits 31:4 of the register to zero.</span>
       </li>
     </ul>
     
@@ -907,12 +907,12 @@ R10 0000_AB45
       karakter esetén a feldolgozás megáll, az eredmény az addig
       feldolgozott sztring részletnek megfelelő lesz.</span>
 
-      <span lang="en">Convert a string containing hexadecimal digits
-      into a numeric value. The string can be case-sensitive (a-f, A-F),
-      and the. (period) or _ (underscore) characters used for
-      segmentation are ignored. In case of an invalid character, the
-      processing stops, and the result will correspond to the string
-      fragment processed so far.</span>
+      <span lang="en">Converts a string containing hexadecimal digits
+      into a numeric value. The string is not case-sensitive (a-f, A-F
+      are accepted), and the . (period) or _ (underscore) characters
+      used for segmentation are ignored. In case of an invalid
+      character, the processing stops, and the result will correspond
+      to the string fragment processed so far.</span>
     </p>
 
     <p><span lang="hu">Bemenet</span><span lang="en">Input</span>:</p>
