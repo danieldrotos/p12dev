@@ -1,5 +1,7 @@
 ### p12dev v2.2.18
 
+- fix printf in monitor
+
 ### p12dev v2.2.17
 
 - documentation: fix typo
