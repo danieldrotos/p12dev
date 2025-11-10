@@ -136,6 +136,12 @@ tipc_empty_non_esc:
 	call	ti_esc_clean
 	jmp	tipc_true
 tipc_not_empty:
+	cmp	r4,27
+	jnz	tipc_not_empty_ok
+	call	ti_esc_clean
+	call	ti_esc_put
+	jmp	tipc_false
+tipc_not_empty_ok:
 	call	ti_esc_put	; store
 	;; check for mouse info: len==6 && buf[2]=='M'
 	ld	r2,r1,6
