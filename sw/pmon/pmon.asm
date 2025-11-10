@@ -2229,6 +2229,19 @@ printf_left_align:	.ds	1
 printf_show_sign:	.ds	1
 printf_fill_zero:	.ds	1
 printf_min_len:		.ds	1
+
+preg1:	.ds	1
+preg2:	.ds	1
+preg3:	.ds	1
+preg4:	.ds	1
+preg5:	.ds	1
+preg6:	.ds	1
+preg7:	.ds	1
+preg8:	.ds	1
+preg9:	.ds	1
+preg10:	.ds	1
+preg11:	.ds	1
+preg12:	.ds	1
 	
 	;; Format and print string
 	;; In : R0 address of string template (format)
@@ -2244,21 +2257,21 @@ printf:
 	push	r4
 	push	r5
 	
-	st	r1,reg1
-	st	r2,reg2
-	st	r3,reg3
-	st	r4,reg4
-	st	r5,reg5
-	st	r6,reg6
-	st	r7,reg7
-	st	r8,reg8
-	st	r9,reg9
-	st	r10,reg10
-	st	r11,reg11
-	st	r12,reg12
+	st	r1,preg1
+	st	r2,preg2
+	st	r3,preg3
+	st	r4,preg4
+	st	r5,preg5
+	st	r6,preg6
+	st	r7,preg7
+	st	r8,preg8
+	st	r9,preg9
+	st	r10,preg10
+	st	r11,preg11
+	st	r12,preg12
 
 	mov	r2,r0		; pointer to format string
-	mvzl	r1,reg1		; pointer to params
+	mvzl	r1,preg1	; pointer to params
 	mvzl	r3,0		; byte idx in packed str
 	mvzl	r4,0		; bool: len reading mode
 	;; default values for options
@@ -2485,15 +2498,15 @@ printf_nextword:
 	jmp	printf_cyc
 	
 printf_ret:
-	ld	r12,reg12
-	ld	r11,reg11
-	ld	r10,reg10
-	ld	r9,reg9
-	ld	r8,reg8
-	ld	r7,reg7
-	ld	r6,reg6
-	ld	r5,reg5
-	ld	r4,reg4
+	ld	r12,preg12
+	ld	r11,preg11
+	ld	r10,preg10
+	ld	r9,preg9
+	ld	r8,preg8
+	ld	r7,preg7
+	ld	r6,preg6
+	ld	r5,preg5
+	ld	r4,preg4
 
 	pop	r5
 	pop	r4

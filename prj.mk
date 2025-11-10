@@ -1,2 +1,2 @@
-PRG		= sw/progs2/counter3
+PRG		= pelda
 INSTS		= 25000
