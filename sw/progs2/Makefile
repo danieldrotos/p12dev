@@ -30,7 +30,8 @@ all: pmonitor lib \
 	tudemo.asc tudemo.cdb \
 	shootgame.asc shootgame.cdb \
 	genseg.asc genseg.cdb \
-	tutest.asc tutest.cdb
+	tutest.asc tutest.cdb \
+	blinktwo.asc blinktwo.cdb
 
 
 pmonitor:
