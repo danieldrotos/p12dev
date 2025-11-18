@@ -1,4 +1,8 @@
+### p12dev v2.2.20
+
 ### p12dev v2.2.19
+
+- new demo for blinking two LEDs, controlled by terminal key
 
 ### p12dev v2.2.18
 
