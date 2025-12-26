@@ -2043,6 +2043,8 @@ getchar:
 	;; OUT: -
 putchar:
 	push	r9
+	getf	r9
+	push	r9
 ;	mvzl	r9,'p'
 ;	st	r9,SIMIF
 ;	st	r0,SIMIF
@@ -2054,6 +2056,8 @@ wait_tc:
 	jz	wait_tc
 	st	r0,UART_DR
 putchar_ret:
+	pop	r9
+	setf	r9
 	pop	r9
 	ret
 
@@ -2084,6 +2088,7 @@ prints_byte:
 	getbz	r0,r1,r5
 	sz	r0
 	NZ call	putchar
+	sz	r0
 	jz 	prints_go
 	inc	r5
 	cmp	r5,4
