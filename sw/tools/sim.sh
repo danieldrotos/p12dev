@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -d $HOME/prj/ucsim ]; then
     SIM=$HOME/prj/ucsim/src/sims/p1516.src/ucsim_p1516
