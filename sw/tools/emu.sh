@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -d $HOME/prj/ucsim ]; then
     SIM=$HOME/prj/ucsim/src/sims/p1516.src/ucsim_p1516
@@ -9,7 +9,13 @@ fi
 function tt()
 {
     sleep 1
-    xfce4-terminal -T "$1" -x telnet localhost "$2" 2>/dev/null &
+    if command -v xfce4-terminal >/dev/null 2>&1; then
+	xfce4-terminal -T "$1" -x telnet localhost "$2" 2>/dev/null &
+    elif command -v mate-terminal >/dev/null 2>&1; then
+	mate-terminal -t "$1" -x telnet localhost "$2" 2>/dev/null &
+    elif command -v xterm >/dev/null 2>&1; then
+	xterm -T "$1" -e telnet localhost "$2" &
+    fi
 }
 
 i=0
