@@ -15,6 +15,8 @@ function tt()
 	mate-terminal -t "$1" -x telnet localhost "$2" 2>/dev/null &
     elif command -v xterm >/dev/null 2>&1; then
 	xterm -T "$1" -e telnet localhost "$2" &
+    elif command -v putty >/dev/null 2>&1; then
+	putty -title "$1" -P "$2" -telnet localhost &
     fi
 }
 

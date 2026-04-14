@@ -9,7 +9,15 @@ fi
 function tt()
 {
     sleep 1
-    xfce4-terminal -T "$1" -x telnet localhost "$2" &
+    if command -v xfce4-terminal >/dev/null 2>&1; then
+	xfce4-terminal -T "$1" -x telnet localhost "$2" 2>/dev/null &
+    elif command -v mate-terminal >/dev/null 2>&1; then
+	mate-terminal -t "$1" -x telnet localhost "$2" 2>/dev/null &
+    elif command -v xterm >/dev/null 2>&1; then
+	xterm -T "$1" -e telnet localhost "$2" &
+    elif command -v putty >/dev/null 2>&1; then
+	putty -title "$1" -P "$2" -telnet localhost &
+    fi
 }
 
 i=0
