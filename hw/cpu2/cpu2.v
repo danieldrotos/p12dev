@@ -68,9 +68,16 @@ module cpu2
    wire 		       flag_wb_en;
    wire 		       alu_flag_en;
    wire 		       alu_wb_en;
+
    wire 		       inst_alu;
    wire			       inst_ext_gpb;
    wire			       inst_ext_sfr;
+   wire 		       inst_ext_mem;
+   wire			       inst_ext_wrs= inst_ext_sfr & ic[24];
+
+   wire [3:0] 		       ra= (inst_ext_gpb) ? ic[3:0] : ic[19:16];
+   wire [3:0] 		       rb= ic[11:8];
+   wire [3:0] 		       rd= ic[23:20];
    
    regm #(.WIDTH(WIDTH)) reg_flag
      (
@@ -118,9 +125,6 @@ module cpu2
 
    wire 		       inst_param= ic[24];
    wire [5:0] 		       alu_op= {ic[25:24],ic[19:16]};
-   wire [3:0] 		       ra= (inst_ext_gpb) ? ic[3:0] : ic[19:16];
-   wire [3:0] 		       rb= ic[11:8];
-   wire [3:0] 		       rd= ic[23:20];
    wire [15:0] 		       im16= ic[15:0];
    wire [23:0] 		       im24= ic[23:0];
    wire [19:0] 		       im20= ic[19:0];
@@ -136,11 +140,9 @@ module cpu2
    wire			       inst_ext_getb= inst_ext_gpb & ~ic[24];
    wire			       inst_ext_putb= inst_ext_gpb & ic[24];
    wire			       inst_ext_rds= inst_ext_sfr & ~ic[24];
-   wire			       inst_ext_wrs= inst_ext_sfr & ic[24];
    wire 		       inst_ld;
    wire 		       inst_st;
    wire 		       inst_mem;
-   wire 		       inst_ext_mem;
    wire 		       inst_br;
    wire 		       inst_wb;
    assign inst_ld= inst_ld_r | inst_ld_i | inst_ld_ext;
